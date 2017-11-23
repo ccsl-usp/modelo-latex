@@ -1,0 +1,153 @@
+%% ------------------------------------------------------------------------- %%
+\chapter{Introdução}
+\label{cap:introducao}
+
+Escrever bem é uma arte que exige muita técnica e dedicação. Há vários bons livros
+sobre como escrever uma boa dissertação ou tese. Um dos trabalhos pioneiros e mais
+conhecidos nesse sentido é o livro de
+%Umberto Eco~\cite{eco:09} % usando o estilo alpha
+Umberto~\citet{eco:09} % usando o estilo plainnat
+intitulado \emph{Como se faz uma tese}; é uma leitura bem interessante mas, como
+foi escrito em 1977 e é voltado para trabalhos de graduação na Itália, não se aplica
+tanto a nós.
+
+John Carlis disponibilizou um texto curto e interessante~\citep{carlis:09} sobre
+o processo de escrita em que advoga a preparação de um único rascunho da tese
+antes da versão final. Mais importante que isso, no entanto, são os vários
+\textit{insights} dele sobre a escrita acadêmica. Dois outros bons livros sobre
+a organização e escrita de textos acadêmicos são \emph{The Craft of
+Research}~\citep{craftresearch} e \emph{The Dissertation Journey}~
+\citep{dissertjourney}. A USP tem uma compilação de normas relativas à produção
+de documentos acadêmicos~\citep{usp:guidelines} que pode ser utilizada como
+referência.
+
+Para a escrita de textos em Ciência da Computação, o livro de Justin Zobel,
+\emph{Writing for Computer Science}~\citep{zobel:04} é uma leitura obrigatória.
+O livro \emph{Metodologia de Pesquisa para Ciência da Computação} de
+%Raul Sidnei Wazlawick~\cite{waz:09} % usando o estilo alpha
+Raul Sidnei~\citet{waz:09} % usando o estilo plainnat
+também merece uma boa lida. Já para a área de Matemática, dois livros recomendados
+são o de Nicholas Higham, \emph{Handbook of Writing for Mathematical Sciences}~
+\citep{Higham:98} e o do criador do \TeX{}, Donald Knuth, juntamente com Tracy
+Larrabee e Paul Roberts, \emph{Mathematical Writing}~\citep{Knuth:96}.
+
+%% ------------------------------------------------------------------------- %%
+\section{Considerações de Estilo}
+\label{sec:consideracoes_preliminares}
+
+Normalmente, as citações não devem fazer parte da estrutura sintática da
+frase\footnote{E não se deve abusar das notas de rodapé}.
+No entanto, usando o estilo plainnat (ou outros estilos autor-data), é comum que
+o nome do autor faça parte da frase. Nesses casos, pode valer a pena mudar o
+formato da citação para não repetir o nome do autor (no \LaTeX{}, isso pode ser
+feito usando os comandos \textbackslash{}citet, \textbackslash{}citep,
+\textbackslash{}citeyear etc. documentados no pacote natbib). Em geral, portanto,
+as citações devem seguir estes exemplos:
+
+\begin{verbatim}
+Modos de citação:
+indesejável: [AF83] introduziu o algoritmo ótimo.
+indesejável: (Andrew e Foster, 1983) introduziram o algoritmo ótimo.
+certo: Andrew e Foster introduziram o algoritmo ótimo [AF83].
+certo: Andrew e Foster introduziram o algoritmo ótimo (Andrew e Foster, 1983).
+certo (\citet ou \citeyear): Andrew e Foster (1983) introduziram o algoritmo ótimo.
+\end{verbatim}
+
+O uso desnecessário de termos em lingua estrangeira deve ser evitado. No entanto,
+quando isso for necessário, os termos devem aparecer \textit{em itálico}.
+\index{Língua estrangeira}
+% index permite acrescentar um item no indice remissivo
+
+Uma prática recomendável na escrita de textos é descrever as legendas das
+figuras e tabelas em forma auto-contida: as legendas devem ser razoavelmente
+completas, de modo que o leitor possa entender a figura sem ler o texto onde a
+figura ou tabela é citada.\index{Floats}
+
+Apresentar os resultados de forma simples, clara e completa é uma tarefa que
+requer inspiração. Nesse sentido, o livro de
+%Edward Tufte~\cite{tufte01:visualDisplay}, % usando o estilo alpha
+Edward~\citet{tufte01:visualDisplay}, % usando o estilo plainnat
+\emph{The Visual Display of Quantitative Information}, serve de ajuda na
+criação de figuras que permitam entender e interpretar dados/resultados de forma
+eficiente.
+
+\section{O que o IME espera}
+
+Ao terminar sua tese/dissertação, você deve entregar uma cópia dela para a
+CPG. Após a defesa, você tem 30 dias para revisar o texto e incorporar as
+sugestões da banca. Assim, há duas versões oficiais do documento: a versão
+original e a versão corrigida, o que deve ser indicado na folha de rosto.
+\index{Documento!versões}
+
+Fica a critério do aluno definir aspectos como o tamanho de fonte, margens,
+espaçamento, estilo de referências, cabeçalho, etc. considerando sempre o
+bom senso. A CPG, em reunião realizada no dia junho/2007, aprovou que as
+teses/dissertações deverão seguir o formato padrão por ela
+definido\footnote{\url{www.ime.usp.br/dcc/pos/normas/tesesedissertacoes}}.
+Esse padrão refere-se aos itens que devem estar presentes nas teses/dissertações
+(e.g. capa, formato de rosto, sumário, etc.), e não à formatação do documento.
+Ele define itens obrigatórios e opcionais, conforme segue:\index{Formatação}
+\index{Documento!itens obrigatórios}
+\index{Documento!itens opcionais}
+
+\begin{itemize}
+  \item \textsc{Capa} (obrigatória)
+  \begin{itemize}
+    \item O IME usa uma capa padrão de cartolina para todas as
+    teses/dissertações.  Essa capa tem uma janela recortada por onde se
+    vê o título e o autor do trabalho e, portanto, a capa impressa do
+    trabalho deve incluir o título e o autor na posição correspondente da
+    página. Ela fica centralizada na página, tem 100mm de largura, 60mm de
+    altura e começa 47mm abaixo do topo da página.
+
+    \item O título da tese/dissertação deverá iniciar com letra maiúscula
+    e o resto deverá ser em minúsculas, salvo nomes próprios.
+
+    \item O nome do aluno(a) deverá ser completo e sem abreviaturas.
+
+    \item É preciso explicitar se é uma tese ou dissertação (para
+    obtenção do título de doutor, tese; para obtenção do título de
+    mestre, dissertação).
+
+    \item O nome do programa deve constar da capa (Matemática,
+    Matemática Aplicada, Estatística ou Ciência da Computação).
+
+    \item Também devem constar o nome completo do orientador e do
+    co-orientador, se houver.
+
+    \item Se o aluno recebeu bolsa, deve-se indicar a(s) agência(s).
+
+    \item É preciso informar o mês e ano do depósito ou da entrega da
+    versão corrigida.
+  \end{itemize}
+
+  \item \textsc{Folha de Rosto} (obrigatória, tanto para a versão
+  depositada quanto para versão corrigida)
+  \begin{itemize}
+    \item o título da tese/dissertação deverá seguir o padrão da capa
+
+    \item deve informar se se trada da versão original ou da versão
+    corrigida; neste segundo caso, deve também incluir os nomes
+    dos membros da banca.
+  \end{itemize}
+
+  \item \textsc{Agradecimentos} (opcional)
+
+  \item \textsc{Resumo}, em português (obrigatório)
+
+  \item \textsc{Abstract}, em inglês (obrigatório)
+
+  \item \textsc{Sumário} (obrigatório)
+
+  \item \textsc{Listas} (opcionais)
+  \begin{itemize}
+    \item Lista de Abreviaturas
+    \item Lista de Símbolos
+    \item Lista de Figuras
+    \item Lista de Tabelas
+  \end{itemize}
+
+  \item \textsc{Referências Bibliográficas} (obrigatório)
+
+  \item \textsc{Índice Remissivo} (opcional)
+\end{itemize}

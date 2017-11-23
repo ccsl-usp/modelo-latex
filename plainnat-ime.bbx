@@ -1,0 +1,114 @@
+\ProvidesFile{plainnat-ime.bbx}
+[\abx@bbxid]
+
+% Vamos usar um formato similar a alphabetic, mas mudamos o label; ao
+% invés de alpha, inserimos o \textcite de authoryear.cbx como label.
+% Para isso, copiamos as macros de authoryear.cbx com algumas modificações.
+% Também não vamos fazer uma margem do tamanho do maior label, como
+% alphabetic faz, porque os labels aqui são muito grandes. Vamos usar
+% apenas "hanging indent" na primeira linha.
+
+% TODO: versões muito recentes (final de 2017) do biblatex usam
+% "labeldate+extradate" ao invés de "labelyear+extrayear"
+
+\RequireBibliographyStyle{alphabetic}
+
+% No texto, se estamos usando o pacote hyperref, o label é um
+% link para o item na bibliografia. Usando o label na própria
+% bibliografia, não faz sentido criar esse link. Por conta disso,
+% precisamos redefinir as macros de authoryear.cbx que incluem
+% o comando "bibhyperref" removendo esse comando.
+
+% Cópia da macro em authoryear.cbx, mas sem "bibhyperref"
+\newbibmacro*{citenohyper:label}{%
+  \iffieldundef{label}
+    {\printtext{\printfield[citetitle]{labeltitle}}}
+    {\printtext{\printfield{label}}}}
+
+% Cópia da macro em authoryear.cbx, mas sem "bibhyperref"
+\newbibmacro*{citenohyper:labelyear+extrayear}{%
+  \iffieldundef{labelyear}
+    {}
+    {\printtext{%
+     \ifdefstring\blx@dateformat@labeldate{edtf}
+       {}
+       {\datecircaprint}%
+     \dateeraprintpre{labelyear}%
+     \printfield{labelyear}%
+     \printfield{extrayear}%
+     \dateuncertainprint%
+     \iffieldsequal{labeldateera}{labelenddateera}{}
+       {\dateeraprint{labelyear}}%
+     \ifdefstring\blx@dateformat@labeldate{edtf}
+       {\datecircaprintedtf}
+       {}%
+     \iffieldundef{labelendyear}
+       {}
+       {\iffieldsequal{labelyear}{labelendyear}{}
+        {\ifdefstring\blx@dateformat@labeldate{edtf}
+          {\slash}% strict EDTF
+          {\bibdaterangesep
+           \enddatecircaprint}%
+         \dateeraprintpre{labelendyear}%
+         \printfield{labelendyear}%
+         \enddateuncertainprint
+         \ifdefstring\blx@dateformat@labeldate{edtf}
+           {\enddatecircaprintedtf}
+           {}%
+         \dateeraprint{labelendyear}}}}}}
+
+% Cópia da macro em authoryear.cbx, mas sem "bibhyperref"
+\newbibmacro*{citenohyperyear}{%
+  \iffieldundef{shorthand}
+    {\iffieldundef{labelyear}
+       {\usebibmacro{citenohyper:label}}
+       {\usebibmacro{citenohyper:labelyear+extrayear}}}
+    {\usebibmacro{cite:shorthand}}}
+
+% Por padrão, os labels na bibliografia não têm nada de
+% especial (além do que for definido, por exemplo, com
+% \mkbibnamefamily). O usuário pode redefinir este comando
+% para fazer, por exemplo, negrito.
+\newcommand*{\labelhighlight}[1]{#1}
+
+% Esta é a macro que efetivamente cria o label; copiada com
+% adaptações de authoryear.cbx
+\newbibmacro*{textcitelabel}{%
+  \c@maxnames\blx@maxcitenames\relax
+  \c@minnames\blx@mincitenames\relax
+  \ifnameundef{labelname}
+    {\iffieldundef{shorthand}
+       {\usebibmacro{citenohyper:label}%
+        \setunit{%
+          \global\booltrue{cbx:parens}%
+          \printdelim{nonameyeardelim}}%
+          {\usebibmacro{prenote}}
+        \usebibmacro{citenohyper:labelyear+extrayear}}
+       {\usebibmacro{cite:shorthand}}}
+    {\printnames{labelname}%
+     \setunit{%
+       \global\booltrue{cbx:parens}%
+       \printdelim{nameyeardelim}}%
+       {\usebibmacro{prenote}}
+     \usebibmacro{citenohyperyear}}%
+  \c@maxnames\blx@maxbibnames\relax
+  \c@minnames\blx@minbibnames\relax}
+
+% Baseado em alphabetic.bbx
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext{%
+        \mkbibbrackets{%
+          \labelhighlight{%
+            \usebibmacro{textcitelabel}%
+          }%
+        }%
+     }}
+      {\setlength{\labelwidth}{\bibhang}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{##1\hss}}
+  {\endlist}
+  {\item}
