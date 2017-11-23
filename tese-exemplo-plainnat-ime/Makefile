@@ -1,37 +1,38 @@
-# 
-# makefile para a compilação do documento
-#
-# Sáb Jun 23 21:13:37 BRT 2007
-#
+# makefile para a compilaÃ§Ã£o do documento
 
-BASE_NAME = tese-exemplo
+# Essas duas variaveis sao as unicas importantes
+BASE_NAME      := tese-exemplo
+LATEX          := pdflatex
+#LATEX          := lualatex
+#LATEX          := xelatex
 
-LATEX     = latex
-PDFLATEX  = pdflatex
-BIBTEX    = bibtex
-MAKEINDEX = makeindex
+###############################################################################
 
+OTHERTEXFILES  := $(wildcard *.tex)
+BIBFILES       := $(wildcard *.bib)
+IMGFILES       := $(wildcard figuras/*)
+BIBTEX         := bibtex
+MAKEINDEX      := makeindex
+
+all: pdf
+default: pdf
 pdf: $(BASE_NAME).pdf
-ps: $(BASE_NAME).ps
 
-$(BASE_NAME).pdf: $(BASE_NAME).tex 
-	$(PDFLATEX) $<
-	$(BIBTEX) $(BASE_NAME) 
-	$(MAKEINDEX) $(BASE_NAME) 
-	$(PDFLATEX) $< 
-	$(PDFLATEX) $<
-	$(PDFLATEX) $<
+$(BASE_NAME).pdf: $(BASE_NAME).tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES)
+	$(LATEX) $(BASE_NAME)
+	$(BIBTEX) $(BASE_NAME)
+	$(MAKEINDEX) $(BASE_NAME)
+	# We have to run at least makeindex twice...
+	$(LATEX) $(BASE_NAME)
+	$(BIBTEX) $(BASE_NAME)
+	$(MAKEINDEX) $(BASE_NAME)
+	@while grep -q 'Rerun to get .* right' *.log; \
+                do $(LATEX) $(BASE_NAME); done
 
-$(BASE_NAME).ps: $(BASE_NAME).tex 
-	$(LATEX) $<
-	$(BIBTEX) $(BASE_NAME) 
-	$(MAKEINDEX) $(BASE_NAME) 
-	$(LATEX) $< 
-	$(LATEX) $<
-	$(LATEX) $<
-	
 clean:
-	rm -f $(BASE_NAME)*.ps $(BASE_NAME)*.dvi *.log \
-	      *.aux *.blg *.toc *.brf *.ilg *.ind \
-	      missfont.log $(BASE_NAME)*.bbl $(BASE_NAME)*.pdf $(BASE_NAME)*.out \
-		  $(BASE_NAME)*.lof $(BASE_NAME)*.lot 
+	-rm  -f missfont.log *.bbl *.aux *.log *.toc *.cb *.out \
+		*.blg *.brf *.ilg *.ind *.lof *.lot *.idx *.bcf \
+		$(BASE_NAME).run.xml $(BASE_NAME).dvi \
+		$(BASE_NAME).ps $(BASE_NAME).pdf
+
+.PHONY: all clean
