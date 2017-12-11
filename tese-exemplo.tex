@@ -463,7 +463,7 @@
 \usepackage{mathtools}
 
 % Notação bra-ket
-\usepackage{braket}
+%\usepackage{braket}
 
 % Permite imprimir páginas específicas em modo paisagem
 \usepackage{pdflscape}
@@ -476,9 +476,11 @@
 \usepackage{tablefootnote}
 
 %\num \SI and \SIrange. For example, \SI{10}{\hertz} \SIrange{10}{100}{\hertz}
-\usepackage[binary-units]{siunitx}
+%\usepackage[binary-units]{siunitx}
 
-% Citações melhores
+% Citações melhores; se você pretende fazer citações de textos
+% relativamente extensos, vale a pena ler a documentação. biblatex
+% utiliza recursos deste pacote.
 \usepackage{csquotes}
 
 % Permite incorporar um arquivo PDF como uma página adicional. Útil se
@@ -524,7 +526,7 @@
 \urlstyle{sf}
 
 % Permite inserir comentários, muito bom durante a escrita do texto
-\usepackage{todonotes}
+%\usepackage{todonotes}
 
 % para formatar código-fonte (ex. em Java).
 \usepackage{listings}
@@ -621,10 +623,10 @@
 \floatplacement{figure}{htbp}
 
 % Símbolos adicionais, como \celsius, \ohm, \perthousand etc.
-\usepackage{gensymb}
+%\usepackage{gensymb}
 
 % Símbolos adicionais, como \textrightarrow, \texteuro etc.
-\usepackage{textcomp}
+%\usepackage{textcomp}
 
 % Permite criar listas como glossários, listas de abreviaturas etc.
 % https://en.wikibooks.org/wiki/LaTeX/Glossary
@@ -796,7 +798,7 @@
 % notas de rodapé. Note que, como uma longtable pode se estender por várias
 % páginas, não faz sentido colocá-las em um float "table". Por conta disso,
 % longtable define o comando "\caption" internamente.
-\usepackage{longtable}
+%\usepackage{longtable}
 
 % Permite agregar linhas de tabelas, fazendo colunas "compridas"
 \usepackage{multirow}
