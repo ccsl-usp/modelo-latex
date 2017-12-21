@@ -24,7 +24,14 @@
 % ímpares e pares são diferentes ou que números de página aparecem à direita
 % ou à esquerda alternadamente. Nada impede que você crie um documento "só
 % frente" e, ao imprimir, faça a impressão frente-e-verso.
-\documentclass[11pt,twoside]{book}
+%
+% Aqui também definimos a língua padrão do documento e línguas adicionais. A
+% classe em si não usa essa informação mas, passando as opções de língua aqui,
+% elas são repassadas para todas as demais classes, e diversas classes mudam
+% seu comportamento em função da língua (em especial, babel/polyglossia).
+% A última língua da lista é a língua padrão do documento.
+%\documentclass[11pt,twoside,brazil,english]{book}
+\documentclass[11pt,twoside,english,brazil]{book}
 
 % Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
 % verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
@@ -48,12 +55,11 @@
 % Teoremas; este pacote precisa ser carregado antes das definições de fontes.
 \usepackage{amsthm}
 
-% Define a língua do documento (e línguas adicionais) para cuidar dos nomes
-% das seções ("chapter" X "capítulo" etc.), hifelização e outras convenções
-% tipográficas. A última língua da lista é a língua padrão do documento. babel
-% deve ser um dos primeiros pacotes carregados.
-%\usepackage[brazil,english]{babel}
-\usepackage[english,brazil]{babel}
+% Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
+% hifenização e outras convenções tipográficas. babel deve ser um dos
+% primeiros pacotes carregados. É possível passar a língua do documento
+% como parâmetro aqui, mas já fizemos isso ao carregar a classe, mais acima.
+\usepackage{babel}
 
 % É possível personalizar as palavras-chave que babel utiliza, por exemplo:
 %\addto\extrasbrazil{\renewcommand{\refname}{Bibliografia}}
