@@ -471,10 +471,22 @@
 % Notação bra-ket
 %\usepackage{braket}
 
-% Permite imprimir páginas específicas em modo paisagem
+% Define o ambiente "\begin{landscape} -- \end{landscape}"; o texto entre
+% esses comandos é impresso em modo paisagem, podendo se estender por várias
+% páginas. A rotação não inclui os cabeçalhos e rodapés das páginas.
+% O principal uso desta package é em conjunto com a package longtable: se
+% você precisa mostrar uma tabela muito larga (que precisa ser impressa em
+% modo paisagem) e longa (que se estende por várias páginas), use
+% "\begin{landscape}" e "\begin{longtable}" em conjunto. Note que o modo
+% landscape entra em ação imediatamente, ou seja, "\begin{landscape}" gera
+% uma quebra de página no local em que é chamado. Na maioria dos casos, o
+% que se quer não é isso, mas sim um "float paisagem"; isso é o que a
+% package rotating oferece (veja abaixo).
 \usepackage{pdflscape}
 
-% Permite girar elementos na página
+% Define dois novos tipos de float: sidewaystable e sidewaysfigure, que
+% imprimem a figura ou tabela sozinha em uma página em modo paisagem. Além
+% disso, permite girar elementos na página de diversas outras maneiras.
 \usepackage{rotating}
 
 % LaTeX por padrão não permite notas de rodapé dentro de tabelas;
@@ -804,7 +816,7 @@
 % notas de rodapé. Note que, como uma longtable pode se estender por várias
 % páginas, não faz sentido colocá-las em um float "table". Por conta disso,
 % longtable define o comando "\caption" internamente.
-%\usepackage{longtable}
+\usepackage{longtable}
 
 % Permite agregar linhas de tabelas, fazendo colunas "compridas"
 \usepackage{multirow}

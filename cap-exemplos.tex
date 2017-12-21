@@ -170,37 +170,18 @@ o que incluir na descrição de um item bibliográfico e muitas vezes
 
 \section{Floats (Tabelas e Figuras)}
 
+Muitos trabalhos acadêmicos incluem figuras; um exemplo é a
+Figura~\ref{fig:humanbeta}.\index{Floats}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.40\textwidth]{graph}
+  \caption{Exemplo de grafo simples}
+  \label{fig:humanbeta}
+\end{figure}
+
 Talvez você precise organizar a apresentação da informação na forma de
-tabelas\index{Floats}. A Tabela \ref{tab:ficha}, por exemplo, mostra como construir
-uma tabela em forma de ficha com o \LaTeX{}.
-
-% Aumenta o espaçamento entre as linhas da tabela (default: 0pt)
-\setlength\extrarowheight{4pt}
-
-\begin{table}
-\begin{tabular}{|M{0.265}|M{0.073}|M{0.084}|M{0.073}|M{0.073}|M{0.08}|M{0.082}|M{0.067}|}
-  \hline
-    \textbf{Experimento número:} & \multicolumn{2}{c|}{1} & \multicolumn{4}{c|}{\textbf{Data:}} & jan 2017
-  \tabularnewline \hline
-    \textbf{Título:} & \multicolumn{7}{c|}{Medições iniciais}
-  \tabularnewline \hline
-    \textbf{Tipo de experimento:} & \multicolumn{7}{c|}{Levantamento quantitativo}
-  \tabularnewline \hline \hline
-    \textbf{Locais}          & São Paulo & Rio de Janeiro & Porto Alegre & Recife & Manaus & Brasília & Rio Branco
-  \tabularnewline \thickhline
-    \textbf{Valores obtidos} & 0.2       & 0.3            & 0.2          & 0.7    & 0.5    & 0.1      & 0.4
-  \tabularnewline \hline
-\end{tabular}
-\caption{Exemplo de tabela similar a uma ficha}
-\label{tab:ficha}
-\end{table}
-
-% Redefinindo para o valor default
-\setlength\extrarowheight{0pt}
-
-Há diversos estilos de tabela possíveis; veja outro exemplo na
-Tabela \ref{tab:amino_acidos} e mais outro no Apêndice
-\ref{ape:sequencias}.
+tabelas\index{Floats}. Um exemplo simples é a Tabela \ref{tab:amino_acidos}.
 
 \begin{table}
 \begin{center}
@@ -217,15 +198,34 @@ Tabela \ref{tab:amino_acidos} e mais outro no Apêndice
 \end{center}
 \end{table}
 
-Muitos trabalhos acadêmicos incluem figuras; um exemplo é a
-Figura~\ref{fig:humanbeta}.\index{Floats}
+Há diversos estilos de tabela possíveis; A Tabela \ref{tab:ficha}, por
+exemplo, mostra como construir uma tabela em forma de ficha larga que deve ser
+impressa em modo paisagem. Um outro exemplo de tabela em modo paisagem, esta
+distribuída em duas páginas, está no Apêndice \ref{ape:sequencias}.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=.40\textwidth]{graph}
-  \caption{Exemplo de grafo simples}
-  \label{fig:humanbeta}
-\end{figure}
+% Aumenta o espaçamento entre as linhas da tabela (default: 0pt)
+\setlength\extrarowheight{4pt}
+
+\begin{sidewaystable}
+\begin{tabular}{|M{0.265}|M{0.073}|M{0.084}|M{0.073}|M{0.073}|M{0.08}|M{0.082}|M{0.067}|}
+  \hline
+    \textbf{Experimento número:} & \multicolumn{2}{c|}{1} & \multicolumn{4}{c|}{\textbf{Data:}} & jan 2017
+  \tabularnewline \hline
+    \textbf{Título:} & \multicolumn{7}{c|}{Medições iniciais}
+  \tabularnewline \hline
+    \textbf{Tipo de experimento:} & \multicolumn{7}{c|}{Levantamento quantitativo}
+  \tabularnewline \hline \hline
+    \textbf{Locais}          & São Paulo & Rio de Janeiro & Porto Alegre & Recife & Manaus & Brasília & Rio Branco
+  \tabularnewline \thickhline
+    \textbf{Valores obtidos} & 0.2       & 0.3            & 0.2          & 0.7    & 0.5    & 0.1      & 0.4
+  \tabularnewline \hline
+\end{tabular}
+\caption{Exemplo de tabela similar a uma ficha}
+\label{tab:ficha}
+\end{sidewaystable}
+
+% Redefinindo para o valor default
+\setlength\extrarowheight{0pt}
 
 Pode também ser necessário apresentar trechos de código-fonte, o que pode
 ser feito facilmente, como se vê na Figura \ref{fig:java}:\index{Floats}
