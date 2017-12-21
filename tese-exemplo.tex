@@ -506,6 +506,40 @@
 % para definir uma capa personalizada.
 \usepackage{pdfpages}
 
+% O comando \ref por padrão mostra apenas o número do elemento a que se
+% refere; assim, é preciso escrever "veja a Figura \ref{grafico}" ou
+% "como visto na Seção \ref{sec:introducao"}". Usando o pacote hyperref
+% (carregado mais abaixo), esse número é transformado em um hiperlink.
+%
+% Se você quiser mudar esse comportamento, ative as packages varioref
+% e cleveref e também as linhas "labelformat" e "crefname" mais abaixo.
+% Nesse caso, você deve escrever apenas "veja a \ref{grafico}" ou
+% "como visto na \ref{sec:introducao}" etc. e o nome do elemento será
+% gerado automaticamente como hiperlink.
+%
+% Se, além dessa mudança, você quiser usar os recursos de varioref ou
+% cleveref, mantenha as linhas labelformat comentadas e use os comandos
+% \vref ou \cref, conforme sua preferência, também sem indicar o nome do
+% elemento, que é inserido automaticamente. Vale lembrar que o comando
+% \vref de varioref pode causar problemas com hyperref, impedindo a
+% geração do PDF final.
+%
+% ATENÇÃO: varioref, hyperref e cleveref devem ser carregadas nessa ordem!
+%\usepackage{varioref}
+
+%\labelformat{figure}{Figura~#1}
+%\labelformat{table}{Tabela~#1}
+%\labelformat{equation}{Equação~#1}
+%% Isto não funciona corretamente com os apêndices; o comando seguinte
+%% contorna esse problema
+%%\labelformat{chapter}{Capítulo~#1}
+%\makeatletter
+%\labelformat{chapter}{\@chapapp~#1}
+%\makeatother
+%\labelformat{section}{Seção~#1}
+%\labelformat{subsection}{Seção~#1}
+%\labelformat{subsubsection}{Seção~#1}
+
 % Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
 \usepackage[
   plainpages=false,
@@ -525,6 +559,18 @@
   % opção "xindy" do pacote imakeidx.
   hyperindex=false,
 ]{hyperref}
+
+%\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+%% cleveref não tem tradução para o português
+%\crefname{figure}{Figura}{Figuras}
+%\crefname{table}{Tabela}{Tabelas}
+%\crefname{chapter}{Capítulo}{Capítulos}
+%\crefname{section}{Seção}{Seções}
+%\crefname{subsection}{Seção}{Seções}
+%\crefname{subsubsection}{Seção}{Seções}
+%\crefname{appendix}{Apêndice}{Apêndices}
+%\crefname{subappendix}{Apêndice}{Apêndices}
+%\crefname{subsubappendix}{Apêndice}{Apêndices}
 
 % ao criar uma referência hyperref para um float, a referência aponta
 % para o final do caption do float, o que não é muito bom. Este pacote
