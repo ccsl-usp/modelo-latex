@@ -4,9 +4,6 @@
 % espaçamentos em função do tamanho das margens
 \RequirePackage{calc}
 
-% Resolve problemas com o caracter espaço em algumas macros
-\RequirePackage{xspace}
-
 % Permite usar condicionais
 \RequirePackage{ifthen}
 
@@ -37,14 +34,13 @@
 
 % O formato padrão do pacote epigraph é bem feinho...
 % Outra opção para epígrafes é o pacote quotchap
-\newcommand{\epigrafe}[2] {
+\newcommand{\epigrafe}[2] {%
   \setlength{\epigraphrule}{0pt}
-  \ifthenelse{\equal{}{#2}} {
+  \ifthenelse{\equal{}{#2}}{
     \epigraph{\itshape\RaggedLeft #1}{}
   }{
     \epigraph{\itshape\RaggedLeft #1}{--- #2}
   }
-  \par
 }
 
 % LaTeX oferece o comando "\maketitle" para criar uma capa / página de rosto
@@ -61,7 +57,7 @@
 % A dedicatória vai em uma página separada, sem numeração,
 % com o texto alinhado à direita e margens esquerda e
 % superior muito grandes. Vamos fazer isso com uma minipage.
-\newenvironment{dedicatoria} { %
+\newenvironment{dedicatoria} {
   \cleardoublepage
   \thispagestyle{empty}
   \vspace*{140mm plus 0mm minus 100mm}
@@ -79,12 +75,12 @@
 }
 
 % A página de resumo deve existir em português e inglês
-\newenvironment{resumo}[1] { %
+\newenvironment{resumo}[1] {
   \cleardoublepage
   \thispagestyle{empty}
   \vspace*{2em}
 
-  \ifthenelse{\equal{port}{#1}} { %
+  \ifthenelse{\equal{port}{#1}}{
     \newcommand*{\@resumopalavras}{\textbf{Palavras-chave:}\hspace{1em}\@palavraschave}
     \begin{center}\Large{\textbf{Resumo}}\end{center}
   }{
@@ -117,45 +113,45 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Define os campos que vão ser usados na capa
-\newcommand*{\titulopt}[1]{\renewcommand*{\@titulopt}{#1\xspace} }
-\newcommand*{\tituloport}[1]{\renewcommand*{\@titulopt}{#1\xspace} }
-\newcommand*{\tituloeng}[1]{\renewcommand*{\@tituloeng}{#1\xspace} }
-\newcommand*{\subtitulo}[1]{\gdef\@subtitulo{#1\xspace} }
-\newcommand*{\subtituloeng}[1]{\renewcommand*{\@subtituloeng}{#1\xspace} }
-\newcommand*{\orientador}[1]{\gdef\@orientador{#1\xspace} }
-\newcommand*{\coorientador}[1]{\gdef\@coorientador{#1\xspace} }
-\newcommand*{\programa}[1]{\gdef\@programa{#1\xspace} }
-\newcommand*{\programaeng}[1]{\renewcommand*{\@programaeng}{#1\xspace} }
-\newcommand*{\apoio}[1]{\gdef\@apoio{#1\xspace} }
-\newcommand*{\apoioeng}[1]{\renewcommand*{\@apoioeng}{#1\xspace} }
-\newcommand*{\ano}[1]{\gdef\@ano{#1\xspace} }
-\newcommand*{\datadefesa}[1]{\gdef\@datadefesa{#1\xspace} }
-\newcommand*{\datadefesaeng}[1]{\renewcommand*{\@datadefesaeng}{#1\xspace} }
-\newcommand*{\localdefesa}[1]{\gdef\@localdefesa{#1\xspace} }
-\newcommand{\banca}[1]{\gdef\@banca{#1} }
-\newcommand{\bancaeng}[1]{\renewcommand{\@bancaeng}{#1} }
-\newcommand*{\palavraschave}[1]{\gdef\@palavraschave{#1\xspace} }
-\newcommand*{\keywords}[1]{\gdef\@keywords{#1\xspace} }
-\newcommand*{\direitos}[1]{\gdef\@direitos{#1\xspace} }
-\newcommand{\fichacatalografica}[1]{\gdef\@fichacatalografica{#1\xspace} }
+\newcommand*{\titulopt}[1]{\renewcommand*{\@titulopt}{#1}}
+\newcommand*{\tituloport}[1]{\renewcommand*{\@titulopt}{#1}}
+\newcommand*{\tituloeng}[1]{\renewcommand*{\@tituloeng}{#1}}
+\newcommand*{\subtitulo}[1]{\gdef\@subtitulo{#1}}
+\newcommand*{\subtituloeng}[1]{\renewcommand*{\@subtituloeng}{#1}}
+\newcommand*{\orientador}[1]{\gdef\@orientador{#1}}
+\newcommand*{\coorientador}[1]{\gdef\@coorientador{#1}}
+\newcommand*{\programa}[1]{\gdef\@programa{#1}}
+\newcommand*{\programaeng}[1]{\renewcommand*{\@programaeng}{#1}}
+\newcommand*{\apoio}[1]{\gdef\@apoio{#1}}
+\newcommand*{\apoioeng}[1]{\renewcommand*{\@apoioeng}{#1}}
+\newcommand*{\ano}[1]{\gdef\@ano{#1}}
+\newcommand*{\datadefesa}[1]{\gdef\@datadefesa{#1}}
+\newcommand*{\datadefesaeng}[1]{\renewcommand*{\@datadefesaeng}{#1}}
+\newcommand*{\localdefesa}[1]{\gdef\@localdefesa{#1}}
+\newcommand{\banca}[1]{\gdef\@banca{#1}}
+\newcommand{\bancaeng}[1]{\renewcommand{\@bancaeng}{#1}}
+\newcommand*{\palavraschave}[1]{\gdef\@palavraschave{#1}}
+\newcommand*{\keywords}[1]{\gdef\@keywords{#1}}
+\newcommand*{\direitos}[1]{\gdef\@direitos{#1}}
+\newcommand{\fichacatalografica}[1]{\gdef\@fichacatalografica{#1}}
 
 \newcommand*{\tese}{
-  \renewcommand*{\@nometrabalho}{Tese\xspace}
-  \renewcommand*{\@nometrabalhoeng}{Thesis\xspace}
-  \renewcommand*{\@nometitulo}{Doutor\xspace}
-  \renewcommand*{\@nometituloeng}{Doctor\xspace}
-  \renewcommand*{\@grau}{Doutorado\xspace}
-  \renewcommand*{\@graueng}{Ph.D.\xspace}
+  \renewcommand*{\@nometrabalho}{Tese}
+  \renewcommand*{\@nometrabalhoeng}{Thesis}
+  \renewcommand*{\@nometitulo}{Doutor}
+  \renewcommand*{\@nometituloeng}{Doctor}
+  \renewcommand*{\@grau}{Doutorado}
+  \renewcommand*{\@graueng}{Ph.D.}
 }
 \newcommand*{\doutorado}{\tese}
 
 \newcommand*{\dissertacao}{
-  \renewcommand*{\@nometrabalho}{Dissertação\xspace}
-  \renewcommand*{\@nometrabalhoeng}{Dissertation\xspace}
-  \renewcommand*{\@nometitulo}{Mestre\xspace}
-  \renewcommand*{\@nometituloeng}{Master\xspace}
-  \renewcommand*{\@grau}{Mestrado\xspace}
-  \renewcommand*{\@graueng}{Masters\xspace}
+  \renewcommand*{\@nometrabalho}{Dissertação}
+  \renewcommand*{\@nometrabalhoeng}{Dissertation}
+  \renewcommand*{\@nometitulo}{Mestre}
+  \renewcommand*{\@nometituloeng}{Master}
+  \renewcommand*{\@grau}{Mestrado}
+  \renewcommand*{\@graueng}{Masters}
 }
 \newcommand*{\mestrado}{\dissertacao}
 
@@ -183,114 +179,101 @@
 \newcommand*{\@titulopt}{\@title}
 \newcommand*{\@tituloeng}{\@title}
 
-\newcommand*{\@nometrabalho}{Dissertação\xspace}
-\newcommand*{\@nometrabalhoeng}{Dissertation\xspace}
-\newcommand*{\@nometitulo}{Mestre\xspace}
-\newcommand*{\@nometituloeng}{Master\xspace}
-\newcommand*{\@grau}{Mestrado\xspace}
-\newcommand*{\@graueng}{Masters\xspace}
+\newcommand*{\@nometrabalho}{Dissertação}
+\newcommand*{\@nometrabalhoeng}{Dissertation}
+\newcommand*{\@nometitulo}{Mestre}
+\newcommand*{\@nometituloeng}{Master}
+\newcommand*{\@grau}{Mestrado}
+\newcommand*{\@graueng}{Masters}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% TEXTOS PADRÃO EM PT E ENG %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand*{\@textocapa}[1][port]{ %
-  \ifthenelse{\equal{port}{#1}} { %
-    \@nometrabalho apresentada ao\\[-0.25cm]
+\newcommand*{\@textocapa}[1][port] {%
+  \ifthenelse{\equal{port}{#1}}{%
+    \@nometrabalho{} apresentada ao\\[-0.25cm]
     Instituto de Matemática e Estatística\\[-0.25cm]
     da Universidade de São Paulo\\[-0.25cm]
     para obtenção do título de\\[-0.25cm]
-    \@nometitulo em Ciências
-    \par
-  }{ %
-    \@nometrabalhoeng presented to the \\[-0.25cm]
+    \@nometitulo{} em Ciências%
+  }{%
+    \@nometrabalhoeng{} presented to the \\[-0.25cm]
     Institute of Mathematics and Statistics\\[-0.25cm]
     of the University of São Paulo\\[-0.25cm]
     in partial fulfillment\\[-0.25cm]
     of the requirements\\[-0.25cm]
     for the degree of\\[-0.25cm]
-    \@nometituloeng in Sciences
-    \par
+    \@nometituloeng{} in Sciences%
   }
 }
 
-\newcommand*{\@pessoascapa}[1][port] { %
+\newcommand*{\@pessoascapa}[1][port] {%
   \begin{tabular}{rl}
-    \ifthenelse{\equal{port}{#1}} { %
+    \ifthenelse{\equal{port}{#1}}{%
       Programa: & \@programa \tabularnewline
       Orientador: & \@orientador \tabularnewline
-      \@ifundefined{@coorientador}{}{Coorientador: & \@coorientador \tabularnewline}
-      \par
-    }{ %
+      \@ifundefined{@coorientador}{}{Coorientador: & \@coorientador \tabularnewline}%
+    }{%
       Program: & \@programaeng \tabularnewline
       Advisor: & \@orientador \tabularnewline
-      \@ifundefined{@coorientador}{}{Coadvisor: & \@coorientador \tabularnewline}
-      \par
+      \@ifundefined{@coorientador}{}{Coadvisor: & \@coorientador \tabularnewline}%
   }
   \end{tabular}
 }
 
-\newcommand*{\@textorostoprovisoria}[1][port]{ %
-  \ifthenelse{\equal{port}{#1}}{ %
+\newcommand*{\@textorostoprovisoria}[1][port] {%
+  \ifthenelse{\equal{port}{#1}}{%
     Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada pelo
-    candidato \@author, tal como submetida à Comissão Julgadora.
-    % Sem este "par" o parágrafo fica errado, não sei por quê.
-    \par
-  }{ %
+    candidato \@author, tal como submetida à Comissão Julgadora.%
+  }{%
     This is the original version of the \MakeLowercase{\@nometrabalhoeng} prepared
-    by the candidate \@author, as submitted to the Examining Committee.
-    % Sem este "par" o parágrafo fica errado, não sei por quê.
-    \par
+    by the candidate \@author, as submitted to the Examining Committee.%
   }
 }
 
-\newcommand*{\@textorostodefinitiva}[1][port]{ %
-  \ifthenelse{\equal{port}{#1}} { %
-    Esta versão da \@nometrabalho contém as correções e alterações
+\newcommand*{\@textorostodefinitiva}[1][port] {%
+  \ifthenelse{\equal{port}{#1}}{%
+    Esta versão da \MakeLowercase{\@nometrabalho} contém as correções e alterações
     sugeridas pela Comissão Julgadora durante a defesa da versão
     original do trabalho, realizada em \@datadefesa.\\
     ~\\
     Uma cópia da versão original está disponível no Instituto de
-    Matemática e Estatística da Universidade de São Paulo.
-    % Sem este "par" o parágrafo fica errado, não sei por quê.
-    \par
-  }{ %
-    This version of the \@nometrabalhoeng includes the corrections
+    Matemática e Estatística da Universidade de São Paulo.%
+  }{%
+    This version of the \MakeLowercase{\@nometrabalhoeng} includes the corrections
     and modifications suggested by the Examining Committee during
     the defense of the original version of the work, which took
     place on \@datadefesaeng.\\
     ~\\
     A copy of the original version is available at the Institute of
-    Mathematics and Statistics of the University of São Paulo.
-    % Sem este "par" o parágrafo fica errado, não sei por quê.
-    \par
+    Mathematics and Statistics of the University of São Paulo.%
   }
 }
 
-\newcommand{\@textobanca}[1][port]{ %
-  \ifthenelse{\equal{port}{#1}} { %
+\newcommand{\@textobanca}[1][port] {%
+  \ifthenelse{\equal{port}{#1}}{%
     \noindent Comissão Julgadora:
-    \par
-    \@banca
-  }{ %
+
+    \@banca%
+  }{%
     \noindent Examining Committee:
-    \par
-    \@bancaeng
+
+    \@bancaeng%
   }
-  \par
 }
 
-\newcommand{\@refdocumento}[1][port] {
+\newcommand{\@refdocumento}[1][port] {%
   \@author.
-  \ifthenelse{\equal{port}{#1}} { %
-    \textbf{\@titulopt \@subtitulo}\unskip.
-    \@nometrabalho (\@grau).
+  \ifthenelse{\equal{port}{#1}}{%
+    \textbf{\@titulopt{} \@subtitulo}\unskip.
+    \@nometrabalho{} (\@grau).
     Instituto de Matemática e Estatística,
     Universidade de São Paulo,%
-  }{
-    \textbf{\@tituloeng \@subtituloeng}\unskip.
-    \@nometrabalhoeng (\@graueng).
+  }{%
+    \textbf{\@tituloeng{} \@subtituloeng}\unskip.
+    \@nometrabalhoeng{} (\@graueng).
     Institute of Mathematics and Statistics,
     University of São Paulo,%
   }
@@ -367,7 +350,9 @@
         \fbox{
 	  \begin{minipage}[t]{120mm}
             \setlength\parskip{1em}
+
             \@fichacatalografica
+
           \end{minipage}
         }
 	\end{center}
@@ -377,7 +362,7 @@
 
 % O quadro com o título e o autor que deve ser visível
 % através da janela na capa.
-\DeclareRobustCommand{\@quadrotitulo}[1][port] { %
+\DeclareRobustCommand{\@quadrotitulo}[1][port] {
   \@margenscapa
 
     \vskip \@margemquadrotitulotopo
@@ -387,24 +372,24 @@
       \begin{minipage}[t][60mm][s]{100mm}
         \begin{center}
           \vspace*{2cm plus 1.5cm minus 1.8cm}
-          \ifthenelse{\equal{port}{#1}} {
+          \ifthenelse{\equal{port}{#1}} {%
 
-            \textbf{\Large{\@titulopt }}
-
-            \vspace{0.3cm plus 0.2cm minus 0.1cm}
-
-            \textbf{\Large{\textit{\@subtitulo }}}
-          }{
-            \textbf{\Large{\@tituloeng }}
+            \textbf{\Large{\@titulopt}}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\Large{\textit{\@subtituloeng }}}
+            \textbf{\Large{\textit{\@subtitulo}}}%
+          }{%
+            \textbf{\Large{\@tituloeng}}
+
+            \vspace{0.3cm plus 0.2cm minus 0.1cm}
+
+            \textbf{\Large{\textit{\@subtituloeng}}}
           }
 
           \vspace{1cm plus 1cm minus 0.6cm}
 
-          \Large{\@author }
+          \Large{\@author}
 
           \vspace*{2cm plus 1.5cm minus 1.8cm}
         \end{center}
@@ -414,8 +399,8 @@
 }
 
 % As demais informações da capa
-\DeclareRobustCommand{\@detalhescapa}[1][port]{ %
-  \ifthenelse{\equal{port}{#1}} { %
+\DeclareRobustCommand{\@detalhescapa}[1][port] {
+  \ifthenelse{\equal{port}{#1}} {
     \newcommand*{\@apoiocapa}{\@apoio}
     \newcommand*{\@datacapa}{\@datadefesa}
   }{
@@ -428,21 +413,21 @@
 %  \fbox{
     \begin{minipage}[t][150mm][s]{160mm}
       \begin{center}
-        \Large{\textsc{\@textocapa[#1] }}
+        \Large{\textsc{\@textocapa[#1]}}
 
         \vspace*{3.5cm plus 1.5cm minus 0cm}
 
-        \Large{\@pessoascapa[#1] }
+        \Large{\@pessoascapa[#1]}
 
         \vspace*{2cm plus 1cm minus 0cm}
 
-        \normalsize{\@apoiocapa }
+        \normalsize{\@apoiocapa}
 
         \vspace*{2.5cm plus 1cm minus 0cm}
 
-        \normalsize{\@localdefesa }
+        \normalsize{\@localdefesa}
 
-        \normalsize{\@datacapa }
+        \normalsize{\@datacapa}
 
       \end{center}
     \end{minipage}
@@ -451,7 +436,7 @@
 }
 
 % Layout da capa
-\DeclareRobustCommand{\capaime}[1][port]{
+\DeclareRobustCommand{\capaime}[1][port] {
   \@margenscapa
 
   \cleardoublepage
@@ -471,15 +456,15 @@
 
 % As informações da banca que vão apenas na versão definitiva
 % da página de rosto
-\DeclareRobustCommand{\@quadrobanca}[2][port]{ %
-  \ifthenelse{\equal{definitiva}{#2}} { %
+\DeclareRobustCommand{\@quadrobanca}[2][port] {%
+  \ifthenelse{\equal{definitiva}{#2}}{%
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
-      \normalsize{\@textobanca[#1] }
+      \normalsize{\@textobanca[#1]}
       \end{quote}
     \end{minipage}
-    \par
-  } { }
+  }%
+  {}
 }
 
 % A informação sobre a versão provisória ou definitiva
@@ -500,12 +485,12 @@
       % começa mais ou menos no meio da página.
       \begin{minipage}[t][50mm][s]{80mm}
         \begin{FlushRight}
-          \normalsize{
-            \ifthenelse{\equal{definitiva}{#2}} { %
-              \@textorostodefinitiva[#1]
-            } { %
-              \@textorostoprovisoria[#1]
-            }
+          \normalsize{%
+            \ifthenelse{\equal{definitiva}{#2}}{%
+              \@textorostodefinitiva[#1]%
+            } {%
+              \@textorostoprovisoria[#1]%
+            }%
           }
         \end{FlushRight}
       \end{minipage}
@@ -516,7 +501,7 @@
 
 % Layout para a página de rosto (duas versões, de acordo
 % com a Resolução CoPGr 6018 de 13/10/2011)
-\DeclareRobustCommand{\pagrostoime}[2][port]{
+\DeclareRobustCommand{\pagrostoime}[2][port] {
   \@margenscapa
 
   \cleardoublepage
