@@ -129,13 +129,17 @@ Um exemplo de documento \LaTeX{} simples:
 \usepackage[utf8]{inputenc}
 % Vamos escrever em português do Brasil
 \usepackage[brazil]{babel}
+% Estas linhas não imprimem nada, apenas definem os valores
+% que serão usados por "\maketitle"
+\author{Fulano de Tal}
+\title{Começando a usar o \LaTeX{}}
 % Finaliza o preâmbulo e inicia o conteúdo:
 \begin{document}
-
+% Cria uma página de título com os dados definidos acima
+\maketitle
 % Capítulos, seções etc. são numerados automaticamente
-\chapter{Começando a usar \LaTeX{}}
+\chapter{Cheguei!}
 Oi Galera!
-
 % É preciso sinalizar o final do documento
 \end{document}
 \end{verbatim}
