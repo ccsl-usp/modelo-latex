@@ -168,11 +168,43 @@ o que incluir na descrição de um item bibliográfico e muitas vezes
 
 \end{itemize}
 
-\section{Floats (Tabelas e Figuras)}
+\section{Modo Matemático}\index{Modo Matemático}
+
+O modo matemático do \LaTeX{} tem sintaxe própria, mas ela não é complicada
+e há bastante documentação online a respeito. Por exemplo, ``massa e energia
+são grandezas relacionadas pela Equação $E=mc^2$, definida inicialmente por
+Einstein'', ou ainda ``equações de segundo grau (Equação \ref{eq:2grau})
+são estudadas no ensino médio. As raízes de uma equação de segundo grau
+podem ser encontradas pela fórmula de Bháskara (Equação \ref{eq:bhaskara}).
+O valor do discriminante $\Delta$ (Equação \ref{eq:delta}) determina
+se a equação tem zero, uma ou duas raízes reais''.
+
+\begin{equation}
+  \label{eq:2grau}
+  ax^2+bx+c=y \quad \forall x \in \mathbb{R}
+\end{equation}
+
+\begin{gather}
+\label{eq:bhaskara}
+    y=0 \Leftrightarrow x=\frac{-b \pm \sqrt{\Delta}}{2a}
+    \Leftrightarrow x \text{ é raiz da equação}\\
+\label{eq:delta}
+    \Delta\enspace(\mathit{delta}) = b^2-4ac
+\end{gather}
+
+\section{Floats (Tabelas e Figuras)}\index{Floats}
 
 Muitos trabalhos acadêmicos incluem figuras; um exemplo é a
-Figura~\ref{fig:humanbeta}.\index{Floats}
+Figura~\ref{fig:humanbeta}. Também é possível
+rotacionar figuras e criar subfiguras (com sublegendas), como
+no exemplo da Figura~\ref{fig:subfigures}\index{Subfiguras},
+que inclui as subfiguras \ref{fig:subfigures:a} e
+\ref{fig:subfigures:b}.
 
+% As packages relevantes para lidar com figuras são graphicx,
+% float, caption, rotating e subcaption. Observe que "subfigure"
+% e "subtable" são definidos na package subcaption, *não* na
+% package subfigure! A package subfigure é obsoleta.
 \begin{figure}
   \centering
   \includegraphics[width=.40\textwidth]{graph}
@@ -180,8 +212,50 @@ Figura~\ref{fig:humanbeta}.\index{Floats}
   \label{fig:humanbeta}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \begin{subfigure}{0.4\textwidth}
+    \includegraphics[width=\textwidth]{graph}
+    \caption{O mesmo exemplo}
+    \label{fig:subfigures:a}
+  \end{subfigure}
+  \begin{subfigure}{0.4\textwidth}
+    \begin{turn}{90}
+      \includegraphics[width=\textwidth]{graph}
+    \end{turn}
+    \caption{O mesmo exemplo, rotacionado}
+    \label{fig:subfigures:b}
+  \end{subfigure}
+  \caption{Exemplo de subfiguras}
+  \label{fig:subfigures}
+\end{figure}
+
+Uma ``figura'', na verdade, pode ser um trecho de código-fonte, como se vê na
+Figura~\ref{fig:java}.\index{Floats}
+
+% Foi utilizado o pacote listings para formatar o código fonte
+% Veja no preambulo do arquivo tese-exemplo.tex os parâmetros de configuração.
+\begin{figure}
+  \index{Java}
+  \centering
+\begin{lstlisting}[language=Java, style=wider]
+for(i = 0; i < 20; i++)
+{
+	// Comentário
+	System.out.println("Mensagem...");
+}
+\end{lstlisting}
+  \caption{Exemplo de laço em Java}
+  \label{fig:java}
+\end{figure}
+
 Talvez você precise organizar a apresentação da informação na forma de
-tabelas\index{Floats}. Um exemplo simples é a Tabela \ref{tab:amino_acidos}.
+tabelas\index{Floats}. Há diversos estilos de tabela possíveis; um
+exemplo simples é a Tabela~\ref{tab:amino_acidos}. A
+Tabela~\ref{tab:ficha} mostra como construir uma tabela em forma de
+ficha larga que deve ser impressa em modo paisagem. Um outro exemplo
+de tabela em modo paisagem, esta distribuída em duas páginas, está no
+Apêndice \ref{ape:sequencias}.
 
 \begin{table}
 \begin{center}
@@ -198,14 +272,10 @@ tabelas\index{Floats}. Um exemplo simples é a Tabela \ref{tab:amino_acidos}.
 \end{center}
 \end{table}
 
-Há diversos estilos de tabela possíveis; A Tabela \ref{tab:ficha}, por
-exemplo, mostra como construir uma tabela em forma de ficha larga que deve ser
-impressa em modo paisagem. Um outro exemplo de tabela em modo paisagem, esta
-distribuída em duas páginas, está no Apêndice \ref{ape:sequencias}.
-
 % Aumenta o espaçamento entre as linhas da tabela (default: 0pt)
 \setlength\extrarowheight{4pt}
 
+% sidewaystable e comandos relacionados são definidos na package rotating
 \begin{sidewaystable}
 \begin{tabular}{|M{0.265}|M{0.073}|M{0.084}|M{0.073}|M{0.073}|M{0.08}|M{0.082}|M{0.067}|}
   \hline
@@ -226,64 +296,3 @@ distribuída em duas páginas, está no Apêndice \ref{ape:sequencias}.
 
 % Redefinindo para o valor default
 \setlength\extrarowheight{0pt}
-
-Pode também ser necessário apresentar trechos de código-fonte, o que pode
-ser feito facilmente, como se vê na Figura \ref{fig:java}:\index{Floats}
-
-% Foi utilizado o pacote listing para formatar código fonte
-% http://ctan.org/tex-archive/macros/latex/contrib/listings/listings.pdf
-% Veja no preambulo do arquivo tese-exemplo.tex os parâmetros de configuração.
-\begin{figure}
-  \index{Java}
-  \centering
-  \caption{Exemplo de laço em Java}
-  \label{fig:java}
-\begin{lstlisting}[language=Java, style=wider]
-for(i = 0; i < 20; i++)
-{
-	// Comentário
-	System.out.println("Mensagem...");
-}
-\end{lstlisting}
-\end{figure}
-
-\section{Modo Matemático}
-
-O modo matemático do \LaTeX{} tem sintaxe própria, mas ela não é complicada
-e há bastante documentação online a respeito. Um breve exemplo:
-
-\begin{verbatim}
-\begin{gather}
-\label{eq:2grau}
-    ax^2+bx+c=y \quad \forall x \in \mathbb{R}\\
-\label{eq:bhaskara}
-    y=0 \Leftrightarrow x=\frac{-b \pm \sqrt{\Delta}}{2a}
-    \Leftrightarrow x \text{ é raiz da equação}\\
-\label{eq:delta}
-    \Delta\enspace(\mathit{delta}) = b^2-4ac
-\end{gather}
-
-As raízes de uma equação de segundo grau (Equação \ref{eq:2grau})
-podem ser encontradas pela fórmula de Bháskara
-(Equação \ref{eq:bhaskara}). O valor do discriminante $\Delta$
-(Equação \ref{eq:delta}) determina se a equação tem zero, uma ou
-duas raízes reais.
-\end{verbatim}
-
-Que resulta em:
-
-\begin{gather}
-\label{eq:2grau}
-	ax^2+bx+c=y \quad \forall x \in \mathbb{R}\\
-\label{eq:bhaskara}
-    y=0 \Leftrightarrow x=\frac{-b \pm \sqrt{\Delta}}{2a}
-    \Leftrightarrow x \text{ é raiz da equação}\\
-\label{eq:delta}
-    \Delta\enspace(\mathit{delta}) = b^2-4ac
-\end{gather}
-
-As raízes de uma equação de segundo grau (Equação \ref{eq:2grau})
-podem ser encontradas pela fórmula de Bháskara
-(Equação \ref{eq:bhaskara}). O valor do discriminante $\Delta$
-(Equação \ref{eq:delta}) determina se a equação tem zero, uma ou
-duas raízes reais.
