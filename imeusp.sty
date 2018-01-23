@@ -16,22 +16,6 @@
 % Epígrafes
 \RequirePackage{epigraph}
 
-% Textos curtos não-justificados podem gerar warnings sobre "underfull \hbox".
-% Não há razão para pensar muito nesses warnings, então melhor desabilitá-los.
-% https://tex.stackexchange.com/questions/17659/ragged2e-newcommands-option-produces-underfull-hbox-warnings
-\g@addto@macro{\centering}{\hbadness=\@M}
-\g@addto@macro{\Centering}{\hbadness=\@M}
-\g@addto@macro{\raggedright}{\hbadness=\@M}
-\g@addto@macro{\RaggedRight}{\hbadness=\@M}
-\g@addto@macro{\raggedleft}{\hbadness=\@M}
-\g@addto@macro{\RaggedLeft}{\hbadness=\@M}
-\g@addto@macro{\center}{\hbadness=\@M}
-\g@addto@macro{\Center}{\hbadness=\@M}
-\g@addto@macro{\flushleft}{\hbadness=\@M}
-\g@addto@macro{\FlushLeft}{\hbadness=\@M}
-\g@addto@macro{\flushright}{\hbadness=\@M}
-\g@addto@macro{\FlushRight}{\hbadness=\@M}
-
 % O formato padrão do pacote epigraph é bem feinho...
 % Outra opção para epígrafes é o pacote quotchap
 \newcommand{\epigrafe}[2] {%
