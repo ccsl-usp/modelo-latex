@@ -13,7 +13,7 @@
 % TODO: versões muito recentes (final de 2017) do biblatex usam
 % "labeldate+extradate" ao invés de "labelyear+extrayear"
 
-\newbibmacro*{textcite}{%
+\renewbibmacro*{textcite}{%
   \ifnameundef{labelname}
     {\iffieldundef{shorthand}
        {\usebibmacro{cite:label}%
@@ -34,7 +34,7 @@
        {}%
      \usebibmacro{citeyear}}}
 
-\newbibmacro*{cite}{%
+\renewbibmacro*{cite}{%
   \iffieldundef{shorthand}
     {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
        {\usebibmacro{cite:label}%
