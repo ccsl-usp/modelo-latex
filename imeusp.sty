@@ -66,10 +66,10 @@
 
   \ifthenelse{\equal{port}{#1}}{
     \newcommand*{\@resumopalavras}{\textbf{Palavras-chave:}\hspace{1em}\@palavraschave}
-    \begin{center}\Large{\textbf{Resumo}}\end{center}
+    \begin{center}\Large\textbf{Resumo}\end{center}
   }{
     \newcommand*{\@resumopalavras}{\textbf{Keywords:}\hspace{1em}\@keywords}
-    \begin{center}\Large{\textbf{Abstract}}\end{center}
+    \begin{center}\Large\textbf{Abstract}\end{center}
   }
 
   \vspace*{2em}
@@ -297,7 +297,7 @@
 \newlength{\@margemquadrotituloesq}
 \newlength{\@margemcapaesq}
 
-\newcommand*{\@margenscapa}{ %
+\newcommand*{\@margenscapa}{
   % Calcula o valor das margens; chamando este comando explicitamente
   % quando necessário ao invés de calcular os valores durante a
   % inicialização garante que vamos calcular após o pacote geometry
@@ -355,25 +355,28 @@
   %  \fbox{
       \begin{minipage}[t][60mm][s]{100mm}
         \begin{center}
+          \Large
+
           \vspace*{2cm plus 1.5cm minus 1.8cm}
+
           \ifthenelse{\equal{port}{#1}} {%
 
-            \textbf{\Large{\@titulopt}}
+            \textbf{\@titulopt}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\Large{\textit{\@subtitulo}}}%
+            \textbf{\textit{\@subtitulo}}%
           }{%
-            \textbf{\Large{\@tituloeng}}
+            \textbf{\@tituloeng}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\Large{\textit{\@subtituloeng}}}
+            \textbf{\textit{\@subtituloeng}}
           }
 
           \vspace{1cm plus 1cm minus 0.6cm}
 
-          \Large{\@author}
+          \@author
 
           \vspace*{2cm plus 1.5cm minus 1.8cm}
         \end{center}
@@ -397,21 +400,25 @@
 %  \fbox{
     \begin{minipage}[t][150mm][s]{160mm}
       \begin{center}
-        \Large{\textsc{\@textocapa[#1]}}
+        \Large
+
+        \textsc{\@textocapa[#1]}
 
         \vspace*{3.5cm plus 1.5cm minus 0cm}
 
-        \Large{\@pessoascapa[#1]}
+        \@pessoascapa[#1]
 
         \vspace*{2cm plus 1cm minus 0cm}
 
-        \normalsize{\@apoiocapa}
+        \normalsize
+
+        \@apoiocapa
 
         \vspace*{2.5cm plus 1cm minus 0cm}
 
-        \normalsize{\@localdefesa}
+        \@localdefesa
 
-        \normalsize{\@datacapa}
+        \@datacapa
 
       \end{center}
     \end{minipage}
@@ -444,7 +451,7 @@
   \ifthenelse{\equal{definitiva}{#2}}{%
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
-      \normalsize{\@textobanca[#1]}
+      \normalsize\@textobanca[#1]
       \end{quote}
     \end{minipage}
   }%
@@ -469,13 +476,12 @@
       % começa mais ou menos no meio da página.
       \begin{minipage}[t][50mm][s]{80mm}
         \begin{FlushRight}
-          \normalsize{%
-            \ifthenelse{\equal{definitiva}{#2}}{%
-              \@textorostodefinitiva[#1]%
-            } {%
-              \@textorostoprovisoria[#1]%
-            }%
-          }
+          \normalsize
+          \ifthenelse{\equal{definitiva}{#2}}{%
+            \@textorostodefinitiva[#1]%
+          } {%
+            \@textorostoprovisoria[#1]%
+          }%
         \end{FlushRight}
       \end{minipage}
       \par
