@@ -217,14 +217,23 @@
 % suporte a Small Caps e outras qualidades. A fonte teletype da família
 % é serifada, então é melhor definir outra; a opção "mono=false" faz
 % o pacote não carregar sua própria fonte, mantendo a escolha anterior.
-%\usepackage[mono=false]{libertine}
+% A opção "nofontspec" elimina um problema de compatibilidade com algumas
+% outras fontes; remova-a se você for utilizar XeLaTeX ou a package fontspec,
+% mais abaixo.
+%\usepackage[mono=false,nofontspec]{libertine}
 % A família libertine por padrão não define uma fonte matemática específica;
 % uma opção que funciona bem com ela:
 %\usepackage[libertine]{newtxmath}
+% Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
+%\usepackage[nofontspec]{biolinum}
 
 % Também é possível usar a Times como padrão; nesse caso, a fonte sem serifa
 % é a Helvetica. Mas provavelmente libertine é uma opção melhor.
 %\usepackage[helvratio=0.95,largesc]{newtxtext}
+
+% gentium inclui apenas uma fonte serifada, similar a Garamond, que busca
+% cobrir todos os caracteres unicode
+%\usepackage{gentium}
 
 % LaTeX normalmente funciona com fontes que foram adaptadas para ele, ou
 % seja, ele não usa as fontes padrão instaladas no sistema: para usar
@@ -234,13 +243,61 @@
 % pode-se usar o pacote fontspec para usar fontes do sistema.
 %\usepackage{fontspec}
 %\setmainfont{DejaVu Serif}
-%\setsansfont{DejaVu Sans}
-%\setmonofont{DejaVu Sans Mono}
-%
 %\setmainfont{Charis SIL}
+%\setsansfont{DejaVu Sans}
 %\setsansfont{Libertinus Sans}[Scale=1.1]
 %\setmonofont{DejaVu Sans Mono}
+
+% fontspec oferece vários recursos interessantes para manipular fontes.
+% Por exemplo, Garamond é uma fonte clássica; a versão EBGaramond é muito
+% boa, mas não possui versões bold e bold-italic; aqui, usamos
+% CormorantGaramond ou Gentium para simular a versão bold.
+%\setmainfont{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
 %
+%\newfontfamily\garamond{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+
+% Crimson tem Small Caps, mas o recurso é considerado "em construção".
+% Vamos utilizar Gentium para Small Caps
+%\setmainfont{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+%
+%\newfontfamily\crimson{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+
 % Com o pacote fontspec, também é possível usar o comando "\fontspec" para
 % selecionar uma fonte temporariamente, sem alterar as fontes-padrão do
 % documento.
