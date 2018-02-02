@@ -76,6 +76,7 @@ ENTRY
     title
     type
     url
+    urldate
     volume
     year
   }
@@ -132,7 +133,6 @@ FUNCTION {output.check}
 FUNCTION {fin.entry}
 { add.period$
   write$
-  "   {\scriptsize Citado na p\'{a}g.}" write$
   newline$
 }
 
@@ -292,7 +292,14 @@ FUNCTION {format.issn}
 FUNCTION {format.url}
 { url empty$
     { "" }
-    { new.block "URL \url{" url * "}" * }
+    { new.block "\textsc{url:} \url{" url * "}" * }
+  if$
+}
+
+FUNCTION {format.urldate}
+{ urldate empty$
+   { "" }
+   {new.block  "[Acesso em: " urldate * "]" * }
   if$
 }
 
@@ -527,8 +534,8 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-        { "p\'{a}ginas" pages n.dashify tie.or.space.connect }
-        { "p\'{a}gina" pages tie.or.space.connect }
+        { "pgs." pages n.dashify tie.or.space.connect }
+        { "pg." pages tie.or.space.connect }
       if$
     }
   if$
@@ -730,6 +737,7 @@ FUNCTION {article}
   format.issn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -767,6 +775,7 @@ FUNCTION {book}
   format.isbn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -785,6 +794,7 @@ FUNCTION {booklet}
   format.isbn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -824,6 +834,7 @@ FUNCTION {inbook}
   format.isbn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -854,6 +865,7 @@ FUNCTION {incollection}
   format.isbn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -892,6 +904,7 @@ FUNCTION {inproceedings}
   format.isbn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -911,6 +924,7 @@ FUNCTION {manual}
   format.edition output
   format.date output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -928,6 +942,7 @@ FUNCTION {mastersthesis}
   address output
   % format.date "year" output.check
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -944,6 +959,7 @@ FUNCTION {misc}
   format.date output
   format.issn output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -962,6 +978,7 @@ FUNCTION {phdthesis}
   address output
   % format.date "year" output.check
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -983,6 +1000,7 @@ FUNCTION {proceedings}
   format.isbn output
   format.doi output
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -1000,6 +1018,7 @@ FUNCTION {techreport}
   address output
   % format.date "year" output.check
   format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -1015,6 +1034,7 @@ FUNCTION {unpublished}
   note "note" output.check
   format.date output
   format.url output
+  format.urldate output
   fin.entry
 }
 

@@ -31,6 +31,8 @@ ENTRY
     type
     volume
     year
+    url
+    urldate
   }
   {}
   { label extra.label sort.label }
@@ -285,6 +287,20 @@ FUNCTION {format.btitle}
 { title emphasize
 }
 
+FUNCTION {format.url}
+{ url empty$
+    { "" }
+    { new.block "\textsc{url:} \url{" url * "}" * }
+  if$
+}
+
+FUNCTION {format.urldate}
+{ urldate empty$
+   { "" }
+   {new.block "[Acesso em: " urldate * "]" * }
+  if$
+}
+
 FUNCTION {tie.or.space.connect}
 { duplicate$ text.length$ #3 <
     { "~" }
@@ -370,8 +386,8 @@ FUNCTION {format.pages}
 { pages empty$
     { "" }
     { pages multi.page.check
-	{ "p\'{a}ginas" pages n.dashify tie.or.space.connect }
-	{ "p\'{a}gina" pages tie.or.space.connect }
+	{ "pgs." pages n.dashify tie.or.space.connect }
+	{ "pg." pages tie.or.space.connect }
       if$
     }
   if$
@@ -552,6 +568,8 @@ FUNCTION {article}
       format.pages output
     }
   if$
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -584,6 +602,8 @@ FUNCTION {book}
   if$
   format.edition output
   format.date "year" output.check
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -598,6 +618,8 @@ FUNCTION {booklet}
   howpublished output
   address output
   format.date output
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -632,6 +654,8 @@ FUNCTION {inbook}
   if$
   format.edition output
   format.date "year" output.check
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -658,6 +682,8 @@ FUNCTION {incollection}
       format.chapter.pages output
     }
   if$
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -692,6 +718,8 @@ FUNCTION {inproceedings}
       format.pages output
     }
   if$
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -728,6 +756,8 @@ FUNCTION {manual}
   if$
   format.edition output
   format.date output
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -743,6 +773,8 @@ FUNCTION {phdthesis}
   school "school" output.check
   address output
   format.date "year" output.check
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -758,6 +790,8 @@ FUNCTION {mastersthesis}
   school "school" output.check
   address output
   format.date "year" output.check
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -773,6 +807,8 @@ FUNCTION {techreport}
   institution "institution" output.check
   address output
   format.date "year" output.check
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -787,6 +823,8 @@ FUNCTION {misc}
   howpublished new.block.checka
   howpublished output
   format.date output
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -823,6 +861,8 @@ FUNCTION {proceedings}
       publisher output
     }
   if$
+  format.url output
+  format.urldate output
   new.block
   note output
   fin.entry
@@ -834,6 +874,8 @@ FUNCTION {unpublished}
   format.authors "author" output.check
   new.block
   format.title "title" output.check
+  format.url output
+  format.urldate output
   new.block
   note "note" output.check
   format.date output

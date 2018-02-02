@@ -899,6 +899,14 @@
 
 %%%%%%%%%%% Usando bibtex: %%%%%%%%%%%%
 %\usepackage[hyperpageref]{backref}
+%\renewcommand*{\backref}[1]{}
+%\renewcommand*{\backrefalt}[4]{%
+%  \scriptsize%
+%  \ifcase #1\relax%
+%  \or(Citado na pg. #2)%
+%  \else(Citado nas pgs. #2)%
+%  \fi%
+%}
 %\usepackage[square,sort,nonamebreak,comma]{natbib-ime}  % citação bibliográfica alpha (alpha-ime.bst)
 %\usepackage[round,sort,nonamebreak]{natbib-ime} % citação bibliográfica textual(plainnat-ime.bst)
 
@@ -972,6 +980,8 @@
   backrefpages = {citado nas pgs\adddot},
   % "et al." em itálico
   andothers    = {\textit{et\addabbrvspace al}\adddot},
+  page         = {pg\adddot},
+  pages        = {pgs\adddot},
 }
 
 \DefineBibliographyStrings{american}{

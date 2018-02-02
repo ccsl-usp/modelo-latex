@@ -13,6 +13,26 @@
 
 \RequireBibliographyStyle{alphabetic}
 
+% Se quiser fazer o "citado na pg. X" em fonte menor; isto é uma cópia
+% das macros em biblatex.def
+%\newbibmacro*{pageref}{\scriptsize%
+%  \iflistundef{pageref}
+%    {}
+%    {\printtext[parens]{%
+%       \ifnumgreater{\value{pageref}}{1}
+%         {\bibstring{backrefpages}\ppspace}
+%         {\bibstring{backrefpage}\ppspace}%
+%       \printlist[pageref][-\value{listtotal}]{pageref}}}}
+%
+%\newbibmacro*{setpageref}{\scriptsize%
+%  \iflistundef{pageref}
+%    {}
+%    {\printtext{%
+%       \ifnumgreater{\value{pageref}}{1}
+%         {\bibstring{backrefpages}\ppspace}
+%         {\bibstring{backrefpage}\ppspace}%
+%       \printlist[pageref][-\value{listtotal}]{pageref}}}}
+
 % No texto, se estamos usando o pacote hyperref, o label é um
 % link para o item na bibliografia. Usando o label na própria
 % bibliografia, não faz sentido criar esse link. Por conta disso,
