@@ -237,12 +237,12 @@
 \newcommand{\@refdocumento}[1][port] {%
   \@author.
   \ifthenelse{\equal{port}{#1}}{%
-    \textbf{\@titulopt{} \@subtitulo}\unskip.
+    \textbf{\@titulopt{}\unskip\ifthenelse{\equal{\@subtitulo}{\relax}}{}{: \textit{\@subtitulo\unskip}}}.
     \@nometrabalho{} (\@grau).
     Instituto de Matemática e Estatística,
     Universidade de São Paulo,%
   }{%
-    \textbf{\@tituloeng{} \@subtituloeng}\unskip.
+    \textbf{\@tituloeng{}\unskip\ifthenelse{\equal{\@subtituloeng}{\relax}}{}{: \textit{\@subtituloeng\unskip}}}.
     \@nometrabalhoeng{} (\@graueng).
     Institute of Mathematics and Statistics,
     University of São Paulo,%
