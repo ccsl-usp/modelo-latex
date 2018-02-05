@@ -858,6 +858,18 @@
 % e, portanto, pode removê-la.
 \usepackage{metalogo}
 
+% O formato padrão do pacote epigraph é bem feinho...
+% Outra opção para epígrafes é o pacote quotchap
+\usepackage{epigraph}
+\newcommand{\epigrafe}[2] {%
+  \setlength{\epigraphrule}{0pt}
+  \ifthenelse{\equal{}{#2}}{
+    \epigraph{\itshape\RaggedLeft #1}{}
+  }{
+    \epigraph{\itshape\RaggedLeft #1}{--- #2}
+  }
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -985,10 +997,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Este pacote define o formato da capa, páginas de rosto, dedicatória e
-% resumo, além do comando "\epigrafe". Se você pretende criar essas páginas
-% manualmente, não precisa carregar este pacote nem definir os dados abaixo
-% (mas veja que \title e \author são usados para armazenar metadados no PDF
-% gerado, então devem sempre ser definidos).
+% resumo. Se você pretende criar essas páginas manualmente, não precisa
+% carregar este pacote nem definir os dados abaixo (mas veja que \title e
+% \author são usados para armazenar metadados no PDF gerado, então devem
+% sempre ser definidos).
 \usepackage{imeusp}
 
 % Define o texto da capa e da referência que vai na página do resumo

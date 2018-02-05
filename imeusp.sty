@@ -13,20 +13,6 @@
 % Múltiplos parâmetros opcionais do tipo "key=val"
 \RequirePackage{keyval}
 
-% Epígrafes
-\RequirePackage{epigraph}
-
-% O formato padrão do pacote epigraph é bem feinho...
-% Outra opção para epígrafes é o pacote quotchap
-\newcommand{\epigrafe}[2] {%
-  \setlength{\epigraphrule}{0pt}
-  \ifthenelse{\equal{}{#2}}{
-    \epigraph{\itshape\RaggedLeft #1}{}
-  }{
-    \epigraph{\itshape\RaggedLeft #1}{--- #2}
-  }
-}
-
 % LaTeX oferece o comando "\maketitle" para criar uma capa / página de rosto
 % padrão. Ela não se adequa ao padrão do IME, então não vamos usar \maketitle.
 % O IME também pede páginas de rosto com formato mais ou menos específico.
