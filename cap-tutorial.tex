@@ -24,8 +24,9 @@ revisava na versão impressa. \LaTeX{} é uma ferramenta baseada nesse processo:
 você prepara seu texto no editor de sua preferência, inclui comandos no texto
 que indicam a estrutura do documento e o processa com o \LaTeX{}, que gera um
 arquivo PDF formatado. Embora seja um estilo ``antigo'' de trabalhar, ele é
-eficiente e, dependendo da situação, trabalhar fazendo tudo ao mesmo tempo
-ou dividindo o trabalho nessas duas fases é mais adequado. De maneira geral:
+muito eficiente em vários casos. Ou seja, dependendo da situação, pode ser
+mais adequado trabalhar fazendo tudo ao mesmo tempo ou dividindo o trabalho
+nessas duas fases. De maneira geral:
 
 \begin{itemize}
 \item Se você precisa criar páginas diferentes entre si com \emph{layout}
@@ -34,12 +35,11 @@ visualmente, como LibreOffice Writer, MS-Word, Google Docs etc.;
 
 \item Se você precisa fazer um documento relativamente longo com estrutura
 regular (capítulos, seções etc.), é melhor usar ferramentas que formalizam
-essa estrutura (como \LaTeX{}) ao invés de usar ferramentas visuais,
-garantindo a consistência do documento como um todo;
+essa estrutura (como \LaTeX{}) ao invés de usar ferramentas visuais;
 
 \item Se você precisa fazer um documento envolvendo referências cruzadas,
 bibliografia relativamente extensa ou fórmulas matemáticas, é difícil
-encontrar uma ferramenta tão eficiente quanto \LaTeX{};
+encontrar outra ferramenta tão eficiente quanto \LaTeX{};
 
 \item Se você precisa criar um documento simples, ambas as abordagens
 funcionam bem; cada um escolhe esta ou aquela em função da familiaridade
@@ -68,32 +68,34 @@ de formatação, automatizam o processo de compilação do documento e oferecem
 outras comodidades. Os mais comumente usados são TeXmaker, TeXstudio e
 TeXworks; os três são software livre e funcionam em Windows, MacOS e Linux.
 TeXnicCenter é outra opção livre, mas funciona apenas em Windows. Você também
-pode querer usar editores online, como overleaf (\url{www.overleaf.com}) e
-sharelatex (\url{www.sharelatex.com}).
+pode querer usar editores \emph{online}, como overleaf (\url{www.overleaf.com})
+e sharelatex (\url{www.sharelatex.com}).
 
 \LaTeX{} ignora quebras de linha e trata sequências de vários espaços como
 se fossem apenas um. Isso significa que você pode usar quebras de linha e
 espaços no texto que está digitando como ``dicas visuais'' da estrutura do
 texto. É muito comum fazer isso com listas de itens, por exemplo. Uma ou
 mais linhas em branco sinalizam o fim de um parágrafo e o início de outro.
-O caracter ``\%'' indica que o restante da linha é um comentário,
+O caractere ``\%'' indica que o restante da linha é um comentário,
 ou seja, um trecho de texto que não tem nenhum efeito sobre o resultado final
 do documento. Comentários podem ser usados como lembrete sobre alguma decisão,
 para indicar um parágrafo que ainda precisa de revisão etc. Por conta desse
-significado especial, para inserir um caracter \% ``normal'' no
-texto é preciso usar ``\textbackslash\%'').
+significado especial, para inserir um caractere \% ``normal'' no
+texto é preciso usar ``\textsf{\textbackslash\%}''.
 
 Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
-você coloca comandos de configuração para o documento, e o corpo do
+você coloca comandos de configuração para o documento, e o \emph{corpo} do
 documento em si, que contém o texto propriamente dito. O preâmbulo é onde
-você define as características do resultado esperado: tipo e tamanho da
-fonte a usar, posição dos títulos e subtítulos na página etc. Na prática,
-definir todas as configurações de impressão desejadas em \LaTeX{} não é
-simples. Por conta disso, \LaTeX{} tem alguns modelos prontos, que você
-escolhe com o comando \textsf{\textbackslash{}documentclass\{modelo\}}
-no preâmbulo. Os principais modelos são \textsf{book}, \textsf{report} e
-\textsf{article}; você pode saber mais sobre eles (e outros) em qualquer
-texto introdutório sobre \LaTeX{} na Internet.
+você define as características do resultado tipográfico esperado: tipo e
+tamanho da fonte a usar, posição dos títulos e subtítulos na página etc.
+Na prática, definir todas as configurações de impressão desejadas em
+\LaTeX{} não é simples. Por conta disso, \LaTeX{} tem alguns modelos
+prontos, que você escolhe com o comando
+\textsf{\textbackslash{}documentclass\{modelo\}} no preâmbulo. Os
+principais modelos são \textsf{book}, \textsf{report} e \textsf{article};
+você pode saber mais sobre eles (e outros) em qualquer texto introdutório
+sobre \LaTeX{} na Internet. \textsf{book} e \textsf{report} são os mais
+adequados para a escrita de teses ou dissertações acadêmicas.
 
 \LaTeX{} também tem packages (``plugins'') que acrescentam funcionalidades
 ou modificam os modelos padrão e também são carregadas no preâmbulo, com o
@@ -102,7 +104,7 @@ delas podem receber opções adicionais no formato
 \textsf{\textbackslash{}usepackage[opção1,opção2...]\{nome-da-package\}};
 a documentação de cada package detalha as opções disponíveis.
 
-Qualquer documento \LaTeX{} utiliza várias packages, então é preciso
+Qualquer documento \LaTeX{} utiliza várias packages, portanto é preciso
 conhecê-las. Isso às vezes é trabalhoso porque algumas delas podem se
 tornar obsoletas e, com isso, sítios web com ``dicas'' podem estar
 desatualizados. O sítio \url{www.ctan.org} é um índice com praticamente
@@ -110,12 +112,12 @@ todas as packages disponíveis, incluindo sua documentação. Além dessas,
 é comum que revistas científicas ofereçam packages que pré-definem a
 formatação esperada para os artigos. Finalmente, o sítio
 \url{tex.stackexchange.com} é um fórum de perguntas e respostas sobre
-\LaTeX{} que é muito útil, e há muito mais material relacionado online.
+\LaTeX{} que é muito útil.
 
 Usar algum documento existente como base para criar seu texto em geral é
 uma boa ideia; o IME/USP oferece um modelo adequado para teses e
-dissertações, mas que pode ser adaptado para outros usos e outras
-instituições (\url{github.com/LSS-USP/modelo-latex}). Há também um modelo
+dissertações (\url{github.com/LSS-USP/modelo-latex}) que pode ser
+adaptado para outros usos e outras instituições. Há também um modelo
 (\url{www.abntex.net.br}) que procura seguir as normas da ABNT para
 documentos científicos.
 
@@ -124,26 +126,26 @@ documentos científicos.
 Um exemplo de documento \LaTeX{} simples:
 
 \begin{verbatim}
-% O documento começa com o preâmbulo
-% Vamos usar o modelo "book" com fonte no tamanho 11pt
-\documentclass[11pt]{book}
-% Vamos usar caracteres acentuados
-\usepackage[utf8]{inputenc}
-% Vamos escrever em português do Brasil
-\usepackage[brazil]{babel}
-% Estas linhas não imprimem nada, apenas definem os valores
-% que serão usados por "\maketitle"
-\author{Fulano de Tal}
-\title{Começando a usar o \LaTeX{}}
-% Finaliza o preâmbulo e inicia o conteúdo:
-\begin{document}
-% Cria uma página de título com os dados definidos acima
-\maketitle
-% Capítulos, seções etc. são numerados automaticamente
-\chapter{Cheguei!}
-Oi Galera!
-% É preciso sinalizar o final do documento
-\end{document}
+        % O documento começa com o preâmbulo
+        % Vamos usar o modelo "book" com fonte no tamanho 11pt
+        \documentclass[11pt]{book}
+        % Vamos usar caracteres acentuados
+        \usepackage[utf8]{inputenc}
+        % Vamos escrever em português do Brasil
+        \usepackage[brazil]{babel}
+        % Estas linhas não imprimem nada, apenas definem
+        % os valores que serão usados por "\maketitle"
+        \author{Fulano de Tal}
+        \title{Começando a usar o \LaTeX{}}
+        % Finaliza o preâmbulo e inicia o conteúdo:
+        \begin{document}
+        % Cria uma página de título com os dados definidos acima
+        \maketitle
+        % Capítulos, seções etc. são numerados automaticamente
+        \chapter{Cheguei!}
+        Oi Galera!
+        % É preciso sinalizar o final do documento
+        \end{document}
 \end{verbatim}
 
 Esse exemplo mostra como definir o nome de um capítulo. Existem também os
@@ -154,25 +156,25 @@ Usar o nome do comando seguido de um asterisco
 no sumário (nem considerado na contagem de capítulos, seções etc.).
 
 Para criar listas de itens, você pode fazer\footnote{Observe o uso de
-espaços no início das linhas com \textbackslash{}item para deixar a estrutura
-visualmente mais clara}:
+espaços no início das linhas com \textsf{\textbackslash{}item} para deixar a
+estrutura visualmente mais clara durante a edição.}:
 
 \begin{verbatim}
-\begin{itemize}
-    \item Primeiro item
-    \item Segundo item
-    \item Terceiro item
-\end{itemize}
+        \begin{itemize}
+            \item Primeiro item
+            \item Segundo item
+            \item Terceiro item
+        \end{itemize}
 \end{verbatim}
 
 Além de ``itemize'', há também ``enumerate'' (auto-explicativo) e ``description'':
 
 \begin{verbatim}
-\begin{description}
-    \item[O primeiro item] é o primeiro;
-    \item[O segundo item] é o segundo;
-    \item[O terceiro item] é o terceiro.
-\end{description}
+        \begin{description}
+            \item[O primeiro item] é o primeiro;
+            \item[O segundo item] é o segundo;
+            \item[O terceiro item] é o terceiro.
+        \end{description}
 \end{verbatim}
 
 Citações curtas normalmente são incluídas no fluxo normal do texto e colocadas
@@ -182,10 +184,11 @@ para citações com vários parágrafos). Para poesia, use \textsf{verse}. A
 package \textsf{csquotes} acrescenta recursos sofisticados para citações.
 
 Para inserir uma nota de de rodapé, use o comando
-\textsf{\textbackslash{}footnote\{texto da nota\}}. Um espaço não-separável é
-indicado pelo caracter til (``\textasciitilde{}'') e é possível forçar uma
-quebra de linha com ``\textbackslash{}\textbackslash{}''. Aspas tipográficas
-(``'' e `') são inseridas com
+\textsf{\textbackslash{}footnote\{texto da nota\}}\index{Notas de rodapé}.
+Um espaço não-separável é indicado pelo caractere til (``\textasciitilde{}'')
+e é possível forçar uma quebra de linha com
+``\textsf{\textbackslash{}\textbackslash{}}''. Aspas tipográficas (``'' e `')
+são inseridas com
 \textasciigrave\textasciigrave\textquotesingle\textquotesingle{} e
 \textasciigrave\textquotesingle. Você pode consultar a lista completa de
 símbolos em \url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
@@ -203,12 +206,12 @@ texto a que se referem. No entanto, isso é impossível por conta da divisão
 do texto em páginas. Em \LaTeX{}, figuras e tabelas são incluídas como
 \emph{floats} (localização flexível) usando \textsf{\textbackslash{}begin\{figure\}}
 e \textsf{\textbackslash{}begin\{table\}} e o programa procura o ``melhor''
-lugar para colocá-las. Dentro do float é inserido um
+lugar para colocá-las. Dentro do \emph{float} é inserido um
 \textsf{\textbackslash{}label} para que se possa fazer referência à figura/tabela
 no texto (com o comando \textsf{\textbackslash{}ref}). A figura/tabela em
 si é definida com \textsf{\textbackslash{}includegraphics} ou
 \textsf{\textbackslash{}begin\{tabular\}}, e em geral é uma boa ideia acrescentar
-uma descrição com \textsf{\textbackslash{}caption}.
+uma descrição com \textsf{\textbackslash{}caption}\index{Legendas}.
 
 \section{Fórmulas Matemáticas}
 
@@ -218,12 +221,12 @@ matemático. Isso pode ser feito de duas formas:
 
 \begin{itemize}
   \item Pequenas fórmulas no meio do texto ($E=mc^2$) são inseridas com
-  \$\textsf{\textit{fórmula}}\$ (e, portanto, para inserir um caracter \$
-  normal no texto, é preciso usar \textbackslash{}\$).
+  \textsf{\$\textit{fórmula}\$} (e, portanto, para inserir um caractere \$
+  normal no texto, é preciso usar \textsf{\textbackslash{}\$}).
 
   \item Fórmulas mais longas ou que devem aparecer em um parágrafo
-  separado por alguma razão são inseridas com
-  \textbackslash{}[\textsf{\textit{fórmula}}\textbackslash{}] (ou
+  separado são inseridas com
+  \textsf{\textbackslash{}[\textit{fórmula}\textbackslash{}]} (ou
   \textsf{\textbackslash{}begin\{displaymath\}}).
 \end{itemize}
 
@@ -234,14 +237,14 @@ definir o espaçamento). Para inserir um espaço explicitamente, use
 Para inserir texto ``normal'' em uma fórmula matemática, use
 \textsf{\textbackslash{}text\{texto\}} (para texto de fato) ou
 \textsf{\textbackslash{}mathit\{texto\}} (para nomes de variáveis
-ou funções com mais de uma letra). Pode ser necessário incluir um
-espaço no início do texto para evitar que ele apareça junto ao
-caracter matemático que o antecede.
+ou funções com mais de uma letra). Pode ser necessário deixar um
+espaço no início do texto para evitar que ele fique colado com o
+caractere matemático que o antecede.
 
 Usando \textsf{\textbackslash{}begin\{equation\}}, a fórmula recebe um
 número (que aparece à direita) ao qual você pode se referir no texto
-usando o comando ``\textsf{\textbackslash{}ref}'' (``conforme vimos na
-equação \textbackslash{}ref\{eq:bhaskara\}\ldots'').
+usando o comando ``\textsf{\textbackslash{}ref}'' (``\textsf{conforme
+vimos na equação \textbackslash{}ref\{eq:bhaskara\}\ldots}'').
 \textsf{\textbackslash{}begin\{equation*\}} (incluindo o *) elimina
 o número e é, portanto, equivalente a
 \textsf{\textbackslash{}begin\{displaymath\}}. Há outros comandos
@@ -251,19 +254,20 @@ a variante com ``*''.
 
 \section{Referências Bibliográficas e Bibliografia}
 
-A geração de bibliografias no \LaTeX{} é feita através da package biblatex
-e do programa auxiliar biber\footnote{Antigamente, outro sistema era utilizado:
-o comando auxiliar bibtex e, em geral, a package natbib. O funcionamento
-geral dos dois mecanismos é similar e o formato do banco de dados de ambos
-é o mesmo} e envolve três passos:
+A geração de bibliografias no \LaTeX{} é feita através da package
+biblatex\index{biblatex} e do programa auxiliar
+biber\index{biber}\footnote{Antigamente, usava-se a package
+natbib\index{natbib} e o comando auxiliar bibtex\index{bibtex}. O
+funcionamento geral dos dois mecanismos é similar e o formato do banco de
+dados de ambos é o mesmo.} e envolve três passos:
 
 \begin{enumerate}
-\item A criação de um banco de dados de obras de interesse no formato
-``.bib''. Esse banco de dados pode incluir obras que não vão ser de fato
+\item A criação de um banco de dados, no formato ``.bib'', das obras de
+interesse. Esse banco de dados pode incluir obras que não vão ser de fato
 referenciadas no documento final. Isso significa que você pode criar um
 único banco de dados e utilizá-lo em todos seus documentos\footnote{É
 comum criar bancos de dados desse tipo separados por assunto, mas isso
-não é necessário}.
+não é necessário.}.
 
 \item A inserção de referências às obras ao longo do texto.
 
@@ -273,16 +277,18 @@ não é necessário}.
 A fonte mais detalhada de informações sobre o banco de dados é a
 documentação da package biblatex, mas o material ali é um tanto denso.
 Há muito material introdutório ao formato ``.bib'' e ao bibtex disponível
-online, e você pode se inspirar em exemplos para criar seu banco de dados
-bibliográfico. Além disso, ferramentas como Zotero ou Mendeley (o uso de
-uma delas é altamente recomendado!) podem exportar para o formato .bib.
+\emph{online}, e você pode se inspirar em exemplos para criar seu banco de
+dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
+Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
+podem exportar para o formato .bib.
 
 Para inserir as referências no texto, há alguns comandos diferentes a
 serem usados dependendo do caso:
 \textsf{\textbackslash{}cite},
 \textsf{\textbackslash{}citet},
 \textsf{\textbackslash{}citep} etc. Esses comandos estão descritos tanto
-na documentação da package biblatex quanto na da package natbib.
+na documentação da package biblatex\index{biblatex} quanto na da package
+natbib\index{natbib}.
 
 \section{Formatação Manual}
 
@@ -309,7 +315,10 @@ Há quatro estilos típicos de comandos \LaTeX{}:
 \item Comandos que se referem a um parâmetro; por exemplo,
 \textsf{\textbackslash{}emph\{um texto\}} significa ``escreva a frase
 `um texto' com ênfase'' (em geral, itálico). As chaves delimitam o início
-e o final do escopo sobre o qual o comando tem efeito.
+e o final do escopo sobre o qual o comando tem efeito. Aqui entram também
+comandos como \textsf{\textbackslash{}title} e \textsf{\textbackslash{}author},
+que não escrevem nada diretamente mas definem o título e autoria do documento
+(essa informação é usada, por exemplo, por \textsf{\textbackslash{}maketitle}).
 
 \item Comandos que se referem a um parâmetro que é um bloco grande de
 texto, possivelmente vários parágrafos; por exemplo,
@@ -321,7 +330,7 @@ vários parágrafos) ser centralizado.
 \textsf{\textbackslash{}itshape} significa ``ative o modo itálico''.
 Nesse caso, o texto vai ser impresso em itálico até outro comando selecionar
 outro estilo de fonte. Se o comando for inserido dentro de um bloco
-delimitado por chaves, ele ``perde o efeito'' após o caracter de fecha-chaves
+delimitado por chaves, ele ``perde o efeito'' após o caractere de fecha-chaves
 (exemplo: ``\textsf{\{\textbackslash{}itshape Fulano de Tal\} é meu nome}''
 será impresso como ``\textit{Fulano de Tal} é meu nome''). Você normalmente
 não vai utilizar esse estilo de comando, mas ele é útil em alguns casos.

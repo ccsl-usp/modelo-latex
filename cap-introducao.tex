@@ -36,13 +36,15 @@ Larrabee e Paul Roberts, \emph{Mathematical Writing}~\citep{Knuth:96}.
 \label{sec:consideracoes_preliminares}
 
 Normalmente, as citações não devem fazer parte da estrutura sintática da
-frase\footnote{E não se deve abusar das notas de rodapé}. No entanto, usando
-referências em algum estilo autor-data (como o estilo plainnat do \LaTeX{}), é
-comum que o nome do autor faça parte da frase. Nesses casos, pode valer a pena
-mudar o formato da citação para não repetir o nome do autor (no \LaTeX{}, isso
-pode ser feito usando os comandos \textbackslash{}citet, \textbackslash{}citep,
-\textbackslash{}citeyear etc. documentados no pacote natbib). Em geral, portanto,
-as citações devem seguir estes exemplos:
+frase\footnote{E não se deve abusar das notas de rodapé.\index{Notas de rodapé}}.
+No entanto, usando referências em algum estilo autor-data (como o estilo
+plainnat do \LaTeX{}), é comum que o nome do autor faça parte da frase. Nesses
+casos, pode valer a pena mudar o formato da citação para não repetir o nome do
+autor (no \LaTeX{}, isso pode ser feito usando os comandos
+\textsf{\textbackslash{}citet}, \textsf{\textbackslash{}citep},
+\textsf{\textbackslash{}citeyear} etc. documentados no pacote
+natbib)\index{natbib}. Em geral, portanto, as citações devem seguir estes
+exemplos:
 
 \begin{verbatim}
 Modos de citação:
@@ -53,15 +55,15 @@ certo: Andrew e Foster introduziram o algoritmo ótimo (Andrew e Foster, 1983).
 certo (\citet ou \citeyear): Andrew e Foster (1983) introduziram o algoritmo ótimo.
 \end{verbatim}
 
-O uso desnecessário de termos em lingua estrangeira deve ser evitado. No entanto,
+O uso desnecessário de termos em língua estrangeira deve ser evitado. No entanto,
 quando isso for necessário, os termos devem aparecer \textit{em itálico}.
 \index{Língua estrangeira}
 % index permite acrescentar um item no indice remissivo
 
-Uma prática recomendável na escrita de textos é descrever as legendas das
-figuras e tabelas em forma auto-contida: as legendas devem ser razoavelmente
-completas, de modo que o leitor possa entender a figura sem ler o texto onde a
-figura ou tabela é citada.\index{Floats}
+Uma prática recomendável na escrita de textos é descrever as
+legendas\index{Legendas} das figuras e tabelas em forma auto-contida: as
+legendas devem ser razoavelmente completas, de modo que o leitor possa entender
+a figura sem ler o texto onde a figura ou tabela é citada.\index{Floats}
 
 Apresentar os resultados de forma simples, clara e completa é uma tarefa que
 requer inspiração. Nesse sentido, o livro de
@@ -74,9 +76,9 @@ eficiente.
 \section{Ferramentas Bibliográficas}
 
 Embora seja possível pesquisar por material acadêmico na Internet usando sistemas
-de busca ``comuns'', existem ferramentas dedicadas, como o \textsf{Google Scholar}
-(\url{scholar.google.com}). Você também pode querer usar o \textsf{Web of Science}
-(\url{webofscience.com}) e o \textsf{Scopus} (\url{scopus.com}), que oferecem
+de busca ``comuns'', existem ferramentas dedicadas, como o \textsf{Google Scholar}\index{Google Scholar}
+(\url{scholar.google.com}). Você também pode querer usar o \textsf{Web of Science}\index{Web of Science}
+(\url{webofscience.com}) e o \textsf{Scopus}\index{Scopus} (\url{scopus.com}), que oferecem
 recursos sofisticados e limitam a busca a periódicos com boa reputação acadêmica.
 Essas duas plataformas não são gratuitas, mas os alunos da USP têm acesso a elas
 através da instituição. Ambas são capazes de exportar os dados para o formato .bib,
@@ -93,14 +95,15 @@ cotidiano do portal.
 
 Para manter um banco de dados organizado sobre artigos e outras fontes bibliográficas
 relevantes para sua pesquisa, é altamente recomendável que você use uma ferramenta
-como Zotero~(\url{zotero.org}) ou Mendeley~(\url{mendeley.com}). Ambas podem exportar
-seus dados no formato .bib, compatível com \LaTeX{}. Também existem três plataformas
+como Zotero~(\url{zotero.org})\index{Zotero} ou
+Mendeley~(\url{mendeley.com})\index{Mendeley}. Ambas podem exportar seus dados no
+formato .bib, compatível com \LaTeX{}. Também existem três plataformas
 gratuitas que permitem a busca de referências acadêmicas já no formato .bib:
 
 \begin{itemize}
-  \item \emph{CiteULike} (patrocinados por Springer): \url{www.citeulike.org}
+  \item \emph{CiteULike}\index{CiteULike} (patrocinados por Springer): \url{www.citeulike.org}
   \item Coleção de bibliografia em Ciência da Computação: \url{liinwww.ira.uka.de/bibliography}
-  \item Google acadêmico (habilitar bibtex nas preferências): \url{scholar.google.com.br}
+  \item Google acadêmico\index{Google Scholar} (habilitar bibtex nas preferências): \url{scholar.google.com.br}
 \end{itemize}
 
 Lamentavelmente, ainda não existe um mecanismo de verificação ou validação das
@@ -140,7 +143,7 @@ Ele define itens obrigatórios e opcionais, conforme segue:\index{Formatação}
     página. Ela fica centralizada na página, tem 100mm de largura, 60mm de
     altura e começa 47mm abaixo do topo da página.
 
-    \item O título da tese/dissertação deverá iniciar com letra maiúscula
+    \item O título da tese/dissertação deverá começar com letra maiúscula
     e o resto deverá ser em minúsculas, salvo nomes próprios.
 
     \item O nome do aluno(a) deverá ser completo e sem abreviaturas.
@@ -162,12 +165,12 @@ Ele define itens obrigatórios e opcionais, conforme segue:\index{Formatação}
   \end{itemize}
 
   \item \textsc{Folha de Rosto} (obrigatória, tanto para a versão
-  depositada quanto para versão corrigida)
+  depositada quanto para a versão corrigida)
   \begin{itemize}
     \item o título da tese/dissertação deverá seguir o padrão da capa
 
-    \item deve informar se se trada da versão original ou da versão
-    corrigida; neste segundo caso, deve também incluir os nomes
+    \item deve informar se se trata da versão original ou da versão
+    corrigida; no segundo caso, deve também incluir os nomes
     dos membros da banca.
   \end{itemize}
 
@@ -189,5 +192,7 @@ Ele define itens obrigatórios e opcionais, conforme segue:\index{Formatação}
 
   \item \textsc{Referências Bibliográficas} (obrigatório)
 
-  \item \textsc{Índice Remissivo} (opcional)
+  \item \textsc{Índice Remissivo} (opcional\footnote{O índice remissivo
+   pode ser muito útil para a banca; assim, embora seja um item opcional,
+   recomendamos que você o crie.})
 \end{itemize}

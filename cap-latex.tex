@@ -42,14 +42,14 @@ O modelo é composto por estes arquivos:
   \begin{itemize}
     \item \texttt{plainnat-ime.bbx} (estilo plainnat com biblatex -- bibliografia)\index{biblatex}
     \item \texttt{plainnat-ime.cbx} (estilo plainnat com biblatex -- citações)
-    \item \texttt{plainnat-ime.bst} (estilo plainnat com bibtex)
-    \item \texttt{alpha-ime.bst} (estilo alpha com bibtex)
-    \item \texttt{natbib-ime.sty} (tradução do pacote padrão natbib)
+    \item \texttt{plainnat-ime.bst} (estilo plainnat com bibtex)\index{bibtex}
+    \item \texttt{alpha-ime.bst} (estilo alpha com bibtex)\index{bibtex}
+    \item \texttt{natbib-ime.sty} (tradução do pacote padrão natbib)\index{natbib}
   \end{itemize}
 \end{itemize}
 
 Para compilar o documento, basta executar o comando ``make''. O comando ``make
-clean'' apaga todos os arquivos gerados durante a compilação.
+clean'' apaga todos os arquivos auxiliares gerados durante a compilação.
 
 \section{Instalação do \LaTeX{}}
 
@@ -57,9 +57,9 @@ Embora uma instalação completa do \TeX{}/\LaTeX{} seja relativamente grande (p
 de 5GB), em geral vale a pena instalar a maior parte dos pacotes incluídos
 na sua distribuição. No caso do debian ou ubuntu, por exemplo, o pacote
 ``texlive-full'' instala praticamente tudo do \LaTeX{} que pode interessar (incluindo
-suporte a línguas como árabe, japonês etc.). Se você preferir não usá-lo,
-observe que este template sugere alguns pacotes que normalmente não estão
-incluídos em uma instalação ``econômica'' do \LaTeX{}; por exemplo, no debian:
+suporte a línguas como árabe, japonês etc.). Se você preferir uma instalação mais
+``enxuta'', não deixe de incluir todos os pacotes necessários para este modelo.
+Por exemplo, no debian:
 
 \begin{description}
   \item[inconsolata] -- está incluído em ``texlive-fonts-extra''
@@ -72,13 +72,14 @@ incluídos em uma instalação ``econômica'' do \LaTeX{}; por exemplo, no debia
 \section{Bibliografia}
 
 Você pode usar referências bibliográficas nos formatos ``alpha'' ou ``plainnat''.
-Se estiver usando natbib+bibtex, use os arquivos .bst ``alpha-ime.bst'' ou
-``plainnat-ime.bst'', que são versões desses dois formatos traduzidas para o
-português. Se estiver usando biblatex\index{biblatex} (recomendado), escolha o estilo
-``alphabetic'' (que é um dos estilos padrão do biblatex) ou ``plainnat-ime''.
-O arquivo de exemplo inclui todas essas opções; basta des-comentar as linhas
-correspondentes e, se necessário, modificar o arquivo Makefile para chamar
-o bibtex ao invés do biber (este último é usado em conjunto com o biblatex).
+Se estiver usando natbib+bibtex\index{natbib}\index{bibtex}, use os arquivos .bst
+``alpha-ime.bst'' ou ``plainnat-ime.bst'', que são versões desses dois formatos
+traduzidas para o português. Se estiver usando biblatex\index{biblatex}
+(recomendado), escolha o estilo ``alphabetic'' (que é um dos estilos padrão do
+biblatex) ou ``plainnat-ime''. O arquivo de exemplo inclui todas essas opções;
+basta des-comentar as linhas correspondentes e, se necessário, modificar o
+arquivo Makefile para chamar o bibtex\index{bibtex} ao invés do
+biber\index{biber} (este último é usado em conjunto com o biblatex).
 
 \section{Perguntas Frequentes sobre o Modelo}
 
@@ -91,20 +92,20 @@ Com certeza! Você pode modificar o arquivo o quanto desejar. O modelo \LaTeX{} 
 Em geral as figuras devem ser apresentadas assim que forem referenciadas. Colocá-las no final dos capítulos dificultaria um pouco a leitura, mas isso depende do estilo do autor, orientador, ou lugar de publicação. Converse com seu orientador!
 
 \item \textbf{Existe algo específico para citações de páginas web?}\\
-Biblatex define o tipo ``online''; bibtex, por padrão, não tem um tipo específico. Se o que você está citando não é um texto específico mas sim um sítio, como por exemplo o sítio de uma empresa ou de um produto, pode ser mais adequado colocar a referência como nota de rodapé e não na lista de referências; nesses casos, algumas pessoas acrescentam uma segunda lista de referências especificamente para recursos online (biblatex \index{biblatex} permite criar múltiplas bibliografias). Se, no entanto, trata-se de um texto específico, como uma postagem em um blog, uma matéria jornalística ou mesmo uma mensagem de email para uma lista de discussão, a citação deve seguir o formato de outros tipos de documento e informar título, autor etc. Normalmente usa-se o campo ``howpublished'' para especificar que se trata de um recurso online. Observe também que artigos que fazem parte de uma publicação, como os anais de um congresso, e que estão disponíveis online devem ser citados por seu tipo verdadeiro e apenas incluir o campo ``url'', aceito por todos os tipos de documento do bibtex/biblatex.
+Biblatex define o tipo ``online''; bibtex\index{bibtex}, por padrão, não tem um tipo específico. Se o que você está citando não é um texto específico mas sim um sítio, como por exemplo o sítio de uma empresa ou de um produto, pode ser mais adequado colocar a referência como nota de rodapé e não na lista de referências; nesses casos, algumas pessoas acrescentam uma segunda lista de referências especificamente para recursos \emph{online} (biblatex \index{biblatex} permite criar múltiplas bibliografias). Se, no entanto, trata-se de um texto específico, como uma postagem em um blog, uma matéria jornalística ou mesmo uma mensagem de email para uma lista de discussão, a citação deve seguir o formato de outros tipos de documento e informar título, autor etc. Normalmente usa-se o campo ``howpublished'' para especificar que se trata de um recurso \emph{online}. Observe também que artigos que fazem parte de uma publicação, como os anais de um congresso, e que estão disponíveis \emph{online} devem ser citados por seu tipo verdadeiro e apenas incluir o campo ``url'' (não é nem necessário usar o comando \textsf{\textbackslash{}url\{\}}), aceito por todos os tipos de documento do bibtex/biblatex.
 
 \item \textbf{A bibliografia está sendo impressa em inglês (usa ``and'' ao invés de ``e'' para separar os nomes dos autores)}\\
 Você deve estar usando um estilo de bibliografia bibtex diferente dos sugeridos. Uma simples solução é copiar o arquivo de estilo correspondente da sua instalação \LaTeX{} para o diretório onde seus arquivos estão e mudar ``and'' por ``e'' (ou ``\&'' se preferir) na função format.names. Biblatex tem pleno suporte a diferentes línguas e é possível personalizar as traduções (há um exemplo no modelo).
 
 \item \textbf{Aparece uma folha em branco entre os capítulos}\\
-Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Acrescente ``openany'' como opção da classe, i.e., \texttt{\textbackslash{}documentclass[openany,11pt,twoside,a4paper]\{book\}}.
+Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Acrescente ``openany'' como opção da classe, i.e., \textsf{\textbackslash{}documentclass[openany,11pt,twoside,a4paper]\{book\}}.
 
 \item \textbf{É possível resumir o nome das seções/capítulos que aparece no topo das páginas?}\\
-	Sim, usando a sintaxe \texttt{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nos \textit{captions} das figuras e tabelas, que muitas vezes são demasiadamente longos para a lista de figuras/tabelas.
+Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nos \textit{captions}\index{Legendas} das figuras e tabelas, que muitas vezes são demasiadamente longos para a lista de figuras/tabelas.
 
 \item \textbf{Existe algum programa para gerenciar referências em formato bibtex?}\\
-Sim, há vários. Uma opção bem comum é o JabRef; outra é usar Zotero ou Mendeley e exportar os dados deles no formato .bib.
+Sim, há vários. Uma opção bem comum é o JabRef; outra é usar Zotero\index{Zotero} ou Mendeley\index{Mendeley} e exportar os dados deles no formato .bib.
 
-\item \textbf{Como faço para usar o MakeFile (comando make) no Windows?}\\
+\item \textbf{Como faço para usar o Makefile (comando make) no Windows?}\\
 Se você instalou o \LaTeX{} usando o Cygwin, você já deve ter o comando make instalado. Se você pretende usar algum dos editores sugeridos, é possível deixar a compilação a cargo deles, dispensando o uso do make.
 \end{itemize}

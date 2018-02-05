@@ -134,7 +134,7 @@
 % indentação, como é o estilo brasileiro
 \usepackage{indentfirst}
 
-% LaTeX às vezes coloca notas de rodapá logo após o final do texto da
+% LaTeX às vezes coloca notas de rodapé logo após o final do texto da
 % página ao invés de no final da página; este pacote evita isso.
 \usepackage[bottom]{footmisc}
 
@@ -672,7 +672,7 @@
 
 % O comando \ref por padrão mostra apenas o número do elemento a que se
 % refere; assim, é preciso escrever "veja a Figura \ref{grafico}" ou
-% "como visto na Seção \ref{sec:introducao"}". Usando o pacote hyperref
+% "como visto na Seção \ref{sec:introducao}". Usando o pacote hyperref
 % (carregado mais abaixo), esse número é transformado em um hiperlink.
 %
 % Se você quiser mudar esse comportamento, ative as packages varioref
@@ -739,7 +739,7 @@
 
 % ao criar uma referência hyperref para um float, a referência aponta
 % para o final do caption do float, o que não é muito bom. Este pacote
-% faz a referência apontar para o início do float (é possível customizar
+% faz a referência apontar para o início do float (é possível personalizar
 % também).
 \usepackage[all]{hypcap}
 
@@ -1121,10 +1121,10 @@ citada a fonte.}
 % para números de páginas no início do documento e reabilitar mais adiante.
 \hypersetup{pageanchor=false}
 
-% Entradas customizadas para o índice remissivo (opcionais, pois o índice é
-% opcional). É comum colocar esses itens no final do documento, junto com o
-% comando \printindex, mas em alguns casos isso torna necessário executar
-% texindy (ou makeindex) mais de uma vez, então colocar isto aqui é melhor.
+% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
+% pois o índice é opcional). É comum colocar esses itens no final do documento,
+% junto com o comando \printindex, mas em alguns casos isso torna necessário
+% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
 \index{Inglês|see{Língua estrangeira}}
 \index{Figuras|see{Floats}}
 \index{Tabelas|see{Floats}}
@@ -1133,6 +1133,11 @@ citada a fonte.}
 \index{Sublegendas|see{Subfiguras}}
 \index{Equações|see{Modo Matemático}}
 \index{Fórmulas|see{Modo Matemático}}
+\index{Rodapé, notas|see{Notas de rodapé}}
+\index{Captions|see{Legendas}}
+\index{Versão original|see{Documento!versões}}
+\index{Versão corrigida|see{Documento!versões}}
+\index{Palavras estrangeiras|see{Língua estrangeira}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1174,7 +1179,8 @@ citada a fonte.}
 % A definição deste ambiente está no pacote imeusp; se você não
 % carregar esse pacote, precisa cuidar desta página manualmente.
 \begin{dedicatoria}
-Esta seção é opcional e fica numa página separada.
+Esta seção é opcional e fica numa página separada; ela pode ser usada para
+uma dedicatória ou epígrafe.
 \end{dedicatoria}
 
 % Após a capa e as páginas de rosto, começamos a numerar as páginas; com isso,
@@ -1222,8 +1228,9 @@ texto texto.
 % sugeridas da USP
 \begin{resumo}{eng}
 Elemento obrigatório, elaborado com as mesmas características do resumo em
-língua portuguesa. De acordo com o Regimento da Pós- Graduação da USP (Artigo
-99), deve ser redigido em inglês para fins de divulgação.
+língua portuguesa. De acordo com o Regimento da Pós-Graduação da USP (Artigo
+99), deve ser redigido em inglês para fins de divulgação. É uma boa ideia usar
+sítio \url{www.grammarly.com} na preparação de textos em inglês.
 Text text text text text text text text text text text text text text text text
 text text text text text text text text text text text text text text text text
 text text text text text text text text text text text text text text text text
@@ -1247,6 +1254,10 @@ text text text.
          DFT         & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
         EIIP         & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
         STFT         & Tranformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
+	ABNT         & Associação Brasileira de Normas Técnicas\\
+	URL          & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
+	IME          & Instituto de Matemática e Estatística\\
+	USP          & Universidade de São Paulo
 \end{tabular}
 
 % Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página.
