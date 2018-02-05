@@ -590,13 +590,20 @@
 % A criação do índice remissivo depende de um programa auxiliar, que pode ser
 % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
 % línguas diferentes e caracteres acentuados, mas índices criados com xindy não
-% funcionam em conjunto com hyperref. Neste template, xindy está ativado (aqui)
-% e hiperlinks no índice estão desativados pela opção "hyperindex=false" do
-% pacote hyperref. Se preferir usar makeindex, modifique a chamada ao pacote
-% imakeidx (aqui) e altere as opções do pacote hyperref. Também é possível
-% manter o pacote xindy, ativar hiperlinks no pacote hyperref e editar o
-% arquivo .idx manualmente para contornar os problemas (as linhas que incluem
-% o comando "hyperindexformat"). Não é tão difícil quanto parece.
+% funcionam em conjunto com hyperref. Para contornar esse problema,
+% configuramos hyperref para *não* gerar hyperlinks no índice (mais abaixo)
+% e configuramos xindy para que ele gere esses hyperlinks por conta própria.
+% Se preferir usar makeindex, modifique a chamada ao pacote imakeidx (aqui)
+% e altere as opções do pacote hyperref.
+
+% Cria o arquivo de configuração para xindy lidar corretamente com hyperlinks.
+\begin{filecontents*}{hyperxindy.xdy}
+(define-attributes ("emph"))
+(markup-locref :open "\hyperpage{" :close "}" :attr "default")
+(markup-locref :open "\textbf{\hyperpage{" :close "}}" :attr "textbf")
+(markup-locref :open "\textit{\hyperpage{" :close "}}" :attr "textit")
+(markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
+\end{filecontents*}
 
 % "-C utf8" e um truque para contornar este bug, que existe em outras
 % distribuicoes tambem:
@@ -605,7 +612,7 @@
 %\usepackage{imakeidx} % usando makeindex
 
 \makeindex[
-  options=-C utf8,
+  options=-C utf8 -M hyperxindy.xdy,
   intoc,
 ]
 
@@ -688,9 +695,12 @@
   urlcolor=DarkRed,
   filecolor=green,
   bookmarksopen=true,
-  % índices remissivos criados com xindy não funcionam bem com hyperref;
-  % é possível habilitá-los retirando esta opção daqui e removendo a
-  % opção "xindy" do pacote imakeidx.
+  % hyperref não gera hyperlinks corretos em índices remissivos criados com
+  % xindy; assim, desabilitamos essa função aqui e geramos os hyperlinks
+  % com uma configuração especial de xindy (mais acima). Se você preferir
+  % usar makeindex, (removendo a opção "xindy" do pacote imakeidx), quem
+  % precisa criar os hyperlinks é hyperref. Nesse caso, desabilite a
+  % próxima linha para criar hyperlinks no índice.
   hyperindex=false,
 ]{hyperref}
 

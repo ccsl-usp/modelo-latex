@@ -18,7 +18,7 @@ BIBTEX         := biber
 # distribuicoes tambem:
 # https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
 #MAKEINDEX      := makeindex
-MAKEINDEX      := texindy -C utf8
+MAKEINDEX      := texindy -C utf8 -M hyperxindy.xdy
 
 ###############################################################################
 
