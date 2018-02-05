@@ -106,8 +106,11 @@
 \newcommand{\fichacatalografica}[1]{\gdef\@fichacatalografica{#1}}
 
 \newcommand*{\tese}{
+  % "Tese" e "dissertação" têm sentido contrário em língua inglesa:
+  % http://guides.lib.berkeley.edu/dissertations_theses
+  % https://www.grad.ubc.ca/handbook-graduate-supervision/graduate-thesis
   \renewcommand*{\@nometrabalho}{Tese}
-  \renewcommand*{\@nometrabalhoeng}{Thesis}
+  \renewcommand*{\@nometrabalhoeng}{Dissertation}
   \renewcommand*{\@nometitulo}{Doutor}
   \renewcommand*{\@nometituloeng}{Doctor}
   \renewcommand*{\@grau}{Doutorado}
@@ -116,8 +119,9 @@
 \newcommand*{\doutorado}{\tese}
 
 \newcommand*{\dissertacao}{
+  % Veja observação acima
   \renewcommand*{\@nometrabalho}{Dissertação}
-  \renewcommand*{\@nometrabalhoeng}{Dissertation}
+  \renewcommand*{\@nometrabalhoeng}{Thesis}
   \renewcommand*{\@nometitulo}{Mestre}
   \renewcommand*{\@nometituloeng}{Master}
   \renewcommand*{\@grau}{Mestrado}
@@ -150,7 +154,7 @@
 \newcommand*{\@tituloeng}{\@title}
 
 \newcommand*{\@nometrabalho}{Dissertação}
-\newcommand*{\@nometrabalhoeng}{Dissertation}
+\newcommand*{\@nometrabalhoeng}{Thesis}
 \newcommand*{\@nometitulo}{Mestre}
 \newcommand*{\@nometituloeng}{Master}
 \newcommand*{\@grau}{Mestrado}
@@ -175,7 +179,7 @@
     in partial fulfillment\\[-0.25cm]
     of the requirements\\[-0.25cm]
     for the degree of\\[-0.25cm]
-    \@nometituloeng{} in Sciences%
+    \@nometituloeng{} of Science%
   }
 }
 
