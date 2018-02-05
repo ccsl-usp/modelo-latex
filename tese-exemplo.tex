@@ -1249,7 +1249,13 @@ text text text.
         STFT         & Tranformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
 \end{tabular}
 
-\chapter*{Lista de Símbolos}
+% Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página.
+% Como cada uma destas listas é muito curta, não faz muito sentido fazer
+% isso aqui. "\let\clearpage\relax" é um "truque sujo" para temporariamente
+% desabilitar a quebra de página.
+
+%\chapter*{Lista de Símbolos}
+{\let\cleardoublepage\relax \chapter*{Lista de Símbolos} }
 \begin{tabular}{rl}
         $\omega$    & Frequência angular\\
         $\psi$      & Função de análise \emph{wavelet}\\
@@ -1257,9 +1263,11 @@ text text text.
 \end{tabular}
 
 % Listas criadas automaticamente
-\listoffigures
+%\listoffigures
+{\let\cleardoublepage\relax \listoffigures }
 
-\listoftables
+%\listoftables
+{\let\cleardoublepage\relax \listoftables }
 
 % Sumário (obrigatório)
 \tableofcontents
