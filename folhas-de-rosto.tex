@@ -1,0 +1,142 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
+\pagestyle{plain}
+
+% Nas seções iniciais, vamos usar espaçamento entre linhas 1,5
+\onehalfspacing
+
+% Embora as páginas iniciais *pareçam* não ter numeração, a numeração existe,
+% só não é impressa. O comando \mainmatter (mais abaixo) reinicia a contagem
+% de páginas e elas passam a ser impressas. Isso significa que existem duas
+% páginas com o número "1": a capa e a página do primeiro capítulo. O pacote
+% hyperref não lida bem com essa situação. Assim, vamos desabilitar hyperlinks
+% para números de páginas no início do documento e reabilitar mais adiante.
+\hypersetup{pageanchor=false}
+
+% A capa; o parâmetro pode ser "port" ou "eng" para definir a língua
+\capaime[port]
+%\capaime[eng]
+
+% Se você não quiser usar a capa padrão, você pode criar uma outra
+% capa manualmente ou em um programa diferente. No segundo caso, é só
+% importar a capa como uma página adicional usando o pacote pdfpages.
+%\includepdf{./arquivo_da_capa.pdf}
+
+% A página de rosto da versão para depósito (ou seja, a versão final
+% antes da defesa) deve ser diferente da página de rosto da versão
+% definitiva (ou seja, a versão final após a incorporação das sugestões
+% da banca). Os parâmetros podem ser "port/eng" para a língua e
+% "provisoria/definitiva" para o tipo de página de rosto.
+%\pagrostoime[port]{definitiva}
+\pagrostoime[port]{provisoria}
+%\pagrostoime[eng]{definitiva}
+%\pagrostoime[eng]{provisoria}
+
+%%%%%%%%%%%%%%%%%%%% DEDICATÓRIA, RESUMO, AGRADECIMENTOS %%%%%%%%%%%%%%%%%%%%%%%
+
+% A definição deste ambiente está no pacote imeusp; se você não
+% carregar esse pacote, precisa cuidar desta página manualmente.
+\begin{dedicatoria}
+Esta seção é opcional e fica numa página separada; ela pode ser usada para
+uma dedicatória ou epígrafe.
+\end{dedicatoria}
+
+% Após a capa e as páginas de rosto, começamos a numerar as páginas; com isso,
+% podemos também reabilitar links para números de páginas no pacote hyperref.
+% Isso porque, embora contagem de páginas aqui começe em 1 e no primeiro
+% capítulo também, o fato de uma numeração usar algarismos romanos e a outra
+% algarismos arábicos é suficiente para evitar problemas.
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+
+% Agradecimentos:
+% Se o candidato não quer fazer agradecimentos, deve simplesmente eliminar
+% esta página. A epígrafe, obviamente, é opcional; é possível colocar
+% epígrafes em todos os capítulos. O comando "\chapter*" faz esta seção
+% não ser incluída no sumário.
+\chapter*{Agradecimentos}
+\epigrafe{Do. Or do not. There is no try.}{Mestre Yoda}
+
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto. Texto opcional.
+
+% O resumo é obrigatório, em português e inglês. Este comando também gera
+% automaticamente a referência para o próprio documento, conforme as normas
+% sugeridas da USP
+\begin{resumo}{port}
+Elemento obrigatório, constituído de uma sequência de frases concisas e
+objetivas, em forma de texto.  Deve apresentar os objetivos, métodos empregados,
+resultados e conclusões.  O resumo deve ser redigido em parágrafo único, conter
+no máximo 500 palavras e ser seguido dos termos representativos do conteúdo do
+trabalho (palavras-chave). Deve ser precedido da referência do documento.
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto.
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto.
+\end{resumo}
+
+% O resumo é obrigatório, em português e inglês. Este comando também gera
+% automaticamente a referência para o próprio documento, conforme as normas
+% sugeridas da USP
+\begin{resumo}{eng}
+Elemento obrigatório, elaborado com as mesmas características do resumo em
+língua portuguesa. De acordo com o Regimento da Pós-Graduação da USP (Artigo
+99), deve ser redigido em inglês para fins de divulgação. É uma boa ideia usar
+sítio \url{www.grammarly.com} na preparação de textos em inglês.
+Text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text.
+\end{resumo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% LISTAS DE FIGURAS ETC. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Todas as listas são opcionais; Usando "\chapter*" elas não são incluídas
+% no sumário. As listas geradas automaticamente também não são incluídas
+% por conta das opções "notlot" e "notlof" que usamos mais acima.
+
+% Listas criadas manualmente
+\chapter*{Lista de Abreviaturas}
+\begin{tabular}{rl}
+         CFT         & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
+         DFT         & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
+        EIIP         & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
+        STFT         & Tranformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
+	ABNT         & Associação Brasileira de Normas Técnicas\\
+	URL          & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
+	IME          & Instituto de Matemática e Estatística\\
+	USP          & Universidade de São Paulo
+\end{tabular}
+
+% Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página.
+% Como cada uma destas listas é muito curta, não faz muito sentido fazer
+% isso aqui. "\let\clearpage\relax" é um "truque sujo" para temporariamente
+% desabilitar a quebra de página.
+
+%\chapter*{Lista de Símbolos}
+{\let\cleardoublepage\relax \chapter*{Lista de Símbolos} }
+\begin{tabular}{rl}
+        $\omega$    & Frequência angular\\
+        $\psi$      & Função de análise \emph{wavelet}\\
+        $\Psi$      & Transformada de Fourier de $\psi$\\
+\end{tabular}
+
+% Listas criadas automaticamente
+%\listoffigures
+{\let\cleardoublepage\relax \listoffigures }
+
+%\listoftables
+{\let\cleardoublepage\relax \listoftables }
