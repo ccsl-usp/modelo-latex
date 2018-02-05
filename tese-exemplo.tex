@@ -18,7 +18,9 @@
 % "Book" tem capítulos (e partes, mas normalmente não usamos) e, se o documento
 % é frente-e-verso, cada capítulo começa em uma página de numeração ímpar.
 % Report é similar, mas cada capítulo começa em uma nova página, par ou ímpar.
-% É possível mudar esse comportamento com a opção "openany".
+% É possível mudar esse comportamento com a opção "openany". Observe que você
+% pode adaptar este modelo para escrever artigos, mudando a classe do
+% documento de "book" para "article" ou a classe de algum periódico específico.
 %
 % A opção frente-e-verso aqui significa, por exemplo, que as margens das páginas
 % ímpares e pares são diferentes ou que números de página aparecem à direita
@@ -32,6 +34,7 @@
 % A última língua da lista é a língua padrão do documento.
 %\documentclass[11pt,twoside,brazil,english]{book}
 \documentclass[11pt,twoside,english,brazil]{book}
+%\documentclass[11pt,twoside,english,brazil]{article}
 
 % Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
 % verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
@@ -896,6 +899,15 @@
 % formato de arquivo de dados do bibtex (".bib") e, portanto, não é difícil
 % migrar de um para o outro. biblatex também usa um programa auxiliar (biber),
 % mas não para realizar a formatação da bibliografia.
+%
+% Observe que biblatex pode criar bibliografias independentes por capítulo
+% ou outras divisões do texto. Normalmente é preciso indicar essas seções
+% manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
+% identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
+% No entanto, refsection e refsegment são incompatíveis com o pacote
+% titlesec, que mencionamos mais acima. Se você pretende criar bibliografias
+% independentes por seções, há duas soluções: (1) desabilitar o pacote
+% titlesec; (2) indicar as seções manualmente.
 
 %%%%%%%%%%% Usando bibtex: %%%%%%%%%%%%
 %\usepackage[hyperpageref]{backref}
@@ -989,38 +1001,37 @@
   andothers    = {\textit{et\addabbrvspace al}\adddot},
 }
 
-% O arquivo com os dados bibliográficos
+% O arquivo com os dados bibliográficos; você pode executar este comando
+% mais de uma vez para acrescentar múltiplos arquivos
 \addbibresource{bibliografia.bib}
-
-% Observe que biblatex pode criar bibliografias independentes por capítulo
-% ou outras divisões do texto. Normalmente é preciso indicar essas seções
-% manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
-% identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
-% No entanto, refsection e refsegment são incompatíveis com o pacote
-% titlesec, que mencionamos mais acima. Se você pretende criar bibliografias
-% independentes por seções, há duas soluções: (1) desabilitar o pacote
-% titlesec; (2) indicar as seções manualmente.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% TÍTULO, AUTOR ETC. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Estes comandos definem o título e autoria do trabalho e devem sempre ser
+% definidos, pois além de serem utilizados para criar a capa (tanto no estilo
+% do IME quanto com o comando padrão \maketitle), também são armazenados nos
+% metadados do PDF
+\title{Título do trabalho}
+\author{Nome Completo do Autor}
+
+% O pacote hyperref armazena alguns metadados no PDF gerado (em particular,
+% o conteúdo de "\title" e "\author"). Também é possível armazenar outros
+% dados, como uma lista de palavras-chave.
+\hypersetup{
+  pdfkeywords={LaTeX, tese, dissertação, IME/USP},
+}
+
 % Este pacote define o formato da capa, páginas de rosto, dedicatória e
 % resumo. Se você pretende criar essas páginas manualmente, não precisa
-% carregar este pacote nem definir os dados abaixo (mas veja que \title e
-% \author são usados para armazenar metadados no PDF gerado, então devem
-% sempre ser definidos).
+% carregar este pacote nem definir os dados abaixo.
 \usepackage{imeusp}
 
 % Define o texto da capa e da referência que vai na página do resumo
 \mestrado
 %\doutorado
-
-% Este comando define o título em português e em inglês e deve sempre ser
-% definido, pois além de formatar a capa e o resumo/abstract ele também é
-% armazenado nos metadados do PDF
-\title{Título do trabalho}
 
 % Se "\title" está em inglês, você pode definir o título em português aqui
 \tituloport{Título do trabalho}
@@ -1033,9 +1044,6 @@
 
 % Se isto não for definido, "\subtitulo" é utilizado no lugar
 \subtituloeng{a subtitle}
-
-% Além de formatar a capa, isto também é armazenado nos metadados do PDF
-\author{Nome Completo do Autor}
 
 \orientador{Prof. Dr. Fulano de Tal}
 
@@ -1099,19 +1107,31 @@ citada a fonte.}
 % nome do autor, título, etc.
 %}
 
-% O pacote hyperref armazena alguns metadados no PDF gerado (em particular,
-% o conteúdo de "\title" e "\author"). Também é possível armazenar outros
-% dados, como uma lista de palavras-chave.
-\hypersetup{
-  pdfkeywords={LaTeX, tese, dissertação, IME},
-}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% AQUI COMEÇA O CONTEÚDO DE FATO %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
+% Se estiver usando a classe "article" ao invés de "book", não existem os
+% comandos "frontmatter", "mainmatter" etc. abaixo. Além disso, para gerar o
+% título, você pode usar o comando padrão do LaTeX "\maketitle"
+%\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
+% página de rosto, abstract, TOC etc. O comando frontmatter faz números
+% de página aparecem em algarismos romanos ao invés de arábicos e
+% desabilita a contagem de capítulos (ele não existe na classe "article")
+\frontmatter
+
+% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
+\pagestyle{plain}
+
+% Nas seções iniciais, vamos usar espaçamento entre linhas 1,5
+\onehalfspacing
 
 % Embora as páginas iniciais *pareçam* não ter numeração, a numeração existe,
 % só não é impressa. O comando \mainmatter (mais abaixo) reinicia a contagem
@@ -1120,39 +1140,6 @@ citada a fonte.}
 % hyperref não lida bem com essa situação. Assim, vamos desabilitar hyperlinks
 % para números de páginas no início do documento e reabilitar mais adiante.
 \hypersetup{pageanchor=false}
-
-% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
-% pois o índice é opcional). É comum colocar esses itens no final do documento,
-% junto com o comando \printindex, mas em alguns casos isso torna necessário
-% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
-\index{Inglês|see{Língua estrangeira}}
-\index{Figuras|see{Floats}}
-\index{Tabelas|see{Floats}}
-\index{Código-fonte|see{Floats}}
-\index{Subcaptions|see{Subfiguras}}
-\index{Sublegendas|see{Subfiguras}}
-\index{Equações|see{Modo Matemático}}
-\index{Fórmulas|see{Modo Matemático}}
-\index{Rodapé, notas|see{Notas de rodapé}}
-\index{Captions|see{Legendas}}
-\index{Versão original|see{Documento!versões}}
-\index{Versão corrigida|see{Documento!versões}}
-\index{Palavras estrangeiras|see{Língua estrangeira}}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
-% página de rosto, abstract, TOC etc. O comando frontmatter faz números
-% de página aparecem em algarismos romanos ao invés de arábicos e
-% desabilita a contagem de capítulos
-\frontmatter
-
-% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
-\pagestyle{plain}
-
-% Nas seções iniciais, vamos usar espaçamento entre linhas 1,5
-\onehalfspacing
 
 % A capa; o parâmetro pode ser "port" ou "eng" para definir a língua
 \capaime[port]
@@ -1173,7 +1160,6 @@ citada a fonte.}
 %\pagrostoime[eng]{definitiva}
 %\pagrostoime[eng]{provisoria}
 
-
 %%%%%%%%%%%%%%%%%%%% DEDICATÓRIA, RESUMO, AGRADECIMENTOS %%%%%%%%%%%%%%%%%%%%%%%
 
 % A definição deste ambiente está no pacote imeusp; se você não
@@ -1184,7 +1170,10 @@ uma dedicatória ou epígrafe.
 \end{dedicatoria}
 
 % Após a capa e as páginas de rosto, começamos a numerar as páginas; com isso,
-% podemos também reabilitar links para números de páginas no pacote hyperref
+% podemos também reabilitar links para números de páginas no pacote hyperref.
+% Isso porque, embora contagem de páginas aqui começe em 1 e no primeiro
+% capítulo também, o fato de uma numeração usar algarismos romanos e a outra
+% algarismos arábicos é suficiente para evitar problemas.
 \pagenumbering{roman}
 \hypersetup{pageanchor=true}
 
@@ -1240,7 +1229,6 @@ text text text text text text text text text text text text text text text text
 text text text.
 \end{resumo}
 
-
 %%%%%%%%%%%%%%%%%%%%%% LISTAS DE FIGURAS ETC. E SUMÁRIO %%%%%%%%%%%%%%%%%%%%%%%%
 
 % Todas as listas são opcionais; Usando "\chapter*" elas não são incluídas
@@ -1283,16 +1271,35 @@ text text text.
 % Sumário (obrigatório)
 \tableofcontents
 
+% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
+% pois o índice é opcional). É comum colocar esses itens no final do documento,
+% junto com o comando \printindex, mas em alguns casos isso torna necessário
+% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
+\index{Inglês|see{Língua estrangeira}}
+\index{Figuras|see{Floats}}
+\index{Tabelas|see{Floats}}
+\index{Código-fonte|see{Floats}}
+\index{Subcaptions|see{Subfiguras}}
+\index{Sublegendas|see{Subfiguras}}
+\index{Equações|see{Modo Matemático}}
+\index{Fórmulas|see{Modo Matemático}}
+\index{Rodapé, notas|see{Notas de rodapé}}
+\index{Captions|see{Legendas}}
+\index{Versão original|see{Documento!versões}}
+\index{Versão corrigida|see{Documento!versões}}
+\index{Palavras estrangeiras|see{Língua estrangeira}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Aqui vai o conteúdo principal do trabalho, ou seja, os
-% capítulos que compõem a dissertação/tese. O comando mainmatter
-% reinicia a contagem de páginas, modifica a numeração para
-% números arábicos e ativa a contagem de capítulos.
+% Aqui vai o conteúdo principal do trabalho, ou seja, os capítulos que compõem
+% a dissertação/tese. O comando mainmatter reinicia a contagem de páginas,
+% modifica a numeração para números arábicos e ativa a contagem de capítulos
+% (ele não existe na classe "article")
 \mainmatter
 
 % Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
+% e só funciona com book/report, pois usa o nome dos capítulos nos cabeçalhos;
+% se estiver usando article, comente ou troque por "plain"
 \pagestyle{mainmatter}
 
 % No texto principal, vamos usar espaçamento entre linhas padrão
@@ -1325,7 +1332,9 @@ text text text.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Aqui vão apêndices. O comando appendix reinicia a numeração de capítulos e
-% passa a numerá-los com letras.
+% passa a numerá-los com letras. Como os anteriores, ele não existe na classe
+% "article".
+
 \appendix
 
 % Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
@@ -1336,11 +1345,11 @@ text text text.
 \input ape-conjuntos
 \par
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES FINAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Aqui vão a bibliografia, índice remissivo e outras seções similares.
-% O comando backmatter desabilita a numeração de capítulos.
+% O comando backmatter desabilita a numeração de capítulos e também não existe
+% na classe "article".
 \backmatter
 
 \singlespacing   % espaçamento simples
