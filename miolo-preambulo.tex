@@ -21,7 +21,10 @@
 % apenas útil para LaTeX tradicional e pdfTeX; XeTeX e LuaTeX usam sempre utf8.
 \usepackage[utf8]{inputenc}
 
-% Teoremas; este pacote precisa ser carregado antes das definições de fontes.
+% Permite criar "headed lists", ou seja, "listas" de elementos que vão
+% aparecendo ao longo do documento (como, por exemplo, teoremas). Podem ser
+% também citações a autores específicos, seções de um documento que está
+% sendo analisado etc. Precisa ser carregado antes das definições de fontes.
 \usepackage{amsthm}
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
@@ -289,7 +292,11 @@
   nomarginpar,
 }
 
-% Formatação personalizada do sumário e outras listas
+% Formatação personalizada das listas "itemize", "enumerate" e
+% "description", além de permitir criar novos tipos de listas
+%\usepackage{paralist}
+
+% Formatação personalizada do sumário, lista de tabelas/figuras etc.
 %\usepackage{titletoc}
 
 % Lembre-se que titlesec é incompatível com os comandos refsection
