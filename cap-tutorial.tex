@@ -271,7 +271,8 @@ não é necessário.}.
 
 \item A inserção de referências às obras ao longo do texto.
 
-\item O uso do comando \textsf{\textbackslash{}printbibliography}.
+\item A escolha do estilo bibliográfico (usando as opções da package
+biblatex) e uso do comando \textsf{\textbackslash{}printbibliography}.
 \end{enumerate}
 
 A fonte mais detalhada de informações sobre o banco de dados é a
@@ -282,8 +283,40 @@ dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
 Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
 podem exportar para o formato .bib.
 
-Para inserir as referências no texto, há alguns comandos diferentes a
-serem usados dependendo do caso:
+Observe que existem dois formatos comumente usados para escrever títulos
+de artigos, livros etc:
+
+\begin{description}
+  \item[Title case:] Substantivos, adjetivos e verbos (além de nomes
+  próprios e siglas) são escritos com a primeira letra maiúscula (``Um
+  Exemplo de Título no Estilo Title Case''). Em geral, a regra não se
+  aplica ao título de artigos ou capítulos de livro, apenas aos livros
+  dos quais eles fazem parte;
+
+  \item[Sentence case:] O título é escrito como qualquer outra frase
+  (``Um título só tem maiúsculas em abreviaturas, como ABNT, ou nomes
+  próprios'').
+\end{description}
+
+Cada estilo de bibliografia utiliza um desses formatos e, portanto, é
+desejável que o banco de dados funcione corretamente com ambos. No
+entanto, nem sempre é claro quais palavras devem ser iniciadas com letra
+maiúscula ao usar \textit{title case} e, por conta disso, não há um sistema
+automático em \LaTeX{} para adaptar títulos a ele. Sendo assim, como fazer
+um banco de dados bibliográfico capaz de funcionar com os dois formatos?
+
+A solução é sempre inserir os títulos dos itens no banco de dados seguindo
+o formato \textit{title case}. Se o estilo utiliza esse formato, o título
+é reproduzido na bibliografia como digitado no banco de dados. Se o estilo
+usa \textit{sentence case}, o texto (exceto a primeira letra) é convertido
+para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
+basta colocá-los entre chaves (``Automated Application-Level Checkpointing
+of \{MPI\} Programs''). Isso também é útil quando o autor é, na verdade,
+uma instituição (``\{Universidade de São Paulo --- Sistema Integrado de
+Bibliotecas\}'').
+
+Com o banco de dados pronto, as referências podem ser inseridas no texto
+usando diferentes comandos dependendo do caso:
 \textsf{\textbackslash{}cite},
 \textsf{\textbackslash{}citet},
 \textsf{\textbackslash{}citep} etc. Esses comandos estão descritos tanto

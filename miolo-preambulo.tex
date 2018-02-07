@@ -983,3 +983,47 @@
   % "et al." em itálico
   andothers    = {\textit{et\addabbrvspace al}\adddot},
 }
+
+% bibtex assume que os títulos no arquivo .bib seguem o formato "title case",
+% ou seja, "A Maioria das Palavras É Iniciada por Maiúsculas". Se o estilo
+% bibliográfico usa esse formato, o título é impresso sem mudanças; se o
+% estilo bibliográfico não usa esse formato, bibtex transforma o título
+% em caixa baixa.
+%
+% Por padrão, biblatex não faz nada e mantém o título como digitado no
+% arquivo bib, mas fornece a possibilidade de modificar esse comportamento.
+% Isso depende (1) da língua do documento (ou a língua de entrada do
+% item na bibliografia) e (2) da definição do comando que deve realizar
+% o processamento.
+% Aqui, ativamos esse mecanismo para a língua portuguesa:
+\DeclareCaseLangs{brazilian,brazil,portuges}
+
+% Três opções de processamento:
+%
+% Não faz nada (default):
+%\DeclareFieldFormat{titlecase}{#1}
+%
+% Transforma todos os títulos em caixa baixa, que é o usual em português.
+%\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
+%
+% Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
+% ou capítulos de livro (usando o comando definido logo abaixo):
+\DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
+
+% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
+\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
+  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
+    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
+    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
+    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
+    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
+    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
+    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
+    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
+    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
+    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
+    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
+    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
+    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
+    {#1}
+    {\MakeSentenceCase*{#1}}}
