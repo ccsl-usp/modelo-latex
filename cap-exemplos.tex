@@ -51,7 +51,7 @@ equação tem zero, uma ou duas raízes reais''. Observe que, quando um
 parágrafo termina com um símbolo, pode ser boa ideia usar um espaço
 não-separável (com ``\textsf{\textasciitilde}'') para evitar que ele
 fique sozinho na última linha (por exemplo, ``\textsf{O discriminante é
-denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').
+denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
 
 \begin{equation}
   \label{eq:2grau}
@@ -69,7 +69,7 @@ denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').
 \section{\emph{Floats} (Tabelas e Figuras)}\index{Floats}
 
 Muitos trabalhos acadêmicos incluem figuras; um exemplo é a
-Figura~\ref{fig:humanbeta}. Também é possível rotacionar figuras
+Figura~\ref{fig:humanbeta}. Também é possível girar figuras
 e criar subfiguras (com sublegendas\index{Legendas}), como no exemplo da
 Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui as
 subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
@@ -127,7 +127,14 @@ tabelas\index{Floats}. Há diversos estilos de tabela; um exemplo simples é a
 Tabela~\ref{tab:amino_acidos}. A Tabela~\ref{tab:ficha} mostra como construir
 uma tabela em forma de ficha larga que deve ser impressa em modo paisagem (em
 uma página separada). Um outro exemplo de tabela em modo paisagem, esta
-distribuída em duas páginas, está no Apêndice \ref{ape:sequencias}.
+distribuída em duas páginas, está no Apêndice \ref{ape:sequencias}\footnote{
+Observe que o nome do Apêndice (``\ref{ape:sequencias}'') foi impresso em uma
+linha separada, o que não é muito bom visualmente. Para evitar que isso
+aconteça (não só no final do parágrafo, mas em qualquer quebra de linha),
+faça o que já foi discutido na página \pageref{orphanchar} sobre símbolos
+matemáticos: utilize um espaço não-separável para fazer referências a figuras,
+tabelas, seções etc.: ``\textsf{... está no
+Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
 
 \begin{table}
 \begin{center}

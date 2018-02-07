@@ -12,16 +12,16 @@ Hoje é comum fazer essas duas coisas ao mesmo tempo, graças à visualização
 imediata que o computador oferece. No entanto, imagine como era o processo de
 produção de um livro nos anos 1970: o autor escrevia seu texto em uma máquina
 de escrever e enviava esse material para o editor, que era responsável pela
-tarefa de formatá-lo para impressão. O autor muitas vezes incluía anotações
+tarefa de formatá-lo para impressão. O autor muitas vezes inseria anotações
 para o editor explicando coisas como ``este parágrafo é uma citação'', e o
-editor criava algum mecanismo visual de representar isso.
+editor criava algum mecanismo visual para representar isso.
 
 Não é de se surpreender que, com o surgimento do microcomputador, os primeiros
 programas para criação de textos seguissem um funcionamento similar: o autor
 digitava e editava seu texto sem formatá-lo visualmente, apenas inserindo
 alguns comandos correspondentes a aspectos da formatação que ele depois
 revisava na versão impressa. \LaTeX{} é uma ferramenta baseada nesse processo:
-você prepara seu texto no editor de sua preferência, inclui comandos no texto
+você prepara seu texto no editor de sua preferência, insere comandos no texto
 que indicam a estrutura do documento e o processa com o \LaTeX{}, que gera um
 arquivo PDF formatado. Embora seja um estilo ``antigo'' de trabalhar, ele é
 muito eficiente em vários casos. Ou seja, dependendo da situação, pode ser
@@ -81,7 +81,7 @@ ou seja, um trecho de texto que não tem nenhum efeito sobre o resultado final
 do documento. Comentários podem ser usados como lembrete sobre alguma decisão,
 para indicar um parágrafo que ainda precisa de revisão etc. Por conta desse
 significado especial, para inserir um caractere \% ``normal'' no
-texto é preciso usar ``\textsf{\textbackslash\%}''.
+texto é preciso digitar ``\textsf{\textbackslash\%}''.
 
 Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
 você coloca comandos de configuração para o documento, e o \emph{corpo} do
@@ -97,10 +97,10 @@ você pode saber mais sobre eles (e outros) em qualquer texto introdutório
 sobre \LaTeX{} na Internet. \textsf{book} e \textsf{report} são os mais
 adequados para a escrita de teses ou dissertações acadêmicas.
 
-\LaTeX{} também tem packages (``plugins'') que acrescentam funcionalidades
-ou modificam os modelos padrão e também são carregadas no preâmbulo, com o
-comando \textsf{\textbackslash{}usepackage\{nome-da-package\}}. Várias
-delas podem receber opções adicionais no formato
+\LaTeX{} também tem \textit{packages} (``\textit{plugins}'') que acrescentam
+funcionalidades ou modificam os modelos padrão e também são carregadas no
+preâmbulo, com o comando \textsf{\textbackslash{}usepackage\{nome-da-package\}}.
+Várias delas podem receber opções adicionais no formato
 \textsf{\textbackslash{}usepackage[opção1,opção2...]\{nome-da-package\}};
 a documentação de cada package detalha as opções disponíveis.
 
@@ -183,7 +183,7 @@ ou \textsf{\textbackslash{}begin\{quotation\}} (este último é mais adequado
 para citações com vários parágrafos). Para poesia, use \textsf{verse}. A
 package \textsf{csquotes} acrescenta recursos sofisticados para citações.
 
-Para inserir uma nota de de rodapé, use o comando
+Para inserir uma nota de rodapé, use o comando
 \textsf{\textbackslash{}footnote\{texto da nota\}}\index{Notas de rodapé}.
 Um espaço não-separável é indicado pelo caractere til (``\textasciitilde{}'')
 e é possível forçar uma quebra de linha com
@@ -197,7 +197,7 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 \section{Referências Cruzadas e \emph{Floats}}
 
 É comum que um trecho do texto faça referência a outro trecho (``como discutimos
-no capítulo X\ldots''). Isso é feito com o par de comandos
+no capítulo~X\ldots''). Isso é feito com o par de comandos
 \textsf{\textbackslash{}label\{nome-sugestivo\}} e
 \textsf{\textbackslash{}ref\{nome-sugestivo\}}.
 
@@ -377,7 +377,7 @@ Nos dois últimos, não é preciso usar chaves após o comando. Ainda assim, as
 chaves podem ser colocadas e muitas vezes isso é bom: sem elas, \LaTeX{}
 entende que o caractere espaço que se segue a esses comandos serve apenas
 como separador em relação ao que vem a seguir. Por conta disso, ele ignora
-esse espaço. Quando isso não é o que se espera, a solução é usar as chaves:
+esse espaço. Quando isso não é o que se deseja, a solução é usar as chaves:
 \textsf{\textbackslash{}itshape\{\}}.
 
 Alguns comandos aceitam mais de um parâmetro, às vezes entre chaves, às
@@ -407,7 +407,7 @@ embora também só possa usar as fontes adaptadas para uso com o \LaTeX{}.
 
 \item \XeLaTeX{} que, além dos recursos do pdf\LaTeX{}, opera internamente
 em UTF-8 (ou seja, funciona melhor com múltiplas línguas) e pode funcionar
-não só com as fontes adaptadas para o \LaTeX{} mas também com as fontes
+não só com as fontes adaptadas para o \LaTeX{} como também com as fontes
 instaladas no sistema. A desvantagem desta versão é que ela é um pouco
 mais lenta que pdf\LaTeX{}.
 
