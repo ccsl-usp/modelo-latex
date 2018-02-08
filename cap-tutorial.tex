@@ -150,10 +150,11 @@ Um exemplo de documento \LaTeX{} simples:
 
 Esse exemplo mostra como definir o nome de um capítulo. Existem também os
 comandos \textsf{\textbackslash{}section}, \textsf{\textbackslash{}subsection},
-\textsf{\textbackslash{}subsubsection} e \textsf{\textbackslash{}paragraph}.
-Usar o nome do comando seguido de um asterisco
-(\textsf{\textbackslash{}chapter*} etc.) faz o capítulo/seção não ser incluído
-no sumário (nem considerado na contagem de capítulos, seções etc.).
+\textsf{\textbackslash{}subsubsection} e \textsf{\textbackslash{}paragraph}
+(o modelo \textsf{book} inclui também \textsf{\textbackslash{}part}). Usar o
+nome do comando seguido de um asterisco (\textsf{\textbackslash{}chapter*}
+etc.) faz o capítulo/seção não ser numerado nem incluído no sumário (nem
+considerado na contagem de capítulos, seções etc.).
 
 Para criar listas de itens, você pode fazer\footnote{Observe o uso de
 espaços no início das linhas com \textsf{\textbackslash{}item} para deixar a
@@ -180,8 +181,11 @@ Além de ``itemize'', há também ``enumerate'' (auto-explicativo) e ``descripti
 Citações curtas normalmente são incluídas no fluxo normal do texto e colocadas
 entre aspas; para citações mais longas, use \textsf{\textbackslash{}begin\{quote\}}
 ou \textsf{\textbackslash{}begin\{quotation\}} (este último é mais adequado
-para citações com vários parágrafos). Para poesia, use \textsf{verse}. A
-package \textsf{csquotes} acrescenta recursos sofisticados para citações.
+para citações com vários parágrafos). Para poesia, use \textsf{verse}
+(estrofes são separadas por uma linha em branco e versos são separados por
+\textsf{\textbackslash{}\textbackslash{}*}. O asterisco é opcional; ele
+instrui \LaTeX{} a manter as linhas na mesma página). A package
+\textsf{csquotes} acrescenta recursos sofisticados para citações.
 
 Para inserir uma nota de rodapé, use o comando
 \textsf{\textbackslash{}footnote\{texto da nota\}}\index{Notas de rodapé}.
@@ -199,7 +203,9 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 É comum que um trecho do texto faça referência a outro trecho (``como discutimos
 no capítulo~X\ldots''). Isso é feito com o par de comandos
 \textsf{\textbackslash{}label\{nome-sugestivo\}} e
-\textsf{\textbackslash{}ref\{nome-sugestivo\}}.
+\textsf{\textbackslash{}ref\{nome-sugestivo\}} (para o número da
+seção/capítulo) ou \textsf{\textbackslash{}pageref\{nome-sugestivo\}}
+(para o número da página).
 
 É claro que o ideal seria que tabelas e figuras sempre aparecessem junto ao
 texto a que se referem. No entanto, isso é impossível por conta da divisão
@@ -269,19 +275,39 @@ referenciadas no documento final. Isso significa que você pode criar um
 comum criar bancos de dados desse tipo separados por assunto, mas isso
 não é necessário.}.
 
-\item A inserção de referências às obras ao longo do texto.
+\item A inserção de referências às obras ao longo do texto, usando
+diferentes comandos dependendo do caso: \textsf{\textbackslash{}cite},
+\textsf{\textbackslash{}citet}, \textsf{\textbackslash{}citep} etc. Esses
+comandos estão descritos tanto na documentação da package
+biblatex\index{biblatex} quanto na da package natbib\index{natbib}.
+Normalmente, apenas as obras efetivamente citadas são incluídas na
+bibliografia, mas é possível forçar a inclusão de uma obra não-citada
+com o comando \textsf{\textbackslash{}nocite}.
 
 \item A escolha do estilo bibliográfico (usando as opções da package
-biblatex) e uso do comando \textsf{\textbackslash{}printbibliography}.
+biblatex) que formata as citações ao longo do texto e gera a bibliografia
+automaticamente através do comando \textsf{\textbackslash{}printbibliography}.
 \end{enumerate}
 
-A fonte mais detalhada de informações sobre o banco de dados é a
-documentação da package biblatex, mas o material ali é um tanto denso.
-Há muito material introdutório ao formato ``.bib'' e ao bibtex disponível
-\emph{online}, e você pode se inspirar em exemplos para criar seu banco de
-dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
-Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
-podem exportar para o formato .bib.
+O banco de dados é um arquivo de texto contendo uma \emph{entrada} para cada
+item da bibliografia e, em cada entrada, uma série de \emph{campos} com os
+dados (título, autor etc.). A entrada inclui também uma \emph{chave}, que é
+usada para inserir as citações no texto. Há vários tipos de entrada (para
+artigos, livros, sítios web etc.) e, para cada tipo, uma lista de campos
+possíveis (considere que periódicos normalmente incluem o número do volume,
+mas teses não). O exemplo abaixo é um livro cuja chave é ``dissertjourney'';
+ele pode ser citado com o comando \textsf{\textbackslash{}cite\{dissertjourney\}}:
+
+\begin{verbatim}
+        @book{dissertjourney,
+            author    = {Carol M. Roberts},
+            title     = {The Dissertation Journey},
+            publisher = {Corwin},
+            year      = 2010,
+            edition   = 2,
+            location  = {Thousand Oaks, CA},
+        }
+\end{verbatim}
 
 Observe que existem dois formatos comumente usados para escrever títulos
 de artigos, livros etc:
@@ -311,17 +337,25 @@ o formato \textit{title case}. Se o estilo utiliza esse formato, o título
 usa \textit{sentence case}, o texto (exceto a primeira letra) é convertido
 para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
 basta colocá-los entre chaves (``Automated Application-Level Checkpointing
-of \{MPI\} Programs''). Isso também é útil quando o autor é, na verdade,
-uma instituição (``\{Universidade de São Paulo --- Sistema Integrado de
-Bibliotecas\}'').
+of \{MPI\} Programs'').
 
-Com o banco de dados pronto, as referências podem ser inseridas no texto
-usando diferentes comandos dependendo do caso:
-\textsf{\textbackslash{}cite},
-\textsf{\textbackslash{}citet},
-\textsf{\textbackslash{}citep} etc. Esses comandos estão descritos tanto
-na documentação da package biblatex\index{biblatex} quanto na da package
-natbib\index{natbib}.
+Finalmente, os campos \textsf{author} e \textsf{publisher} podem incluir uma
+lista de nomes separados por \textsf{and}; biblatex reconhece que cada nome é
+composto por nome e sobrenome, às vezes com partículas como ``de'', ``dos''
+ou ``von'' e, dependendo do estilo bibliográfico, pode abreviar nomes, mudar
+sobrenomes para caixa alta etc. Isso evidentemente não funciona quando o autor
+é, na verdade, uma instituição; nesses casos, basta colocar o nome inteiro da
+instituição entre chaves (``\{Universidade de São Paulo --- Sistema Integrado
+de Bibliotecas\}'') para que biblatex não faça alterações desse tipo. Se o
+nome é longo, pode ser interessante definir o campo \textsf{shortauthor}.
+
+A fonte mais detalhada de informações sobre o banco de dados é a
+documentação da package biblatex, mas o material ali é um tanto denso.
+Há muito material introdutório ao formato ``.bib'' e ao bibtex disponível
+\emph{online}, e você pode se inspirar em exemplos para criar seu banco de
+dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
+Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
+podem exportar para o formato .bib.
 
 \section{Formatação Manual}
 
