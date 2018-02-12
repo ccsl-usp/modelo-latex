@@ -36,8 +36,159 @@
 \documentclass[11pt,twoside,english,brazil]{book}
 %\documentclass[11pt,twoside,english,brazil]{article}
 
-% Vários pacotes e opções de configuração genéricos; para personalizar o
-% resultado, modifique este arquivo.
+%% Primeiro os pacotes mais importantes, os pacotes especificos para cada tese ficam
+%% no arquivo especial
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsthm,amsmath,amssymb,latexsym,mathtools}
+\usepackage{babel}
+\usepackage{indentfirst}
+\frenchspacing
+\usepackage{emptypage}
+\usepackage{setspace}
+
+\usepackage[a4paper]{geometry}
+\geometry{
+  top=2.54cm,
+  bottom=2.0cm,
+  left=2.0cm,
+  right=2.54cm,
+  headheight=4.9mm,
+  headsep=10mm,
+  footskip=9.5mm,
+  nomarginpar,
+}
+\usepackage{graphicx}
+\usepackage{float}
+
+\usepackage[xindy]{imakeidx} % usando xindy
+%\usepackage{imakeidx} % usando makeindex
+
+\makeindex[
+  options=-C utf8 -M hyperxindy.xdy,
+  intoc,
+  ]
+
+\usepackage[
+  unicode=true,
+  plainpages=false,
+  pdfpagelabels,
+  colorlinks=true,
+  %citecolor=black,
+  %linkcolor=black,
+  %urlcolor=black,
+  %filecolor=black,
+  citecolor=DarkGreen,
+  linkcolor=NavyBlue,
+  urlcolor=DarkRed,
+  filecolor=green,
+  bookmarksopen=true,
+  % hyperref não gera hyperlinks corretos em índices remissivos criados com
+  % xindy; assim, desabilitamos essa função aqui e geramos os hyperlinks
+  % com uma configuração especial de xindy (mais acima). Se você preferir
+  % usar makeindex, (removendo a opção "xindy" do pacote imakeidx), quem
+  % precisa criar os hyperlinks é hyperref. Nesse caso, desabilite a
+  % próxima linha para criar hyperlinks no índice.
+  hyperindex=false,
+  ]{hyperref}
+
+  \usepackage[
+  % Ativa o suporte ao pacote hyperref
+  hyperref=true,
+  % Reconhece comandos no estilo do pacote natbib (\citet, \citep)
+  natbib=true,
+  % Se um item da bibliografia tem língua definida (com langid), permite
+  % hifenizar com base na língua selecionada.
+  autolang=hyphen,
+  % Inclui, em cada item da bibliografia, links para as páginas onde o
+  % item foi citado
+  backref=true,
+  % Com mais de 5 nomes, usa "et. al." na bibliografia
+  maxbibnames=5,
+  % Com mais de 2 nomes, usa "et. al." nas citações (só faz
+  % diferença nos estilos autor-data, como plainnat-ime)
+  maxcitenames=2,
+  % Estilo similar a plainnat
+  bibstyle=plainnat-ime,
+  citestyle=plainnat-ime,
+  % Estilo similar a alpha
+  %bibstyle=alphabetic,
+  %citestyle=alphabetic,
+  % O estilo numérico é comum em artigos
+  %bibstyle=numeric,
+  %citestyle=numeric,
+  % Um estilo que busca ser compatível com a ABNT:
+  %bibstyle=abnt,
+  %citestyle=abnt,
+]{biblatex}
+
+% Sobrenomes nas citações e na bibliografia em Small Caps
+\renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
+
+% Se desejável, o label na bibliografia no formato
+% plainnat-ime pode ser feito em negrito
+%\renewcommand*{\labelhighlight}[1]{\textbf{#1}}
+
+% Autores no formato "nome sobrenome"
+\DeclareNameAlias{sortname}{given-family}
+\DeclareNameAlias{default}{given-family}
+
+% Autores no formato "sobrenome, nome"
+%\DeclareNameAlias{sortname}{family-given}
+%\DeclareNameAlias{default}{family-given}
+
+% Vamos deixar um pequeno espaço entre cada item da bibliografia
+\setlength{\bibitemsep}{1em}
+
+% A primeira linha de cada item da bibliografia pode ter margem menor
+% que as demais; aqui definimos essa diferença:
+\setlength{\bibhang}{2em}
+
+\AtBeginBibliography{
+  % No estilo alfabético, biblatex coloca o "label" de cada item
+  % alinhado à esquerda; bibtex alinha à direita e isso faz
+  % mais sentido, então redefinimos o alinhamento aqui.
+  \renewcommand*{\makelabel}[1]{\hss#1}
+}
+
+\DefineBibliographyStrings{brazilian}{
+  % Na bibliografia, criamos links para as páginas onde uma
+  % determinada obra foi citada. O texto padrão para indicar
+  % isso é "ver...", vamos trocar.
+  backrefpage  = {citado na pg\adddot},
+  backrefpages = {citado nas pgs\adddot},
+  % "et al." em itálico
+  andothers    = {\textit{et\addabbrvspace al}\adddot},
+  page         = {pg\adddot},
+  pages        = {pgs\adddot},
+}
+
+\DefineBibliographyStrings{american}{
+  % "et al." em itálico
+  andothers    = {\textit{et\addabbrvspace al}\adddot},
+}
+\DeclareCaseLangs{brazilian,brazil,portuges}
+\DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
+
+% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
+\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
+  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
+    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
+    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
+    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
+    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
+    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
+    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
+    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
+    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
+    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
+    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
+    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
+    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
+    {#1}
+    {\MakeSentenceCase*{#1}}}
+  
 \input miolo-preambulo
 
 % O arquivo com os dados bibliográficos; você pode executar este comando
