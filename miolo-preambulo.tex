@@ -2,13 +2,13 @@
 %%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÕES E PACOTES BÁSICOS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
-% verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
-% só XeTeX, LuaTeX e pdfTeX geram PDFs, combinando todos é possível identificar
-% pdfTeX também.
-\usepackage{ifxetex}
-\usepackage{ifluatex}
-\usepackage{ifpdf}
+% % Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
+% % verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
+% % só XeTeX, LuaTeX e pdfTeX geram PDFs, combinando todos é possível identificar
+% % pdfTeX também.
+% \usepackage{ifxetex}
+% \usepackage{ifluatex}
+% \usepackage{ifpdf}
 
 % "fontenc" é um parâmetro interno do LaTeX. O fontenc default é OT1, mas ele
 % tem algumas limitações; a mais importante é que, com ele, palavras acentuadas
@@ -16,22 +16,23 @@
 % utilizam o fontenc T1. A escolha do fontenc tem consequências para as fontes
 % que podem ser usadas no documento; hoje em dia T1 tem mais opções de
 % qualidade, então não se perde nada.
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 
 % apenas útil para LaTeX tradicional e pdfTeX; XeTeX e LuaTeX usam sempre utf8.
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 
 % Permite criar "headed lists", ou seja, "listas" de elementos que vão
 % aparecendo ao longo do documento (como, por exemplo, teoremas). Podem ser
 % também citações a autores específicos, seções de um documento que está
 % sendo analisado etc. Precisa ser carregado antes das definições de fontes.
-\usepackage{amsthm}
+%\usepackage{amsthm}
+
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
 % primeiros pacotes carregados. É possível passar a língua do documento
 % como parâmetro aqui, mas já fizemos isso ao carregar a classe, mais acima.
-\usepackage{babel}
+%\usepackage{babel}
 
 % É possível personalizar as palavras-chave que babel utiliza, por exemplo:
 %\addto\extrasbrazil{\renewcommand{\refname}{Bibliografia}}
@@ -50,40 +51,40 @@
 % a qualidade visual do resultado. LaTeX tradicional não dá suporte a
 % nenhum tipo de microajuste; pdfLaTeX dá suporte a todos. LuaLaTeX
 % e XeLaTeX dão suporte a alguns.
-\newcommand{\activatemicrotype}{
-  \usepackage[
-    protrusion=true,
-    expansion,
-    % tracking não funciona com XeLaTeX; é possível obter o mesmo resultado
-    % com a opção "LetterSpace" do pacote fontspec, mas a configuração é
-    % totalmente manual. Por padrão, aumenta o afastamento entre caracteres
-    % nas fontes "small caps"; o resultado não se presta ao uso na
-    % bibliografia ou citações, então melhor desabilitar.
-    %tracking,
-    % kerning e spacing só funcionam com pdfLaTex; ambas são funções
-    % consideradas experimentais e nem sempre produzem resultados vantajosos.
-    %kerning,
-    %spacing,
-  ]{microtype}
-}
+% \newcommand{\activatemicrotype}{
+%   \usepackage[
+%     protrusion=true,
+%     expansion,
+%     % tracking não funciona com XeLaTeX; é possível obter o mesmo resultado
+%     % com a opção "LetterSpace" do pacote fontspec, mas a configuração é
+%     % totalmente manual. Por padrão, aumenta o afastamento entre caracteres
+%     % nas fontes "small caps"; o resultado não se presta ao uso na
+%     % bibliografia ou citações, então melhor desabilitar.
+%     %tracking,
+%     % kerning e spacing só funcionam com pdfLaTex; ambas são funções
+%     % consideradas experimentais e nem sempre produzem resultados vantajosos.
+%     %kerning,
+%     %spacing,
+%   ]{microtype}
+% }
 
-\ifxetex
-  \activatemicrotype
-\else
-  \ifluatex
-    \activatemicrotype
-  \else
-    \ifpdf
-      \activatemicrotype
-    \else
-    \fi
-  \fi
-\fi
+% \ifxetex
+%   \activatemicrotype
+% \else
+%   \ifluatex
+%     \activatemicrotype
+%   \else
+%     \ifpdf
+%       \activatemicrotype
+%     \else
+%     \fi
+%   \fi
+% \fi
 
-% Alguns "truques" (sujos?) para minimizar over/underfull boxes.
-\tolerance=800
-\hyphenpenalty=800
-\setlength{\emergencystretch}{2.5em}
+% % Alguns "truques" (sujos?) para minimizar over/underfull boxes.
+% \tolerance=800
+% \hyphenpenalty=800
+% \setlength{\emergencystretch}{2.5em}
 
 % Normalmente, LaTeX faz o final da página terminar sempre no mesmo lugar
 % (exceto no final dos capítulos). Esse padrão pode ser ativado explicitamente
@@ -99,22 +100,22 @@
 % Isso não é tão bom quanto alguns TeX-eiros defendem :) .
 % Esta opção desabilita isso e, consequentemente, evita problemas com
 % "id est" (i.e.) e "exempli gratia" (e.g.)
-\frenchspacing
+
 
 % LaTeX por default segue o estilo americano e não faz a indentação da
 % primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
 % indentação, como é o estilo brasileiro
-\usepackage{indentfirst}
+%\usepackage{indentfirst}
 
 % LaTeX às vezes coloca notas de rodapé logo após o final do texto da
 % página ao invés de no final da página; este pacote evita isso.
 \usepackage[bottom]{footmisc}
 
 % Se uma página está vazia, não imprime número de página ou cabeçalho
-\usepackage{emptypage}
+
 
 % Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
-\usepackage{setspace}
+
 
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
 \usepackage[usenames,svgnames,dvipsnames]{xcolor}
@@ -170,7 +171,7 @@
 % ruins para leitura na tela. Ao longo do tempo, versões diferentes dessas
 % fontes foram recomendadas como "a melhor"; atualmente, a melhor opção para
 % usar a família Computer Modern é a versão "Latin Modern".
-\usepackage{lmodern}
+
 
 % É possível mudar apenas uma das fontes. Em particular, a fonte
 % teletype da família Computer Modern foi criada para simular
@@ -182,7 +183,8 @@
 % esse fim:
 %\usepackage{newtxtt}
 %\usepackage{DejaVuSansMono}
-\usepackage{inconsolata}
+%\usepackage{inconsolata}
+\usepackage{textcomp}
 
 % Ao invés da família Computer Modern, é possível usar outras como padrão.
 % Uma ótima opção é a libertine, similar (mas não igual) à Times mas com
@@ -280,17 +282,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % tamanho da página e margens
-\usepackage[a4paper]{geometry}
-\geometry{
-  top=2.54cm,
-  bottom=2.0cm,
-  left=2.0cm,
-  right=2.54cm,
-  headheight=4.9mm,
-  headsep=10mm,
-  footskip=9.5mm,
-  nomarginpar,
-}
+
 
 % Formatação personalizada das listas "itemize", "enumerate" e
 % "description", além de permitir criar novos tipos de listas
@@ -409,7 +401,7 @@
 % pdfTeX, XeTeX, e LuaTeX podem usar figuras nos formatos PDF, JPG e PNG; EPS
 % também pode funcionar em algumas instalações mas não é garantido, então é
 % melhor evitar.
-\usepackage{graphicx}
+
 
 % Diretório onde estão as figuras; com isso, não é preciso colocar o caminho
 % completo em \includegraphics. Na verdade, não precisa nem colocar a extensão
@@ -418,7 +410,7 @@
 % Mais tipos de float e mais opções para personalização; este pacote
 % também acrescenta a possibilidade de definir "H" como opção de
 % posicionamento do float, que significa "aqui, incondicionalmente".
-\usepackage{float}
+
 
 % Por padrão, LaTeX prefere colocar floats no topo da página que
 % onde eles foram definidos; vamos mudar isso. Este comando depende
@@ -615,13 +607,7 @@
 % "-C utf8" e um truque para contornar este bug, que existe em outras
 % distribuicoes tambem:
 % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
-\usepackage[xindy]{imakeidx} % usando xindy
-%\usepackage{imakeidx} % usando makeindex
 
-\makeindex[
-  options=-C utf8 -M hyperxindy.xdy,
-  intoc,
-]
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -637,10 +623,10 @@
 % Recursos adicionais para o modo matemático
 % para evitar problemas de compatibilidade com algumas fontes, o pacote
 % amsthm já foi carregado mais acima
-\usepackage{latexsym}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{mathtools}
+%\usepackage{latexsym}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{mathtools}
 
 % Notação bra-ket
 %\usepackage{braket}
@@ -688,28 +674,7 @@
 %\labelformat{subsubsection}{Seção~#1}
 
 % Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
-\usepackage[
-  unicode=true,
-  plainpages=false,
-  pdfpagelabels,
-  colorlinks=true,
-  %citecolor=black,
-  %linkcolor=black,
-  %urlcolor=black,
-  %filecolor=black,
-  citecolor=DarkGreen,
-  linkcolor=NavyBlue,
-  urlcolor=DarkRed,
-  filecolor=green,
-  bookmarksopen=true,
-  % hyperref não gera hyperlinks corretos em índices remissivos criados com
-  % xindy; assim, desabilitamos essa função aqui e geramos os hyperlinks
-  % com uma configuração especial de xindy (mais acima). Se você preferir
-  % usar makeindex, (removendo a opção "xindy" do pacote imakeidx), quem
-  % precisa criar os hyperlinks é hyperref. Nesse caso, desabilite a
-  % próxima linha para criar hyperlinks no índice.
-  hyperindex=false,
-]{hyperref}
+
 
 %\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 %% cleveref não tem tradução para o português
@@ -908,81 +873,7 @@
 %%%%%%%%%%% Usando biblatex: %%%%%%%%%%%
 % https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
 % https://github.com/PaulStanley/biblatex-tutorial/releases
-\usepackage[
-  % Ativa o suporte ao pacote hyperref
-  hyperref=true,
-  % Reconhece comandos no estilo do pacote natbib (\citet, \citep)
-  natbib=true,
-  % Se um item da bibliografia tem língua definida (com langid), permite
-  % hifenizar com base na língua selecionada.
-  autolang=hyphen,
-  % Inclui, em cada item da bibliografia, links para as páginas onde o
-  % item foi citado
-  backref=true,
-  % Com mais de 5 nomes, usa "et. al." na bibliografia
-  maxbibnames=5,
-  % Com mais de 2 nomes, usa "et. al." nas citações (só faz
-  % diferença nos estilos autor-data, como plainnat-ime)
-  maxcitenames=2,
-  % Estilo similar a plainnat
-  bibstyle=plainnat-ime,
-  citestyle=plainnat-ime,
-  % Estilo similar a alpha
-  %bibstyle=alphabetic,
-  %citestyle=alphabetic,
-  % O estilo numérico é comum em artigos
-  %bibstyle=numeric,
-  %citestyle=numeric,
-  % Um estilo que busca ser compatível com a ABNT:
-  %bibstyle=abnt,
-  %citestyle=abnt,
-]{biblatex}
 
-% Sobrenomes nas citações e na bibliografia em Small Caps
-\renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
-
-% Se desejável, o label na bibliografia no formato
-% plainnat-ime pode ser feito em negrito
-%\renewcommand*{\labelhighlight}[1]{\textbf{#1}}
-
-% Autores no formato "nome sobrenome"
-\DeclareNameAlias{sortname}{given-family}
-\DeclareNameAlias{default}{given-family}
-
-% Autores no formato "sobrenome, nome"
-%\DeclareNameAlias{sortname}{family-given}
-%\DeclareNameAlias{default}{family-given}
-
-% Vamos deixar um pequeno espaço entre cada item da bibliografia
-\setlength{\bibitemsep}{1em}
-
-% A primeira linha de cada item da bibliografia pode ter margem menor
-% que as demais; aqui definimos essa diferença:
-\setlength{\bibhang}{2em}
-
-\AtBeginBibliography{
-  % No estilo alfabético, biblatex coloca o "label" de cada item
-  % alinhado à esquerda; bibtex alinha à direita e isso faz
-  % mais sentido, então redefinimos o alinhamento aqui.
-  \renewcommand*{\makelabel}[1]{\hss#1}
-}
-
-\DefineBibliographyStrings{brazilian}{
-  % Na bibliografia, criamos links para as páginas onde uma
-  % determinada obra foi citada. O texto padrão para indicar
-  % isso é "ver...", vamos trocar.
-  backrefpage  = {citado na pg\adddot},
-  backrefpages = {citado nas pgs\adddot},
-  % "et al." em itálico
-  andothers    = {\textit{et\addabbrvspace al}\adddot},
-  page         = {pg\adddot},
-  pages        = {pgs\adddot},
-}
-
-\DefineBibliographyStrings{american}{
-  % "et al." em itálico
-  andothers    = {\textit{et\addabbrvspace al}\adddot},
-}
 
 % bibtex assume que os títulos no arquivo .bib seguem o formato "title case",
 % ou seja, "A Maioria das Palavras É Iniciada por Maiúsculas". Se o estilo
@@ -996,7 +887,7 @@
 % item na bibliografia) e (2) da definição do comando que deve realizar
 % o processamento.
 % Aqui, ativamos esse mecanismo para a língua portuguesa:
-\DeclareCaseLangs{brazilian,brazil,portuges}
+
 
 % Três opções de processamento:
 %
@@ -1008,22 +899,4 @@
 %
 % Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
 % ou capítulos de livro (usando o comando definido logo abaixo):
-\DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
 
-% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
-\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
-  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
-    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
-    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
-    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
-    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
-    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
-    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
-    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
-    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
-    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
-    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
-    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
-    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
-    {#1}
-    {\MakeSentenceCase*{#1}}}
