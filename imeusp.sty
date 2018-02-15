@@ -338,13 +338,12 @@
 % O quadro com o título e o autor que deve ser visível
 % através da janela na capa.
 \DeclareRobustCommand{\@quadrotitulo}[1][port] {
-  \@margenscapa
 
-    \vskip \@margemquadrotitulotopo
-    \noindent
-    \hskip \@margemquadrotituloesq
-  %  \fbox{
-      \begin{minipage}[t][60mm][s]{100mm}
+    \vspace*{\@margemquadrotitulotopo}
+    \noindent%
+    \hspace*{\@margemquadrotituloesq}%
+%    \fbox{%
+      \begin{minipage}[b][60mm][s]{100mm}
         \begin{center}
           \Large
 
@@ -362,7 +361,7 @@
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\textit{\@subtituloeng}}
+            \textbf{\textit{\@subtituloeng}}%
           }
 
           \vspace{1cm plus 1cm minus 0.6cm}
@@ -371,8 +370,8 @@
 
           \vspace*{2cm plus 1.5cm minus 1.8cm}
         \end{center}
-      \end{minipage}
-  %  } % fbox
+      \end{minipage}%
+%    }% fbox
     \par
 }
 
@@ -386,34 +385,34 @@
     \newcommand*{\@datacapa}{\@datadefesaeng}
   }
 
-  \noindent
-  \hskip \@margemcapaesq
-%  \fbox{
-    \begin{minipage}[t][150mm][s]{160mm}
+  \noindent%
+  \hspace*{\@margemcapaesq}%
+%  \fbox{%
+    \begin{minipage}[t][140mm][s]{160mm}
       \begin{center}
         \Large
 
         \textsc{\@textocapa[#1]}
 
-        \vspace*{3.5cm plus 1.5cm minus 0cm}
+        \vspace*{3cm plus 1.5cm minus 0.5cm}
 
         \@pessoascapa[#1]
 
-        \vspace*{2cm plus 1cm minus 0cm}
+        \vspace*{2cm plus 1cm minus 0.5cm}
 
         \normalsize
 
         \@apoiocapa
 
-        \vspace*{2.5cm plus 1cm minus 0cm}
+        \vspace*{1.5cm plus 1cm minus 0.5cm}
 
         \@localdefesa
 
         \@datacapa
 
       \end{center}
-    \end{minipage}
-%  } % fbox
+    \end{minipage}%
+%  }% fbox
   \par
 }
 
@@ -427,12 +426,12 @@
   \begin{hyphenrules}{nohyphenation}
     \@quadrotitulo[#1]
 
-    \vspace*{3cm plus 2cm minus 0cm}
+    \vspace*{2.5cm plus 2cm minus 1cm}
 
     \@detalhescapa[#1]
   \end{hyphenrules}
 
-  \vspace*{2cm plus 2cm minus 2cm}
+  \vspace*{1cm plus 2cm minus 1cm}
   \cleardoublepage
 }
 
@@ -444,7 +443,7 @@
       \begin{quote}
       \normalsize\@textobanca[#1]
       \end{quote}
-    \end{minipage}
+    \end{minipage}%
   }%
   {}
 }
