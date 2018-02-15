@@ -282,13 +282,19 @@
 % tamanho da página e margens
 \usepackage[a4paper]{geometry}
 \geometry{
-  top=2.54cm,
-  bottom=2.0cm,
+  % distância entre o início da página e o início do texto principal
+  top=32mm,
+  bottom=28mm,
   left=2.0cm,
   right=2.54cm,
-  headheight=4.9mm,
-  headsep=10mm,
-  footskip=9.5mm,
+  % Com geometry, esta medida não é tão relevante; basta garantir que ela
+  % seja menor que "top" e que o texto do cabeçalho caiba nela.
+  headheight=25.4mm,
+  % distância entre o início do texto principal e a base do cabeçalho;
+  % ou seja, o cabeçalho "invade" a margem superior nessa medida. Essa
+  % é a medida que determina a posição do cabeçalho
+  headsep=11mm,
+  footskip=10mm,
   nomarginpar,
 }
 
