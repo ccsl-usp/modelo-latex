@@ -391,6 +391,22 @@
   \formataCabecalhosDinamicos{}
 }
 
+% Na frontmatter e backmatter, não há números de capítulos e (em geral)
+% não há subdivisões (capítulos/seções/subseções), apenas um nível.
+% O correto, então, é usar o mesmo texto (nome do capítulo ou seção)
+% nas páginas pares ou ímpares. Isso na verdade não está funcionando
+% na frontmatter, pois os capítulos ali não definem os cabeçalhos (não
+% executam "chaptermark/sectionmark"), mas "forçamos" a bibliografia
+% e o índice a usarem.
+\fancypagestyle{frontback}{
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
 % A página inicial de cada capítulo é automaticamente configurada para o estilo
 % "plain", então vamos definir esse estilo (colocando o número de página no
 % mesmo lugar das demais). As páginas iniciais também usam esse estilo.
@@ -617,6 +633,12 @@
 % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
 \usepackage[xindy]{imakeidx} % usando xindy
 %\usepackage{imakeidx} % usando makeindex
+
+% Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
+% vamos mudar isso e deixar fancyhdr definir a formatação
+\indexsetup{
+  othercode={\chaptermark{\indexname}},
+}
 
 \makeindex[
   options=-C utf8 -M hyperxindy.xdy,
@@ -982,6 +1004,23 @@
 \DefineBibliographyStrings{american}{
   % "et al." em itálico
   andothers    = {\textit{et\addabbrvspace al}\adddot},
+}
+
+% biblatex redefine os cabeçalhos das páginas na bibliografia;
+% vamos deixar essa tarefa para fancyhdr.
+\defbibheading{bibliography}[\bibname]{%
+  \chapter*{#1}%
+  %\section*{#1}% Se for a classe "article"
+  \chaptermark{#1}%
+  %\sectionmark{#1}% Se for a classe "article"
+}
+
+\defbibheading{bibintoc}[\bibname]{%
+  \chapter*{#1}%
+  %\section*{#1}% Se for a classe "article"
+  \addcontentsline{toc}{chapter}{#1}%
+  \chaptermark{#1}%
+  %\sectionmark{#1}% Se for a classe "article"
 }
 
 % bibtex assume que os títulos no arquivo .bib seguem o formato "title case",

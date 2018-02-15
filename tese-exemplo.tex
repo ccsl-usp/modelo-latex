@@ -88,6 +88,9 @@
 % desabilita a contagem de capítulos (ele não existe na classe "article")
 \frontmatter
 
+% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
+\pagestyle{frontback}
+
 % As folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
 % Se estiver escrevendo um artigo ou não quiser usar, remova.
 \input folhas-de-rosto
@@ -158,7 +161,6 @@
 % Aqui vão apêndices. O comando appendix reinicia a numeração de capítulos e
 % passa a numerá-los com letras. Como os anteriores, ele não existe na classe
 % "article".
-
 \appendix
 
 % Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
@@ -175,6 +177,9 @@
 % O comando backmatter desabilita a numeração de capítulos e também não existe
 % na classe "article".
 \backmatter
+
+% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
+\pagestyle{frontback}
 
 \singlespacing   % espaçamento simples
 
