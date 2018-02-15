@@ -1,11 +1,17 @@
 \ProvidesPackage{imeusp}
 
-% Permite fazer cálculos com as variáveis do LaTeX; usamos para calcular
-% espaçamentos em função do tamanho das margens
-\RequirePackage{calc}
+% Várias funções úteis
+\RequirePackage{etoolbox}
 
-% Permite usar condicionais
-\RequirePackage{ifthen}
+% os diversos testes de etoolbox não expandem os argumentos; como precisamos
+% que eles sejam expandidos, definimos aqui um comando auxiliar para isso.
+\newcommand\@if@expand@empty[3]{%
+  \ifcsdef{#1}{%
+    \letcs{\@ime@temp}{#1}%
+    \edef\@ime@temp{\@ime@temp}%
+    \expandafter\ifstrempty\expandafter{\@ime@temp}{#2}{#3}%
+  }{#2}%
+}
 
 % Parágrafos não-justificados melhores
 \RequirePackage[newcommands]{ragged2e}
@@ -50,7 +56,7 @@
   \thispagestyle{empty}
   \vspace*{2em}
 
-  \ifthenelse{\equal{port}{#1}}{
+  \ifstrequal{port}{#1}{
     \newcommand*{\@resumopalavras}{\textbf{Palavras-chave:}\hspace{1em}\@palavraschave}
     \begin{center}\Large\textbf{Resumo}\end{center}
   }{
@@ -139,8 +145,8 @@
 \newcommand*{\@banca}{Banca não definida!}
 \newcommand*{\@palavraschave}{Palavras-chave não definidas!}
 \newcommand*{\@keywords}{Keywords não definidas!}
-\newcommand*{\@subtitulo}{\relax}
-\newcommand*{\@direitos}{\relax}
+\newcommand*{\@subtitulo}{}
+\newcommand*{\@direitos}{}
 \newcommand{\@fichacatalografica}{}
 
 % Se estes não forem definidos, usamos a variável correspondente
@@ -167,7 +173,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand*{\@textocapa}[1][port] {%
-  \ifthenelse{\equal{port}{#1}}{%
+  \ifstrequal{port}{#1}{%
     \@nometrabalho{} apresentada ao\\[-0.25cm]
     Instituto de Matemática e Estatística\\[-0.25cm]
     da Universidade de São Paulo\\[-0.25cm]
@@ -186,20 +192,20 @@
 
 \newcommand*{\@pessoascapa}[1][port] {%
   \begin{tabular}{rl}
-    \ifthenelse{\equal{port}{#1}}{%
+    \ifstrequal{port}{#1}{%
       Programa: & \@programa \tabularnewline
       Orientador: & \@orientador \tabularnewline
-      \@ifundefined{@coorientador}{}{Coorientador: & \@coorientador \tabularnewline}%
+      \@if@expand@empty{@coorientador}{}{Coorientador: & \@coorientador \tabularnewline}%
     }{%
       Program: & \@programaeng \tabularnewline
       Advisor: & \@orientador \tabularnewline
-      \@ifundefined{@coorientador}{}{Coadvisor: & \@coorientador \tabularnewline}%
+      \@if@expand@empty{@coorientador}{}{Coadvisor: & \@coorientador \tabularnewline}%
   }
   \end{tabular}
 }
 
 \newcommand*{\@textorostoprovisoria}[1][port] {%
-  \ifthenelse{\equal{port}{#1}}{%
+  \ifstrequal{port}{#1}{%
     Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada pelo
     candidato \@author, tal como submetida à Comissão Julgadora.%
   }{%
@@ -209,7 +215,7 @@
 }
 
 \newcommand*{\@textorostodefinitiva}[1][port] {%
-  \ifthenelse{\equal{port}{#1}}{%
+  \ifstrequal{port}{#1}{%
     Esta versão da \MakeLowercase{\@nometrabalho} contém as correções e alterações
     sugeridas pela Comissão Julgadora durante a defesa da versão
     original do trabalho, realizada em \@datadefesa.\\
@@ -228,7 +234,7 @@
 }
 
 \newcommand{\@textobanca}[1][port] {%
-  \ifthenelse{\equal{port}{#1}}{%
+  \ifstrequal{port}{#1}{%
     \noindent Comissão Julgadora:
 
     \@banca%
@@ -241,13 +247,13 @@
 
 \newcommand{\@refdocumento}[1][port] {%
   \@author.
-  \ifthenelse{\equal{port}{#1}}{%
-    \textbf{\@titulopt{}\unskip\ifthenelse{\equal{\@subtitulo}{\relax}}{}{: \textit{\@subtitulo\unskip}}}.
+  \ifstrequal{port}{#1}{%
+    \textbf{\@titulopt\@if@expand@empty{@subtitulo}{}{: \textit{\@subtitulo}}}.
     \@nometrabalho{} (\@grau).
     Instituto de Matemática e Estatística,
     Universidade de São Paulo,%
   }{%
-    \textbf{\@tituloeng{}\unskip\ifthenelse{\equal{\@subtituloeng}{\relax}}{}{: \textit{\@subtituloeng\unskip}}}.
+    \textbf{\@tituloeng\@if@expand@empty{@subtituloeng}{}{: \textit{\@subtituloeng}}}.
     \@nometrabalhoeng{} (\@graueng).
     Institute of Mathematics and Statistics,
     University of São Paulo,%
@@ -284,10 +290,6 @@
 % topo da página, a margem esquerda da janela com título e autor e a margem
 % esquerda para os demais elementos centralizados da página.
 
-\newlength{\@margemquadrotitulotopo}
-\newlength{\@margemquadrotituloesq}
-\newlength{\@margemcapaesq}
-
 \newcommand*{\@margenscapa}{
   % Calcula o valor das margens; chamando este comando explicitamente
   % quando necessário ao invés de calcular os valores durante a
@@ -297,15 +299,19 @@
   % A distância entre o topo da página e o início do texto (fora o cabeçalho)
   % é dada por (1in + \voffset + \headsep + \topmargin + \headheight).
   % Queremos colocar a caixa com o título 47mm abaixo do topo, então:
-  \setlength\@margemquadrotitulotopo{47mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
+  \dimgdef\@margemquadrotitulotopo{47mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
+  % Por alguma razão, LaTeX sempre deixa um espaço a mais; creio que esse
+  % espaço é uma linha em branco, mas não consegui remover, então vamos fazer
+  % um quebra-galho:
+  \dimgdef{\@margemquadrotitulotopo}{\@margemquadrotitulotopo - 1em}
 
   % Queremos colocar a caixa com o título centralizada na página. "\center"
   % centraliza em função da área de texto, não da página inteira, então
   % não podemos usá-lo, pois as margens esquerda e direita podem ser
   % diferentes. A distância entre a borda esquerda/interna do papel e o
   % início do texto é dada por (1in + \hoffset + \oddsidemargin), então:
-  \setlength\@margemquadrotituloesq{(\paperwidth - 100mm)/2 - (1in + \hoffset + \oddsidemargin)}
-  \setlength\@margemcapaesq{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
+  \dimgdef\@margemquadrotituloesq{(\paperwidth - 100mm)/2 - (1in + \hoffset + \oddsidemargin)}
+  \dimgdef\@margemcapaesq{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
 }
 
 
@@ -318,7 +324,7 @@
     \item
       \@direitos
 
-      \ifthenelse{\equal{}{\@fichacatalografica}} {} {
+      \@if@expand@empty{@fichacatalografica} {} {
         \vspace*{3cm plus 3cm minus 1cm}
 	\setlength{\fboxsep}{20pt}
 	\begin{center}
@@ -349,8 +355,7 @@
 
           \vspace*{2cm plus 1.5cm minus 1.8cm}
 
-          \ifthenelse{\equal{port}{#1}} {%
-
+          \ifstrequal{port}{#1} {%
             \textbf{\@titulopt}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
@@ -377,7 +382,7 @@
 
 % As demais informações da capa
 \DeclareRobustCommand{\@detalhescapa}[1][port] {
-  \ifthenelse{\equal{port}{#1}} {
+  \ifstrequal{port}{#1} {
     \newcommand*{\@apoiocapa}{\@apoio}
     \newcommand*{\@datacapa}{\@datadefesa}
   }{
@@ -438,7 +443,7 @@
 % As informações da banca que vão apenas na versão definitiva
 % da página de rosto
 \DeclareRobustCommand{\@quadrobanca}[2][port] {%
-  \ifthenelse{\equal{definitiva}{#2}}{%
+  \ifstrequal{definitiva}{#2}{%
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
       \normalsize\@textobanca[#1]
@@ -467,7 +472,7 @@
       \begin{minipage}[t][50mm][s]{80mm}
         \begin{FlushRight}
           \normalsize
-          \ifthenelse{\equal{definitiva}{#2}}{%
+          \ifstrequal{definitiva}{#2}{%
             \@textorostodefinitiva[#1]%
           } {%
             \@textorostoprovisoria[#1]%
