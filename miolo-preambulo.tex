@@ -2,6 +2,10 @@
 %%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÕES E PACOTES BÁSICOS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Vários comandos auxiliares para o desenvolvimento de packages e classes;
+% aqui, usamos em alguns comandos de formatação.
+\usepackage{etoolbox}
+
 % Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
 % verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
 % só XeTeX, LuaTeX e pdfTeX geram PDFs, combinando todos é possível identificar
@@ -141,6 +145,11 @@
 \g@addto@macro{\flushright}{\hbadness=\@M}
 \g@addto@macro{\FlushRight}{\hbadness=\@M}
 \makeatother
+
+% LaTeX define os comandos "MakeUppercase" e "MakeLowercase", mas eles têm
+% algumas limitações; esta package define os comandos MakeTextUppercase e
+% MakeTextLowercase que resolvem isso.
+\usepackage{textcase}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -351,31 +360,45 @@
 % subseções ou subsubseções nos cabeçalhos.
 \setcounter{tocdepth}{2}
 
+% Queremos colocar o número da página mais próximo da borda do papel (na
+% horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
+% margem direita -10mm" (o número vai ficar a 10mm da borda).
+%
+% Observe que a package geometry define \evensidemargin, mas seu valor não
+% necessariamente corresponde ao que queremos aqui (não sei bem como nem
+% por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+% manualmente.
+%
+% A distância entre a borda esquerda/interna do papel e o início do texto
+% é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+% é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+\dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
+\addtolength{\headwidth}{\othermargin}
+\addtolength{\headwidth}{-10mm}
+
 \newcommand{\formataNumPaginas}{
-  % Texto normal, em maiúsculas
-  \fancyhead[RO]{\footnotesize\thepage}
-  \fancyhead[LE]{\footnotesize\thepage}
-  % Em negrito
-  %\fancyhead[RO]{\footnotesize\textbf{\thepage}}
-  %\fancyhead[LE]{\footnotesize\textbf{\thepage}}
+  \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+  \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
 }
 
 \newcommand{\formataCabecalhosDinamicos}{
-  % Texto normal, em maiúsculas
-  \fancyhead[LO]{\footnotesize\MakeUppercase{\rightmark}}
-  \fancyhead[RE]{\footnotesize\MakeUppercase{\leftmark}}
-  % Em negrito
-  %\fancyhead[LO]{\footnotesize\textbf{\rightmark}}
-  %\fancyhead[RE]{\footnotesize\textbf{\leftmark}}
+  \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+  \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
 }
 
 \fancypagestyle{mainmatter}{
   % Nome do capítulo no cabeçalho das páginas pares (e nas
   % ímpares quando não há seções)
-  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\chaptermark}[1]{
+    \markboth
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+  }
 
   % Número e nome da seção no cabeçalho das páginas ímpares
-  \renewcommand{\sectionmark}[1]{\markright{\thesection. ##1}}
+  \renewcommand{\sectionmark}[1]{
+    \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
+  }
 
   \fancyhf{}
   \formataNumPaginas{}
@@ -388,8 +411,8 @@
       % Páginas ímpares: "Apêndice X"
       \appendixname\ \thechapter%
     }{%
-      % Páginas pares: "X. nome do apêndice"
-      \thechapter. ##1%
+      % Páginas pares: "X | nome do apêndice"
+      \thechapter\hskip 0.3em |\hskip 0.3em ##1%
     }
   }
 
