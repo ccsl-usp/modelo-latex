@@ -181,6 +181,46 @@
 % usar a família Computer Modern é a versão "Latin Modern".
 \usepackage{lmodern}
 
+% Latin Modern não tem fontes bold + Small Caps, mas cm-super sim;
+% assim, vamos ativar o suporte às fontes cm-super (sem ativá-las
+% como a fonte padrão do documento) e configurar substituições
+% automáticas para que a fonte Latin Modern seja substituída por
+% cm-super quando o texto for bold + Small Caps.
+\usepackage{fix-cm}
+
+% É preciso incluir substituições para o encoding TS1 também por conta
+% dos números oldstyle, porque para inclui-los nas fontes computer modern
+% foi feita uma hack: os dígitos são declarados como sendo os números
+% itálicos da fonte matemática e, portanto, estão no encoding TS1.
+%
+% Primeiro forçamos o LaTeX a carregar a fonte Latin Modern (ou seja, ler
+% o arquivo que inclui "DeclareFontFamily") e, a seguir, definimos a
+% substituição
+\fontencoding{TS1}\fontfamily{lmr}\selectfont
+\DeclareFontShape{TS1}{lmr}{b}{sc}{<->ssub * cmr/bx/n}{}
+\DeclareFontShape{TS1}{lmr}{bx}{sc}{<->ssub * cmr/bx/n}{}
+
+\fontencoding{T1}\fontfamily{lmr}\selectfont
+\DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub * cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub * cmr/bx/sc}{}
+
+% Latin Modern não tem "small caps + itálico", mas tem "small caps + slanted";
+% vamos definir mais uma substituição aqui.
+\fontencoding{T1}\fontfamily{lmr}\selectfont % já feito acima, mas tudo bem
+\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
+\DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub * lmr/bx/scsl}{}
+
+% Se fizermos mudanças manuais na fonte, estes comandos podem vir
+% a ser úteis
+%\newcommand\lmodern{%
+%  \renewcommand{\oldstylenums}[1]{{\fontencoding{TS1}\selectfont ##1}}%
+%  \fontfamily{lmr}\selectfont%
+%}
+%
+%\DeclareRobustCommand\textlmodern[1]{%
+%  {\lmodern #1}%
+%}
+
 % É possível mudar apenas uma das fontes. Em particular, a fonte
 % teletype da família Computer Modern foi criada para simular
 % as impressoras dos anos 1970/1980. Sendo assim, ela é uma fonte (1)
@@ -282,6 +322,16 @@
 % Com o pacote fontspec, também é possível usar o comando "\fontspec" para
 % selecionar uma fonte temporariamente, sem alterar as fontes-padrão do
 % documento.
+
+% Tanto Small Caps quanto itálico (ou slanted) são "shapes" de uma fonte.
+% Sendo assim, os comandos \scshape (ou \textsc) e \itshape (ou \textit) são
+% "incompatíveis" entre si, ou seja, um cancela o outro. O que LaTeX faz é
+% considerar que há um outro shape: "small caps + itálico" (ou "small caps +
+% slanted"), chamado "scit" ou "scsl". Se a fonte oferece esse shape, é só
+% usar \fontshape(scit}\selectfont. Mas isso é muito desconfortável, já que
+% o usual seria algo como "\textsc{Algumas \textit{palavras} podem ser
+% diferentes}". Esta package resolve esse problema.
+\usepackage{slantsc}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
