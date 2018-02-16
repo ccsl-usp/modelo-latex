@@ -53,35 +53,28 @@
 % microajustes no tamanho das letras, espaçamento etc. para melhorar
 % a qualidade visual do resultado. LaTeX tradicional não dá suporte a
 % nenhum tipo de microajuste; pdfLaTeX dá suporte a todos. LuaLaTeX
-% e XeLaTeX dão suporte a alguns.
-\newcommand{\activatemicrotype}{
-  \usepackage[
-    protrusion=true,
-    expansion,
-    % tracking não funciona com XeLaTeX; é possível obter o mesmo resultado
-    % com a opção "LetterSpace" do pacote fontspec, mas a configuração é
-    % totalmente manual. Por padrão, aumenta o afastamento entre caracteres
-    % nas fontes "small caps"; o resultado não se presta ao uso na
-    % bibliografia ou citações, então melhor desabilitar.
-    %tracking,
-    % kerning e spacing só funcionam com pdfLaTex; ambas são funções
-    % consideradas experimentais e nem sempre produzem resultados vantajosos.
-    %kerning,
-    %spacing,
-  ]{microtype}
+% e XeLaTeX dão suporte a alguns:
+%
+% * expansion não funciona com XeLaTeX
+% * tracking não funciona com XeLaTeX; é possível obter o mesmo resultado
+%   com a opção "LetterSpace" do pacote fontspec, mas a configuração é
+%   totalmente manual. Por padrão, aumenta o afastamento entre caracteres
+%   nas fontes "small caps"; o resultado não se presta ao uso na
+%   bibliografia ou citações, então melhor desabilitar.
+% * kerning e spacing só funcionam com pdfLaTex; ambas são funções
+%   consideradas experimentais e nem sempre produzem resultados vantajosos.
+
+\newcommand\microtypeopts{
+  protrusion=true,
+  tracking=false,
+  kerning=false,
+  spacing=false
 }
 
 \ifxetex
-  \activatemicrotype
+  \usepackage[expansion=false,\microtypeopts]{microtype}
 \else
-  \ifluatex
-    \activatemicrotype
-  \else
-    \ifpdf
-      \activatemicrotype
-    \else
-    \fi
-  \fi
+  \usepackage[expansion=true,\microtypeopts]{microtype}
 \fi
 
 % Alguns "truques" (sujos?) para minimizar over/underfull boxes.
@@ -942,7 +935,7 @@
 %\usepackage{glossaries}
 
 % Permite formatar texto em colunas
-%\usepackage{multicol}
+\usepackage{multicol}
 
 % Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta os
 % comandos \XeLaTeX e \LuaLaTeX. Você provavelmente não precisa desse recurso
