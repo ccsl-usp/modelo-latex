@@ -3,9 +3,13 @@
 % Várias funções úteis
 \RequirePackage{etoolbox}
 
+% Comandos NewDocumentCommand, NewDocumentEnvironment etc.
+% vindos do projeto LaTeX3.
+\RequirePackage{xparse}
+
 % os diversos testes de etoolbox não expandem os argumentos; como precisamos
 % que eles sejam expandidos, definimos aqui um comando auxiliar para isso.
-\newcommand\@if@expand@empty[3]{%
+\NewDocumentCommand\@if@expand@empty{+m +m +m}{%
   \ifcsdef{#1}{%
     \letcs{\@ime@temp}{#1}%
     \edef\@ime@temp{\@ime@temp}%
@@ -51,16 +55,14 @@
 }
 
 % A página de resumo deve existir em português e inglês
-\newenvironment{resumo}[1] {
+\NewDocumentEnvironment{resumo}{m} {
   \cleardoublepage
   \thispagestyle{empty}
   \vspace*{2em}
 
   \ifstrequal{port}{#1}{
-    \newcommand*{\@resumopalavras}{\textbf{Palavras-chave:}\hspace{1em}\@palavraschave}
     \begin{center}\Large\textbf{Resumo}\end{center}
   }{
-    \newcommand*{\@resumopalavras}{\textbf{Keywords:}\hspace{1em}\@keywords}
     \begin{center}\Large\textbf{Abstract}\end{center}
   }
 
@@ -78,7 +80,11 @@
 } {
   \vspace*{2em plus 1em minus 0em}
 
-      \@resumopalavras
+  \ifstrequal{port}{#1}{%
+    \textbf{Palavras-chave:}\hspace{1em}\@palavraschave%
+  }{%
+    \textbf{Keywords:}\hspace{1em}\@keywords%
+  }
 
     \endlist
 }
@@ -94,8 +100,21 @@
 \newcommand*{\tituloeng}[1]{\renewcommand*{\@tituloeng}{#1}}
 \newcommand*{\subtitulo}[1]{\gdef\@subtitulo{#1}}
 \newcommand*{\subtituloeng}[1]{\renewcommand*{\@subtituloeng}{#1}}
-\newcommand*{\orientador}[1]{\gdef\@orientador{#1}}
-\newcommand*{\coorientador}[1]{\gdef\@coorientador{#1}}
+
+\NewDocumentCommand{\orientador}{O{masc} m}{
+  \ifstrequal{#1}{masc}
+    {\gdef\@labelorientador{Orientador}}
+    {\gdef\@labelorientador{Orientadora}}
+  \gdef\@orientador{#2}
+}
+
+\NewDocumentCommand{\coorientador}{O{masc} m}{
+  \ifstrequal{#1}{masc}
+    {\gdef\@labelcoorientador{Coorientador}}
+    {\gdef\@labelcoorientador{Coorientadora}}
+  \gdef\@coorientador{#2}
+}
+
 \newcommand*{\programa}[1]{\gdef\@programa{#1}}
 \newcommand*{\programaeng}[1]{\renewcommand*{\@programaeng}{#1}}
 \newcommand*{\apoio}[1]{\gdef\@apoio{#1}}
@@ -111,30 +130,42 @@
 \newcommand*{\direitos}[1]{\gdef\@direitos{#1}}
 \newcommand{\fichacatalografica}[1]{\gdef\@fichacatalografica{#1}}
 
-\newcommand*{\tese}{
+\NewDocumentCommand{\tese}{O{masc}}{
   % "Tese" e "dissertação" têm sentido contrário em língua inglesa:
   % http://guides.lib.berkeley.edu/dissertations_theses
   % https://www.grad.ubc.ca/handbook-graduate-supervision/graduate-thesis
   % Como "Thesis" é o nome genérico, vamos usar para mestrado e doutorado
   \renewcommand*{\@nometrabalho}{Tese}
   \renewcommand*{\@nometrabalhoeng}{Thesis}
-  \renewcommand*{\@nometitulo}{Doutor}
   \renewcommand*{\@nometituloeng}{Doctor}
   \renewcommand*{\@grau}{Doutorado}
   \renewcommand*{\@graueng}{Doctorate}
+  \ifstrequal{#1}{masc}{
+    \renewcommand*{\@nometitulo}{Doutor}
+    \RenewDocumentCommand{\@porquem}{m}{pelo candidato}
+  }{
+    \renewcommand*{\@nometitulo}{Doutora}
+    \RenewDocumentCommand{\@porquem}{m}{pela candidata}
+  }
 }
-\newcommand*{\doutorado}{\tese}
+\NewDocumentCommand{\doutorado}{O{masc}}{\tese[#1]}
 
-\newcommand*{\dissertacao}{
+\NewDocumentCommand{\dissertacao}{O{masc}}{
   % Veja observação acima
   \renewcommand*{\@nometrabalho}{Dissertação}
   \renewcommand*{\@nometrabalhoeng}{Thesis}
-  \renewcommand*{\@nometitulo}{Mestre}
   \renewcommand*{\@nometituloeng}{Master}
   \renewcommand*{\@grau}{Mestrado}
   \renewcommand*{\@graueng}{Masters}
+  \ifstrequal{#1}{masc}{
+    \renewcommand*{\@nometitulo}{Mestre}
+    \RenewDocumentCommand{\@porquem}{m}{pelo candidato}
+  }{
+    \renewcommand*{\@nometitulo}{Mestra}
+    \RenewDocumentCommand{\@porquem}{m}{pela candidata}
+  }
 }
-\newcommand*{\mestrado}{\dissertacao}
+\NewDocumentCommand{\mestrado}{O{masc}}{\dissertacao[#1]}
 
 % Defaults quando o usuário não define alguma dessas variáveis
 \newcommand*{\@orientador}{Orientador não definido!}
@@ -147,6 +178,7 @@
 \newcommand*{\@keywords}{Keywords não definidas!}
 \newcommand*{\@subtitulo}{}
 \newcommand*{\@direitos}{}
+\NewDocumentCommand{\@porquem}{m}{pelo candidato}
 \newcommand{\@fichacatalografica}{}
 
 % Se estes não forem definidos, usamos a variável correspondente
@@ -194,8 +226,8 @@
   \begin{tabular}{rl}
     \ifstrequal{port}{#1}{%
       Programa: & \@programa \tabularnewline
-      Orientador: & \@orientador \tabularnewline
-      \@if@expand@empty{@coorientador}{}{Coorientador: & \@coorientador \tabularnewline}%
+      \@labelorientador: & \@orientador \tabularnewline
+      \@if@expand@empty{@coorientador}{}{\@labelcoorientador: & \@coorientador \tabularnewline}%
     }{%
       Program: & \@programaeng \tabularnewline
       Advisor: & \@orientador \tabularnewline
@@ -206,8 +238,8 @@
 
 \newcommand*{\@textorostoprovisoria}[1][port] {%
   \ifstrequal{port}{#1}{%
-    Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada pelo
-    candidato \@author, tal como submetida à Comissão Julgadora.%
+    Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada
+    \@porquem{} \@author, tal como submetida à Comissão Julgadora.%
   }{%
     This is the original version of the \MakeLowercase{\@nometrabalhoeng} prepared
     by the candidate \@author, as submitted to the Examining Committee.%
@@ -319,7 +351,7 @@
 %%%%%%%%%%%%% OS ELEMENTOS QUE COMPÕEM A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareRobustCommand{\@versorosto} {
+\NewDocumentCommand{\@versorosto}{} {
   \begin{list}{}{\rightmargin 3em \leftmargin 3em}
     \item
       \@direitos
@@ -343,7 +375,7 @@
 
 % O quadro com o título e o autor que deve ser visível
 % através da janela na capa.
-\DeclareRobustCommand{\@quadrotitulo}[1][port] {
+\NewDocumentCommand{\@quadrotitulo}{O{port}} {
 
     \vspace*{\@margemquadrotitulotopo}
     \noindent%
@@ -381,7 +413,7 @@
 }
 
 % As demais informações da capa
-\DeclareRobustCommand{\@detalhescapa}[1][port] {
+\NewDocumentCommand{\@detalhescapa}{O{port}} {
   \ifstrequal{port}{#1} {
     \newcommand*{\@apoiocapa}{\@apoio}
     \newcommand*{\@datacapa}{\@datadefesa}
@@ -422,7 +454,7 @@
 }
 
 % Layout da capa
-\DeclareRobustCommand{\capaime}[1][port] {
+\NewDocumentCommand{\capaime}{O{port}} {
   \@margenscapa
 
   \cleardoublepage
@@ -442,7 +474,7 @@
 
 % As informações da banca que vão apenas na versão definitiva
 % da página de rosto
-\DeclareRobustCommand{\@quadrobanca}[2][port] {%
+\NewDocumentCommand{\@quadrobanca}{O{port} +m} {%
   \ifstrequal{definitiva}{#2}{%
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
@@ -454,7 +486,7 @@
 }
 
 % A informação sobre a versão provisória ou definitiva
-\DeclareRobustCommand{\@descricaoversao}[2][port] {%
+\NewDocumentCommand{\@descricaoversao}{O{port} +m} {%
   % As diretrizes dizem que "A natureza do trabalho, o grau pretendido, o
   % nome da instituição a que é submetido e a área de concentração devem
   % ser alinhados a partir do meio da parte impressa da página para a
@@ -486,7 +518,7 @@
 
 % Layout para a página de rosto (duas versões, de acordo
 % com a Resolução CoPGr 6018 de 13/10/2011)
-\DeclareRobustCommand{\pagrostoime}[2][port] {
+\NewDocumentCommand{\pagrostoime}{O{port} +m} {
   \@margenscapa
 
   \cleardoublepage

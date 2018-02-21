@@ -7,9 +7,11 @@
 % carregar este pacote nem definir os dados abaixo.
 \usepackage{imeusp}
 
-% Define o texto da capa e da referência que vai na página do resumo
-\mestrado
-%\doutorado
+% Define o texto da capa e da referência que vai na página do resumo;
+% "masc" ou "fem" definem se serão usadas palavras no masculino ou feminino
+% (Mestre/Mestra, Doutor/Doutora, candidato/candidata).
+\mestrado[fem]
+%\doutorado[masc]
 
 % Se "\title" está em inglês, você pode definir o título em português aqui
 \tituloport{Título do trabalho}
@@ -23,10 +25,10 @@
 % Se isto não for definido, "\subtitulo" é utilizado no lugar
 \subtituloeng{a subtitle}
 
-\orientador{Prof. Dr. Fulano de Tal}
+\orientador[fem]{Prof. Dr. Fulana de Tal}
 
 % Se não houver, remova
-\coorientador{Prof. Dr. Ciclano}
+\coorientador[masc]{Prof. Dr. Ciclano}
 
 \programa{Ciência da Computação}
 
