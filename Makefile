@@ -34,7 +34,7 @@ pdf: $(BASE_NAME).pdf
 $(BASE_NAME).pdf: $(BASE_NAME).tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES)
 	$(LATEX) $(OPTS) $(BASE_NAME)
 	$(BIBTEX) $(BASE_NAME)
-	@while grep -Eq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|Table widths have changed. Rerun LaTeX' *.log; \
+	@while grep -Eq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|Table widths have changed. Rerun LaTeX' *.log || ! test -f *.ind; \
                 do $(MAKEINDEX) $(BASE_NAME).idx; \
 		$(LATEX) $(OPTS) $(BASE_NAME); done
 
