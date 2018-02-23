@@ -198,7 +198,7 @@ são inseridas com
 símbolos em \url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
 Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kirelabs.org/classify.html}.
 
-\section{Referências Cruzadas e \emph{Floats}}
+\section{Referências Cruzadas, \emph{Floats} e Múltiplas Execuções}
 
 É comum que um trecho do texto faça referência a outro trecho (``como discutimos
 no capítulo~X\ldots''). Isso é feito com o par de comandos
@@ -207,6 +207,7 @@ no capítulo~X\ldots''). Isso é feito com o par de comandos
 seção/capítulo) ou \textsf{\textbackslash{}pageref\{nome-sugestivo\}}
 (para o número da página).
 
+Esse mecanismo também é muito útil para figuras e tabelas.
 É claro que o ideal seria que tabelas e figuras sempre aparecessem junto ao
 texto a que se referem. No entanto, isso é impossível por conta da divisão
 do texto em páginas. Em \LaTeX{}, figuras e tabelas são incluídas como
@@ -218,6 +219,30 @@ no texto (com o comando \textsf{\textbackslash{}ref}). A figura/tabela em
 si é definida com \textsf{\textbackslash{}includegraphics} ou
 \textsf{\textbackslash{}begin\{tabular\}}, e em geral é uma boa ideia acrescentar
 uma descrição com \textsf{\textbackslash{}caption}\index{Legendas}.
+
+Observe que \LaTeX{} numera capítulos, seções, figuras etc. automaticamente
+e pode fazer referências a seções ou figuras que aparecem tanto antes
+quanto depois da própria referência. Para isso funcionar, o trabalho de
+geração do arquivo final é dividido em duas partes: primeiro, a diagramação
+das páginas e numeração dos capítulos, seções, figuras etc.; segundo, a
+inserção o texto das referências (``página X'', ``Seção Y'' etc.).
+
+A princípio, isso poderia ser feito automaticamente, sem intervenção do
+usuário; \LaTeX{}, no entanto, não funciona assim. Ao invés disso, é
+preciso executar o comando \textsf{pdflatex} duas vezes seguidas: na
+primeira ele gera um PDF ``defeituoso'' (sem as referências corretas) e
+um arquivo auxiliar com as informações sobre a localização de cada
+referência e, na segunda, cria o PDF ``correto''.
+
+Essas múltiplas execuções são necessárias também para a geração automática
+da bibliografia e do índice remissivo e, na prática, costuma ser necessário
+rodar o comando no mínimo três vezes. Como a geração da bibliografia e do
+índice remissivo dependem também de programas auxiliares, é comum utilizar
+alguma ferramenta para automatizar esse processo. A mais usada é o
+\textsf{make}, que executa os passos definidos em um arquivo chamado
+\textsf{Makefile}; outra ferramenta, específica para uso com
+\LaTeX{}, é o \textsf{latexmk}. Em geral, qualquer sistema que tem
+\LaTeX{} instalado tem também no mínimo \textsf{make}.
 
 \section{Fórmulas Matemáticas}
 
