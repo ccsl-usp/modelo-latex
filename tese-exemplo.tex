@@ -38,7 +38,7 @@
 
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique este arquivo.
-\input miolo-preambulo
+\input{miolo-preambulo}
 
 % O arquivo com os dados bibliográficos; você pode executar este comando
 % mais de uma vez para acrescentar múltiplos arquivos
@@ -66,7 +66,7 @@
 % Para gerar a capa e demais páginas iniciais de uma tese/dissertação para o
 % IME/USP automaticamente no formato sugerido, modifique os dados neste arquivo.
 % Se estiver escrevendo um artigo ou for gerar a capa etc. manualmente, remova.
-\input metadados-tese
+\input{metadados-tese}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -93,7 +93,7 @@
 
 % As folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
 % Se estiver escrevendo um artigo ou não quiser usar, remova.
-\input folhas-de-rosto
+\input{folhas-de-rosto}
 
 % Sumário (obrigatório)
 \tableofcontents
@@ -135,7 +135,7 @@
 
 % Os capítulos de compõem a dissertação/tese, com numeração normal, podem
 % ser inseridos diretamente aqui ou "puxados" de outros arquivos
-\input cap-introducao
+\input{cap-introducao}
 
 % Um parágrafo em LaTeX termina com uma linha vazia; como não é possível
 % ter certeza que um arquivo incluído (neste caso, "paginas-iniciais")
@@ -143,16 +143,16 @@
 % garantir que o último parágrafo realmente terminou.
 \par
 
-\input cap-latex
+\input{cap-latex}
 \par
 
-\input cap-tutorial
+\input{cap-tutorial}
 \par
 
-\input cap-exemplos
+\input{cap-exemplos}
 \par
 
-\input cap-conclusoes
+\input{cap-conclusoes}
 \par
 
 
@@ -168,7 +168,7 @@
 
 % Os apêndices podem ser inseridos diretamente aqui ou "puxados" de outros
 % arquivos
-\input ape-conjuntos
+\input{ape-conjuntos}
 \par
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES FINAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
