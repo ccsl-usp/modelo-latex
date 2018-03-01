@@ -304,7 +304,8 @@
 % altura e começa 47mm abaixo do topo da página. Como o documento já tem
 % margens definidas pelo usuário, precisamos calcular quanto precisamos
 % acrescentar ou subtrair dessas margens para colocar o título e autor
-% na posição exata.
+% na posição exata (na verdade, com uma pequena folga: 49mm abaixo do topo
+% da página, 96mm de largura e 56mm de altura).
 %
 % Para centralizar horizontalmente, poderíamos pensar em usar "\center",
 % mas isso não funciona porque ele centraliza o texto em relação à coluna
@@ -330,19 +331,21 @@
 
   % A distância entre o topo da página e o início do texto (fora o cabeçalho)
   % é dada por (1in + \voffset + \headsep + \topmargin + \headheight).
-  % Queremos colocar a caixa com o título 47mm abaixo do topo, então:
-  \dimgdef\@margemquadrotitulotopo{47mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
-  % Por alguma razão, LaTeX sempre deixa um espaço a mais; creio que esse
-  % espaço é uma linha em branco, mas não consegui remover, então vamos fazer
-  % um quebra-galho:
-  \dimgdef{\@margemquadrotitulotopo}{\@margemquadrotitulotopo - 1em}
+  % Queremos colocar a caixa com o título 49mm abaixo do topo, então:
+  \dimgdef\@margemquadrotitulotopo{49mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
+  % Quando \vspace é usado no início da página, ele não tem efeito; como
+  % não é isso que queremos, vamos usar \vspace*. No entanto, \vspace*
+  % é implementado inserindo uma \hrule de espessura zero e depois
+  % acrescentando o espaço solicitado. Isso faz o espaço ser maior
+  % que o esperado (cerca de uma linha). Vamos compensar isso aqui:
+  \dimgdef{\@margemquadrotitulotopo}{\@margemquadrotitulotopo - \baselineskip}
 
   % Queremos colocar a caixa com o título centralizada na página. "\center"
   % centraliza em função da área de texto, não da página inteira, então
   % não podemos usá-lo, pois as margens esquerda e direita podem ser
   % diferentes. A distância entre a borda esquerda/interna do papel e o
   % início do texto é dada por (1in + \hoffset + \oddsidemargin), então:
-  \dimgdef\@margemquadrotituloesq{(\paperwidth - 100mm)/2 - (1in + \hoffset + \oddsidemargin)}
+  \dimgdef\@margemquadrotituloesq{(\paperwidth - 96mm)/2 - (1in + \hoffset + \oddsidemargin)}
   \dimgdef\@margemcapaesq{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
 }
 
@@ -378,10 +381,11 @@
 \NewDocumentCommand{\@quadrotitulo}{O{port}} {
 
     \vspace*{\@margemquadrotitulotopo}
+
     \noindent%
     \hspace*{\@margemquadrotituloesq}%
 %    \fbox{%
-      \begin{minipage}[b][60mm][s]{100mm}
+      \begin{minipage}[b][56mm][s]{96mm}
         \begin{center}
           \Large
 
@@ -425,23 +429,25 @@
   \noindent%
   \hspace*{\@margemcapaesq}%
 %  \fbox{%
-    \begin{minipage}[t][140mm][s]{160mm}
+    \begin{minipage}[t][130mm][s]{160mm}
       \begin{center}
         \Large
 
+        \vspace*{0.5cm plus 0.5cm minus 0.3cm}
+
         \textsc{\@textocapa[#1]}
 
-        \vspace*{3cm plus 1.5cm minus 0.5cm}
+        \vspace*{1.5cm plus 0.5cm minus 0.5cm}
 
-        \@pessoascapa[#1]
+        \large\@pessoascapa[#1]
 
-        \vspace*{2cm plus 1cm minus 0.5cm}
+        \vspace*{2.5cm plus 1cm minus 1cm}
 
         \normalsize
 
         \@apoiocapa
 
-        \vspace*{1.5cm plus 1cm minus 0.5cm}
+        \vspace*{1cm plus 1cm minus 0.3cm}
 
         \@localdefesa
 
@@ -463,12 +469,11 @@
   \begin{hyphenrules}{nohyphenation}
     \@quadrotitulo[#1]
 
-    \vspace*{2.5cm plus 2cm minus 1cm}
+    \vfill
 
     \@detalhescapa[#1]
   \end{hyphenrules}
 
-  \vspace*{1cm plus 2cm minus 1cm}
   \cleardoublepage
 }
 
