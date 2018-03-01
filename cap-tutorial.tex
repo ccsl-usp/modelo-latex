@@ -198,7 +198,7 @@ são inseridas com
 símbolos em \url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
 Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kirelabs.org/classify.html}.
 
-\section{Referências Cruzadas, \emph{Floats} e Múltiplas Execuções}
+\section{Referências Cruzadas e \emph{Floats}}
 
 É comum que um trecho do texto faça referência a outro trecho (``como discutimos
 no capítulo~X\ldots''). Isso é feito com o par de comandos
@@ -220,7 +220,30 @@ si é definida com \textsf{\textbackslash{}includegraphics} ou
 \textsf{\textbackslash{}begin\{tabular\}}, e em geral é uma boa ideia acrescentar
 uma descrição com \textsf{\textbackslash{}caption}\index{Legendas}.
 
-Observe que \LaTeX{} numera capítulos, seções, figuras etc. automaticamente
+\LaTeX{}\index{Floats!Ordem} garante que a sequência das figuras e a
+sequência das tabelas sejam respeitadas (a Figura 6 nunca aparece depois da
+Figura 7). No entanto, isso \emph{não} se aplica a \emph{floats} de tipos
+diferentes, ou seja, se você definiu a Figura 5, a Tabela 3 e a Figura 6,
+elas podem aparecer no documento na ordem ``Figura 5, Tabela 3, Figura 6'',
+``Figura 5, Figura 6, Tabela 3'' ou ``Tabela 3, Figura 5, Figura 6''.
+
+Embora o algoritmo de colocação dos \emph{floats} funcione bem, às vezes
+ele pode gerar resultados não tão bons. Isso acontece porque \LaTeX{} decide
+o posicionamento de cada \emph{float} individualmente e nunca reavalia essa
+decisão. No exemplo anterior, se a ordem ``Figura 5, Tabela 3, Figura
+6'' for aceitável, esse vai ser o resultado, mesmo que a ordem ``Tabela 3,
+Figura 5, Figura 6'' seja melhor, porque \LaTeX{} só vai escolher onde
+colocar a Tabela 3 depois que já tiver definido a posição para a Figura 5.
+Por isso, depois que seu trabalho estiver finalizado, vale a pena avaliar
+se a colocação dos \emph{floats} pode ser melhorada; se sim, mudar a ordem
+em que eles são definidos no documento pode fazer \LaTeX{} gerar um
+resultado melhor (mas lembre-se que isso só faz sentido depois que o
+documento estiver pronto, pois qualquer mudança no texto pode mudar
+totalmente a colocação dos \emph{floats}).
+
+\section{Múltiplas Execuções e Comandos Auxiliares}
+
+\LaTeX{} numera capítulos, seções, figuras etc. automaticamente
 e pode fazer referências a seções ou figuras que aparecem tanto antes
 quanto depois da própria referência. Para isso funcionar, o trabalho de
 geração do arquivo final é dividido em duas partes: primeiro, a diagramação
