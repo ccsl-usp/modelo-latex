@@ -113,6 +113,17 @@
 % Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
 \usepackage{setspace}
 
+% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
+% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
+% possível colocar um espaço em branco entre um parágrafo e outro. Esta
+% package coloca o espaço em branco e desabilita o recuo; como queremos
+% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
+% redefini-lo depois de carregar a package.
+\newlength\oldparindent
+\setlength\oldparindent\parindent
+\usepackage[parfill]{parskip}
+\setlength\parindent\oldparindent
+
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
 \usepackage[usenames,svgnames,dvipsnames]{xcolor}
 
