@@ -50,10 +50,12 @@ O modelo é composto por estes arquivos:
     \item \texttt{natbib-ime.sty} (tradução da \textit{package} padrão natbib -- citações com bibtex)\index{natbib}
     \item \texttt{hyperxindy.xdy} (arquivo de configuração para hiperlinks no índice remissivo)
     \item \texttt{Makefile} (arquivo que automatiza a geração do documento com o comando \textsf{make})
+    \item \texttt{latexmkrc} (arquivo que automatiza a geração do documento com o comando \textsf{latexmk})
   \end{itemize}
 \end{itemize}
 
-Para compilar o documento, basta executar o comando \textsf{make}. \LaTeX{}
+Para compilar o documento, basta executar o comando \textsf{make} (ou
+\textsf{latexmk} se ele estiver instalado). \LaTeX{}
 gera diversos arquivos auxiliares durante a compilação que, em algumas raras
 situações, podem ficar inconsistentes (causando erros de compilação ou
 erros no PDF gerado, como referências faltando ou numeração de páginas

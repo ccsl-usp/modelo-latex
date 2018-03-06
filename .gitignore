@@ -16,4 +16,7 @@ missfont.log
 *.idx
 *.dvi
 *.ps
+*.synctex.gz
+*.fls
+*.fdb_latexmk
 tese-exemplo.pdf
