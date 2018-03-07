@@ -6,7 +6,9 @@ $pdflatex = 'pdflatex' . $custom_latex_opts . '%O %S';
 #$pdflatex = 'lualatex' . $custom_latex_opts . '%O %S';
 #$pdflatex = 'xelatex' . $custom_latex_opts . '%O %S';
 
-$makeindex = 'texindy -C utf8 -M hyperxindy.xdy %O -o %D %S';
+# Rodando latexmk a partir do editor atom, texindy falha;
+# "2>&1 | tee" é um truque para contornar esse problema
+$makeindex = 'texindy -C utf8 -M hyperxindy.xdy %O -o %D %S 2>&1 | tee';
 
 $pdf_mode = 1;
 

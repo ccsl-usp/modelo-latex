@@ -61,7 +61,7 @@ endef
 
 define run_makeindex =
 	echo "       Executando $(MAKEINDEX) $*.idx (iteração $$(($(1) - 1)))..."; \
-	$(MAKEINDEX) $*.idx 2>&1 > makeindex-out.log; \
+	$(MAKEINDEX) $*.idx > makeindex-out.log 2>&1; \
 	echo
 endef
 
