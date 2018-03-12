@@ -10,11 +10,9 @@
 % os diversos testes de etoolbox não expandem os argumentos; como precisamos
 % que eles sejam expandidos, definimos aqui um comando auxiliar para isso.
 \NewDocumentCommand\@if@expand@empty{+m +m +m}{%
-  \ifcsdef{#1}{%
-    \letcs{\@ime@temp}{#1}%
-    \edef\@ime@temp{\@ime@temp}%
-    \expandafter\ifstrempty\expandafter{\@ime@temp}{#2}{#3}%
-  }{#2}%
+  % Força expansão; se #1 for indefinido, csuse expande para a string vazia
+  \edef\tmp{\csuse{#1}}%
+  \ifcsvoid{tmp}{#2}{#3}%
 }
 
 % Parágrafos não-justificados melhores
