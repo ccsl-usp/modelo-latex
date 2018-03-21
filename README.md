@@ -6,9 +6,10 @@ appropriate, send us improvements. :)
 
 You need a working LaTeX installation, including xindy, biber and biblatex
 (among other packages). The document may be compiled with "make" and this
-repo includes a compiled version of it. There are lots of comments on the
-"tese-exemplo.tex" file about the packages used and things you might want
-to customize or learn more about. These comments are in Brazilian Portuguese.
+repo includes a compiled version of it. There are lots of comments in the
+"tese-exemplo.tex" and "miolo-preambulo.tex" files about the packages used
+and things you might want to customize or learn more about. These comments
+are in Brazilian Portuguese.
 
 ## Acknowledgements
 
