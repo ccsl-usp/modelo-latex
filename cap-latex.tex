@@ -54,32 +54,48 @@ O modelo é composto por estes arquivos:
   \end{itemize}
 \end{itemize}
 
-Para compilar o documento, basta executar o comando \textsf{make} (ou
-\textsf{latexmk} se ele estiver instalado). \LaTeX{}
-gera diversos arquivos auxiliares durante a compilação que, em algumas raras
-situações, podem ficar inconsistentes (causando erros de compilação ou
-erros no PDF gerado, como referências faltando ou numeração de páginas
-incorreta no sumário). Nesse caso, é só usar o comando \textsf{make clean},
-que apaga todos os arquivos auxiliares gerados, e em seguida rodar
-\textsf{make} novamente.
+Para compilar o documento, basta executar o comando \textsf{latexmk} (ou
+\textsf{make}). Talvez seu editor ofereça uma opção de menu para compilar o
+documento, mas ele provavelmente depende do \textsf{latexmk} para isso.
+\LaTeX{} gera diversos arquivos auxiliares durante a compilação que, em
+algumas raras situações, podem ficar inconsistentes (causando erros de
+compilação ou erros no PDF gerado, como referências faltando ou numeração de
+páginas incorreta no sumário). Nesse caso, é só usar o comando
+\textsf{latexmk -C} (ou \textsf{make clean}), que apaga todos os arquivos
+auxiliares gerados, e em seguida rodar \textsf{latexmk} (ou \textsf{make})
+novamente.
 
 \section{Instalação do \LaTeX{}}
 
-Embora uma instalação completa do \TeX{}/\LaTeX{} seja relativamente grande (perto
-de 5GB), em geral vale a pena instalar a maior parte dos pacotes incluídos
-na sua distribuição. No caso do debian ou ubuntu, por exemplo, o pacote
-``texlive-full'' instala praticamente tudo do \LaTeX{} que pode interessar (incluindo
-suporte a línguas como árabe, japonês etc.). Se você preferir uma instalação mais
-``enxuta'', não deixe de incluir todos os pacotes necessários para este modelo.
-Por exemplo, no debian:
+\LaTeX{} é, na verdade, um conjunto de programas. Ao invés de procurar e
+baixar cada um deles, o mais comum é baixar um pacote com todos eles juntos.
+Há dois pacotes desse tipo disponíveis: MiK\TeX{} (\url{miktex.org}) e
+\TeX{}Live (\url{www.tug.org/texlive}). Ambos funcionam em Linux, Windows e
+MacOS X. Em Linux, \TeX{}Live costuma estar disponível para instalação junto
+com os demais opcionais do sistema. Em MacOS X, o mais popular é o Mac\TeX{}
+(\url{www.tug.org/mactex/}), a versão do \TeX{}Live para MacOS X.  Em Windows,
+o mais comumente usado é o MiK\TeX{}.
+
+Por padrão, eles não instalam tudo que está disponível, mas sim apenas os
+componentes mais usados, e oferecem um gestor de pacotes que permite adicionar
+outros. Embora uma instalação completa do \LaTeX{} seja relativamente grande
+(perto de 5GB), em geral vale a pena instalar a maior parte dos pacotes. Se
+você preferir uma instalação mais ``enxuta'', não deixe de incluir todos os
+pacotes necessários para este modelo. Por exemplo, no debian:
 
 \begin{description}
-  \item[inconsolata] -- está incluído em ``texlive-fonts-extra''
+  \item [inconsolata] -- está incluído em ``texlive-fonts-extra''
   \item [siunitx] -- está incluído em ``texlive-science''
   \item [biblatex] -- está incluído em ``texlive-bibtex-extra''
   \item [biber] -- é um pacote separado
   \item [xindy] -- é um pacote separado
 \end{description}
+
+Também é muito importante ter o \textsf{latexmk} (ou o \textsf{make}). No Linux,
+a instalação é similar à de outros programas. No MacOS X e no Windows,
+\textsf{latexmk} pode ser instalado pelo gestor de pacotes do MiK\TeX{} ou
+\TeX{}Live. Observe que ele depende da linguagem \textsf{perl}, que precisa ser
+instalada à parte no Windows (\url{www.perl.org/get.html}).
 
 \section{Bibliografia}
 
@@ -119,5 +135,5 @@ Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorm
 Sim, há vários. Uma opção bem comum é o JabRef; outra é usar Zotero\index{Zotero} ou Mendeley\index{Mendeley} e exportar os dados deles no formato .bib.
 
 \item \textbf{Como faço para usar o Makefile (comando make) no Windows?}\\
-Se você instalou o \LaTeX{} usando o Cygwin, você já deve ter o comando make instalado. Se você pretende usar algum dos editores sugeridos, é possível deixar a compilação a cargo deles, dispensando o uso do make.
+Se você instalou o \LaTeX{} usando o Cygwin, você já deve ter o comando make instalado; se não, tente o MSYS2. Se você pretende usar algum dos editores sugeridos, é possível deixar a compilação a cargo deles, dispensando o uso do make.
 \end{itemize}

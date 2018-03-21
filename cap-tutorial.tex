@@ -260,12 +260,13 @@ referência e, na segunda, cria o PDF ``correto''.
 Essas múltiplas execuções são necessárias também para a geração automática
 da bibliografia e do índice remissivo e, na prática, costuma ser necessário
 rodar o comando no mínimo três vezes. Como a geração da bibliografia e do
-índice remissivo dependem também de programas auxiliares, é comum utilizar
-alguma ferramenta para automatizar esse processo. A mais usada é o
-\textsf{make}, que executa os passos definidos em um arquivo chamado
-\textsf{Makefile}; outra ferramenta, específica para uso com
-\LaTeX{}, é o \textsf{latexmk}. Em geral, qualquer sistema que tem
-\LaTeX{} instalado tem também no mínimo \textsf{make}.
+índice remissivo dependem também de programas auxiliares, a produção do
+documento final acaba envolvendo vários passos e, por isso, é comum utilizar
+alguma ferramenta para automatizar esse processo. As mais usadas são o
+\textsf{make}, que executa os passos (às vezes bastante complexos) definidos
+em um arquivo chamado \textsf{Makefile}, e o \textsf{latexmk}, que foi
+desenvolvido especificamente para uso com \LaTeX{} e, portanto, funciona
+com um arquivo de configuração simples (que é, inclusive, opcional).
 
 \section{Fórmulas Matemáticas}
 

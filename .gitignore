@@ -19,4 +19,5 @@ missfont.log
 *.synctex.gz
 *.fls
 *.fdb_latexmk
+*-current
 tese-exemplo.pdf
