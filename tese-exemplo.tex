@@ -36,6 +36,26 @@
 \documentclass[12pt,twoside,english,brazil]{book}
 %\documentclass[12pt,twoside,english,brazil]{article}
 
+% tamanho da página e margens
+\usepackage[a4paper]{geometry}
+\geometry{
+  % distância entre o início da página e o início do texto principal
+  top=32mm,
+  bottom=28mm,
+  left=24mm,
+  right=34mm,
+  % Com geometry, esta medida não é tão relevante; basta garantir que ela
+  % seja menor que "top" e que o texto do cabeçalho caiba nela.
+  headheight=25.4mm,
+  % distância entre o início do texto principal e a base do cabeçalho;
+  % ou seja, o cabeçalho "invade" a margem superior nessa medida. Essa
+  % é a medida que determina a posição do cabeçalho
+  headsep=11mm,
+  footskip=10mm,
+  marginpar=20mm,
+  marginparsep=5mm,
+}
+
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique este arquivo.
 \input{miolo-preambulo}
