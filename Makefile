@@ -89,6 +89,7 @@ if test $$stat -ne 0; then \
 	$(SHOW_REPORT); \
 	echo; \
 	echo "    **** Erro durante a execucao do LaTeX ****"; \
+	touch $*.aux-current; \
 	exit 1; \
 fi
 endef
@@ -102,6 +103,7 @@ all: $(BASE_NAME).pdf
 	@if test $(MAKELEVEL) -ge 8; then \
 		$(SHOW_REPORT); \
 		$(SHOW_LOOP_ERROR); \
+		touch $*.aux-current; \
 		exit 1; \
 	fi
 	@echo "       Executando $(LATEX) $(OPTS) $* (iteração $(MAKELEVEL))..."
@@ -118,7 +120,7 @@ all: $(BASE_NAME).pdf
 
 # bitex/biber e makeindex/xindy dependem de arquivos gerados pelo LaTeX
 %.idx-current %.bcf-current: %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
-	@echo "       Executando $(LATEX) $(OPTS) $* (iteração preparatória)..."
+	@echo "       Executando $(LATEX) $(OPTS) $* (iteração auxiliar $(MAKELEVEL))..."
 	@$(RUN_LATEX)
 	@$(REFRESH)
 	@echo
