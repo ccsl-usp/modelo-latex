@@ -221,6 +221,7 @@ símbolos em \url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4
 Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kirelabs.org/classify.html}.
 
 \section{Referências Cruzadas e \emph{Floats}}
+\label{sec:refs}
 
 É comum que um trecho do texto faça referência a outro trecho (``como
 discutimos no capítulo~X\ldots''). Isso pode ser feito diretamente, mas
@@ -246,25 +247,11 @@ si é definida com \textsf{\textbackslash{}includegraphics} ou
 uma descrição com \textsf{\textbackslash{}caption}\index{Legendas}.
 
 \LaTeX{}\index{Floats!Ordem} garante que a sequência das figuras e a
-sequência das tabelas sejam respeitadas (a Figura 6 nunca aparece depois da
-Figura 7). No entanto, isso \emph{não} se aplica a \emph{floats} de tipos
-diferentes, ou seja, se você definiu a Figura 5, a Tabela 3 e a Figura 6,
-elas podem aparecer no documento na ordem ``Figura 5, Tabela 3, Figura 6'',
-``Figura 5, Figura 6, Tabela 3'' ou ``Tabela 3, Figura 5, Figura 6''.
-
-Embora o algoritmo de colocação dos \emph{floats} funcione bem, às vezes
-ele pode gerar resultados não tão bons. Isso acontece porque \LaTeX{} decide
-o posicionamento de cada \emph{float} individualmente e nunca reavalia essa
-decisão. No exemplo anterior, se a ordem ``Figura 5, Tabela 3, Figura
-6'' for aceitável, esse vai ser o resultado, mesmo que a ordem ``Tabela 3,
-Figura 5, Figura 6'' seja melhor, porque \LaTeX{} só vai escolher onde
-colocar a Tabela 3 depois que já tiver definido a posição para a Figura 5.
-Por isso, depois que seu trabalho estiver finalizado, vale a pena avaliar
-se a colocação dos \emph{floats} pode ser melhorada; se sim, mudar a ordem
-em que eles são definidos no documento pode fazer \LaTeX{} gerar um
-resultado melhor (mas lembre-se que isso só faz sentido depois que o
-documento estiver pronto, pois qualquer mudança no texto pode mudar
-totalmente a colocação dos \emph{floats}).
+sequência das tabelas sejam respeitadas (a Figura~6 nunca aparece depois da
+Figura~7). No entanto, isso \emph{não} se aplica a \emph{floats} de tipos
+diferentes, ou seja, se você definiu a Figura~5, a Tabela~3 e a Figura~6,
+elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
+``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
 
 \section{Múltiplas Execuções e Comandos Auxiliares}
 
@@ -415,6 +402,8 @@ para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
 basta colocá-los entre chaves (``Automated Application-Level Checkpointing
 of \{MPI\} Programs'').
 
+\enlargethispage{\baselineskip}
+
 Finalmente, os campos \textsf{author} e \textsf{publisher} podem incluir uma
 lista de nomes separados por \textsf{and}; biblatex reconhece que cada nome é
 composto por nome e sobrenome, às vezes com partículas como ``de'', ``dos''
@@ -424,6 +413,8 @@ sobrenomes para caixa alta etc. Isso evidentemente não funciona quando o autor
 instituição entre chaves (``\{Universidade de São Paulo --- Sistema Integrado
 de Bibliotecas\}'') para que biblatex não faça alterações desse tipo. Se o
 nome é longo, pode ser interessante definir o campo \textsf{shortauthor}.
+
+\enlargethispage{\baselineskip}
 
 A fonte mais detalhada de informações sobre o banco de dados é a
 documentação da package biblatex, mas o material ali é um tanto denso.
@@ -540,3 +531,96 @@ então qualquer uma das três versões modernas (pdf\LaTeX{}, \XeLaTeX{}
 e \LuaLaTeX{}) é adequada. Se você pretende usar línguas com outros
 alfabetos ou se gostaria de escolher fontes diferentes, use \XeLaTeX{}
 ou \LuaLaTeX{}.
+
+\section{Limitações do \LaTeX{}}
+
+Como qualquer ferramenta, \LaTeX{} tem limitações e características
+indesejáveis:
+
+\begin{itemize}
+    \item A linguagem é muito prolixa: é bastante tedioso escrever
+    coisas como ``\textbackslash{}begin\{itemize\}'' etc. Linguagens
+    como asciidoc/asciidoctor (\url{asciidoctor.org}) funcionam de
+    maneira similar a \LaTeX{}, mas sua sintaxe é bem mais enxuta.
+    No entanto, asciidoc não tem alguns recursos avançados oferecidos
+    por \LaTeX{}, em particular para a gestão de bibliografias.
+
+    \item \LaTeX{} procura ser uma linguagem \emph{declarativa}, ou seja,
+    os comandos buscam expressar o que se deseja e não como fazer algo
+    (``este texto é um título'' e não ``pule duas linhas, selecione uma
+    fonte maior, escreva este texto, pule mais duas linhas e selecione a
+    fonte de tamanho padrão''). No entanto, ela é insuficiente em algumas
+    situações, obrigando o usuário a utilizar vários comandos, às vezes
+    obscuros, para obter resultados relativamente simples.
+
+    \item Há diversas packages para personalizar os aspectos básicos
+    da formatação final do documento, como o tipo de fonte, tamanho dos
+    títulos das seções, espaçamento etc. No entanto, quando se quer
+    fazer modificações maiores, é preciso lidar com partes complexas da
+    linguagem e diversos comportamentos surpreendentes.
+
+    \item Às vezes há incompatibilidades entre packages; em alguns casos,
+    isso pode ser contornado mudando a ordem em que elas são carregadas,
+    mas em outros pode simplesmente não ser possível combiná-las.
+
+    \item Embora o algoritmo de colocação dos \emph{floats} funcione bem,
+    às vezes ele pode gerar resultados não tão bons. Isso acontece porque
+    \LaTeX{} decide o posicionamento de cada \emph{float} individualmente,
+    sem levar em conta os próximos \emph{floats}, e nunca reavalia essa
+    decisão. No exemplo da Seção~\ref{sec:refs}, se a ordem ``Figura~5,
+    Tabela~3, Figura~6'' for aceitável, esse vai ser o resultado, mesmo
+    que a ordem ``Tabela~3, Figura~5, Figura~6'' seja melhor. Apenas se
+    não for possível encontrar um lugar aceitável para a Figura~5
+    imediatamente (ou seja, na página atual) é que \LaTeX{} processa os
+    \emph{floats} seguintes e, depois, procura novamente um lugar para ela.
+    Por isso, depois que seu trabalho estiver finalizado, vale a pena
+    avaliar se a colocação dos \emph{floats} pode ser melhorada; se sim,
+    mudar a ordem em que eles são definidos no documento pode fazer \LaTeX{}
+    gerar um resultado melhor (mas lembre-se que isso só faz sentido depois
+    que o documento estiver pronto, pois qualquer mudança no texto pode
+    mudar totalmente a colocação dos \emph{floats}).
+
+    \item O algoritmo que \LaTeX{} usa para quebrar páginas é excelente,
+    minimizando linhas órfãs ou viúvas e garantindo uma distribuição
+    homogênea do texto na página. No entanto, ele não utiliza um recurso
+    comumente usado por editores profissionais, que é mudar o tamanho de
+    algumas páginas para melhorar a distribuição geral do texto. Esse é
+    um último recurso, mas que muitas vezes pode ser bastante positivo.
+    Ainda assim, se houver quebras de página ruins no seu texto final, você
+    pode usar essa estratégia manualmente. Ao invés de comandos como
+    \textsf{\textbackslash{}pagebreak} ou \textsf{\textbackslash{}newpage},
+    o mais adequado é usar
+    \textsf{\textbackslash{}enlargethispage\{\textbackslash{}baselineskip\}}.
+    Esse comando instrui \LaTeX{} a fazer a página ligeiramente maior, tornando
+    possível acomodar mais uma linha (``\textsf{-1\textbackslash{}baselineskip}''
+    faz a página ficar com uma linha a menos). Em documentos frente e verso,
+    lembre-se de sempre garantir que a página adjacente também tenha seu tamanho
+    modificado para que a alteração não seja tão perceptível.
+
+    \item Como muitos outros sistemas de texto, \LaTeX{} pode usar mais de
+    um padrão para a codificação de caracteres acentuados. Alguns anos atrás,
+    o mais comum era o \textsf{ISO-8859-1}, também conhecido como
+    \textsf{latin1} (esse é o nome usado no \LaTeX{}) ou \textsf{Windows-1252};
+    atualmente, o mais comum é o UTF-8. No entanto, usuários que escrevem
+    apenas em língua inglesa às vezes não configuram seus sistemas para usar
+    qualquer tipo de caracter acentuado. De maneira geral, é simples reconhecer
+    e resolver os problemas causados por inconsistências na codificação, mas
+    arquivos ``.bib'' são um caso especial: é bastante comum que um arquivo
+    desse tipo seja compartilhado por várias pessoas. Para evitar problemas
+    com os acentos nesse caso, uma possibilidade é representar os caracteres
+    acentuados usando comandos \LaTeX{}: \textbackslash\textquotesingle\{a\}
+    para á, \textbackslash{}c\{c\} para cedilha etc., independentemente da
+    codificação usada no texto.
+
+    \item As classes padrão (book, article etc.) não foram criadas para serem
+    facilmente modificadas, o que deu origem a inúmeras packages voltadas para
+    possibilitar a personalização de diversos aspectos da apresentação final
+    do documento. Esse mecanismo não é ideal, por diversas razões. Por conta
+    disso, existe um conjunto de versões alternativas dessas classes (scrbook
+    no lugar de book, scrartcl no lugar de article etc.) chamado
+    \textsf{KOMA-Script}, com mais recursos e mais possibilidades de
+    customização. A classe \textsf{memoir} tem o mesmo objetivo, mas procura
+    dar suporte a livros e artigos com uma única classe. Ambas abordagens
+    são muito boas, mas a maioria dos modelos usados por revistas e outras
+    publicações são baseados nas classes padrão.
+\end{itemize}
