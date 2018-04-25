@@ -95,17 +95,17 @@ você coloca comandos de configuração para o documento, e o \emph{corpo} do
 documento em si, que contém o texto propriamente dito. O preâmbulo é onde
 você define as características do resultado tipográfico esperado: tipo e
 tamanho da fonte a usar, posição dos títulos e subtítulos na página etc.
-Na prática, definir todas as configurações de impressão desejadas em
-\LaTeX{} não é simples. Por conta disso, \LaTeX{} tem alguns modelos
-prontos, que você escolhe com o comando
-\textsf{\textbackslash{}documentclass\{modelo\}} no preâmbulo. Os
-principais modelos são \textsf{book}, \textsf{report} e \textsf{article};
-você pode saber mais sobre eles (e outros) em qualquer texto introdutório
-sobre \LaTeX{} na Internet. \textsf{book} e \textsf{report} são os mais
-adequados para a escrita de teses ou dissertações acadêmicas.
+Como definir todas as configurações de impressão desejadas é bastante complexo,
+\LaTeX{} fornece algumas pré-definições padrão (``\textit{classes}'') em
+função do tipo de documento, que você escolhe com o comando
+\textsf{\textbackslash{}documentclass\{nome-da-classe\}} no preâmbulo. As
+principais classes são \textsf{book}, \textsf{report} e \textsf{article};
+você pode saber mais sobre elas (e outras) em qualquer texto introdutório
+sobre \LaTeX{} na Internet. \textsf{book} e \textsf{report} são as mais
+adequadas para a escrita de teses ou dissertações acadêmicas.
 
 \LaTeX{} também tem \textit{packages} (``\textit{plugins}'') que acrescentam
-funcionalidades ou modificam os modelos padrão e também são carregadas no
+funcionalidades ou modificam as classes padrão e também são carregadas no
 preâmbulo, com o comando \textsf{\textbackslash{}usepackage\{nome-da-package\}}.
 Várias delas podem receber opções adicionais no formato
 \textsf{\textbackslash{}usepackage[opção1,opção2...]\{nome-da-package\}};
@@ -147,7 +147,7 @@ Um exemplo de documento \LaTeX{} simples:
 
 \begin{verbatim}
         % O documento começa com o preâmbulo
-        % Vamos usar o modelo "book" com fonte no tamanho 11pt
+        % Vamos usar a classe "book" com fonte no tamanho 11pt
         \documentclass[11pt]{book}
         % Vamos usar caracteres acentuados
         \usepackage[utf8]{inputenc}
@@ -171,10 +171,11 @@ Um exemplo de documento \LaTeX{} simples:
 Esse exemplo mostra como definir o nome de um capítulo. Existem também os
 comandos \textsf{\textbackslash{}section}, \textsf{\textbackslash{}subsection},
 \textsf{\textbackslash{}subsubsection} e \textsf{\textbackslash{}paragraph}
-(o modelo \textsf{book} inclui também \textsf{\textbackslash{}part}). Usar o
-nome do comando seguido de um asterisco (\textsf{\textbackslash{}chapter*}
-etc.) faz o capítulo/seção não ser numerado nem incluído no sumário (nem
-considerado na contagem de capítulos, seções etc.).
+(a classe \textsf{book} inclui também \textsf{\textbackslash{}part}, um nível
+acima de \textsf{\textbackslash{}chapter}). Usar o nome do comando seguido de
+um asterisco (\textsf{\textbackslash{}chapter*} etc.) faz o capítulo/seção não
+ser numerado nem incluído no sumário (nem considerado na contagem de capítulos,
+seções etc.).
 
 Para criar listas de itens, você pode fazer\footnote{Observe o uso de
 espaços no início das linhas com \textsf{\textbackslash{}item} para deixar a
@@ -478,7 +479,7 @@ será impresso como ``\textit{Fulano de Tal} é meu nome''). Você normalmente
 não vai utilizar esse estilo de comando, mas ele é útil em alguns casos.
 
 \item Comandos que fazem o programa escrever algo específico; por exemplo,
-em vários modelos padrão o comando \textsf{\textbackslash{}maketitle} gera
+em várias classes padrão o comando \textsf{\textbackslash{}maketitle} gera
 uma página de título com o nome do trabalho, autor etc.
 \end{itemize}
 
