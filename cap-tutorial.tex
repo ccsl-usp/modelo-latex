@@ -74,14 +74,14 @@ e sharelatex (\url{www.sharelatex.com}).
 \LaTeX{} ignora quebras de linha e trata sequências de vários espaços como
 se fossem apenas um. Isso significa que você pode usar quebras de linha e
 espaços no texto que está digitando como ``dicas visuais'' da estrutura do
-texto. É muito comum fazer isso com listas de itens, por exemplo. Uma ou
-mais linhas em branco sinalizam o fim de um parágrafo e o início de outro.
-O caractere ``\%'' indica que o restante da linha é um comentário,
-ou seja, um trecho de texto que não tem nenhum efeito sobre o resultado final
-do documento. Comentários podem ser usados como lembrete sobre alguma decisão,
-para indicar um parágrafo que ainda precisa de revisão etc. Por conta desse
-significado especial, para inserir um caractere \% ``normal'' no
-texto é preciso digitar ``\textsf{\textbackslash\%}''.
+texto durante a edição. É muito comum fazer isso com listas de itens, por
+exemplo. Uma ou mais linhas em branco sinalizam o fim de um parágrafo e o
+início de outro. O caractere ``\%'' indica que o restante da linha é um
+comentário, ou seja, um trecho de texto que não tem nenhum efeito sobre o
+resultado final do documento. Comentários podem ser usados como lembrete sobre
+alguma decisão, para indicar um parágrafo que ainda precisa de revisão etc.
+Por conta desse significado especial, para inserir um caractere \% ``normal''
+no texto é preciso digitar ``\textsf{\textbackslash\%}''.
 
 Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
 você coloca comandos de configuração para o documento, e o \emph{corpo} do
@@ -143,7 +143,7 @@ Um exemplo de documento \LaTeX{} simples:
         \maketitle
         % Capítulos, seções etc. são numerados automaticamente
         \chapter{Cheguei!}
-        Oi Galera!
+        Oi, Galera!
         % É preciso sinalizar o final do documento
         \end{document}
 \end{verbatim}
@@ -201,8 +201,11 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 
 \section{Referências Cruzadas e \emph{Floats}}
 
-É comum que um trecho do texto faça referência a outro trecho (``como discutimos
-no capítulo~X\ldots''). Isso é feito com o par de comandos
+É comum que um trecho do texto faça referência a outro trecho (``como
+discutimos no capítulo~X\ldots''). Isso pode ser feito diretamente, mas
+se você reorganizar o documento ou acrescentar seções, a numeração pode
+mudar. Para evitar esse problema, você pode gerar essas referências
+automaticamente com o par de comandos
 \textsf{\textbackslash{}label\{nome-sugestivo\}} e
 \textsf{\textbackslash{}ref\{nome-sugestivo\}} (para o número da
 seção/capítulo) ou \textsf{\textbackslash{}pageref\{nome-sugestivo\}}
@@ -426,7 +429,7 @@ as fontes oferecem essa possibilidade),
 \textsf{\textbackslash{}LARGE} (ainda maior) e
 \textsf{\textbackslash{}Huge} (ainda maior).
 
-\section{Detalhes}
+\section{Detalhes da linguagem}
 
 Há quatro estilos típicos de comandos \LaTeX{}:
 
