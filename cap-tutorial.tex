@@ -429,6 +429,41 @@ dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
 Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
 podem exportar para o formato .bib.
 
+\section{Imagens, Ilustrações, Diagramas e Gráficos}
+
+Podemos classificar imagens em quatro categorias:
+
+\begin{enumerate}
+    \item Imagens fotográficas ou escaneadas. Mesmo sendo possível criar
+    imagens desse tipo manualmente em programas de edição de imagens como
+    Gimp, Krita ou Adobe PhotoShop, elas sempre consistem em um conjunto
+    de \emph{pixels} coloridos.
+
+    \item Ilustrações, que consistem em curvas e figuras geométricas
+    que formam uma imagem completa, como um objeto ou uma paisagem.
+    Elas são desenhadas de forma totalmente manual em programas como
+    Inkscape ou CorelDraw!.
+
+    \item Diagramas, que são ilustrações estruturadas, como fluxogramas,
+    grafos ou diagramas UML, criadas com ferramentas como Draw.io,
+    LibreOffice Draw ou Microsoft Visio.
+
+    \item Gráficos de dados, como gráficos de pizza ou de barras. A
+    geração desses gráficos, em geral, é quase totalmente automatizada
+    por ferramentas como Gnuplot, R, LibreOffice Calc ou Microsoft Excel.
+\end{enumerate}
+
+Em \LaTeX{}, é possível importar imagens fotográficas nos formatos
+\textsc{png} e \textsc{jpg} e imagens dos demais tipos no formato
+\textsc{pdf}. Além disso, \LaTeX{} tem recursos para criar ilustrações,
+diagramas e gráficos diretamente, mas usá-los em geral não é trivial.
+Ainda assim, para traçar linhas ou curvas simples, o comando
+\textsf{picture} e a package \textsf{pict2e} podem ser úteis, e Gnuplot
+é capaz de exportar gráficos na forma de comandos \textsf{picture}.
+A package \textsf{tikz} oferece bons recursos para a criação de
+ilustrações e diagramas, e o programa \textsf{Asymptote} tem excelente
+integração com \LaTeX{}.
+
 \section{Formatação Manual}
 
 Às vezes é preciso inserir formatação de forma manual; os comandos mais
