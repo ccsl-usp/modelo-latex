@@ -15,11 +15,13 @@ OPTS := -synctex=1 -halt-on-error -file-line-error -interaction nonstopmode -rec
 #BIBTEX := bibtex
 BIBTEX := biber
 
-# "-C utf8" e um truque para contornar este bug, que existe em outras
-# distribuicoes tambem:
+# "-C utf8" ou "-M lang/latin/utf8.xdy" sao truques para contornar este
+# bug, que existe em outras distribuicoes tambem:
 # https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
-#MAKEINDEX := makeindex
-MAKEINDEX := texindy -C utf8 -M hyperxindy.xdy
+# Se "-C utf8" nao funcionar, tente "-M lang/latin/utf8.xdy"
+#MAKEINDEX := texindy -C utf8 -M hyperxindy.xdy
+#MAKEINDEX := texindy -M lang/latin/utf8.xdy -M hyperxindy.xdy
+MAKEINDEX := makeindex -s mkidxhead.ist -L
 
 STYLEFILES    := imeusp.sty plainnat-ime.bbx plainnat-ime.cbx
 OTHERTEXFILES := $(wildcard *.tex) $(STYLEFILES)
@@ -150,6 +152,7 @@ clean: $(BASE_NAME)-clean
 %-clean:
 	-rm -f missfont.log $*.ps $*.pdf $*.dvi \
 		latex-out.log makeindex-out.log bibtex-out.log \
+		hyperxindy.xdy-current mkidxhead.ist-current \
 		$*.bbl $*.aux $*.log $*.toc $*.cb $*.out $*.blg \
 		$*.brf $*.ilg $*.ind $*.lof $*.lot $*.idx $*.bcf \
 		$*.fls $*.run.xml $*.synctex.gz $*.fdb_latexmk \

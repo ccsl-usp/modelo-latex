@@ -710,11 +710,16 @@
 (markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
 \end{filecontents*}
 
-% "-C utf8" e um truque para contornar este bug, que existe em outras
-% distribuicoes tambem:
-% https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
-\usepackage[xindy]{imakeidx} % usando xindy
-%\usepackage{imakeidx} % usando makeindex
+% Cria o arquivo de configuração para makeindex colocar um cabeçalho
+% para cada letra do índice.
+\begin{filecontents*}{mkidxhead.ist}
+headings_flag 1
+heading_prefix "{\\bfseries "
+heading_suffix "}\\nopagebreak\n"
+\end{filecontents*}
+
+%\usepackage[xindy]{imakeidx} % usando xindy
+\usepackage{imakeidx} % usando makeindex
 
 % Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
 % vamos mudar isso e deixar fancyhdr definir a formatação
@@ -723,8 +728,17 @@
 }
 
 \makeindex[
-  options=-C utf8 -M hyperxindy.xdy,
+  noautomatic,
   intoc,
+  % Estas opções são usadas por xindy
+  % "-C utf8" ou "-M lang/latin/utf8.xdy" são truques para contornar este
+  % bug, que existe em outras distribuições tambem:
+  % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
+  % Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
+  %options=-C utf8 -M hyperxindy.xdy,
+  %options=-M lang/latin/utf8.xdy -M hyperxindy.xdy,
+  % Estas opções são usadas por makeindex
+  options=-s mkidxhead.ist -l -L,
 ]
 
 
@@ -812,7 +826,7 @@
   % usar makeindex, (removendo a opção "xindy" do pacote imakeidx), quem
   % precisa criar os hyperlinks é hyperref. Nesse caso, desabilite a
   % próxima linha para criar hyperlinks no índice.
-  hyperindex=false,
+  %hyperindex=false,
 ]{hyperref}
 
 %\usepackage[nameinlink,noabbrev,capitalise]{cleveref}

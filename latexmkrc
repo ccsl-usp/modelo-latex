@@ -8,7 +8,13 @@ $pdflatex = 'pdflatex' . $custom_latex_opts . '%O %S';
 
 # Rodando latexmk a partir do editor atom, texindy falha;
 # "2>&1 | tee" é um truque para contornar esse problema
-$makeindex = 'texindy -C utf8 -M hyperxindy.xdy %O -o %D %S 2>&1 | tee';
+# "-C utf8" ou "-M lang/latin/utf8.xdy" são truques para contornar este
+# bug, que existe em outras distribuições tambem:
+# https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
+# Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
+#$makeindex = 'texindy -C utf8 -M hyperxindy.xdy %O -o %D %S 2>&1 | tee';
+#$makeindex = 'texindy -M lang/latin/utf8.xdy -M hyperxindy.xdy %O -o %D %S 2>&1 | tee';
+$makeindex = 'makeindex -s mkidxhead.ist -L %O -o %D %S 2>&1 | tee';
 
 $pdf_mode = 1;
 
