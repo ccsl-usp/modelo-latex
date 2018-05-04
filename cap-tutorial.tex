@@ -1,3 +1,19 @@
+% Vamos definir alguns comandos auxiliares para facilitar.
+
+% "textbackslash" é muito comprido.
+\newcommand{\sla}{\textbackslash}
+
+% Vamos escrever comandos (como "make" ou "itemize") com formatação especial.
+\newcommand{\cmd}[1]{\textsf{#1}}
+
+% Idem para packages; aqui estamos usando a mesma formatação de \cmd,
+% mas poderíamos escolher outra.
+\newcommand{\pkg}[1]{\textsf{#1}}
+
+% A maioria dos comandos LaTeX começa com "\"; vamos criar um
+% comando que já coloca essa barra e formata com "\cmd".
+\newcommand{\ltxcmd}[1]{\cmd{\sla{}#1}}
+
 \chapter{Do zero ao mínimo com \LaTeX{}}
 
 Preparar um texto para impressão envolve duas coisas:
@@ -71,11 +87,11 @@ oferecem outras comodidades. Os mais comumente usados são \TeX{}maker,
 Windows, MacOS e Linux. \TeX{}nicCenter é outra opção livre, mas funciona
 apenas em Windows. O editor atom (\url{atom.io}) tem uma interface às vezes
 peculiar para não programadores, mas em conjunto com as suas \emph{packages}
-\textsf{atom-latex}, \textsf{latex-document-outline},
-\textsf{grammar-token-limit} e \textsf{preview-inline}, ele é uma boa opção
+\pkg{atom-latex}, \pkg{latex-document-outline},
+\pkg{grammar-token-limit} e \pkg{preview-inline}, ele é uma boa opção
 (observe que essas são \emph{packages} do atom, não do \LaTeX{}). O mesmo
 vale para o editor emacs (\url{www.gnu.org/software/emacs}) e sua package
-\textsf{AUC\TeX{}}. Ainda outra possibilidade são os editores \emph{online},
+\pkg{AUC\TeX{}}. Ainda outra possibilidade são os editores \emph{online},
 como overleaf (\url{www.overleaf.com}) e sharelatex (\url{www.sharelatex.com}).
 
 \LaTeX{} ignora quebras de linha e trata sequências de vários espaços como
@@ -88,7 +104,7 @@ comentário, ou seja, um trecho de texto que não tem nenhum efeito sobre o
 resultado final do documento. Comentários podem ser usados como lembrete sobre
 alguma decisão, para indicar um parágrafo que ainda precisa de revisão etc.
 Por conta desse significado especial, para inserir um caractere \% ``normal''
-no texto é preciso digitar ``\textsf{\textbackslash\%}''.
+no texto é preciso digitar ``\ltxcmd{\%}''.
 
 Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
 você coloca comandos de configuração para o documento, e o \emph{corpo} do
@@ -98,18 +114,18 @@ tamanho da fonte a usar, posição dos títulos e subtítulos na página etc.
 Como definir todas as configurações de impressão desejadas é bastante complexo,
 \LaTeX{} fornece algumas pré-definições padrão (``\emph{classes}'') em
 função do tipo de documento, que você escolhe com o comando
-\textsf{\textbackslash{}documentclass\{nome-da-classe\}} no preâmbulo. As
-principais classes são \textsf{book}, \textsf{report} e \textsf{article};
-você pode saber mais sobre elas (e outras) em qualquer texto introdutório
-sobre \LaTeX{} na Internet. \textsf{book} e \textsf{report} são as mais
-adequadas para a escrita de teses ou dissertações acadêmicas.
+\ltxcmd{documentclass\{nome-da-classe\}} no preâmbulo. As principais classes
+são \pkg{book}, \pkg{report} e \pkg{article}; você pode saber mais sobre elas
+(e outras) em qualquer texto introdutório sobre \LaTeX{} na Internet.
+\pkg{book} e \pkg{report} são as mais adequadas para a escrita de teses ou
+dissertações acadêmicas.
 
 \LaTeX{} também tem \emph{packages} (``\emph{plugins}'') que acrescentam
 funcionalidades ou modificam as classes padrão e também são carregadas no
-preâmbulo, com o comando \textsf{\textbackslash{}usepackage\{nome-da-package\}}.
-Várias delas podem receber opções adicionais no formato
-\textsf{\textbackslash{}usepackage[opção1,opção2...]\{nome-da-package\}};
-a documentação de cada package detalha as opções disponíveis.
+preâmbulo, com o comando \ltxcmd{usepackage\{nome-da-package\}}. Várias
+delas podem receber opções adicionais no formato
+\ltxcmd{usepackage[opção1,opção2...]\{nome-da-package\}}; a documentação
+de cada package detalha as opções disponíveis.
 
 Qualquer documento \LaTeX{} utiliza várias packages, portanto é preciso
 conhecê-las. Isso às vezes é trabalhoso porque algumas delas podem se
@@ -129,6 +145,7 @@ adaptado para outros usos e outras instituições. Há também um modelo
 documentos científicos.
 
 \section{Comandos Básicos}
+\label{sec:basico}
 
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
@@ -137,11 +154,10 @@ procuram expressar o \emph{significado} de cada elemento, e não sua
 aparência. Por exemplo, para realçar uma palavra é comum usar texto
 \textit{em itálico}; embora exista um comando especificamente para gerar
 textos em itálico em \LaTeX{}, o recomendado é que se utilize o comando
-\textsf{\textbackslash{}emph} (``enfatizado''), pois em alguns casos
-pode ser melhor utilizar \textbf{negrito}, \textsc{Small Caps} ou
-outro mecanismo para dar ênfase a uma palavra. Essa é uma orientação
-geral para a escrita de textos com \LaTeX{}: procure definir a estrutura,
-não a aparência.
+\ltxcmd{emph} (``enfatizado''), pois em alguns casos pode ser melhor
+utilizar \textbf{negrito}, \textsc{Small Caps} ou outro mecanismo para
+dar ênfase a uma palavra. Essa é uma orientação geral para a escrita de
+textos com \LaTeX{}: procure definir a estrutura, não a aparência.
 
 Um exemplo de documento \LaTeX{} simples:
 
@@ -169,16 +185,14 @@ Um exemplo de documento \LaTeX{} simples:
 \end{verbatim}
 
 Esse exemplo mostra como definir o nome de um capítulo. Existem também os
-comandos \textsf{\textbackslash{}section}, \textsf{\textbackslash{}subsection},
-\textsf{\textbackslash{}subsubsection} e \textsf{\textbackslash{}paragraph}
-(a classe \textsf{book} inclui também \textsf{\textbackslash{}part}, um nível
-acima de \textsf{\textbackslash{}chapter}). Usar o nome do comando seguido de
-um asterisco (\textsf{\textbackslash{}chapter*} etc.) faz o capítulo/seção não
-ser numerado nem incluído no sumário (nem considerado na contagem de capítulos,
-seções etc.).
+comandos \ltxcmd{section}, \ltxcmd{subsection}, \ltxcmd{subsubsection} e
+\ltxcmd{paragraph} (a classe \pkg{book} inclui também \ltxcmd{part}, um nível
+acima de \ltxcmd{chapter}). Usar o nome do comando seguido de um asterisco
+(\ltxcmd{chapter*} etc.) faz o capítulo/seção não ser numerado nem incluído
+no sumário (nem considerado na contagem de capítulos, seções etc.).
 
 Para criar listas de itens, você pode fazer\footnote{Observe o uso de
-espaços no início das linhas com \textsf{\textbackslash{}item} para deixar a
+espaços no início das linhas com \ltxcmd{item} para deixar a
 estrutura visualmente mais clara durante a edição.}:
 
 \begin{verbatim}
@@ -200,20 +214,18 @@ Além de ``itemize'', há também ``enumerate'' (auto-explicativo) e ``descripti
 \end{verbatim}
 
 Citações curtas normalmente são incluídas no fluxo normal do texto e colocadas
-entre aspas; para citações mais longas, use \textsf{\textbackslash{}begin\{quote\}}
-ou \textsf{\textbackslash{}begin\{quotation\}} (este último é mais adequado
-para citações com vários parágrafos). Para poesia, use \textsf{verse}
-(estrofes são separadas por uma linha em branco e versos são separados por
-\textsf{\textbackslash{}\textbackslash{}*}. O asterisco é opcional; ele
-instrui \LaTeX{} a manter as linhas na mesma página). A package
-\textsf{csquotes} acrescenta recursos sofisticados para citações.
+entre aspas; para citações mais longas, use \ltxcmd{begin\{quote\}} ou
+\ltxcmd{begin\{quotation\}} (este último é mais adequado para citações com
+vários parágrafos). Para poesia, use \cmd{verse} (estrofes são separadas por
+uma linha em branco e versos são separados por \cmd{\sla\sla{}*}. O asterisco
+é opcional; ele instrui \LaTeX{} a manter as linhas na mesma página). A package
+\pkg{csquotes} acrescenta recursos sofisticados para citações.
 
 Para inserir uma nota de rodapé, use o comando
-\textsf{\textbackslash{}footnote\{texto da nota\}}\index{Notas de rodapé}.
-Um espaço não-separável é indicado pelo caractere til (``\textasciitilde{}'')
-e é possível forçar uma quebra de linha com
-``\textsf{\textbackslash{}\textbackslash{}}''. Aspas tipográficas (``'' e `')
-são inseridas com
+\ltxcmd{footnote\{texto da nota\}}\index{Notas de rodapé}. Um espaço
+não-separável é indicado pelo caractere til (``\cmd{\textasciitilde{}}'')
+e é possível forçar uma quebra de linha com ``\cmd{\sla\sla{}}''. Aspas
+tipográficas (``'' e `') são inseridas com
 % As fontes Linux Libertine e inconsolata não têm estes caracteres
 \texttt{\textasciigrave\textasciigrave\textquotesingle\textquotesingle} e
 \texttt{\textasciigrave\textquotesingle}. Você pode consultar a lista completa de
@@ -227,24 +239,22 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 discutimos no capítulo~X\ldots''). Isso pode ser feito diretamente, mas
 se você reorganizar o documento ou acrescentar seções, a numeração pode
 mudar. Para evitar esse problema, você pode gerar essas referências
-automaticamente com o par de comandos
-\textsf{\textbackslash{}label\{nome-sugestivo\}} e
-\textsf{\textbackslash{}ref\{nome-sugestivo\}} (para o número da
-seção/capítulo) ou \textsf{\textbackslash{}pageref\{nome-sugestivo\}}
-(para o número da página).
+automaticamente com o par de comandos \ltxcmd{label\{nome-sugestivo\}} e
+\ltxcmd{ref\{nome-sugestivo\}} (para o número da seção/capítulo) ou
+\ltxcmd{pageref\{nome-sugestivo\}} (para o número da página).
 
 Esse mecanismo também é muito útil para figuras e tabelas.
 É claro que o ideal seria que tabelas e figuras sempre aparecessem junto ao
 texto a que se referem. No entanto, isso é impossível por conta da divisão
 do texto em páginas. Em \LaTeX{}, figuras e tabelas são incluídas como
-\emph{floats} (localização flexível) usando \textsf{\textbackslash{}begin\{figure\}}
-e \textsf{\textbackslash{}begin\{table\}} e o programa procura o ``melhor''
+\emph{floats} (localização flexível) usando \ltxcmd{begin\{figure\}}
+e \ltxcmd{begin\{table\}} e o programa procura o ``melhor''
 lugar para colocá-las. Dentro do \emph{float} é inserido um
-\textsf{\textbackslash{}label} para que se possa fazer referência à figura/tabela
-no texto (com o comando \textsf{\textbackslash{}ref}). A figura/tabela em
-si é definida com \textsf{\textbackslash{}includegraphics} ou
-\textsf{\textbackslash{}begin\{tabular\}}, e em geral é uma boa ideia acrescentar
-uma descrição com \textsf{\textbackslash{}caption}\index{Legendas}.
+\ltxcmd{label} para que se possa fazer referência à figura/tabela
+no texto (com o comando \ltxcmd{ref}). A figura/tabela em
+si é definida com \ltxcmd{includegraphics} ou \ltxcmd{begin\{tabular\}},
+e em geral é uma boa ideia acrescentar uma descrição com
+\ltxcmd{caption}\index{Legendas}.
 
 \LaTeX{}\index{Floats!Ordem} garante que a sequência das figuras e a
 sequência das tabelas sejam respeitadas (a Figura~6 nunca aparece depois da
@@ -264,7 +274,7 @@ inserção o texto das referências (``página X'', ``Seção Y'' etc.).
 
 A princípio, isso poderia ser feito automaticamente, sem intervenção do
 usuário; \LaTeX{}, no entanto, não funciona assim. Ao invés disso, é
-preciso executar o comando \textsf{pdflatex} duas vezes seguidas: na
+preciso executar o comando \cmd{pdflatex} duas vezes seguidas: na
 primeira ele gera um PDF ``defeituoso'' (sem as referências corretas) e
 um arquivo auxiliar com as informações sobre a localização de cada
 referência e, na segunda, cria o PDF ``correto''.
@@ -275,8 +285,8 @@ rodar o comando no mínimo três vezes. Como a geração da bibliografia e do
 índice remissivo dependem também de programas auxiliares, a produção do
 documento final acaba envolvendo vários passos e, por isso, é comum utilizar
 alguma ferramenta para automatizar esse processo. As mais usadas são o
-\textsf{make}, que executa os passos (às vezes bastante complexos) definidos
-em um arquivo chamado \textsf{Makefile}, e o \textsf{latexmk}, que foi
+\cmd{make}, que executa os passos (às vezes bastante complexos) definidos
+em um arquivo chamado \cmd{Makefile}, e o \cmd{latexmk}, que foi
 desenvolvido especificamente para uso com \LaTeX{} e, portanto, funciona
 com um arquivo de configuração simples (que é, inclusive, opcional).
 
@@ -288,48 +298,43 @@ matemático. Isso pode ser feito de duas formas:
 
 \begin{itemize}
   \item Pequenas fórmulas no meio do texto ($E=mc^2$) são inseridas com
-  \textsf{\$\emph{fórmula}\$} (e, portanto, para inserir um caractere \$
-  normal no texto, é preciso usar \textsf{\textbackslash{}\$}).
+  \cmd{\$\emph{fórmula}\$} (e, portanto, para inserir um caractere \$
+  normal no texto, é preciso usar \cmd{\sla{}\$}).
 
   \item Fórmulas mais longas ou que devem aparecer em um parágrafo
-  separado são inseridas com
-  \textsf{\textbackslash{}[\emph{fórmula}\textbackslash{}]} (ou
-  \textsf{\textbackslash{}begin\{displaymath\}}).
+  separado são inseridas com \cmd{\sla{}[\emph{fórmula}\sla{}]} (ou
+  \ltxcmd{begin\{displaymath\}}).
 \end{itemize}
 
 No modo matemático, letras são interpretadas como variáveis e espaços
 em branco são ignorados (\LaTeX{} usa o contexto da fórmula para
 definir o espaçamento). Para inserir um espaço explicitamente, use
-\textsf{\textbackslash{}quad} ou \textsf{\textbackslash{}enspace}.
-Para inserir texto ``normal'' em uma fórmula matemática, use
-\textsf{\textbackslash{}text\{texto\}} (para texto de fato) ou
-\textsf{\textbackslash{}mathit\{texto\}} (para nomes de variáveis
-ou funções com mais de uma letra). Pode ser necessário deixar um
-espaço no início do texto para evitar que ele fique colado com o
-caractere matemático que o antecede.
+\ltxcmd{quad} ou \ltxcmd{enspace}. Para inserir texto ``normal'' em
+uma fórmula matemática, use \ltxcmd{text\{texto\}} (para texto de fato)
+ou \ltxcmd{mathit\{texto\}} (para nomes de variáveis ou funções com
+mais de uma letra). Pode ser necessário deixar um espaço no início do
+texto para evitar que ele fique colado com o caractere matemático que
+o antecede.
 
-Usando \textsf{\textbackslash{}begin\{equation\}}, a fórmula recebe um
-número (que aparece à direita) ao qual você pode se referir no texto
-usando os comandos ``\textsf{\textbackslash{}ref}'' e
-``\textsf{\textbackslash{}eqref}'' (``\textsf{conforme vimos na equação
-\textbackslash{}ref\{eq:bhaskara\}\ldots}'' ou
-``\textsf{de acordo com \textbackslash{}eqref\{eq:bhaskara\}\ldots}'').
-\textsf{\textbackslash{}begin\{equation*\}} (incluindo o *) elimina
-o número e é, portanto, equivalente a
-\textsf{\textbackslash{}begin\{displaymath\}}. Há outros comandos
-similares, como \textsf{align}, \textsf{multline} e \textsf{gather},
-definidos e documentados na package \textsf{amsmath}, e todos têm
+Usando \ltxcmd{begin\{equation\}}, a fórmula recebe um número (que
+aparece à direita) ao qual você pode se referir no texto usando os
+comandos ``\ltxcmd{ref}'' e ``\ltxcmd{eqref}'' (``\textsf{conforme
+vimos na equação \ltxcmd{ref\{eq:bhaskara\}\ldots}}'' ou
+``\textsf{de acordo com \ltxcmd{eqref\{eq:bhaskara\}\ldots}}'').
+\ltxcmd{begin\{equation*\}} (incluindo o *) elimina o número e é,
+portanto, equivalente a \ltxcmd{begin\{displaymath\}}. Há outros
+comandos similares, como \cmd{align}, \cmd{multline} e \cmd{gather},
+definidos e documentados na package \pkg{amsmath}, e todos têm
 a variante com ``*''.
 
 \section{Referências Bibliográficas e Bibliografia}
 
 A geração de bibliografias no \LaTeX{} é feita através da package
-\textsf{biblatex}\index{biblatex} e do programa auxiliar
-\textsf{biber}\index{biber}\footnote{Antigamente, usava-se a package
-\textsf{natbib}\index{natbib} e o comando auxiliar
-\textsf{bibtex}\index{bibtex}. O funcionamento geral dos dois mecanismos
-é similar e o formato do banco de dados de ambos é o mesmo.} e envolve
-três passos:
+\pkg{biblatex}\index{biblatex} e do programa auxiliar
+\cmd{biber}\index{biber}\footnote{Antigamente, usava-se a package
+\pkg{natbib}\index{natbib} e o comando auxiliar \cmd{bibtex}\index{bibtex}.
+O funcionamento geral dos dois mecanismos é similar e o formato do banco
+de dados de ambos é o mesmo.} e envolve três passos:
 
 \begin{enumerate}
 \item A criação de um banco de dados, no formato ``.bib'', das obras de
@@ -340,18 +345,16 @@ comum criar bancos de dados desse tipo separados por assunto, mas isso
 não é necessário.}.
 
 \item A inserção de referências às obras ao longo do texto, usando
-diferentes comandos dependendo do caso: \textsf{\textbackslash{}cite},
-\textsf{\textbackslash{}citet}, \textsf{\textbackslash{}citep} etc. Esses
-comandos estão descritos tanto na documentação da package
-\textsf{biblatex}\index{biblatex} quanto na da package
-\textsf{natbib}\index{natbib}. Normalmente, apenas as obras efetivamente
+diferentes comandos dependendo do caso: \ltxcmd{cite}, \ltxcmd{citet},
+\ltxcmd{citep} etc. Esses comandos estão descritos tanto na documentação
+da package \pkg{biblatex}\index{biblatex} quanto na da package
+\pkg{natbib}\index{natbib}. Normalmente, apenas as obras efetivamente
 citadas são incluídas na bibliografia, mas é possível forçar a inclusão
-de uma obra não-citada com o comando \textsf{\textbackslash{}nocite}.
+de uma obra não-citada com o comando \ltxcmd{nocite}.
 
 \item A escolha do estilo bibliográfico (usando as opções da package
-\textsf{biblatex}) que formata as citações ao longo do texto e gera a
-bibliografia automaticamente através do comando
-\textsf{\textbackslash{}printbibliography}.
+\pkg{biblatex}) que formata as citações ao longo do texto e gera a bibliografia
+automaticamente através do comando \ltxcmd{printbibliography}.
 \end{enumerate}
 
 O banco de dados é um arquivo de texto contendo uma \emph{entrada} para cada
@@ -361,7 +364,7 @@ usada para inserir as citações no texto. Há vários tipos de entrada (para
 artigos, livros, sítios web etc.) e, para cada tipo, uma lista de campos
 possíveis (considere que periódicos normalmente incluem o número do volume,
 mas teses não). O exemplo abaixo é um livro cuja chave é ``dissertjourney'';
-ele pode ser citado com o comando \textsf{\textbackslash{}cite\{dissertjourney\}}:
+ele pode ser citado com o comando \ltxcmd{cite\{dissertjourney\}}:
 
 \begin{verbatim}
         @book{dissertjourney,
@@ -419,46 +422,54 @@ nome é longo, pode ser interessante definir o campo \textsf{shortauthor}.
 \enlargethispage{\baselineskip}
 
 A fonte mais detalhada de informações sobre o banco de dados é a
-documentação da package \textsf{biblatex}, mas o material ali é um tanto
-denso. Há muito material introdutório ao formato ``.bib'' e ao bibtex
-disponível \emph{online}, e você pode se inspirar em exemplos para criar
-seu banco de dados bibliográfico. Além disso, ferramentas como
-Zotero\index{Zotero} ou Mendeley\index{Mendeley} (o uso de uma delas é
-altamente recomendado!) podem exportar para o formato .bib.
+documentação da package \pkg{biblatex}, mas o material ali é um tanto denso.
+Há muito material introdutório ao formato ``.bib'' e ao bibtex disponível
+\emph{online}, e você pode se inspirar em exemplos para criar seu banco de
+dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
+Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
+podem exportar para o formato .bib.
 
 \section{Formatação Manual}
 
 Às vezes é preciso inserir formatação de forma manual; os comandos mais
 importantes são
-\textsf{\textbackslash{}emph} (texto \emph{enfatizado}, em geral itálico),
-\textsf{\textbackslash{}texttt} (texto \texttt{teletype}, imitando um
+\ltxcmd{emph} (texto \emph{enfatizado}, em geral itálico),
+\ltxcmd{texttt} (texto \texttt{teletype}, imitando um
 terminal de texto ou uma impressora),
-\textsf{\textbackslash{}textit} (\textit{itálico}),
-\textsf{\textbackslash{}textbf} (\textbf{negrito}),
-\textsf{\textbackslash{}textsf} (fonte \textsf{sem serifa}),
-\textsf{\textbackslash{}textsc} (texto \textsc{Small Caps} --- nem todas
+\ltxcmd{textit} (\textit{itálico}),
+\ltxcmd{textbf} (\textbf{negrito}),
+\ltxcmd{textsf} (fonte \textsf{sem serifa}),
+\ltxcmd{textsc} (texto \textsc{Small Caps} --- nem todas
 as fontes oferecem essa possibilidade),
-\textsf{\textbackslash{}normalsize} (tamanho normal),
-\textsf{\textbackslash{}small} (tamanho reduzido),
-\textsf{\textbackslash{}footnotesize} (ainda menor),
-\textsf{\textbackslash{}scriptsize} (ainda menor),
-\textsf{\textbackslash{}tiny} (ainda menor),
-\textsf{\textbackslash{}large} (tamanho aumentado),
-\textsf{\textbackslash{}Large} (ainda maior),
-\textsf{\textbackslash{}LARGE} (ainda maior) e
-\textsf{\textbackslash{}Huge} (ainda maior),
-\textsf{\textbackslash{}vspace\{\textbackslash{}baselineskip\}}
-(deixa uma linha em branco),
-\textsf{\textbackslash{}begin\{center\}} (centraliza parágrafos),
-\textsf{\textbackslash{}begin\{flushleft\}} (alinha parágrafos à esquerda),
-\textsf{\textbackslash{}begin\{flushright\}} (alinha parágrafos à
-direita)\footnote{É altamente recomendável carregar
-a package \textsf{ragged2e} e utilizar \textsf{Center}, \textsf{FlushLeft}
-e \textsf{FlushRight} ao invés de \textsf{center}, \textsf{flushleft} e
-\textsf{flushright}.},
-\textsf{\textbackslash{}leftskip=1cm} (aumenta a margem esquerda) e
-\textsf{\textbackslash{}rightskip=1cm} (aumenta a margem direita).
+\ltxcmd{normalsize} (tamanho normal),
+\ltxcmd{small} (tamanho reduzido),
+\ltxcmd{footnotesize} (ainda menor),
+\ltxcmd{scriptsize} (ainda menor),
+\ltxcmd{tiny} (ainda menor),
+\ltxcmd{large} (tamanho aumentado),
+\ltxcmd{Large} (ainda maior),
+\ltxcmd{LARGE} (ainda maior),
+\ltxcmd{Huge} (ainda maior),
+\ltxcmd{vspace\{\sla{}baselineskip\}} (deixa uma linha em branco),
+\ltxcmd{begin\{center\}} (centraliza parágrafos),
+\ltxcmd{begin\{flushleft\}} (alinha parágrafos à esquerda),
+\ltxcmd{begin\{flushright\}} (alinha parágrafos à direita)\footnote{É altamente
+recomendável carregar a package \pkg{ragged2e} e utilizar \cmd{Center},
+\cmd{FlushLeft} e \cmd{FlushRight} ao invés de \cmd{center},
+\cmd{flushleft} e \cmd{flushright}.},
+\ltxcmd{leftskip=1cm} (aumenta a margem esquerda) e
+\ltxcmd{rightskip=1cm} (aumenta a margem direita).
 
+Mas, como discutido na Seção~\ref{sec:basico}, não é recomendável
+usar esses comandos ao longo do texto: o ideal em \LaTeX{} é expressar
+o significado de cada elemento, não a sua forma de apresentação,
+pois isso permite que você faça alterações na formatação com mais
+facilidade. Assim, quando os recursos pré-definidos do \LaTeX{}
+(\ltxcmd{itemize}, \ltxcmd{chapter} etc.) não forem suficientes,
+o mais adequado é definir comandos novos, em geral usando os comandos
+de formatação mencionados acima. Esse é um tópico avançado, mas você
+pode consultar o início do arquivo \LaTeX{} deste capítulo para alguns
+exemplos.
 
 \section{Detalhes da Linguagem}
 
@@ -466,30 +477,29 @@ Há quatro estilos típicos de comandos \LaTeX{}:
 
 \begin{itemize}
 \item Comandos que se referem a um parâmetro; por exemplo,
-\textsf{\textbackslash{}emph\{um texto\}} significa ``escreva a frase
+\ltxcmd{emph\{um texto\}} significa ``escreva a frase
 `um texto' com ênfase'' (em geral, itálico). As chaves delimitam o início
 e o final do escopo sobre o qual o comando tem efeito. Aqui entram também
-comandos como \textsf{\textbackslash{}title} e \textsf{\textbackslash{}author},
+comandos como \ltxcmd{title} e \ltxcmd{author},
 que não escrevem nada diretamente mas definem o título e autoria do documento
-(essa informação é usada, por exemplo, por \textsf{\textbackslash{}maketitle}).
+(essa informação é usada, por exemplo, por \ltxcmd{maketitle}).
 
 \item Comandos que se referem a um parâmetro que é um bloco grande de
-texto, possivelmente vários parágrafos; por exemplo,
-\textsf{\textbackslash{}begin\{center\} um texto
-\textbackslash{}end\{center\}} faz ``um texto'' (que podem ser
-vários parágrafos) ser centralizado.
+texto, possivelmente vários parágrafos; por exemplo, \ltxcmd{begin\{center\}}
+um texto \ltxcmd{end\{center\}} faz ``um texto'' (que podem ser vários
+parágrafos) ser centralizado.
 
-\item Comandos que ativam alguma opção; por exemplo,
-\textsf{\textbackslash{}itshape} significa ``ative o modo itálico''.
-Nesse caso, o texto vai ser impresso em itálico até outro comando selecionar
-outro estilo de fonte. Se o comando for inserido dentro de um bloco
-delimitado por chaves, ele ``perde o efeito'' após o caractere de fecha-chaves
-(exemplo: ``\textsf{\{\textbackslash{}itshape Fulano de Tal\} é meu nome}''
-será impresso como ``\textit{Fulano de Tal} é meu nome''). Você normalmente
-não vai utilizar esse estilo de comando, mas ele é útil em alguns casos.
+\item Comandos que ativam alguma opção; por exemplo, \ltxcmd{itshape}
+significa ``ative o modo itálico''. Nesse caso, o texto vai ser impresso
+em itálico até outro comando selecionar outro estilo de fonte. Se o comando
+for inserido dentro de um bloco delimitado por chaves, ele ``perde o
+efeito'' após o caractere de fecha-chaves (exemplo: ``\{\ltxcmd{itshape\{\}}
+Fulano de Tal\} é meu nome'' será impresso como ``\textit{Fulano de Tal} é
+meu nome''). Você normalmente não vai utilizar esse estilo de comando, mas
+ele é útil em alguns casos.
 
 \item Comandos que fazem o programa escrever algo específico; por exemplo,
-em várias classes padrão o comando \textsf{\textbackslash{}maketitle} gera
+em várias classes padrão o comando \ltxcmd{maketitle} gera
 uma página de título com o nome do trabalho, autor etc.
 \end{itemize}
 
@@ -498,7 +508,7 @@ chaves podem ser colocadas e muitas vezes isso é bom: sem elas, \LaTeX{}
 entende que o caractere espaço que se segue a esses comandos serve apenas
 como separador em relação ao que vem a seguir. Por conta disso, ele ignora
 esse espaço. Quando isso não é o que se deseja, a solução é usar as chaves:
-\textsf{\textbackslash{}itshape\{\}}.
+\ltxcmd{itshape\{\}}.
 
 Alguns comandos aceitam mais de um parâmetro, às vezes entre chaves, às
 vezes entre colchetes. Você pode descobrir a sintaxe correta para cada caso
@@ -558,7 +568,7 @@ indesejáveis:
 
 \begin{itemize}
     \item A linguagem é muito prolixa: é bastante tedioso escrever
-    coisas como ``\textbackslash{}begin\{itemize\}'' etc. Linguagens
+    coisas como ``\ltxcmd{begin\{itemize\}}'' etc. Linguagens
     como asciidoc/asciidoctor (\url{asciidoctor.org}) funcionam de
     maneira similar a \LaTeX{}, mas sua sintaxe é bem mais enxuta.
     No entanto, asciidoc não tem alguns recursos avançados oferecidos
@@ -607,44 +617,42 @@ indesejáveis:
     um último recurso, mas que muitas vezes pode ser bastante positivo.
     Ainda assim, se houver quebras de página ruins no seu texto final, você
     pode usar essa estratégia manualmente. Ao invés de comandos como
-    \textsf{\textbackslash{}pagebreak} ou \textsf{\textbackslash{}newpage},
-    o mais adequado é usar
-    \textsf{\textbackslash{}enlargethispage\{\textbackslash{}baselineskip\}}.
-    Esse comando instrui \LaTeX{} a fazer a página ligeiramente maior, tornando
-    possível acomodar mais uma linha (``\textsf{-1\textbackslash{}baselineskip}''
-    faz a página ficar com uma linha a menos). Em documentos frente e verso,
-    lembre-se de sempre garantir que a página adjacente também tenha seu tamanho
+    \ltxcmd{pagebreak} ou \ltxcmd{newpage}, o mais adequado é usar
+    \ltxcmd{enlargethispage\{\sla{}baselineskip\}}. Esse comando instrui
+    \LaTeX{} a fazer a página ligeiramente maior, tornando possível
+    acomodar mais uma linha (``\cmd{-1\sla{}baselineskip}'' faz a página
+    ficar com uma linha a menos). Em documentos frente e verso, lembre-se
+    de sempre garantir que a página adjacente também tenha seu tamanho
     modificado para que a alteração não seja tão perceptível.
 
     \item Como muitos outros sistemas de texto, \LaTeX{} pode usar mais de
     um padrão para a codificação de caracteres acentuados. Alguns anos atrás,
-    o mais comum era o \textsf{ISO-8859-1}, também conhecido como
-    \textsf{latin1} (esse é o nome usado no \LaTeX{}) ou \textsf{Windows-1252};
-    atualmente, o mais comum é o UTF-8. No entanto, usuários que escrevem
-    apenas em língua inglesa às vezes não configuram seus sistemas para usar
-    qualquer tipo de caracter acentuado. De maneira geral, é simples reconhecer
-    e resolver os problemas causados por inconsistências na codificação, mas
-    arquivos ``.bib'' são um caso especial: é bastante comum que um arquivo
-    desse tipo seja compartilhado por várias pessoas. Para evitar problemas
-    com os acentos nesse caso, uma possibilidade é representar os caracteres
-    acentuados usando comandos \LaTeX{}: \textbackslash\textquotesingle\{a\}
-    para á, \textbackslash{}c\{c\} para cedilha etc., independentemente da
+    o mais comum era o ISO-8859-1, também conhecido como latin1 (esse é o
+    nome usado no \LaTeX{}) ou Windows-1252; atualmente, o mais comum é o
+    UTF-8. No entanto, usuários que escrevem apenas em língua inglesa às
+    vezes não configuram seus sistemas para usar qualquer tipo de caracter
+    acentuado. De maneira geral, é simples reconhecer e resolver os problemas
+    causados por inconsistências na codificação, mas arquivos ``.bib'' são um
+    caso especial: é bastante comum que um arquivo desse tipo seja
+    compartilhado por várias pessoas. Para evitar problemas com os acentos
+    nesse caso, uma possibilidade é representar os caracteres acentuados
+    usando comandos \LaTeX{}: \cmd{\sla\textquotesingle\{a\}} para á,
+    \cmd{\sla{}c\{c\}} para cedilha etc., independentemente da
     codificação usada no texto\footnote{Você pode consultar os comandos
     desse tipo mais comuns em \url{en.wikibooks.org/wiki/LaTeX/Special_Characters}.
     Observe que a dica sobre os pingos do i e do j \emph{não} é mais
-    válida atualmente, basta usar \textbackslash\textquotesingle\{i\} para
+    válida atualmente, basta usar \cmd{\sla\textquotesingle\{i\}} para
     obter o acento correto.}.
 
-    \item As classes padrão (\textsf{book}, \textsf{article} etc.) não foram
-    criadas para serem facilmente modificadas, o que deu origem a inúmeras
-    packages voltadas para possibilitar a personalização de diversos aspectos
-    da apresentação final do documento. Esse mecanismo não é ideal, por
-    diversas razões. Por conta disso, existe um conjunto de versões
-    alternativas dessas classes (\textsf{scrbook} no lugar de \textsf{book},
-    \textsf{scrartcl} no lugar de \textsf{article} etc.) chamado
-    \textsf{KOMA-Script}, com mais recursos e mais possibilidades de
-    customização. A classe \textsf{memoir} tem o mesmo objetivo, mas procura
-    dar suporte a livros e artigos com uma única classe. Ambas abordagens
-    são muito boas, mas a maioria dos modelos usados por revistas e outras
-    publicações são baseados nas classes padrão.
+    \item As classes padrão (\pkg{book}, \pkg{article} etc.) não foram criadas
+    para serem facilmente modificadas, o que deu origem a inúmeras packages
+    voltadas para possibilitar a personalização de diversos aspectos da
+    apresentação final do documento. Esse mecanismo não é ideal, por diversas
+    razões. Por conta disso, existe um conjunto de versões alternativas dessas
+    classes (\pkg{scrbook} no lugar de \pkg{book}, \pkg{scrartcl} no lugar de
+    \pkg{article} etc.) chamado \pkg{KOMA-Script}, com mais recursos e mais
+    possibilidades de customização. A classe \pkg{memoir} tem o mesmo objetivo,
+    mas procura dar suporte a livros e artigos com uma única classe. Ambas
+    abordagens são muito boas, mas a maioria dos modelos usados por revistas e
+    outras publicações são baseados nas classes padrão.
 \end{itemize}
