@@ -96,7 +96,7 @@ documento em si, que contém o texto propriamente dito. O preâmbulo é onde
 você define as características do resultado tipográfico esperado: tipo e
 tamanho da fonte a usar, posição dos títulos e subtítulos na página etc.
 Como definir todas as configurações de impressão desejadas é bastante complexo,
-\LaTeX{} fornece algumas pré-definições padrão (``\textit{classes}'') em
+\LaTeX{} fornece algumas pré-definições padrão (``\emph{classes}'') em
 função do tipo de documento, que você escolhe com o comando
 \textsf{\textbackslash{}documentclass\{nome-da-classe\}} no preâmbulo. As
 principais classes são \textsf{book}, \textsf{report} e \textsf{article};
@@ -104,7 +104,7 @@ você pode saber mais sobre elas (e outras) em qualquer texto introdutório
 sobre \LaTeX{} na Internet. \textsf{book} e \textsf{report} são as mais
 adequadas para a escrita de teses ou dissertações acadêmicas.
 
-\LaTeX{} também tem \textit{packages} (``\textit{plugins}'') que acrescentam
+\LaTeX{} também tem \emph{packages} (``\emph{plugins}'') que acrescentam
 funcionalidades ou modificam as classes padrão e também são carregadas no
 preâmbulo, com o comando \textsf{\textbackslash{}usepackage\{nome-da-package\}}.
 Várias delas podem receber opções adicionais no formato
@@ -288,12 +288,12 @@ matemático. Isso pode ser feito de duas formas:
 
 \begin{itemize}
   \item Pequenas fórmulas no meio do texto ($E=mc^2$) são inseridas com
-  \textsf{\$\textit{fórmula}\$} (e, portanto, para inserir um caractere \$
+  \textsf{\$\emph{fórmula}\$} (e, portanto, para inserir um caractere \$
   normal no texto, é preciso usar \textsf{\textbackslash{}\$}).
 
   \item Fórmulas mais longas ou que devem aparecer em um parágrafo
   separado são inseridas com
-  \textsf{\textbackslash{}[\textit{fórmula}\textbackslash{}]} (ou
+  \textsf{\textbackslash{}[\emph{fórmula}\textbackslash{}]} (ou
   \textsf{\textbackslash{}begin\{displaymath\}}).
 \end{itemize}
 
@@ -324,11 +324,12 @@ a variante com ``*''.
 \section{Referências Bibliográficas e Bibliografia}
 
 A geração de bibliografias no \LaTeX{} é feita através da package
-biblatex\index{biblatex} e do programa auxiliar
-biber\index{biber}\footnote{Antigamente, usava-se a package
-natbib\index{natbib} e o comando auxiliar bibtex\index{bibtex}. O
-funcionamento geral dos dois mecanismos é similar e o formato do banco de
-dados de ambos é o mesmo.} e envolve três passos:
+\textsf{biblatex}\index{biblatex} e do programa auxiliar
+\textsf{biber}\index{biber}\footnote{Antigamente, usava-se a package
+\textsf{natbib}\index{natbib} e o comando auxiliar
+\textsf{bibtex}\index{bibtex}. O funcionamento geral dos dois mecanismos
+é similar e o formato do banco de dados de ambos é o mesmo.} e envolve
+três passos:
 
 \begin{enumerate}
 \item A criação de um banco de dados, no formato ``.bib'', das obras de
@@ -342,14 +343,15 @@ não é necessário.}.
 diferentes comandos dependendo do caso: \textsf{\textbackslash{}cite},
 \textsf{\textbackslash{}citet}, \textsf{\textbackslash{}citep} etc. Esses
 comandos estão descritos tanto na documentação da package
-biblatex\index{biblatex} quanto na da package natbib\index{natbib}.
-Normalmente, apenas as obras efetivamente citadas são incluídas na
-bibliografia, mas é possível forçar a inclusão de uma obra não-citada
-com o comando \textsf{\textbackslash{}nocite}.
+\textsf{biblatex}\index{biblatex} quanto na da package
+\textsf{natbib}\index{natbib}. Normalmente, apenas as obras efetivamente
+citadas são incluídas na bibliografia, mas é possível forçar a inclusão
+de uma obra não-citada com o comando \textsf{\textbackslash{}nocite}.
 
 \item A escolha do estilo bibliográfico (usando as opções da package
-biblatex) que formata as citações ao longo do texto e gera a bibliografia
-automaticamente através do comando \textsf{\textbackslash{}printbibliography}.
+\textsf{biblatex}) que formata as citações ao longo do texto e gera a
+bibliografia automaticamente através do comando
+\textsf{\textbackslash{}printbibliography}.
 \end{enumerate}
 
 O banco de dados é um arquivo de texto contendo uma \emph{entrada} para cada
@@ -390,14 +392,14 @@ de artigos, livros etc:
 Cada estilo de bibliografia utiliza um desses formatos e, portanto, é
 desejável que o banco de dados funcione corretamente com ambos. No
 entanto, nem sempre é claro quais palavras devem ser iniciadas com letra
-maiúscula ao usar \textit{title case} e, por conta disso, não há um sistema
+maiúscula ao usar \emph{title case} e, por conta disso, não há um sistema
 automático em \LaTeX{} para adaptar títulos a ele. Sendo assim, como fazer
 um banco de dados bibliográfico capaz de funcionar com os dois formatos?
 
 A solução é sempre inserir os títulos dos itens no banco de dados seguindo
-o formato \textit{title case}. Se o estilo utiliza esse formato, o título
+o formato \emph{title case}. Se o estilo utiliza esse formato, o título
 é reproduzido na bibliografia como digitado no banco de dados. Se o estilo
-usa \textit{sentence case}, o texto (exceto a primeira letra) é convertido
+usa \emph{sentence case}, o texto (exceto a primeira letra) é convertido
 para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
 basta colocá-los entre chaves (``Automated Application-Level Checkpointing
 of \{MPI\} Programs'').
@@ -417,12 +419,12 @@ nome é longo, pode ser interessante definir o campo \textsf{shortauthor}.
 \enlargethispage{\baselineskip}
 
 A fonte mais detalhada de informações sobre o banco de dados é a
-documentação da package biblatex, mas o material ali é um tanto denso.
-Há muito material introdutório ao formato ``.bib'' e ao bibtex disponível
-\emph{online}, e você pode se inspirar em exemplos para criar seu banco de
-dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
-Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
-podem exportar para o formato .bib.
+documentação da package \textsf{biblatex}, mas o material ali é um tanto
+denso. Há muito material introdutório ao formato ``.bib'' e ao bibtex
+disponível \emph{online}, e você pode se inspirar em exemplos para criar
+seu banco de dados bibliográfico. Além disso, ferramentas como
+Zotero\index{Zotero} ou Mendeley\index{Mendeley} (o uso de uma delas é
+altamente recomendado!) podem exportar para o formato .bib.
 
 \section{Formatação Manual}
 
@@ -612,12 +614,13 @@ indesejáveis:
     para á, \textbackslash{}c\{c\} para cedilha etc., independentemente da
     codificação usada no texto.
 
-    \item As classes padrão (book, article etc.) não foram criadas para serem
-    facilmente modificadas, o que deu origem a inúmeras packages voltadas para
-    possibilitar a personalização de diversos aspectos da apresentação final
-    do documento. Esse mecanismo não é ideal, por diversas razões. Por conta
-    disso, existe um conjunto de versões alternativas dessas classes (scrbook
-    no lugar de book, scrartcl no lugar de article etc.) chamado
+    \item As classes padrão (\textsf{book}, \textsf{article} etc.) não foram
+    criadas para serem facilmente modificadas, o que deu origem a inúmeras
+    packages voltadas para possibilitar a personalização de diversos aspectos
+    da apresentação final do documento. Esse mecanismo não é ideal, por
+    diversas razões. Por conta disso, existe um conjunto de versões
+    alternativas dessas classes (\textsf{scrbook} no lugar de \textsf{book},
+    \textsf{scrartcl} no lugar de \textsf{article} etc.) chamado
     \textsf{KOMA-Script}, com mais recursos e mais possibilidades de
     customização. A classe \textsf{memoir} tem o mesmo objetivo, mas procura
     dar suporte a livros e artigos com uma única classe. Ambas abordagens
