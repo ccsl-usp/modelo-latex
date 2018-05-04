@@ -429,19 +429,36 @@ altamente recomendado!) podem exportar para o formato .bib.
 \section{Formatação Manual}
 
 Às vezes é preciso inserir formatação de forma manual; os comandos mais
-importantes são \textsf{\textbackslash{}emph} (texto \emph{enfatizado}, em geral
-itálico), \textsf{\textbackslash{}texttt} (texto \texttt{teletype}, imitando um
-terminal de texto ou uma impressora), \textsf{\textbackslash{}textit}
-(\textit{itálico}), \textsf{\textbackslash{}textbf} (\textbf{negrito}),
+importantes são
+\textsf{\textbackslash{}emph} (texto \emph{enfatizado}, em geral itálico),
+\textsf{\textbackslash{}texttt} (texto \texttt{teletype}, imitando um
+terminal de texto ou uma impressora),
+\textsf{\textbackslash{}textit} (\textit{itálico}),
+\textsf{\textbackslash{}textbf} (\textbf{negrito}),
 \textsf{\textbackslash{}textsf} (fonte \textsf{sem serifa}),
 \textsf{\textbackslash{}textsc} (texto \textsc{Small Caps} --- nem todas
 as fontes oferecem essa possibilidade),
 \textsf{\textbackslash{}normalsize} (tamanho normal),
-\textsf{\textbackslash{}footnotesize} (tamanho reduzido),
+\textsf{\textbackslash{}small} (tamanho reduzido),
+\textsf{\textbackslash{}footnotesize} (ainda menor),
+\textsf{\textbackslash{}scriptsize} (ainda menor),
+\textsf{\textbackslash{}tiny} (ainda menor),
 \textsf{\textbackslash{}large} (tamanho aumentado),
-\textsf{\textbackslash{}Large} (tamanho ainda maior),
+\textsf{\textbackslash{}Large} (ainda maior),
 \textsf{\textbackslash{}LARGE} (ainda maior) e
-\textsf{\textbackslash{}Huge} (ainda maior).
+\textsf{\textbackslash{}Huge} (ainda maior),
+\textsf{\textbackslash{}vspace\{\textbackslash{}baselineskip\}}
+(deixa uma linha em branco),
+\textsf{\textbackslash{}begin\{center\}} (centraliza parágrafos),
+\textsf{\textbackslash{}begin\{flushleft\}} (alinha parágrafos à esquerda),
+\textsf{\textbackslash{}begin\{flushright\}} (alinha parágrafos à
+direita)\footnote{É altamente recomendável carregar
+a package \textsf{ragged2e} e utilizar \textsf{Center}, \textsf{FlushLeft}
+e \textsf{FlushRight} ao invés de \textsf{center}, \textsf{flushleft} e
+\textsf{flushright}.},
+\textsf{\textbackslash{}leftskip=1cm} (aumenta a margem esquerda) e
+\textsf{\textbackslash{}rightskip=1cm} (aumenta a margem direita).
+
 
 \section{Detalhes da Linguagem}
 
