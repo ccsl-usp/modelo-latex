@@ -93,11 +93,79 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Define os campos que vão ser usados na capa
-\newcommand*{\titulopt}[1]{\renewcommand*{\@titulopt}{#1}}
-\newcommand*{\tituloport}[1]{\renewcommand*{\@titulopt}{#1}}
-\newcommand*{\tituloeng}[1]{\renewcommand*{\@tituloeng}{#1}}
-\newcommand*{\subtitulo}[1]{\gdef\@subtitulo{#1}}
-\newcommand*{\subtituloeng}[1]{\renewcommand*{\@subtituloeng}{#1}}
+
+% Às vezes é necessário forçar quebras de linha no título para a capa, mas
+% essas quebras não devem aparecer em outros lugares. Vamos definir duas
+% variáveis para o título, uma para a capa e outra "sanitizada", sem quebras
+% de linha. "Sanitizar" desta forma em LaTeX de maneira que não haja
+% surpresas, por incrível que pareça, é *muito* complicado, mas o código
+% abaixo deve ser suficiente para este caso. Se tiver curiosidade:
+% http://www.matijs.net/blog/2006/07/20/how-to-trim-spaces-in-tex
+
+\NewDocumentCommand\disablepagebreak{s o}{\unskip{} \ignorespaces}
+
+\newcommand*{\titulopt}[1]{
+    \gdef\@tituloptcapa{#1}
+    \gdef\@titulopt{%
+        \let \\ \disablepagebreak%
+        \let \newline \disablepagebreak%
+        \let \break \disablepagebreak%
+        #1%
+    }
+}
+
+\newcommand*{\tituloeng}[1]{
+    \gdef\@tituloengcapa{#1}
+    \gdef\@tituloeng{%
+        \let \\ \disablepagebreak%
+        \let \newline \disablepagebreak%
+        \let \break \disablepagebreak%
+        #1%
+    }
+}
+
+\newcommand*{\subtitulo}[1]{
+    \gdef\@subtitulocapa{#1}
+    \gdef\@subtitulo{%
+        \let \\ \disablepagebreak%
+        \let \newline \disablepagebreak%
+        \let \break \disablepagebreak%
+        #1%
+    }
+}
+
+\newcommand*{\subtituloeng}[1]{
+    \gdef\@subtituloengcapa{#1}
+    \def\@subtituloeng{%
+        \let \\ \disablepagebreak%
+        \let \newline \disablepagebreak%
+        \let \break \disablepagebreak%
+        #1%
+    }
+}
+
+% Default é usar o valor definido por \title
+\gdef\@tituloptcapa\@title
+\gdef\@tituloengcapa\@title
+
+\gdef\@titulopt{%
+    \let \\ \disablepagebreak%
+    \let \newline \disablepagebreak%
+    \let \break \disablepagebreak%
+    \@title%
+}
+
+\gdef\@tituloeng{%
+    \let \\ \disablepagebreak%
+    \let \newline \disablepagebreak%
+    \let \break \disablepagebreak%
+    \@title%
+}
+
+% Caso alguém se confunda e use o comando errado
+\let\tituloport\titulopt
+\let\subtituloport\subtitulo
+\let\subtitulopt\subtitulo
 
 \NewDocumentCommand{\orientador}{O{masc} m}{
   \ifstrequal{#1}{masc}
@@ -182,13 +250,12 @@
 % Se estes não forem definidos, usamos a variável correspondente
 % em português.
 \newcommand*{\@subtituloeng}{\@subtitulo}
+\newcommand*{\@subtituloengcapa}{\@subtitulocapa}
 \newcommand*{\@programaeng}{\@programa}
 \newcommand*{\@apoioeng}{\@apoio}
 \newcommand*{\@datadefesaeng}{\@datadefesa}
 \newcommand*{\@bancaeng}{\@banca}
 
-\newcommand*{\@titulopt}{\@title}
-\newcommand*{\@tituloeng}{\@title}
 
 \newcommand*{\@nometrabalho}{Dissertação}
 \newcommand*{\@nometrabalhoeng}{Thesis}
@@ -390,17 +457,17 @@
           \vspace*{2cm plus 1.5cm minus 1.8cm}
 
           \ifstrequal{port}{#1} {%
-            \textbf{\@titulopt}
+            \textbf{\@tituloptcapa}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\textit{\@subtitulo}}%
+            \textbf{\textit{\@subtitulocapa}}%
           }{%
-            \textbf{\@tituloeng}
+            \textbf{\@tituloengcapa}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\textit{\@subtituloeng}}%
+            \textbf{\textit{\@subtituloengcapa}}%
           }
 
           \vspace{1cm plus 1cm minus 0.6cm}
