@@ -655,7 +655,8 @@
 % Permite agregar linhas de tabelas, fazendo colunas "compridas"
 \usepackage{multirow}
 
-% Permite criar células em uma tabela com múltiplas linhas
+% Cria comando adicional para possibilitar a inserção de quebras de linha
+% em uma célula de tabela, entre outros
 \usepackage{makecell}
 
 % Às vezes a tabela é muito larga e não cabe na página. Se os cabeçalhos da
@@ -674,10 +675,6 @@
   \hline
   \noalign{\global\arrayrulewidth\savedwidth}
 }
-
-% Se quiser forçar quebras de linha em uma célula, use
-% "\manylines{meu texto\\com várias\\linhas}" dentro da célula.
-\newcommand{\manylines}[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
 
 % Modifica (melhora) o layout default das tabelas e acrescenta os comandos
 % \toprule, \bottomrule, \midrule e \cmidrule

@@ -90,11 +90,13 @@ código-fonte, como se vê na Figura~\ref{fig:java}.\index{Floats}
 \begin{figure}
   \centering
   \begin{subfigure}{0.4\textwidth}
+    \centering
     \includegraphics[width=.7\textwidth]{graph}
     \caption{O mesmo exemplo.}
     \label{fig:subfigures:a}
   \end{subfigure}
   \begin{subfigure}{0.4\textwidth}
+    \centering
     \begin{turn}{90}
       \includegraphics[width=.7\textwidth]{graph}
     \end{turn}
@@ -138,21 +140,41 @@ figuras, tabelas, seções etc.: ``\textsf{... está no
 Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
 
 \begin{table}
-\begin{center}
+\centering
+  \hspace*{\fill}
+  \begin{subtable}[b]{0.42\textwidth}
+    \centering
     \begin{tabular}{ccl}
-    \toprule
-    \rothead{Código} & \rothead{Abreviatura} & \rothead{Nome\\completo} \\
-     \midrule
-     \texttt{A}      & Ala                   & Alanina \\
-     \texttt{C}      & Cys                   & Cisteína \\
-     ...             & ...                   & ... \\
-     \texttt{W}      & Trp                   & Tiptofano \\
-     \texttt{Y}      & Tyr                   & Tirosina \\
-     \bottomrule
+      \toprule
+      Código & Abreviatura & \makecell{Nome\\completo} \\
+      \midrule
+      \texttt{A}      & Ala                   & Alanina \\
+      \texttt{C}      & Cys                   & Cisteína \\
+      ...             & ...                   & ... \\
+      \texttt{W}      & Trp                   & Triptofano \\
+      \texttt{Y}      & Tyr                   & Tirosina \\
+      \bottomrule
     \end{tabular}
+    \caption{Uma tabela simples.}
+  \end{subtable}
+  \hspace*{\fill}\hspace*{\fill}\hspace*{\fill}
+  \begin{subtable}[b]{0.37\textwidth}
+    \centering
+    \begin{tabular}{ccl}
+      \rothead{Código} & \rothead{Abreviatura} & \rothead{Nome\\completo} \\
+      \midrule
+      \texttt{A}      & Ala                   & Alanina \\
+      \texttt{C}      & Cys                   & Cisteína \\
+      ...             & ...                   & ... \\
+      \texttt{W}      & Trp                   & Triptofano \\
+      \texttt{Y}      & Tyr                   & Tirosina \\
+      \bottomrule
+    \end{tabular}
+    \caption{Com cabeçalhos girados.}
+  \end{subtable}
+  \hspace*{\fill}
   \caption{Códigos, abreviaturas e nomes dos aminoácidos.}
   \label{tab:amino_acidos}
-\end{center}
 \end{table}
 
 % Aumenta o espaçamento entre as linhas da tabela (default: 0pt)
@@ -160,6 +182,7 @@ Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
 
 % sidewaystable e comandos relacionados são definidos na package rotating
 \begin{sidewaystable}
+\centering
 \begin{tabular}{|M{0.265}|M{0.073}|M{0.084}|M{0.073}|M{0.073}|M{0.08}|M{0.082}|M{0.067}|}
   \hline
     \textbf{Experimento número:} & \multicolumn{2}{c|}{1} & \multicolumn{4}{c|}{\textbf{Data:}} & jan 2017
