@@ -2,6 +2,7 @@
 
 % Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
 \pagestyle{plain}
+%\pagestyle{frontback}
 
 % Nas seções iniciais, vamos usar espaçamento entre linhas 1,5
 \onehalfspacing
@@ -140,3 +141,25 @@ text text text.
 
 %\listoftables
 {\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoftables }
+
+% Sumário (obrigatório)
+\tableofcontents
+
+% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
+% pois o índice é opcional). É comum colocar esses itens no final do documento,
+% junto com o comando \printindex, mas em alguns casos isso torna necessário
+% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
+\index{Inglês|see{Língua estrangeira}}
+\index{Figuras|see{Floats}}
+\index{Tabelas|see{Floats}}
+\index{Código-fonte|see{Floats}}
+\index{Subcaptions|see{Subfiguras}}
+\index{Sublegendas|see{Subfiguras}}
+\index{Equações|see{Modo Matemático}}
+\index{Fórmulas|see{Modo Matemático}}
+\index{Rodapé, notas|see{Notas de rodapé}}
+\index{Captions|see{Legendas}}
+\index{Versão original|see{Tese/Dissertação, versões}}
+\index{Versão corrigida|see{Tese/Dissertação, versões}}
+\index{Palavras estrangeiras|see{Língua estrangeira}}
+\index{Floats!Algoritmo|see{Floats, Ordem}}

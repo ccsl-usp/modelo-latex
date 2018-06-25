@@ -29,7 +29,7 @@
 %
 % Aqui também definimos a língua padrão do documento e línguas adicionais. A
 % classe em si não usa essa informação mas, passando as opções de língua aqui,
-% elas são repassadas para todas as demais classes, e diversas classes mudam
+% elas são repassadas para todas as packages, e diversas packages mudam
 % seu comportamento em função da língua (em especial, babel/polyglossia).
 % A última língua da lista é a língua padrão do documento.
 %\documentclass[12pt,twoside,brazil,english]{book}
@@ -61,185 +61,17 @@
 \input{miolo-preambulo}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Tradicionalmente, bibliografias no LaTeX são geradas com uma combinação entre
-% LaTeX (muitas vezes usando o pacote natbib) e um programa auxiliar chamado
-% bibtex. Nesse esquema, LaTeX e natbib são responsáveis por formatar as
-% referências ao longo do texto e a formatação da bibliografia fica por conta
-% do programa bibtex. A configuração dessa formatação é feita através de um
-% arquivo auxiliar de "estilo", com extensão ".bst". Vários journals etc.
-% fornecem o aqruivo .bst que corresponde ao formato esperado da bibliografia.
-%
-% bibtex e natbib funcionam bem e, se você tiver alguma boa razão para usá-los,
-% obterá bons resultados. No entanto, bibtex tem dois problemas: não lida
-% corretamente com caracteres acentuados (embora, na prática, funcione com
-% os caracteres usados em português) e o formato .bst, que define a formatação
-% da bibliografia, é complexo e pouco flexível.
-%
-% Por conta disso, a comunidade está migrando para um novo sistema chamado
-% biblatex. No biblatex, a formatação da bibliografia e das citações são feitas
-% pelo próprio pacote biblatex, dentro do LaTeX. Assim, é bem mais fácil
-% modificar e personalizar o estilo da bibliografia. biblatex usa o mesmo
-% formato de arquivo de dados do bibtex (".bib") e, portanto, não é difícil
-% migrar de um para o outro. biblatex também usa um programa auxiliar (biber),
-% mas não para realizar a formatação da bibliografia.
-%
-% Observe que biblatex pode criar bibliografias independentes por capítulo
-% ou outras divisões do texto. Normalmente é preciso indicar essas seções
-% manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
-% identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
-% No entanto, refsection e refsegment são incompatíveis com o pacote
-% titlesec, que mencionamos mais acima. Se você pretende criar bibliografias
-% independentes por seções, há duas soluções: (1) desabilitar o pacote
-% titlesec; (2) indicar as seções manualmente.
+% Para personalizar o formato da bibliografia e citações, modifique este arquivo.
+\input{bibconfig}
 
-%%%%%%%%%%% Usando bibtex: %%%%%%%%%%%%
-%\usepackage[hyperpageref]{backref}
-%\renewcommand*{\backref}[1]{}
-%\renewcommand*{\backrefalt}[4]{%
-%  \scriptsize%
-%  \ifcase #1\relax%
-%  \or(Citado na pg. #2)%
-%  \else(Citado nas pgs. #2)%
-%  \fi%
-%}
-%\usepackage[square,sort,nonamebreak,comma]{natbib-ime}  % citação bibliográfica alpha (alpha-ime.bst)
-%\usepackage[round,sort,nonamebreak]{natbib-ime} % citação bibliográfica textual(plainnat-ime.bst)
-
-%%%%%%%%%%% Usando biblatex: %%%%%%%%%%%
-% https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
-% https://github.com/PaulStanley/biblatex-tutorial/releases
-\usepackage[
-  % Ativa o suporte ao pacote hyperref
-  hyperref=true,
-  % Reconhece comandos no estilo do pacote natbib (\citet, \citep)
-  natbib=true,
-  % Se um item da bibliografia tem língua definida (com langid), permite
-  % hifenizar com base na língua selecionada.
-  autolang=hyphen,
-  % Inclui, em cada item da bibliografia, links para as páginas onde o
-  % item foi citado
-  backref=true,
-  % Com mais de 5 nomes, usa "et. al." na bibliografia
-  maxbibnames=5,
-  % Com mais de 2 nomes, usa "et. al." nas citações (só faz
-  % diferença nos estilos autor-data, como plainnat-ime)
-  maxcitenames=2,
-  % Estilo similar a plainnat
-  bibstyle=plainnat-ime,
-  citestyle=plainnat-ime,
-  % Estilo similar a alpha
-  %bibstyle=alphabetic,
-  %citestyle=alphabetic,
-  % O estilo numérico é comum em artigos
-  %bibstyle=numeric,
-  %citestyle=numeric,
-  % Um estilo que busca ser compatível com a ABNT:
-  %bibstyle=abnt,
-  %citestyle=abnt,
-]{biblatex}
-
-% Sobrenomes nas citações e na bibliografia em Small Caps
-\renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
-
-% Se desejável, o label na bibliografia no formato
-% plainnat-ime pode ser feito em negrito
-%\renewcommand*{\labelhighlight}[1]{\textbf{#1}}
-
-% Autores no formato "nome sobrenome"
-\DeclareNameAlias{sortname}{given-family}
-\DeclareNameAlias{default}{given-family}
-
-% Autores no formato "sobrenome, nome"
-%\DeclareNameAlias{sortname}{family-given}
-%\DeclareNameAlias{default}{family-given}
-
-% Vamos deixar um pequeno espaço entre cada item da bibliografia
-\setlength{\bibitemsep}{1em}
-
-% A primeira linha de cada item da bibliografia pode ter margem menor
-% que as demais; aqui definimos essa diferença:
-\setlength{\bibhang}{2em}
-
-\AtBeginBibliography{
-  % No estilo alfabético, biblatex coloca o "label" de cada item
-  % alinhado à esquerda; bibtex alinha à direita e isso faz
-  % mais sentido, então redefinimos o alinhamento aqui.
-  \renewcommand*{\makelabel}[1]{\hss#1}
-}
-
-\DefineBibliographyStrings{brazilian}{
-  % Na bibliografia, criamos links para as páginas onde uma
-  % determinada obra foi citada. O texto padrão para indicar
-  % isso é "ver...", vamos trocar.
-  backrefpage  = {citado na pg\adddot},
-  backrefpages = {citado nas pgs\adddot},
-  % "et al." em itálico
-  andothers    = {\textit{et\addabbrvspace al}\adddot},
-  page         = {pg\adddot},
-  pages        = {pgs\adddot},
-}
-
-\DefineBibliographyStrings{american}{
-  % "et al." em itálico
-  andothers    = {\textit{et\addabbrvspace al}\adddot},
-}
-
-% biblatex redefine os cabeçalhos das páginas na bibliografia;
-% vamos deixar essa tarefa para fancyhdr.
-\defbibheading{bibliography}[\bibname]{%
-  \chapter*{#1}%
-  %\section*{#1}% Se for a classe "article"
-  \chaptermark{#1}%
-  %\sectionmark{#1}% Se for a classe "article"
-}
-
-\defbibheading{bibintoc}[\bibname]{%
-  \chapter*{#1}%
-  %\section*{#1}% Se for a classe "article"
-  \addcontentsline{toc}{chapter}{#1}%
-  \chaptermark{#1}%
-  %\sectionmark{#1}% Se for a classe "article"
-}
-
-% bibtex assume que os títulos no arquivo .bib seguem o formato "title case",
-% ou seja, "A Maioria das Palavras É Iniciada por Maiúsculas". Se o estilo
-% bibliográfico usa esse formato, o título é impresso sem mudanças; se o
-% estilo bibliográfico não usa esse formato, bibtex transforma o título
-% em caixa baixa.
-%
-% Por padrão, biblatex não faz nada e mantém o título como digitado no
-% arquivo bib, mas fornece a possibilidade de modificar esse comportamento.
-% Isso depende (1) da língua do documento (ou a língua de entrada do
-% item na bibliografia) e (2) da definição do comando que deve realizar
-% o processamento.
-% Aqui, ativamos esse mecanismo para a língua portuguesa:
-\DeclareCaseLangs{brazilian,brazil,portuges}
-
-% Três opções de processamento:
-%
-% Não faz nada (default):
-%\DeclareFieldFormat{titlecase}{#1}
-%
-% Transforma todos os títulos em caixa baixa, que é o usual em português.
-%\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
-%
-% Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
-% ou capítulos de livro (o comando \NoChangeOrSentenceCase está definido
-% no arquivo miolo-preambulo.tex):
-\DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
-
-% O arquivo com os dados bibliográficos; você pode executar este comando
+% O arquivo com os dados bibliográficos; você pode usar este comando
 % mais de uma vez para acrescentar múltiplos arquivos
 \addbibresource{bibliografia.bib}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% METADADOS (TÍTULO, AUTOR ETC.) %%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa (tanto no estilo
@@ -255,9 +87,10 @@
   pdfkeywords={LaTeX, tese, dissertação, IME/USP},
 }
 
-% Para gerar a capa e demais páginas iniciais de uma tese/dissertação para o
-% IME/USP automaticamente no formato sugerido, modifique os dados neste arquivo.
-% Se estiver escrevendo um artigo ou for gerar a capa etc. manualmente, remova.
+% Os dados (nome do orientador, banca etc.) que devem ser incluídos na capa
+% e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
+% Esses dados são usados mais abaixo (no arquivo "folhas-de-rosto"). Se
+% estiver escrevendo um artigo ou for gerar a capa etc. manualmente, remova.
 \input{metadados-tese}
 
 
@@ -280,34 +113,17 @@
 % desabilita a contagem de capítulos (ele não existe na classe "article")
 \frontmatter
 
-% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
-\pagestyle{frontback}
-
-% As folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
-% Se estiver escrevendo um artigo ou não quiser usar, remova.
+% As folhas de rosto no formato sugerido para teses/dissertações do IME/USP,
+% usando as informações incluídas acima em metadados-tese. Se estiver
+% escrevendo um artigo ou não quiser usar, remova.
 \input{folhas-de-rosto}
 
-% Sumário (obrigatório)
-\tableofcontents
+% Um parágrafo em LaTeX termina com uma linha vazia; como não é possível ter
+% certeza que um arquivo incluído (neste caso, "folhas-de-rosto") terminou
+% com uma linha vazia, é recomendável usar o comando "par" após "input" para
+% garantir que o último parágrafo do arquivo incluído realmente terminou.
+\par
 
-% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
-% pois o índice é opcional). É comum colocar esses itens no final do documento,
-% junto com o comando \printindex, mas em alguns casos isso torna necessário
-% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
-\index{Inglês|see{Língua estrangeira}}
-\index{Figuras|see{Floats}}
-\index{Tabelas|see{Floats}}
-\index{Código-fonte|see{Floats}}
-\index{Subcaptions|see{Subfiguras}}
-\index{Sublegendas|see{Subfiguras}}
-\index{Equações|see{Modo Matemático}}
-\index{Fórmulas|see{Modo Matemático}}
-\index{Rodapé, notas|see{Notas de rodapé}}
-\index{Captions|see{Legendas}}
-\index{Versão original|see{Tese/Dissertação, versões}}
-\index{Versão corrigida|see{Tese/Dissertação, versões}}
-\index{Palavras estrangeiras|see{Língua estrangeira}}
-\index{Floats!Algoritmo|see{Floats, Ordem}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -317,35 +133,7 @@
 % (ele não existe na classe "article")
 \mainmatter
 
-% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
-% e só funciona com book/report, pois usa o nome dos capítulos nos cabeçalhos;
-% se estiver usando article, comente ou troque por "plain"
-\pagestyle{mainmatter}
-
-% No texto principal, vamos usar espaçamento entre linhas padrão
-\singlespacing
-%\onehalfspacing
-
-% Os capítulos de compõem a dissertação/tese, com numeração normal, podem
-% ser inseridos diretamente aqui ou "puxados" de outros arquivos
-\input{cap-introducao}
-
-% Um parágrafo em LaTeX termina com uma linha vazia; como não é possível
-% ter certeza que um arquivo incluído (neste caso, "paginas-iniciais")
-% terminou com uma linha vazia, é recomendável usar o comando "par" para
-% garantir que o último parágrafo realmente terminou.
-\par
-
-\input{cap-latex}
-\par
-
-\input{cap-tutorial}
-\par
-
-\input{cap-exemplos}
-\par
-
-\input{cap-conclusoes}
+\input{capitulos}
 \par
 
 
@@ -356,13 +144,9 @@
 % "article".
 \appendix
 
-% Este formato está definido mais acima na seção "APARÊNCIA/FORMATAÇÃO"
-\pagestyle{appendix}
-
-% Os apêndices podem ser inseridos diretamente aqui ou "puxados" de outros
-% arquivos
-\input{ape-conjuntos}
+\input{apendices}
 \par
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES FINAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
