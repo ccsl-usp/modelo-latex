@@ -92,6 +92,7 @@ if test $$stat -ne 0; then \
 	echo; \
 	echo "    **** Erro durante a execucao do LaTeX ****"; \
 	touch $*.aux-current; \
+	rm -f $*.fls; \
 	exit 1; \
 fi
 endef
