@@ -181,6 +181,8 @@
   \gdef\@coorientador{#2}
 }
 
+\newcommand*{\orientadoreng}[1]{\gdef\@orientadoreng{#1}}
+\newcommand*{\coorientadoreng}[1]{\gdef\@coorientadoreng{#1}}
 \newcommand*{\programa}[1]{\gdef\@programa{#1}}
 \newcommand*{\programaeng}[1]{\renewcommand*{\@programaeng}{#1}}
 \newcommand*{\apoio}[1]{\gdef\@apoio{#1}}
@@ -255,7 +257,8 @@
 \newcommand*{\@apoioeng}{\@apoio}
 \newcommand*{\@datadefesaeng}{\@datadefesa}
 \newcommand*{\@bancaeng}{\@banca}
-
+\newcommand*{\@orientadoreng}{\@orientador}
+\newcommand*{\@coorientadoreng}{\@coorientador}
 
 \newcommand*{\@nometrabalho}{Dissertação}
 \newcommand*{\@nometrabalhoeng}{Thesis}
@@ -295,8 +298,8 @@
       \@if@expand@empty{@coorientador}{}{\@labelcoorientador: & \@coorientador \tabularnewline}%
     }{%
       Program: & \@programaeng \tabularnewline
-      Advisor: & \@orientador \tabularnewline
-      \@if@expand@empty{@coorientador}{}{Coadvisor: & \@coorientador \tabularnewline}%
+      Advisor: & \@orientadoreng \tabularnewline
+      \@if@expand@empty{@coorientador}{}{Coadvisor: & \@coorientadoreng \tabularnewline}%
   }
   \end{tabular}
 }
