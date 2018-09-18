@@ -22,16 +22,17 @@
 % modificar e personalizar o estilo da bibliografia. biblatex usa o mesmo
 % formato de arquivo de dados do bibtex (".bib") e, portanto, não é difícil
 % migrar de um para o outro. biblatex também usa um programa auxiliar (biber),
-% mas não para realizar a formatação da bibliografia.
+% mas não para realizar a formatação da bibliografia. A maior desvantagem de
+% biblatex é que ele é significativamente mais lento que bibtex.
 %
 % Observe que biblatex pode criar bibliografias independentes por capítulo
 % ou outras divisões do texto. Normalmente é preciso indicar essas seções
 % manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
 % identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
 % No entanto, refsection e refsegment são incompatíveis com o pacote
-% titlesec, que mencionamos mais acima. Se você pretende criar bibliografias
-% independentes por seções, há duas soluções: (1) desabilitar o pacote
-% titlesec; (2) indicar as seções manualmente.
+% titlesec, mencionado em miolo-preambulo. Se você pretende criar
+% bibliografias independentes por seções, há duas soluções: (1) desabilitar
+% o pacote titlesec; (2) indicar as seções manualmente.
 
 %%%%%%%%%%% Usando bibtex: %%%%%%%%%%%%
 %\usepackage[hyperpageref]{backref}
@@ -168,3 +169,22 @@
 % ou capítulos de livro (o comando \NoChangeOrSentenceCase está definido
 % no arquivo miolo-preambulo.tex):
 \DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
+
+% Esta macro implementa o mecanismo descrito acima
+% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
+\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
+  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
+    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
+    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
+    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
+    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
+    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
+    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
+    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
+    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
+    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
+    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
+    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
+    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
+    {#1}
+    {\MakeSentenceCase*{#1}}}

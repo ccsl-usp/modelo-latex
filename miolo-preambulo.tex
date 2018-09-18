@@ -35,7 +35,8 @@
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
 % primeiros pacotes carregados. É possível passar a língua do documento
-% como parâmetro aqui, mas já fizemos isso ao carregar a classe, mais acima.
+% como parâmetro aqui, mas já fizemos isso ao carregar a classe, no início
+% do documento.
 \usepackage{babel}
 
 % Comandos rápidos para mudar de língua:
@@ -88,6 +89,10 @@
 \fi
 
 % Alguns "truques" (sujos?) para minimizar over/underfull boxes.
+% https://tex.stackexchange.com/questions/241343/what-is-the-meaning-of-fussy-sloppy-emergencystretch-tolerance-hbadness
+% https://tex.stackexchange.com/questions/50830/do-i-have-to-care-about-bad-boxes/
+% http://texdoc.net/texmf-dist/doc/latex/l2tabu-english/l2tabuen.pdf - section "Should I use \sloppy?"
+% https://groups.google.com/forum/#!msg/comp.text.tex/Dhf0xxuQ66E/1ZyOtbcZNpkJ (Donald Arseneau comments)
 \tolerance=800
 \hyphenpenalty=800
 \setlength{\emergencystretch}{2.5em}
@@ -202,10 +207,10 @@
 % cm-super quando o texto for bold + Small Caps.
 \usepackage{fix-cm}
 
-% É preciso incluir substituições para o encoding TS1 também por conta
-% dos números oldstyle, porque para inclui-los nas fontes computer modern
-% foi feita uma hack: os dígitos são declarados como sendo os números
-% itálicos da fonte matemática e, portanto, estão no encoding TS1.
+% Com Latin Modern, é preciso incluir substituições para o encoding TS1
+% também por conta dos números oldstyle, porque para inclui-los nas fontes
+% computer modern foi feita uma hack: os dígitos são declarados como sendo
+% os números itálicos da fonte matemática e, portanto, estão no encoding TS1.
 %
 % Primeiro forçamos o LaTeX a carregar a fonte Latin Modern (ou seja, ler
 % o arquivo que inclui "DeclareFontFamily") e, a seguir, definimos a
@@ -224,8 +229,8 @@
 \DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
 \DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub * lmr/bx/scsl}{}
 
-% Se fizermos mudanças manuais na fonte, estes comandos podem vir
-% a ser úteis
+% Se fizermos mudanças manuais na fonte Latin Modern, estes comandos podem
+% vir a ser úteis
 %\newcommand\lmodern{%
 %  \renewcommand{\oldstylenums}[1]{{\fontencoding{TS1}\selectfont ##1}}%
 %  \fontfamily{lmr}\selectfont%
@@ -397,7 +402,7 @@
   }
 }
 
-% Lembre-se que titlesec é incompatível com os comandos refsection
+% Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
 % Formatação personalizada de títulos, seções etc.
 % Cabeçalhos dos títulos: negrito (bf), fonte um pouco menor (medium)
@@ -437,10 +442,6 @@
 % "rightmark". Pode ser só "##1" (o nome da seção dentro do capítulo),
 % pode ser "\thesection. ##1" (aí inclui o número da seção), pode ser
 % "\sectionname\ \thesection. ##1" (aí inclui a palavra "seção") etc.
-
-% Só olha até o nível 2 (seções), ou seja, não coloca nomes de
-% subseções ou subsubseções nos cabeçalhos.
-\setcounter{tocdepth}{2}
 
 % Queremos colocar o número da página mais próximo da borda do papel (na
 % horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
@@ -542,7 +543,7 @@
 \usepackage{graphicx}
 
 % Diretório onde estão as figuras; com isso, não é preciso colocar o caminho
-% completo em \includegraphics. Na verdade, não precisa nem colocar a extensão
+% completo em \includegraphics (e nem a extensão).
 \graphicspath{{./figuras/}}
 
 % Mais tipos de float e mais opções para personalização; este pacote
@@ -583,7 +584,9 @@
 % possível ignorá-los com a opção de posicionamento "!". Dado que os
 % valores default não são muito bons para floats "grandes" ou documentos
 % com muitos floats, é muito comum usar "!" ou "H". No entanto, modificando
-% esses parâmetros o algoritmo automático tende a funcionar bem.
+% esses parâmetros o algoritmo automático tende a funcionar melhor. Ainda
+% assim, vale ler a discussão a respeito na seção "Limitações do LaTeX"
+% deste modelo.
 
 % Fração da página que pode ser ocupada por floats no topo. Default: 0.7
 \renewcommand{\topfraction}{.85}
@@ -787,14 +790,19 @@
 % listas de figuras e tabelas e o próprio sumário.
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 
+% Só olha até o nível 2 (seções), ou seja, não coloca nomes de
+% subseções ou subsubseções no sumário (nem nos cabeçalhos).
+\setcounter{tocdepth}{2}
+
 % Cria índice remissivo. Este pacote precisa ser carregado antes de hyperref.
 % A criação do índice remissivo depende de um programa auxiliar, que pode ser
 % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
-% línguas diferentes e caracteres acentuados, mas índices criados com xindy não
-% funcionam em conjunto com hyperref. Para contornar esse problema,
-% configuramos hyperref para *não* gerar hyperlinks no índice (mais abaixo)
-% e configuramos xindy para que ele gere esses hyperlinks por conta própria.
-% Se preferir usar makeindex, modifique a chamada ao pacote imakeidx (aqui)
+% línguas diferentes e caracteres acentuados, mas o programa não está mais
+% sendo mantido e índices criados com xindy não funcionam em conjunto com
+% hyperref. Se quiser utilizar xindy mesmo assim, é possível contornar esse
+% segundo problema configurando hyperref para *não* gerar hyperlinks no
+% índice (mais abaixo) e configurando xindy para que ele gere esses hyperlinks
+% por conta própria. Para isso, modifique a chamada ao pacote imakeidx (aqui)
 % e altere as opções do pacote hyperref.
 
 % Cria o arquivo de configuração para xindy lidar corretamente com hyperlinks.
@@ -917,11 +925,9 @@ heading_suffix "}\\nopagebreak\n"
   filecolor=green,
   bookmarksopen=true,
   % hyperref não gera hyperlinks corretos em índices remissivos criados com
-  % xindy; assim, desabilitamos essa função aqui e geramos os hyperlinks
-  % com uma configuração especial de xindy (mais acima). Se você preferir
-  % usar makeindex, (removendo a opção "xindy" do pacote imakeidx), quem
-  % precisa criar os hyperlinks é hyperref. Nesse caso, desabilite a
-  % próxima linha para criar hyperlinks no índice.
+  % xindy; assim, é possível desabilitar essa função aqui e gerar os
+  % hyperlinks através da configuração de xindy definida anteriormente. Com
+  % makeindex (o default), quem precisa criar os hyperlinks é hyperref.
   %hyperindex=false,
   % Os hyperlinks gerados por hyperref são representados internamente por
   % nomes. Embora esses nomes normalmente não apareçam para o usuário,
@@ -1075,21 +1081,3 @@ heading_suffix "}\\nopagebreak\n"
     \epigraph{\itshape\RaggedLeft #1}{--- #2}
   }
 }
-
-% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
-\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
-  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
-    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
-    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
-    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
-    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
-    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
-    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
-    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
-    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
-    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
-    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
-    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
-    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
-    {#1}
-    {\MakeSentenceCase*{#1}}}
