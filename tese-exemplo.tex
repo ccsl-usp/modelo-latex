@@ -170,7 +170,8 @@
 %%%%%%%% Bibliografia com biblatex (preferido): %%%%%%%%
 
 \printbibliography[
-  title=Bibliografia\label{bibliografia},
+  title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
+  %title=\bibname\label{bibliografia}, % "Bibliografia"
   % Inclui a bibliografia no sumário; comente se estiver usando "article"
   heading=bibintoc,
 ]
