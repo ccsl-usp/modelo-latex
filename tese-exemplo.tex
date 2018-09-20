@@ -137,14 +137,32 @@
 \par
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Aqui vão apêndices. O comando appendix reinicia a numeração de capítulos e
-% passa a numerá-los com letras. Como os anteriores, ele não existe na classe
-% "article".
+% Um apêndice é algum conteúdo adicional de sua autoria que colabora com a
+% ideia geral do texto mas que, por alguma razão, não precisa fazer parte
+% da sequência do discurso; por exemplo, a demonstração de um teorema, as
+% perguntas usadas em uma pesquisa qualitativa etc.
+%
+% Um anexo é um documento que não é de sua autoria mas que é relevante para
+% a tese; por exemplo, a especificação do padrão que o trabalho discute.
+
+% Os comandos appendix e annex reiniciam a numeração de capítulos e passam
+% a numerá-los com letras. Como os anteriores, eles não existem na classe
+% "article". Além disso, "annex" não faz parte de nenhuma classe padrão,
+% ele foi definido em miolo-preambulo.tex. Se o trabalho não tiver apêndices
+% ou anexos, remova.
+
+% Apêndices
 \appendix
 
 \input{apendices}
+\par
+
+% Anexos
+\annex
+
+\input{anexos}
 \par
 
 

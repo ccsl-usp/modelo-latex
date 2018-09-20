@@ -449,13 +449,14 @@
   \formataCabecalhosDinamicos{}
 }
 
+\makeatletter
 \fancypagestyle{appendix}{
   \renewcommand{\chaptermark}[1]{%
     \markboth{%
-      % Páginas ímpares: "Apêndice X"
-      \appendixname\ \thechapter%
+      % Páginas ímpares: "Apêndice/Anexo X"
+      \@chapapp\ \thechapter%
     }{%
-      % Páginas pares: "X | nome do apêndice"
+      % Páginas pares: "X | nome do apêndice/anexo"
       \thechapter\hskip 0.3em |\hskip 0.3em ##1%
     }
   }
@@ -464,6 +465,7 @@
   \formataNumPaginas{}
   \formataCabecalhosDinamicos{}
 }
+\makeatother
 
 % Na frontmatter e backmatter, não há números de capítulos e (em geral)
 % não há subdivisões (capítulos/seções/subseções), apenas um nível.
@@ -686,6 +688,62 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ESTRUTURA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% A classe Book inclui o comando \appendix, que (obviamente) permite inserir
+% apêndices no documento. No entanto, não há suporte similar para anexos. Aqui,
+% criamos o comando \annex (copiado de \appendix em book.cls e hyperref.sty) e
+% comandos acessórios.
+
+\addto\captionsbrazil{
+  \providecommand\annexname{Anexo}
+  \renewcommand\annexname{Anexo}
+}
+
+\addto\captionsenglish{
+  \providecommand\annexname{Annex}
+  \renewcommand\annexname{Annex}
+}
+
+\makeatletter
+
+% Copiado de \appendix em book.cls
+\newcommand\annex{\par
+  \setcounter{chapter}{0}%
+  \setcounter{section}{0}%
+  \gdef\@chapapp{\annexname}%
+  \gdef\thechapter{\@Alph\c@chapter}
+}
+
+\AtEndPreamble{
+  % Copiado de hyperref.sty
+  \ltx@IfUndefined{annex}{}{%
+    \ltx@IfUndefined{Hy@appendixstring}{}{% Checa se hyperref foi carregada
+      \let\HyOrg@annex\annex
+      \def\Hy@AlphNoErr#1{%
+        \ifnum\value{#1}>26 %
+          Alph\number\value{#1}%
+        \else
+          \ifnum\value{#1}<1 %
+            Alph\number\value{#1}%
+          \else
+            \Alph{#1}%
+          \fi
+        \fi
+      }%
+      \def\annex{%
+        \ltx@IfUndefined{chapter}{%
+          \gdef\theHsection{\Hy@AlphNoErr{section}}%
+        }{%
+          \gdef\theHchapter{\Hy@AlphNoErr{chapter}}%
+        }%
+        \xdef\Hy@chapapp{annex}%
+        \HyOrg@annex
+      }%
+    }
+  }
+}
+
+\makeatother
 
 % acrescentamos a bibliografia/indice/conteudo no Sumário, mas excluímos as
 % listas de figuras e tabelas e o próprio sumário.
