@@ -356,8 +356,46 @@
 % "description", além de permitir criar novos tipos de listas
 %\usepackage{paralist}
 
-% Formatação personalizada do sumário, lista de tabelas/figuras etc.
-%\usepackage{titletoc}
+% Formatação personalizada do sumário, lista de tabelas/figuras etc. Vamos
+% usar para definir o formato dos apêndices/anexos no sumário.
+\usepackage{titletoc}
+
+% No sumário, normalmente colocamos
+% 1 Introdução
+% 2 Contexto
+% etc.
+%
+% Isso inclui os apêndices/anexos, que aparecem como
+% A Dados Coletados
+% B Modelo de questionário
+% etc.
+%
+% Queremos colocar "Apêndice/Anexo X" no sumário ao invés desse
+% default, o que envolve modificar os comandos \appendix e \annex
+% para redefinir o formato dos capítulos no sumário (com titletoc).
+%
+% Observe que essa modificação vale para tudo o que se segue aos
+% comandos \appendix e \annex, ou seja, os itens do sumário que
+% se seguem a eles (referências e índice remissivo) são formatados
+% por esta definição, não pelo formato default.
+
+\AtEndPreamble{
+  \appto\appendix{
+    \titlecontents{chapter}[45pt]
+      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+      {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
+      {\hspace{-45pt}}
+      {\hfill\thecontentspage}
+  }
+
+  \appto\annex{
+    \titlecontents{chapter}[45pt]
+      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+      {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
+      {\hspace{-45pt}}
+      {\hfill\thecontentspage}
+  }
+}
 
 % Lembre-se que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
@@ -885,6 +923,12 @@ heading_suffix "}\\nopagebreak\n"
   % precisa criar os hyperlinks é hyperref. Nesse caso, desabilite a
   % próxima linha para criar hyperlinks no índice.
   %hyperindex=false,
+  % Os hyperlinks gerados por hyperref são representados internamente por
+  % nomes. Embora esses nomes normalmente não apareçam para o usuário,
+  % hyperref por padrão procura criar nomes amigáveis para humanos. Isso,
+  % no entanto, falha com apêndices/anexos usando a formatação especial
+  % do sumário que usamos neste modelo. Assim, desabilitamos essa opção.
+  hypertexnames=false,
 ]{hyperref}
 
 %\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
