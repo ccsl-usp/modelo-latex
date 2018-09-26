@@ -89,13 +89,97 @@
 \fi
 
 % Alguns "truques" (sujos?) para minimizar over/underfull boxes.
-% https://tex.stackexchange.com/questions/241343/what-is-the-meaning-of-fussy-sloppy-emergencystretch-tolerance-hbadness
-% https://tex.stackexchange.com/questions/50830/do-i-have-to-care-about-bad-boxes/
-% http://texdoc.net/texmf-dist/doc/latex/l2tabu-english/l2tabuen.pdf - section "Should I use \sloppy?"
-% https://groups.google.com/forum/#!msg/comp.text.tex/Dhf0xxuQ66E/1ZyOtbcZNpkJ (Donald Arseneau comments)
+%
+% Para fazer um texto justificado, é preciso modificar o tamanho dos espaços
+% em cada linha para mais ou para menos em relação ao seu tamanho ideal. Para
+% escolher as quebras de linha, TeX vai percorrendo o texto procurando lugares
+% possíveis para quebrar as linhas considerando essa flexibilidade mas dentro
+% de um certo limite mínimo/máximo. Nesse processo, ele associa a cada possível
+% linha o valor badness, que é o nível de distorção do tamanho dos espaços
+% daquela linha em relação ao ideal, e ignora opções que tenham badness muito
+% grande (esse limite é dado por \tolerance). Depois de encontradas todas as
+% possíveis quebras de linha e a badness de cada uma, TeX calcula as penalties
+% e demerits de cada possibilidade e escolhe a solução que minimiza o demerit
+% total do parágrafo.
+%
+% Para cada fonte, o espaço em TeX tem um tamanho ideal, um tamanho mínimo e um
+% tamanho máximo. TeX nunca reduz um espaço para menos que o mínimo da fonte,
+% mas pode aumentá-lo para mais que o máximo. Se os espaços de uma linha ficam
+% com o tamanho ideal, a badness da linha é 0; se o tamanho é
+% reduzido/aumentado 50% do mínimo/máximo, a badness da linha é 12; se o
+% tamanho é reduzido/aumentado para o mínimo/máximo, a badness é 100. Se esse
+% aumento for de 30% além do máximo, a badness da linha é 200; se for de 45%
+% além do máximo, a badness é 300; se for de 60% além do máximo, a badness é
+% 400; se for de 100% além do máximo, a badness é 800.
+%
+% A \tolerance default é 200; aumentar para, digamos, 300 ou 400, permite que
+% TeX escolha parágrafos com maior variação no espaçamento. No entanto, no
+% cálculo de demerits, a badness de cada linha é elevada ao quadrado, então TeX
+% geralmente prefere escolher outras opções no lugar de uma linha ruim. Por
+% exemplo, órfãs/viúvas têm demerit de 22.500 e dois hífens seguidos têm
+% demerit de 10.000 e, portanto, não é surpreendente que a maioria dos
+% parágrafos tenha demerits abaixo de 40.000, quase todos abaixo de 100.000 e
+% praticamente nenhum acima de 1.000.000. Isso significa que, para a grande
+% maioria dos parágrafos, aumentar \tolerance não faz diferença: uma linha com
+% badness 400 (correspondendo a demerit de 160.000) nunca será efetivamente
+% escolhida se houver qualquer outra opção com badness menor. Também fica claro
+% que não há muita diferença real entre definir \tolerance como 800 ou 9.999.
+%
+% O problema muda de figura se TeX não consegue encontrar uma solução. Isso
+% pode acontecer em dois casos: (1) o parágrafo tem ao menos uma linha que não
+% pode ser quebrada com badness < 10.000 e (2) o parágrafo tem ao menos uma
+% linha que não pode ser quebrada com badness < tolerance (mas essa badness é
+% menor que 10.000).
+%
+% No primeiro caso, se houver várias possibilidades de linhas que não podem ser
+% quebradas, TeX não vai ser capaz de compará-las e escolher a melhor: todas
+% têm a badness máxima (10.000) e, portanto, a que gerar menos deméritos no
+% restante do parágrafo será a escolhida. Na realidade, no entanto, essas
+% linhas *não* são igualmente ruins entre si, o que pode levar TeX a fazer uma
+% má escolha. Para evitar isso, TeX tenta novamente aplicando
+% \emergencystretch, que "faz de conta" que o tamanho máximo ideal dos espaços
+% da linha é maior que o definido na fonte. Isso reduz a badness de todas as
+% linhas, o que soa parecido com aumentar \tolerance. Há três diferenças, no
+% entanto: (1) essa mudança só afeta os parágrafos que falharam; (2) soluções
+% que originalmente teriam badness = 10.000 (e, portanto, seriam vistas como
+% equivalentes) podem ser avaliadas e comparadas entre si; e (3) como a badness
+% de todas as linhas diminui, a possibilidade de outras linhas que
+% originalmente tinham badness alta serem escolhidas aumenta. Esse último ponto
+% significa que \emergencystretch pode fazer TeX escolher linhas mais
+% espaçadas, fazendo o espaçamento do parágrafo inteiro aumentar e, portanto,
+% tornando o resultado mais homogêneo mesmo com uma linha particularmente ruim.
+%
+% É esse último ponto que justifica o uso de \emergencystretch no segundo caso
+% também: apenas aumentar a tolerância, nesse caso, poderia levar TeX a
+% diagramar uma linha ruim em meio a um parágrafo bom, enquanto
+% \emergencystretch pode fazer TeX aumentar o espaçamento de maneira geral no
+% parágrafo, minimizando o contraste da linha problemática com as demais.
+% Colocando a questão de outra maneira, aumentar \tolerance para lidar com
+% esses parágrafos problemáticos pode fazê-los ter uma linha especialmente
+% ruim, enquanto \emergencystretch pode dividir o erro entre várias linhas.
+% Assim, definir \tolerance em torno de 800 parece razoável: no caso geral,
+% não há diferença e, se um desses casos difíceis não pode ser resolvido com
+% uma linha de badness até 800, \emergencystretch deve ser capaz de gerar um
+% resultado igual ou melhor.
+%
+% Penalties & demerits: https://tex.stackexchange.com/a/51264
+% Definições (fussy, sloppy etc.): https://tex.stackexchange.com/a/241355
+% Mais definições (hfuzz, hbadness etc.): https://tex.stackexchange.com/a/50850
+% Donald Arseneau defendendo o uso de \sloppy: https://groups.google.com/d/msg/comp.text.tex/Dhf0xxuQ66E/QTZ7aLYrdQUJ
+% Artigo detalhado sobre \emergencystretch: https://www.tug.org/TUGboat/tb38-1/tb118wermuth.pdf
+% Esse artigo me leva a crer que algo em torno de 1.5em é suficiente
+
 \tolerance=800
-\hyphenpenalty=800
+\hyphenpenalty=100 % Default 50; se o texto é em 2 colunas, 50 é melhor
 \setlength{\emergencystretch}{2.5em}
+
+% Não gera warnings para Overfull menor que 0.5pt
+\hfuzz=.5pt
+\vfuzz\hfuzz
+
+% Não gera warnings para Underfull com badness < 1000
+\hbadness=1000
+\vbadness=1000
 
 % Normalmente, LaTeX faz o final da página terminar sempre no mesmo lugar
 % (exceto no final dos capítulos). Esse padrão pode ser ativado explicitamente
