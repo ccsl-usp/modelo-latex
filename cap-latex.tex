@@ -38,6 +38,8 @@ O modelo é composto por estes arquivos:
     \item \texttt{ape-conjuntos.tex}
   \end{itemize}
 
+  \enlargethispage{\baselineskip}
+
   \item Diretório de figuras:
   \begin{itemize}
     \item \texttt{./figuras/}
@@ -128,8 +130,9 @@ Biblatex define o tipo ``online''; bibtex\index{bibtex}, por padrão, não tem u
 \item \textbf{A bibliografia está sendo impressa em inglês (usa ``and'' ao invés de ``e'' para separar os nomes dos autores)}\\
 Você deve estar usando um estilo de bibliografia bibtex diferente dos sugeridos. Uma simples solução é copiar o arquivo de estilo correspondente da sua instalação \LaTeX{} para o diretório onde seus arquivos estão e mudar ``and'' por ``e'' (ou ``\&'' se preferir) na função format.names. O mais recomendado, no entanto, é usar biblatex: ele é mais fácil de adaptar para diferentes estilos, tem pleno suporte a diferentes línguas e é possível personalizar as traduções (há um exemplo no modelo).
 
+% \linebreak[0]{} -> sugestão (não-obrigatória) de quebra de linha
 \item \textbf{Aparece uma folha em branco entre os capítulos}\\
-Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Acrescente ``openany'' como opção da classe, i.e., \textsf{\textbackslash{}documentclass[openany,11pt,twoside,a4paper]\{book\}}.
+Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Acrescente ``openany'' como opção da classe, i.e., \textsf{\textbackslash{}documentclass[openany,\linebreak[0]{}11pt,twoside,a4paper]\{book\}}.
 
 \item \textbf{É possível resumir o nome das seções/capítulos que aparece no topo das páginas?}\\
 Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nos \textit{captions}\index{Legendas} das figuras e tabelas, que muitas vezes são demasiadamente longos para a lista de figuras/tabelas.
