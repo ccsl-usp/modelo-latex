@@ -603,7 +603,7 @@ e \LuaLaTeX{}) é adequada. Se você pretende usar línguas com outros
 alfabetos ou se gostaria de escolher fontes diferentes, use \XeLaTeX{}
 ou \LuaLaTeX{}.
 
-\section{Limitações do \LaTeX{}}
+\section{Limitações do \LaTeX{} e algumas dicas}
 
 Como qualquer ferramenta, \LaTeX{} tem limitações e características
 indesejáveis:
@@ -665,7 +665,11 @@ indesejáveis:
     acomodar mais uma linha (``\cmd{-1\sla{}baselineskip}'' faz a página
     ficar com uma linha a menos). Em documentos frente e verso, lembre-se
     de sempre garantir que a página adjacente também tenha seu tamanho
-    modificado para que a alteração não seja tão perceptível.
+    modificado para que a alteração não seja tão perceptível. Um outro
+    truque às vezes útil é aplicar o comando \ltxcmd{looseness=1} (ou -1)
+    a um parágrafo, que faz \LaTeX{} tentar reorganizar as quebras de
+    linha de maneira a fazer o parágrafo ter uma linha a mais (ou a menos),
+    se isso for possível.
 
     \item Como muitos outros sistemas de texto, \LaTeX{} pode usar mais de
     um padrão para a codificação de caracteres acentuados. Alguns anos atrás,
