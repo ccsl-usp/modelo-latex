@@ -9,7 +9,8 @@ is included in the template). The template is expected to be useful
 for unexperienced LaTeX users. Feel free to customize to your needs
 and, if appropriate, send us improvements. :)
 
-The generated PDF file includes a FAQ, a short (but reasonably
+The [generated PDF file](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false)
+includes a FAQ, a short (but reasonably
 compreehensive) LaTeX tutorial, and some examples of LaTeX commands.
 Besides that, there are lots of comments in the "tese-exemplo.tex"
 and "miolo-preambulo.tex" files about the packages used and things
@@ -25,13 +26,13 @@ You need a working LaTeX installation, including biber and biblatex
 ## FAQ
 
 There is a FAQ in the example document and this repo includes a
-compiled version of it in PDF format.
+[compiled version of it in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false).
 
 ## Used packages and installation
 
-There are some instalation instructions in the example document,
-included in this repo in PDF format. The template uses makeindex,
-biber, and many LaTeX packages.
+There are some instalation instructions in the [example document,
+included in this repo in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false).
+The template uses makeindex, biber, and many LaTeX packages.
 
 These packages are used in the template: nag, geometry, etoolbox,
 ifxetex, ifluatex, ifpdf, fontenc, inputenc, amsthm, babel, microtype,
@@ -82,4 +83,7 @@ lmodern, biber, and latexmk. Just run
 
 The files that are derived from other projects (natbib-ime.sty,
 alpha-ime.bst etc.) are subject to their own licenses. The rest
-of the code is available under the MIT License.
+of the code is available under the MIT License. The example text,
+which includes the tutorial and examples, as well as the explanatory
+comments in the source, are available under the [Creative Commons
+Attribution International Licence, v4.0 (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
