@@ -16,9 +16,10 @@ O modelo é composto por estes arquivos:
     \item \texttt{tese-exemplo.tex} (leia os comentários neste arquivo!)
   \end{itemize}
 
-  \item Arquivo com as \textit{packages} usadas e suas configurações:
+  \item Arquivos com as \textit{packages} usadas e suas configurações:
   \begin{itemize}
     \item \texttt{miolo-preambulo.tex} (leia os comentários neste arquivo!)
+    \item \texttt{bibconfig.tex} (configuração da bibliografia)
   \end{itemize}
 
   \item Arquivos com formato sugerido de capa, resumo e outros elementos:
@@ -28,17 +29,12 @@ O modelo é composto por estes arquivos:
     \item \texttt{folhas-de-rosto.tex} (resumo, dedicatória etc.)
   \end{itemize}
 
-  \item Arquivos dos capítulos e apêndice:
+  \item Arquivos dos capítulos, apêndice e anexo:
   \begin{itemize}
-    \item \texttt{cap-introducao.tex}
-    \item \texttt{cap-latex.tex}
-    \item \texttt{cap-tutorial.tex}
-    \item \texttt{cap-exemplos.tex}
-    \item \texttt{cap-conclusoes.tex}
-    \item \texttt{ape-conjuntos.tex}
+    \item \texttt{capitulos.tex} e os arquivos carregados por ele (\texttt{cap-*.tex})
+    \item \texttt{apendices.tex} e os arquivos carregados por ele (\texttt{ape-conjuntos.tex})
+    \item \texttt{anexos.tex} e os arquivos carregados por ele (\texttt{ann-livre.tex})
   \end{itemize}
-
-  \enlargethispage{\baselineskip}
 
   \item Diretório de figuras:
   \begin{itemize}
@@ -53,7 +49,8 @@ O modelo é composto por estes arquivos:
     \item \texttt{plainnat-ime.bst} (estilo plainnat para bibliografias com bibtex)\index{bibtex}
     \item \texttt{alpha-ime.bst} (estilo alpha para bibliografias com bibtex)\index{bibtex}
     \item \texttt{natbib-ime.sty} (tradução da \textit{package} padrão natbib -- citações com bibtex)\index{natbib}
-    \item \texttt{hyperxindy.xdy} (arquivo de configuração para hiperlinks no índice remissivo)
+    \item \texttt{hyperxindy.xdy} (arquivo de configuração para xindy)
+    \item \texttt{mkidxhead.ist} (arquivo de configuração para makeindex)
     \item \texttt{Makefile} (arquivo que automatiza a geração do documento com o comando \textsf{make})
     \item \texttt{latexmkrc} (arquivo que automatiza a geração do documento com o comando \textsf{latexmk})
   \end{itemize}
@@ -104,15 +101,16 @@ instalada à parte no Windows (\url{www.perl.org/get.html}).
 
 \section{Bibliografia}
 
-Você pode usar referências bibliográficas nos formatos ``alpha'' ou ``plainnat''.
-Se estiver usando natbib+bibtex\index{natbib}\index{bibtex}, use os arquivos .bst
-``alpha-ime.bst'' ou ``plainnat-ime.bst'', que são versões desses dois formatos
-traduzidas para o português. Se estiver usando biblatex\index{biblatex}
-(recomendado), escolha o estilo ``alphabetic'' (que é um dos estilos padrão do
-biblatex) ou ``plainnat-ime''. O arquivo de exemplo inclui todas essas opções;
-basta des-comentar as linhas correspondentes e, se necessário, modificar o
-arquivo Makefile para chamar o bibtex\index{bibtex} ao invés do
-biber\index{biber} (este último é usado em conjunto com o biblatex).
+Sugerimos que você faça referências bibliográficas nos formatos ``alpha'' ou
+``plainnat''.  Se estiver usando natbib+bibtex\index{natbib}\index{bibtex},
+use os arquivos .bst ``alpha-ime.bst'' ou ``plainnat-ime.bst'', que são
+versões desses dois formatos traduzidas para o português. Se estiver usando
+biblatex\index{biblatex} (recomendado), escolha o estilo ``alphabetic''
+(que é um dos estilos padrão do biblatex) ou ``plainnat-ime''. O arquivo de
+exemplo inclui todas essas opções; basta des-comentar as linhas
+correspondentes e, se necessário, modificar o arquivo Makefile para chamar
+o bibtex\index{bibtex} ao invés do biber\index{biber} (este último é usado
+em conjunto com o biblatex).
 
 \section{Perguntas Frequentes sobre o Modelo}
 
