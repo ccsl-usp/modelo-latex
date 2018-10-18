@@ -1,5 +1,0 @@
-(define-attributes ("emph"))
-(markup-locref :open "\hyperpage{" :close "}" :attr "default")
-(markup-locref :open "\textbf{\hyperpage{" :close "}}" :attr "textbf")
-(markup-locref :open "\textit{\hyperpage{" :close "}}" :attr "textit")
-(markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
