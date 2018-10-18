@@ -1,3 +1,6 @@
+% Versão modificada do arquivo alpha.bst
+% por J.P. Mena-Chalco
+
 % BibTeX standard bibliography style `alpha'
 	% version 0.99a for BibTeX versions 0.99a or later, LaTeX version 2.09.
 	% Copyright (C) 1985, all rights reserved.

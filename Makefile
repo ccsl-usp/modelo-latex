@@ -1,4 +1,5 @@
-# makefile para a compilacao do documento
+# Authors: Nelson Lago and Jesus P. Mena-Chalco
+# This file is distributed under the MIT Licence
 
 BASE_NAME := tese-exemplo
 
