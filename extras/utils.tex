@@ -1,0 +1,306 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ÍNDICE E HIPERLINKS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Cria índice remissivo. Este pacote precisa ser carregado antes de hyperref.
+% A criação do índice remissivo depende de um programa auxiliar, que pode ser
+% o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
+% línguas diferentes e caracteres acentuados, mas o programa não está mais
+% sendo mantido e índices criados com xindy não funcionam em conjunto com
+% hyperref. Se quiser utilizar xindy mesmo assim, é possível contornar esse
+% segundo problema configurando hyperref para *não* gerar hyperlinks no
+% índice (mais abaixo) e configurando xindy para que ele gere esses hyperlinks
+% por conta própria. Para isso, modifique a chamada ao pacote imakeidx (aqui)
+% e altere as opções do pacote hyperref.
+%\usepackage[xindy]{imakeidx} % usando xindy
+\usepackage{imakeidx} % usando makeindex
+
+% Cria o arquivo de configuração para xindy lidar corretamente com hyperlinks.
+\begin{filecontents*}{hyperxindy.xdy}
+(define-attributes ("emph"))
+(markup-locref :open "\hyperpage{" :close "}" :attr "default")
+(markup-locref :open "\textbf{\hyperpage{" :close "}}" :attr "textbf")
+(markup-locref :open "\textit{\hyperpage{" :close "}}" :attr "textit")
+(markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
+\end{filecontents*}
+
+% Cria o arquivo de configuração para makeindex colocar um cabeçalho
+% para cada letra do índice.
+\begin{filecontents*}{mkidxhead.ist}
+headings_flag 1
+heading_prefix "{\\bfseries "
+heading_suffix "}\\nopagebreak\n"
+\end{filecontents*}
+
+% Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
+% vamos mudar isso e deixar fancyhdr definir a formatação
+\indexsetup{
+  othercode={\chaptermark{\indexname}},
+}
+
+\makeindex[
+  noautomatic,
+  intoc,
+  % Estas opções são usadas por xindy
+  % "-C utf8" ou "-M lang/latin/utf8.xdy" são truques para contornar este
+  % bug, que existe em outras distribuições tambem:
+  % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
+  % Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
+  %options=-C utf8 -M hyperxindy.xdy,
+  %options=-M lang/latin/utf8.xdy -M hyperxindy.xdy,
+  % Estas opções são usadas por makeindex
+  options=-s mkidxhead.ist -l -c,
+]
+
+% O comando \ref por padrão mostra apenas o número do elemento a que se
+% refere; assim, é preciso escrever "veja a Figura \ref{grafico}" ou
+% "como visto na Seção \ref{sec:introducao}". Usando o pacote hyperref
+% (carregado mais abaixo), esse número é transformado em um hiperlink.
+%
+% Se você quiser mudar esse comportamento, ative as packages varioref
+% e cleveref e também as linhas "labelformat" e "crefname" mais abaixo.
+% Nesse caso, você deve escrever apenas "veja a \ref{grafico}" ou
+% "como visto na \ref{sec:introducao}" etc. e o nome do elemento será
+% gerado automaticamente como hiperlink.
+%
+% Se, além dessa mudança, você quiser usar os recursos de varioref ou
+% cleveref, mantenha as linhas labelformat comentadas e use os comandos
+% \vref ou \cref, conforme sua preferência, também sem indicar o nome do
+% elemento, que é inserido automaticamente. Vale lembrar que o comando
+% \vref de varioref pode causar problemas com hyperref, impedindo a
+% geração do PDF final.
+%
+% ATENÇÃO: varioref, hyperref e cleveref devem ser carregadas nessa ordem!
+%\usepackage{varioref}
+
+%\labelformat{figure}{Figura~#1}
+%\labelformat{table}{Tabela~#1}
+%\labelformat{equation}{Equação~#1}
+%% Isto não funciona corretamente com os apêndices; o comando seguinte
+%% contorna esse problema
+%%\labelformat{chapter}{Capítulo~#1}
+%\makeatletter
+%\labelformat{chapter}{\@chapapp~#1}
+%\makeatother
+%\labelformat{section}{Seção~#1}
+%\labelformat{subsection}{Seção~#1}
+%\labelformat{subsubsection}{Seção~#1}
+
+% Usamos "PassOptions" aqui porque outras packages definem opções para
+% hyperref também e chamar a package com opções diretamente gera conflitos.
+\PassOptionsToPackage{
+  unicode=true,
+  plainpages=false,
+  pdfpagelabels,
+  colorlinks=true,
+  %citecolor=black,
+  %linkcolor=black,
+  %urlcolor=black,
+  %filecolor=black,
+  citecolor=DarkGreen,
+  linkcolor=NavyBlue,
+  urlcolor=DarkRed,
+  filecolor=green,
+  bookmarksopen=true,
+  % hyperref não gera hyperlinks corretos em índices remissivos criados com
+  % xindy; assim, é possível desabilitar essa função aqui e gerar os
+  % hyperlinks através da configuração de xindy definida anteriormente. Com
+  % makeindex (o default), quem precisa criar os hyperlinks é hyperref.
+  %hyperindex=false,
+}{hyperref}
+
+% Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
+\usepackage{hyperref}
+
+%\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+%% cleveref não tem tradução para o português
+%\crefname{figure}{Figura}{Figuras}
+%\crefname{table}{Tabela}{Tabelas}
+%\crefname{chapter}{Capítulo}{Capítulos}
+%\crefname{section}{Seção}{Seções}
+%\crefname{subsection}{Seção}{Seções}
+%\crefname{subsubsection}{Seção}{Seções}
+%\crefname{appendix}{Apêndice}{Apêndices}
+%\crefname{subappendix}{Apêndice}{Apêndices}
+%\crefname{subsubappendix}{Apêndice}{Apêndices}
+
+% ao criar uma referência hyperref para um float, a referência aponta
+% para o final do caption do float, o que não é muito bom. Este pacote
+% faz a referência apontar para o início do float (é possível personalizar
+% também).
+\usepackage[all]{hypcap}
+
+% XMP (eXtensible Metadata Platform) is a mechanism proposed by Adobe for
+% embedding document metadata within the document itself. The package
+% integrates seamlessly with hyperref and requires virtually no modifications
+% to documents that already exploit hyperref's mechanisms for specifying PDF
+% metadata.
+\usepackage{hyperxmp}
+
+% A classe Book inclui o comando \appendix, que (obviamente) permite inserir
+% apêndices no documento. No entanto, não há suporte similar para anexos. Esta
+% package (que não é padrão do LaTeX, foi criada para este modelo) define o
+% comando \annex. Ela deve ser carregada depois de hyperref.
+\usepackagefromsubdir{extras/}{annex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% OUTROS PACOTES ÚTEIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Você provavelmente vai querer ler a documentação de alguns destes pacotes
+% para personalizar algum aspecto do trabalho ou usar algum recurso específico.
+
+% Formatação personalizada das listas "itemize", "enumerate" e
+% "description", além de permitir criar novos tipos de listas
+%\usepackage{paralist}
+
+% Trechos de texto "puro" (tabs, quebras de linha etc. não são modificados)
+\usepackage{verbatim}
+
+% Sublinhado e outras formas de realce de texto
+\usepackage{soul}
+\usepackage{soulutf8}
+
+% Recursos e símbolos adicionais para o modo matemático
+% para evitar problemas de compatibilidade com algumas fontes, o pacote
+% amsthm já foi carregado mais acima
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{MnSymbol}
+%\usepackage{stmaryrd}
+
+% Notação bra-ket
+%\usepackage{braket}
+
+%\num \SI and \SIrange. For example, \SI{10}{\hertz} \SIrange{10}{100}{\hertz}
+%\usepackage[binary-units]{siunitx}
+
+% Citações melhores; se você pretende fazer citações de textos
+% relativamente extensos, vale a pena ler a documentação. biblatex
+% utiliza recursos deste pacote.
+\usepackage{csquotes}
+
+\usepackage{url}
+% URL com fonte sem serifa ao invés de teletype
+\urlstyle{sf}
+
+% Permite inserir comentários, muito bom durante a escrita do texto
+\usepackage[textsize=scriptsize,colorinlistoftodos,textwidth=2.5cm]{todonotes}
+\presetkeys{todonotes}{color=orange!40!white}{}
+
+% Comando para fazer notas com highlight no texto correspondente:
+% \hltodo[texto][opções]{comentário}
+\makeatletter
+\if@todonotes@disabled
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{#1}
+\else
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{
+    \ifstrempty{#1}{}{\texthl{#1}}%
+    \todo[#2]{#3}{}%
+  }
+\fi
+\makeatother
+
+% para formatar código-fonte (ex. em Java).
+\usepackage{listings}
+
+% O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
+% usados em português é possível contornar o problema com a tabela abaixo.
+% From https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings#Encoding_issue
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+}
+
+% Opções default para o pacote listings
+% Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
+\lstset{
+  basicstyle=\footnotesize\ttfamily,  % the font that is used for the code
+  numbers=left,                       % where to put the line-numbers
+  numberstyle=\footnotesize\ttfamily, % the font that is used for the line-numbers
+  stepnumber=1,                       % the step between two line-numbers. If it's 1 each line will be numbered
+  numbersep=20pt,                     % how far the line-numbers are from the code
+  commentstyle=\color{Brown}\upshape,
+  stringstyle=\color{black},
+  identifierstyle=\color{DarkBlue},
+  keywordstyle=\color{cyan},
+  showspaces=false,                   % show spaces adding particular underscores
+  showstringspaces=false,             % underline spaces within strings
+  showtabs=false,                     % show tabs within strings adding particular underscores
+  frame=single,                       % adds a frame around the code
+  framerule=0.6pt,
+  tabsize=2,                          % sets default tabsize to 2 spaces
+  captionpos=b,                       % sets the caption-position to bottom
+  breaklines=true,                    % sets automatic line breaking
+  breakatwhitespace=false,            % sets if automatic breaks should only happen at whitespace
+  escapeinside={\%*}{*)},             % if you want to add a comment within your code
+  backgroundcolor=\color[rgb]{1.0,1.0,1.0}, % choose the background color.
+  rulecolor=\color{darkgray},
+  extendedchars=true,
+  inputencoding=utf8,
+  xleftmargin=30pt,
+  xrightmargin=10pt,
+  framexleftmargin=25pt,
+  framexrightmargin=5pt,
+  framesep=5pt,
+}
+
+% Um exemplo de estilo personalizado para listings (tabulações maiores)
+\lstdefinestyle{wider} {
+  tabsize = 4,
+  numbersep=15pt,
+  xleftmargin=25pt,
+  framexleftmargin=20pt,
+}
+
+% Outro exemplo de estilo personalizado para listings (sem cores)
+\lstdefinestyle{nocolor} {
+  commentstyle=\color{darkgray}\upshape,
+  stringstyle=\color{black},
+  identifierstyle=\color{black},
+  keywordstyle=\color{black},
+}
+
+% Um exemplo de definição de linguagem para listings (XML)
+\lstdefinelanguage{XML}{
+  morecomment=[s]{<!--}{-->},
+  morecomment=[s]{<!-- }{ -->},
+  morecomment=[n]{<!--}{-->},
+  morecomment=[n]{<!-- }{ -->},
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  morekeywords={xmlns,version,type}% list your attributes here
+}
+
+% Símbolos adicionais, como \celsius, \ohm, \perthousand etc.
+%\usepackage{gensymb}
+
+% Símbolos adicionais, como \textrightarrow, \texteuro etc.
+\usepackage{textcomp}
+
+% Permite criar listas como glossários, listas de abreviaturas etc.
+% https://en.wikibooks.org/wiki/LaTeX/Glossary
+%\usepackage{glossaries}
+
+% Permite formatar texto em colunas
+\usepackage{multicol}
+
+% Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta os
+% comandos \XeLaTeX e \LuaLaTeX. Você provavelmente não precisa desse recurso
+% e, portanto, pode removê-la.
+\usepackage{metalogo}

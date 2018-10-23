@@ -44,8 +44,8 @@
 %  \else(Citado nas pgs. #2)%
 %  \fi%
 %}
-%\usepackage[square,sort,nonamebreak,comma]{natbib-ime}  % citação bibliográfica alpha (alpha-ime.bst)
-%\usepackage[round,sort,nonamebreak]{natbib-ime} % citação bibliográfica textual(plainnat-ime.bst)
+%\usepackagefromsubdir[square,sort,nonamebreak,comma]{extras/}{natbib-ime}  % citação bibliográfica alpha (alpha-ime.bst)
+%\usepackagefromsubdir[round,sort,nonamebreak]{extras/}{natbib-ime} % citação bibliográfica textual(plainnat-ime.bst)
 
 %%%%%%%%%%% Usando biblatex: %%%%%%%%%%%
 % https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
@@ -67,8 +67,8 @@
   % diferença nos estilos autor-data, como plainnat-ime)
   maxcitenames=2,
   % Estilo similar a plainnat
-  bibstyle=plainnat-ime,
-  citestyle=plainnat-ime,
+  bibstyle=extras/plainnat-ime,
+  citestyle=extras/plainnat-ime,
   % Estilo similar a alpha
   %bibstyle=alphabetic,
   %citestyle=alphabetic,

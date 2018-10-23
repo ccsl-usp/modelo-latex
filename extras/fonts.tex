@@ -1,0 +1,167 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FONTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LaTeX normalmente usa quatro tipos de fonte:
+%
+% * uma fonte serifada, para o corpo do texto;
+% * uma fonte com design similar à anterior para modo matemático;
+% * uma fonte sem serifa, para títulos ou "entidades". Por exemplo, "a classe
+%   \textsf{TimeManager} é responsável..." ou "chamamos \textsf{primos} os
+%   números que...". Observe que em quase todos os casos desse tipo é mais
+%   adequado usar negrito ou itálico;
+% * uma fonte "teletype", para trechos de programas.
+%
+% A escolha de uma família de fontes para o documento por default seleciona as
+% quatro fontes de uma vez.
+%
+% LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
+% precisaram ser re-criadas diversas vezes em formatos diferentes, então há
+% diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX), a
+% versão usada é a BlueSky Computer Modern, que é de boa qualidade, mas com os
+% problemas do OT1. Com fontenc T1 (padrão deste modelo e recomendado), o
+% LaTeX usa o conjunto "cm-super". Essa versão das fontes tem vantagens e
+% desvantagens; em particular, às vezes o sistema usa fontes bitmap, que são
+% ruins para leitura na tela. Ao longo do tempo, versões diferentes dessas
+% fontes foram recomendadas como "a melhor"; atualmente, a melhor opção para
+% usar a família Computer Modern é a versão "Latin Modern".
+\usepackage{lmodern}
+
+% Latin Modern não tem fontes bold + Small Caps, mas cm-super sim;
+% assim, vamos ativar o suporte às fontes cm-super (sem ativá-las
+% como a fonte padrão do documento) e configurar substituições
+% automáticas para que a fonte Latin Modern seja substituída por
+% cm-super quando o texto for bold + Small Caps.
+\usepackage{fix-cm}
+
+% Com Latin Modern, é preciso incluir substituições para o encoding TS1
+% também por conta dos números oldstyle, porque para inclui-los nas fontes
+% computer modern foi feita uma hack: os dígitos são declarados como sendo
+% os números itálicos da fonte matemática e, portanto, estão no encoding TS1.
+%
+% Primeiro forçamos o LaTeX a carregar a fonte Latin Modern (ou seja, ler
+% o arquivo que inclui "DeclareFontFamily") e, a seguir, definimos a
+% substituição
+\fontencoding{TS1}\fontfamily{lmr}\selectfont
+\DeclareFontShape{TS1}{lmr}{b}{sc}{<->ssub * cmr/bx/n}{}
+\DeclareFontShape{TS1}{lmr}{bx}{sc}{<->ssub * cmr/bx/n}{}
+
+\fontencoding{T1}\fontfamily{lmr}\selectfont
+\DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub * cmr/bx/sc}{}
+\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub * cmr/bx/sc}{}
+
+% Latin Modern não tem "small caps + itálico", mas tem "small caps + slanted";
+% vamos definir mais uma substituição aqui.
+\fontencoding{T1}\fontfamily{lmr}\selectfont % já feito acima, mas tudo bem
+\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
+\DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub * lmr/bx/scsl}{}
+
+% Se fizermos mudanças manuais na fonte Latin Modern, estes comandos podem
+% vir a ser úteis
+%\newcommand\lmodern{%
+%  \renewcommand{\oldstylenums}[1]{{\fontencoding{TS1}\selectfont ##1}}%
+%  \fontfamily{lmr}\selectfont%
+%}
+%
+%\DeclareRobustCommand\textlmodern[1]{%
+%  {\lmodern #1}%
+%}
+
+% É possível mudar apenas uma das fontes. Em particular, a fonte
+% teletype da família Computer Modern foi criada para simular
+% as impressoras dos anos 1970/1980. Sendo assim, ela é uma fonte (1)
+% com serifas e (2) de espaçamento fixo. Hoje em dia, é mais comum usar
+% fontes sem serifa para representar código-fonte. Além disso, ao imprimir,
+% é comum adotar fontes que não são de espaçamento fixo para fazer caber
+% mais caracteres em uma linha de texto. Algumas opções de fontes para
+% esse fim:
+%\usepackage{newtxtt}
+%\usepackage{DejaVuSansMono}
+\usepackage{inconsolata}
+
+% Ao invés da família Computer Modern, é possível usar outras como padrão.
+% Uma ótima opção é a libertine, similar (mas não igual) à Times mas com
+% suporte a Small Caps e outras qualidades. A fonte teletype da família
+% é serifada, então é melhor definir outra; a opção "mono=false" faz
+% o pacote não carregar sua própria fonte, mantendo a escolha anterior.
+\usepackage[mono=false]{libertine}
+% A família libertine por padrão não define uma fonte matemática específica;
+% uma opção que funciona bem com ela:
+\usepackage[libertine]{newtxmath}
+% Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
+%\usepackage{biolinum}
+
+% Também é possível usar a Times como padrão; nesse caso, a fonte sem serifa
+% é a Helvetica. Mas provavelmente libertine é uma opção melhor.
+%\usepackage[helvratio=0.95,largesc]{newtxtext}
+
+% gentium inclui apenas uma fonte serifada, similar a Garamond, que busca
+% cobrir todos os caracteres unicode
+%\usepackage{gentium}
+
+% LaTeX normalmente funciona com fontes que foram adaptadas para ele, ou
+% seja, ele não usa as fontes padrão instaladas no sistema: para usar
+% uma fonte é preciso ativar o pacote correspondente, como visto acima.
+% É possível escapar dessa limitação e acessar as fontes padrão do sistema
+% com XeTeX ou LuaTeX. Com eles, além dos pacotes de fontes "tradicionais",
+% pode-se usar o pacote fontspec para usar fontes do sistema.
+%\usepackage{fontspec}
+%\setmainfont{DejaVu Serif}
+%\setmainfont{Charis SIL}
+%\setsansfont{DejaVu Sans}
+%\setsansfont{Libertinus Sans}[Scale=1.1]
+%\setmonofont{DejaVu Sans Mono}
+
+% fontspec oferece vários recursos interessantes para manipular fontes.
+% Por exemplo, Garamond é uma fonte clássica; a versão EBGaramond é muito
+% boa, mas não possui versões bold e bold-italic; aqui, usamos
+% CormorantGaramond ou Gentium para simular a versão bold.
+%\setmainfont{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+%
+%\newfontfamily\garamond{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+
+% Crimson tem Small Caps, mas o recurso é considerado "em construção".
+% Vamos utilizar Gentium para Small Caps
+%\setmainfont{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+%
+%\newfontfamily\crimson{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+
+% Com o pacote fontspec, também é possível usar o comando "\fontspec" para
+% selecionar uma fonte temporariamente, sem alterar as fontes-padrão do
+% documento.

@@ -1,0 +1,122 @@
+% Author: Nelson Lago
+% This file is distributed under the MIT Licence
+
+\ProvidesPackage{imeusp-headers}[2018/10/28 Running headers, IME/USP style]
+
+\RequirePackage{fancyhdr}
+
+% Sem linha separando o cabeçalho
+\renewcommand{\headrulewidth}{0pt}
+
+% A formatação dos cabeçalhos/rodapés envolve duas coisas:
+% 1. Escolher qual texto deve ser impresso nas páginas pares/ímpares
+%    (nome do capítulo ou seção, nome do autor etc.)
+% 2. Escolher o lugar e a formatação desse texto e da numeração de páginas
+%
+% O lugar e a formatação são definidos com os comandos fancyhead e
+% fancyfoot. "RO" significa "Right side of Odd pages"; "LE" significa
+% "Left side of Even pages" etc.
+%
+% A escolha do texto é feita com os comandos chaptermark/sectionmark;
+% os nomes "left/right/both" usados por esses comandos não fazem muito
+% sentido, melhor pensar neles como palavras "mágicas". Para fazer
+% mudanças não triviais aqui é necessário ler a documentação.
+%
+% O comando "\chaptermark\markboth" define o que fica guardado na variável
+% "leftmark". Pode ser só "##1" (o nome do capítulo), pode ser
+% "\thechapter. ##1" (aí inclui o número do capítulo), pode ser
+% "\chaptername\ \thechapter. ##1" (aí inclui a palavra "capítulo") etc.
+%
+% O comando \sectionmark\markright" define o que fica guardado na variável
+% "rightmark". Pode ser só "##1" (o nome da seção dentro do capítulo),
+% pode ser "\thesection. ##1" (aí inclui o número da seção), pode ser
+% "\sectionname\ \thesection. ##1" (aí inclui a palavra "seção") etc.
+
+% Queremos colocar o número da página mais próximo da borda do papel (na
+% horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
+% margem direita -10mm" (o número vai ficar a 10mm da borda).
+%
+% Observe que a package geometry define \evensidemargin, mas seu valor não
+% necessariamente corresponde ao que queremos aqui (não sei bem como nem
+% por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+% manualmente.
+%
+% A distância entre a borda esquerda/interna do papel e o início do texto
+% é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+% é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+\dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
+\addtolength{\headwidth}{\othermargin}
+\addtolength{\headwidth}{-10mm}
+
+\newcommand{\formataNumPaginas}{
+  \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+  \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+}
+
+\newcommand{\formataCabecalhosDinamicos}{
+  \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+  \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
+}
+
+\fancypagestyle{mainmatter}{
+  % Nome do capítulo no cabeçalho das páginas pares (e nas
+  % ímpares quando não há seções)
+  \renewcommand{\chaptermark}[1]{
+    \markboth
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+  }
+
+  % Número e nome da seção no cabeçalho das páginas ímpares
+  \renewcommand{\sectionmark}[1]{
+    \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
+  }
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+\makeatletter
+\fancypagestyle{appendix}{
+  \renewcommand{\chaptermark}[1]{%
+    \markboth{%
+      % Páginas ímpares: "Apêndice/Anexo X"
+      \@chapapp\ \thechapter%
+    }{%
+      % Páginas pares: "X | nome do apêndice/anexo"
+      \thechapter\hskip 0.3em |\hskip 0.3em ##1%
+    }
+  }
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+\makeatother
+
+% Na frontmatter e backmatter, não há números de capítulos e (em geral)
+% não há subdivisões (capítulos/seções/subseções), apenas um nível.
+% O correto, então, é usar o mesmo texto (nome do capítulo ou seção)
+% nas páginas pares ou ímpares. Isso na verdade não está funcionando
+% na frontmatter, pois os capítulos ali não definem os cabeçalhos (não
+% executam "chaptermark/sectionmark"), mas "forçamos" a bibliografia
+% e o índice a usarem.
+\fancypagestyle{frontback}{
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% A página inicial de cada capítulo é automaticamente configurada para o estilo
+% "plain", então vamos definir esse estilo (colocando o número de página no
+% mesmo lugar das demais). As páginas iniciais também usam esse estilo.
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \formataNumPaginas{}
+}
+
+\endinput

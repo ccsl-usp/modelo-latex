@@ -1,4 +1,4 @@
-% Arquivo LaTeX de exemplo de dissertação/tese a ser apresentados à CPG do IME-USP
+% Arquivo LaTeX de exemplo de dissertação/tese a ser apresentada à CPG do IME-USP
 %
 % Criação: Jesús P. Mena-Chalco
 % Revisão: Fabio Kon e Paulo Feofiloff
@@ -6,7 +6,7 @@
 %
 % Except where otherwise indicated, these files are distributed under
 % the MIT Licence. The example text, which includes the tutorial and
-% examples, as well as the explanatory comments in the source, are
+% examples as well as the explanatory comments in the source, are
 % available under the Creative Commons Attribution International
 % Licence, v4.0 (CC-BY 4.0) - https://creativecommons.org/licenses/by/4.0/
 
@@ -56,15 +56,36 @@
   marginparsep=5mm,
 }
 
+% Vários comandos auxiliares para o desenvolvimento de packages e classes;
+% aqui, usamos em alguns comandos de formatação e condicionais.
+\usepackage{etoolbox}
+\usepackage{xstring}
+\usepackage{xparse}
+
 % Vários pacotes e opções de configuração genéricos; para personalizar o
-% resultado, modifique este arquivo.
-\input{miolo-preambulo}
+% resultado, modifique estes arquivos.
+\input{extras/basics}
+\input{extras/fonts}
+\input{extras/floats}
+\input{extras/thesis-formatting}
+\input{extras/utils}
+
+% Diretório onde estão as figuras; com isso, não é preciso colocar o caminho
+% completo em \includegraphics (e nem a extensão).
+\graphicspath{{figuras/}}
+
+% Comandos rápidos para mudar de língua:
+% \en -> muda para o inglês
+% \br -> muda para o português
+% \texten{blah} -> o texto "blah" é em inglês
+% \textbr{blah} -> o texto "blah" é em português
+\babeltags{br = brazil, en = english}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Para personalizar o formato da bibliografia e citações, modifique este arquivo.
-\input{bibconfig}
+\input{extras/bibconfig}
 
 % O arquivo com os dados bibliográficos; você pode usar este comando
 % mais de uma vez para acrescentar múltiplos arquivos
@@ -91,7 +112,7 @@
 % e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
 % Esses dados são usados mais abaixo (no arquivo "folhas-de-rosto"). Se
 % estiver escrevendo um artigo ou for gerar a capa etc. manualmente, remova.
-\input{metadados-tese}
+\input{conteudo/metadados-tese}
 
 % É possível definir como determinadas palavras podem (ou não) ser
 % hifenizadas; no entanto, a hifelização automática geralmente funciona bem
@@ -116,7 +137,7 @@
 % desabilita a contagem de capítulos (ele não existe na classe "article")
 \frontmatter
 
-% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+% Este formato está definido na package imeusp-headers
 \pagestyle{plain}
 %\pagestyle{frontback}
 
@@ -125,7 +146,7 @@
 % escrevendo um artigo ou não quiser usar, remova.
 
 \onehalfspacing % Espaçamento 1,5 nas páginas iniciais
-\input{folhas-de-rosto}
+\input{conteudo/folhas-de-rosto}
 
 % Um parágrafo em LaTeX termina com uma linha vazia; como não é possível ter
 % certeza que um arquivo incluído (neste caso, "folhas-de-rosto") terminou
@@ -142,7 +163,7 @@
 % (ele não existe na classe "article")
 \mainmatter
 
-% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+% Este formato está definido na package imeusp-headers
 % e só funciona com book/report, pois usa o nome dos capítulos nos cabeçalhos;
 % se estiver usando article, comente ou troque por "plain"
 \pagestyle{mainmatter}
@@ -150,7 +171,7 @@
 % Espaçamento simples
 \singlespacing
 
-\input{capitulos}
+\input{conteudo/capitulos}
 \par
 
 
@@ -170,19 +191,19 @@
 % ele foi definido em miolo-preambulo.tex. Se o trabalho não tiver apêndices
 % ou anexos, remova.
 
-% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+% Este formato está definido na package imeusp-headers
 \pagestyle{appendix}
 
 % Apêndices
 \appendix
 
-\input{apendices}
+\input{conteudo/apendices}
 \par
 
 % Anexos
 \annex
 
-\input{anexos}
+\input{conteudo/anexos}
 \par
 
 
@@ -193,14 +214,14 @@
 % na classe "article".
 \backmatter
 
-% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+% Este formato está definido na package imeusp-headers
 \pagestyle{frontback}
 
 % A bibliografia é obrigatória
 
 %%%%%%%%% Bibliografia com natbib (preterido): %%%%%%%%%
-%\bibliographystyle{alpha-ime}% citação bibliográfica alpha
-%\bibliographystyle{plainnat-ime} % citação bibliográfica textual
+%\bibliographystyle{extras/alpha-ime}% citação bibliográfica alpha
+%\bibliographystyle{extras/plainnat-ime} % citação bibliográfica textual
 %\bibliography{bibliografia}  % associado ao arquivo: 'bibliografia.bib'
 
 %%%%%%%% Bibliografia com biblatex (preferido): %%%%%%%%

@@ -6,55 +6,50 @@ trabalho e o resultado final é muito bom\footnote{O uso de um sistema de
 controle de versões, como mercurial (\url{mercurial-scm.org}) ou git
 (\url{git-scm.com}), também é altamente recomendado.}. Este modelo inclui
 vários comentários explicativos e pacotes interessantes para auxiliá-lo com
-ele.
-
-O modelo é composto por estes arquivos:
+ele, sendo composto do arquivo principal de exemplo
+(\texttt{tese-exemplo.tex}) e de vários arquivos auxiliares:
 
 \begin{itemize}
-  \item Arquivo principal:
+  \item Arquivos com o conteúdo do trabalho:
   \begin{itemize}
-    \item \texttt{tese-exemplo.tex} (leia os comentários neste arquivo!)
-  \end{itemize}
-
-  \item Arquivos com as \textit{packages} usadas e suas configurações:
-  \begin{itemize}
-    \item \texttt{miolo-preambulo.tex} (leia os comentários neste arquivo!)
-    \item \texttt{bibconfig.tex} (configuração da bibliografia)
-  \end{itemize}
-
-  \item Arquivos com formato sugerido de capa, resumo e outros elementos:
-  \begin{itemize}
-    \item \texttt{imeusp.sty} (configurações de formatação -- não é preciso editar)
-    \item \texttt{metadados-tese.tex} (é preciso inserir os metadados aqui)
-    \item \texttt{folhas-de-rosto.tex} (resumo, dedicatória etc.)
-  \end{itemize}
-
-  \item Arquivos dos capítulos, apêndice e anexo:
-  \begin{itemize}
-    \item \texttt{capitulos.tex} e os arquivos carregados por ele (\texttt{cap-*.tex})
-    \item \texttt{apendices.tex} e os arquivos carregados por ele (\texttt{ape-conjuntos.tex})
-    \item \texttt{anexos.tex} e os arquivos carregados por ele (\texttt{ann-livre.tex})
-  \end{itemize}
-
-  \item Diretório de figuras:
-  \begin{itemize}
-    \item \texttt{figuras/}
-  \end{itemize}
-
-  \item Outros arquivos auxiliares:
-  \begin{itemize}
-    \item \texttt{annex.sty} (permite adicionar anexos)
-    \item \texttt{appendixlabel.sty} (melhora a lista de apêndices/anexos no sumário)
+    \item \texttt{conteudo/metadados-tese.tex} (orientador, banca etc.)
+    \item \texttt{conteudo/folhas-de-rosto.tex} (resumo, dedicatória etc.)
+    \item \texttt{conteudo/capitulos.tex}, \texttt{conteudo/apendices.tex},
+          \texttt{conteudo/anexos.tex} e demais arquivos carregados por eles
+          %(\texttt{cap-*.tex}, \texttt{ape-conjuntos.tex}, \texttt{ann-livre.tex})
     \item \texttt{bibliografia.bib} (dados bibliográficos)
-    \item \texttt{plainnat-ime.bbx} (estilo plainnat para bibliografias com biblatex)\index{biblatex}
-    \item \texttt{plainnat-ime.cbx} (estilo plainnat para citações com biblatex)
-    \item \texttt{plainnat-ime.bst} (estilo plainnat para bibliografias com bibtex)\index{bibtex}
-    \item \texttt{alpha-ime.bst} (estilo alpha para bibliografias com bibtex)\index{bibtex}
-    \item \texttt{natbib-ime.sty} (tradução da \textit{package} padrão natbib -- citações com bibtex)\index{natbib}
-    \item \texttt{hyperxindy.xdy} (configuração para xindy)
-    \item \texttt{mkidxhead.ist} (configuração para makeindex)
-    \item \texttt{Makefile} (automatiza a geração do documento com o comando \textsf{make})
-    \item \texttt{latexmkrc} (automatiza a geração do documento com o comando \textsf{latexmk})
+  \end{itemize}
+
+  \item Arquivos com as \textit{packages} usadas e suas configurações (leia
+        os comentários neles se quiser modificar algum aspecto do
+        documento ou acrescentar alguma \textit{package}):
+  \begin{itemize}
+    \item \texttt{extras/basics.tex} (\textit{packages} e configurações essenciais)
+    \item \texttt{extras/fonts.tex} (definição das fontes do documento)
+    \item \texttt{extras/floats.tex} (configurações e melhorias para \textit{floats})
+    \item \texttt{extras/thesis-formatting.tex} (aparência: espaçamento, sumário etc.)
+    \item \texttt{extras/utils.tex} (\textit{packages} adicionais diversas)
+    \item \texttt{extras/bibconfig.tex} (configuração da bibliografia)
+  \end{itemize}
+
+  \item Outros arquivos auxiliares (geralmente não precisam ser editados):
+  \begin{itemize}
+    \item \texttt{extras/imeusp-capa.sty} (formatação da capa e demais páginas iniciais)
+    \item \texttt{extras/imeusp-headers.sty} (formatação dos cabeçalhos)
+    \item \texttt{extras/annex.sty} (permite adicionar anexos) e
+          \texttt{extras/appendixlabel.sty} (melhora a lista de
+          apêndices/anexos no sumário)
+    \item \texttt{extras/beamer*.sty} (\textit{layouts} e cores para
+          apresentações e \textit{posters})
+    \item \texttt{extras/plainnat-ime.*} (estilo plainnat para bibliografias)\index{biblatex}
+    \item \texttt{extras/alpha-ime.bst} (estilo alpha para bibliografias com
+          bibtex)\index{bibtex}
+    \item \texttt{extras/natbib-ime.sty} (tradução da \textit{package}
+          padrão natbib)\index{natbib}
+    \item \texttt{hyperxindy.xdy} (configuração para xindy) e
+          \texttt{mkidxhead.ist} (configuração para makeindex)
+    \item \texttt{latexmkrc} e \texttt{Makefile} (automatizam a geração do
+          documento com os comandos \textsf{latexmk} e \textsf{make} respectivamente)
   \end{itemize}
 \end{itemize}
 

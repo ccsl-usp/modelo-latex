@@ -1,7 +1,7 @@
 % Authors: Nelson Lago and Jesus P. Mena-Chalco
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{imeusp}
+\ProvidesPackage{imeusp-capa}[2018/10/19 IME/USP initial thesis pages]
 
 % Várias funções úteis
 \RequirePackage{etoolbox}
@@ -88,6 +88,18 @@
   }
 
     \endlist
+}
+
+% O formato padrão do pacote epigraph é bem feinho...
+% Outra opção para epígrafes é o pacote quotchap
+\usepackage{epigraph}
+\newcommand{\epigrafe}[2] {%
+  \setlength{\epigraphrule}{0pt}
+  \ifthenelse{\equal{}{#2}}{
+    \epigraph{\itshape\RaggedLeft #1}{}
+  }{
+    \epigraph{\itshape\RaggedLeft #1}{--- #2}
+  }
 }
 
 
@@ -626,3 +638,4 @@
   \cleardoublepage
 }
 
+\endinput

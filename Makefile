@@ -39,8 +39,7 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 #MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
 #MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
-EXTRAFILES      := plainnat-ime.bbx plainnat-ime.cbx
-OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(EXTRAFILES)
+OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo/*)
 BIBFILES      := $(wildcard *.bib)
 IMGFILES      := $(wildcard figuras/*)
 # Voce pode acrescentar outras dependencias aqui
