@@ -442,46 +442,8 @@
 % "description", além de permitir criar novos tipos de listas
 %\usepackage{paralist}
 
-% Formatação personalizada do sumário, lista de tabelas/figuras etc. Vamos
-% usar para definir o formato dos apêndices/anexos no sumário.
-\usepackage{titletoc}
-
-% No sumário, normalmente colocamos
-% 1 Introdução
-% 2 Contexto
-% etc.
-%
-% Isso inclui os apêndices/anexos, que aparecem como
-% A Dados Coletados
-% B Modelo de questionário
-% etc.
-%
-% Queremos colocar "Apêndice/Anexo X" no sumário ao invés desse
-% default, o que envolve modificar os comandos \appendix e \annex
-% para redefinir o formato dos capítulos no sumário (com titletoc).
-%
-% Observe que essa modificação vale para tudo o que se segue aos
-% comandos \appendix e \annex, ou seja, os itens do sumário que
-% se seguem a eles (referências e índice remissivo) são formatados
-% por esta definição, não pelo formato default.
-
-\AtEndPreamble{
-  \appto\appendix{
-    \titlecontents{chapter}[45pt]
-      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
-      {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
-      {\hspace{-45pt}}
-      {\hfill\thecontentspage}
-  }
-
-  \appto\annex{
-    \titlecontents{chapter}[45pt]
-      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
-      {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
-      {\hspace{-45pt}}
-      {\hfill\thecontentspage}
-  }
-}
+% Formatação personalizada do sumário, lista de tabelas/figuras etc.
+%\usepackage{titletoc}
 
 % Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
@@ -820,19 +782,8 @@
 % criamos o comando \annex (copiado de \appendix em book.cls e hyperref.sty) e
 % comandos acessórios.
 
-\addto\captionsbrazil{
-  \providecommand\annexname{Anexo}
-  \renewcommand\annexname{Anexo}
-}
-
-\addto\captionsenglish{
-  \providecommand\annexname{Annex}
-  \renewcommand\annexname{Annex}
-}
-
-\makeatletter
-
 % Copiado de \appendix em book.cls
+\makeatletter
 \newcommand\annex{\par
   \setcounter{chapter}{0}%
   \setcounter{section}{0}%
@@ -868,8 +819,41 @@
     }
   }
 }
-
 \makeatother
+
+% Traduções
+\providecommand\annexname{Annex}
+\providecommand\annexnameplural{annexes}
+\providecommand\appendixnameplural{appendices}
+
+\addto\captionsbrazil{
+  \renewcommand\annexname{Anexo}
+  \renewcommand\annexnameplural{Anexos}
+  \renewcommand\appendixnameplural{Apêndices}
+}
+
+\addto\captionsenglish{
+  \renewcommand\annexname{Annex}
+  \renewcommand\annexnameplural{Annexes}
+  \renewcommand\appendixnameplural{Appendices}
+}
+
+% Faz os comandos "appendix" e "annex" inserirem
+% "Apêndices" e "Anexos" no sumário
+\AtEndPreamble{
+  \appto\appendix{
+    \addtocontents{toc}{
+      \vspace{.8\baselineskip}
+      {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
+    }
+  }
+  \appto\annex{
+    \addtocontents{toc}{
+      \vspace{.8\baselineskip}
+      {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
+    }
+  }
+}
 
 % acrescentamos a bibliografia/indice/conteudo no Sumário, mas excluímos as
 % listas de figuras e tabelas e o próprio sumário.
@@ -1023,12 +1007,6 @@ heading_suffix "}\\nopagebreak\n"
   % hyperlinks através da configuração de xindy definida anteriormente. Com
   % makeindex (o default), quem precisa criar os hyperlinks é hyperref.
   %hyperindex=false,
-  % Os hyperlinks gerados por hyperref são representados internamente por
-  % nomes. Embora esses nomes normalmente não apareçam para o usuário,
-  % hyperref por padrão procura criar nomes amigáveis para humanos. Isso,
-  % no entanto, falha com apêndices/anexos usando a formatação especial
-  % do sumário que usamos neste modelo. Assim, desabilitamos essa opção.
-  hypertexnames=false,
 ]{hyperref}
 
 %\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
