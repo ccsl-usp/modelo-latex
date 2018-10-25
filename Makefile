@@ -31,7 +31,7 @@ BIBTEX := biber
 # Se "-C utf8" nao funcionar, tente "-M lang/latin/utf8.xdy"
 #MAKEINDEX := texindy -C utf8 -M hyperxindy.xdy
 #MAKEINDEX := texindy -M lang/latin/utf8.xdy -M hyperxindy.xdy
-MAKEINDEX := makeindex -s mkidxhead.ist -L
+MAKEINDEX := makeindex -s mkidxhead.ist -l -c
 
 EXTRAFILES      := plainnat-ime.bbx plainnat-ime.cbx
 OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(EXTRAFILES)
