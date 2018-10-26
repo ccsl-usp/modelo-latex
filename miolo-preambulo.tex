@@ -341,15 +341,12 @@
 % suporte a Small Caps e outras qualidades. A fonte teletype da família
 % é serifada, então é melhor definir outra; a opção "mono=false" faz
 % o pacote não carregar sua própria fonte, mantendo a escolha anterior.
-% A opção "nofontspec" elimina um problema de compatibilidade com algumas
-% outras fontes; remova-a se você for utilizar XeLaTeX ou a package fontspec,
-% mais abaixo.
-\usepackage[mono=false,nofontspec]{libertine}
+\usepackage[mono=false]{libertine}
 % A família libertine por padrão não define uma fonte matemática específica;
 % uma opção que funciona bem com ela:
 \usepackage[libertine]{newtxmath}
 % Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
-%\usepackage[nofontspec]{biolinum}
+%\usepackage{biolinum}
 
 % Também é possível usar a Times como padrão; nesse caso, a fonte sem serifa
 % é a Helvetica. Mas provavelmente libertine é uma opção melhor.
