@@ -1,0 +1,99 @@
+% Author: Nelson Lago
+% This file is distributed under the MIT Licence
+
+\ProvidesPackage{appendixlabel}[2018/10/28 Puts strings "Appendix" and "Annex" in TOC]
+
+% No sumário, normalmente colocamos
+% 1 Introdução
+% 2 Contexto
+% etc.
+%
+% Isso inclui os apêndices/anexos, que aparecem como
+% A Dados Coletados
+% B Modelo de questionário
+% etc.
+%
+% Se há só apêndices ou só anexos, isso funciona bem; quando há
+% ambos, no entanto, o sumário não fica claro (pode haver dois
+% itens "A"). Há duas soluções possíveis:
+%
+% 1. Colocar, em cada item, "Apêndice X" ou "Anexo X" no sumário.
+%
+% 2. Colocar as linhas adicionais "Apêndices" e "Anexos" antes
+%    das seções correspondentes do sumário
+%
+% No primeiro caso, modificamos os comandos \appendix e \annex
+% para redefinir o formato dos capítulos no sumário (com titletoc).
+% No segundo caso, modificamos os comandos \apppendix e \annex
+% para que eles acrescentem a linha correspondente.
+%
+% Observe que, em ambos os casos, a modificação vale para tudo o
+% que se segue aos comandos \appendix e \annex, ou seja, os itens
+% do sumário que se seguem a eles (referências e índice remissivo)
+% são formatados por esta definição, não pelo formato default.
+
+\newif\if@inlineappendix\@inlineappendixfalse
+
+\DeclareOption{inline}{
+  \@inlineappendixtrue
+}
+
+\ProcessOptions
+
+\if@inlineappendix
+  % A primeira opção (como \annex só é definida mais à frente, pela
+  % package annex, adiamos a execução com \AtEndPreamble).
+  \RequirePackage{titletoc}
+  \AtEndPreamble{
+    \appto\appendix{
+      \titlecontents{chapter}[45pt]
+        {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+        {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
+        {\hspace{-45pt}}
+        {\hfill\thecontentspage}
+    }
+
+    \appto\annex{
+      \titlecontents{chapter}[45pt]
+        {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+        {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
+        {\hspace{-45pt}}
+        {\hfill\thecontentspage}
+    }
+  }
+\else
+  % A segunda opção; primeiro, definimos as traduções:
+  \providecommand\annexnameplural{Annexes}
+  \providecommand\appendixnameplural{Appendices}
+
+  \addto\captionsbrazil{
+    \renewcommand\annexnameplural{Anexos}
+    \renewcommand\appendixnameplural{Apêndices}
+  }
+
+  \addto\captionsenglish{
+    \renewcommand\annexnameplural{Annexes}
+    \renewcommand\appendixnameplural{Appendices}
+  }
+
+  % Depois, modificamos os comandos \appendix e \annex para modificar
+  % o sumário (como \annex só é definida mais à frente, pela package
+  % annex, adiamos a execução com \AtEndPreamble):
+  \AtEndPreamble{
+    \appto\appendix{
+      \addtocontents{toc}{
+        \vspace{.8\baselineskip}
+        {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
+      }
+    }
+
+    \appto\annex{
+      \addtocontents{toc}{
+        \vspace{.8\baselineskip}
+        {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
+      }
+    }
+  }
+\fi
+
+\endinput

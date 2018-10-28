@@ -445,6 +445,10 @@
 % Formatação personalizada do sumário, lista de tabelas/figuras etc.
 %\usepackage{titletoc}
 
+% Coloca as linhas "Apêndices" e "Anexos" no sumário. Com a opção "inline",
+% cada apêndice/anexo aparece como "Apêndice X" ao invés de apenas "X".
+\usepackage{appendixlabel}
+
 % Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
 % Formatação personalizada de títulos, seções etc.
@@ -777,84 +781,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ESTRUTURA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% A classe Book inclui o comando \appendix, que (obviamente) permite inserir
-% apêndices no documento. No entanto, não há suporte similar para anexos. Aqui,
-% criamos o comando \annex (copiado de \appendix em book.cls e hyperref.sty) e
-% comandos acessórios.
-
-% Copiado de \appendix em book.cls
-\makeatletter
-\newcommand\annex{\par
-  \setcounter{chapter}{0}%
-  \setcounter{section}{0}%
-  \gdef\@chapapp{\annexname}%
-  \gdef\thechapter{\@Alph\c@chapter}
-}
-
-\AtEndPreamble{
-  % Copiado de hyperref.sty
-  \ltx@IfUndefined{annex}{}{%
-    \ltx@IfUndefined{Hy@appendixstring}{}{% Checa se hyperref foi carregada
-      \let\HyOrg@annex\annex
-      \def\Hy@AlphNoErr#1{%
-        \ifnum\value{#1}>26 %
-          Alph\number\value{#1}%
-        \else
-          \ifnum\value{#1}<1 %
-            Alph\number\value{#1}%
-          \else
-            \Alph{#1}%
-          \fi
-        \fi
-      }%
-      \def\annex{%
-        \ltx@IfUndefined{chapter}{%
-          \gdef\theHsection{\Hy@AlphNoErr{section}}%
-        }{%
-          \gdef\theHchapter{\Hy@AlphNoErr{chapter}}%
-        }%
-        \xdef\Hy@chapapp{annex}%
-        \HyOrg@annex
-      }%
-    }
-  }
-}
-\makeatother
-
-% Traduções
-\providecommand\annexname{Annex}
-\providecommand\annexnameplural{annexes}
-\providecommand\appendixnameplural{appendices}
-
-\addto\captionsbrazil{
-  \renewcommand\annexname{Anexo}
-  \renewcommand\annexnameplural{Anexos}
-  \renewcommand\appendixnameplural{Apêndices}
-}
-
-\addto\captionsenglish{
-  \renewcommand\annexname{Annex}
-  \renewcommand\annexnameplural{Annexes}
-  \renewcommand\appendixnameplural{Appendices}
-}
-
-% Faz os comandos "appendix" e "annex" inserirem
-% "Apêndices" e "Anexos" no sumário
-\AtEndPreamble{
-  \appto\appendix{
-    \addtocontents{toc}{
-      \vspace{.8\baselineskip}
-      {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
-    }
-  }
-  \appto\annex{
-    \addtocontents{toc}{
-      \vspace{.8\baselineskip}
-      {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
-    }
-  }
-}
-
 % acrescentamos a bibliografia/indice/conteudo no Sumário, mas excluímos as
 % listas de figuras e tabelas e o próprio sumário.
 \usepackage[nottoc,notlot,notlof]{tocbibind}
@@ -913,45 +839,6 @@ heading_suffix "}\\nopagebreak\n"
   % Estas opções são usadas por makeindex
   options=-s mkidxhead.ist -l -c,
 ]
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% OUTROS PACOTES ÚTEIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Você provavelmente vai querer ler a documentação de alguns destes pacotes
-% para personalizar algum aspecto do trabalho ou usar algum recurso específico.
-
-% Trechos de texto "puro" (tabs, quebras de linha etc. não são modificados)
-\usepackage{verbatim}
-
-% Sublinhado e outras formas de realce de texto
-\usepackage{soul}
-\usepackage{soulutf8}
-
-% Caixas de texto coloridas
-%\usepackage{tcolorbox}
-
-% Recursos adicionais para o modo matemático
-% para evitar problemas de compatibilidade com algumas fontes, o pacote
-% amsthm já foi carregado mais acima
-\usepackage{latexsym}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{mathtools}
-%\usepackage{MnSymbol}
-%\usepackage{stmaryrd}
-
-% Notação bra-ket
-%\usepackage{braket}
-
-%\num \SI and \SIrange. For example, \SI{10}{\hertz} \SIrange{10}{100}{\hertz}
-%\usepackage[binary-units]{siunitx}
-
-% Citações melhores; se você pretende fazer citações de textos
-% relativamente extensos, vale a pena ler a documentação. biblatex
-% utiliza recursos deste pacote.
-\usepackage{csquotes}
 
 % O comando \ref por padrão mostra apenas o número do elemento a que se
 % refere; assim, é preciso escrever "veja a Figura \ref{grafico}" ou
@@ -1033,6 +920,51 @@ heading_suffix "}\\nopagebreak\n"
 % to documents that already exploit hyperref's mechanisms for specifying PDF
 % metadata.
 \usepackage{hyperxmp}
+
+% A classe Book inclui o comando \appendix, que (obviamente) permite inserir
+% apêndices no documento. No entanto, não há suporte similar para anexos. Esta
+% package (que não é padrão do LaTeX, foi criada para este modelo) define o
+% comando \annex. Ela deve ser carregada depois de hyperref.
+\usepackage{annex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% OUTROS PACOTES ÚTEIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Você provavelmente vai querer ler a documentação de alguns destes pacotes
+% para personalizar algum aspecto do trabalho ou usar algum recurso específico.
+
+% Trechos de texto "puro" (tabs, quebras de linha etc. não são modificados)
+\usepackage{verbatim}
+
+% Sublinhado e outras formas de realce de texto
+\usepackage{soul}
+\usepackage{soulutf8}
+
+% Caixas de texto coloridas
+%\usepackage{tcolorbox}
+
+% Recursos adicionais para o modo matemático
+% para evitar problemas de compatibilidade com algumas fontes, o pacote
+% amsthm já foi carregado mais acima
+\usepackage{latexsym}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{MnSymbol}
+%\usepackage{stmaryrd}
+
+% Notação bra-ket
+%\usepackage{braket}
+
+%\num \SI and \SIrange. For example, \SI{10}{\hertz} \SIrange{10}{100}{\hertz}
+%\usepackage[binary-units]{siunitx}
+
+% Citações melhores; se você pretende fazer citações de textos
+% relativamente extensos, vale a pena ler a documentação. biblatex
+% utiliza recursos deste pacote.
+\usepackage{csquotes}
 
 \usepackage{url}
 % URL com fonte sem serifa ao invés de teletype
