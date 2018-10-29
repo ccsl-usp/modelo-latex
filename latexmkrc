@@ -14,7 +14,7 @@ $pdflatex = 'pdflatex' . $custom_latex_opts . '%O %S';
 # Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
 #$makeindex = 'texindy -C utf8 -M hyperxindy.xdy %O -o %D %S 2>&1 | tee';
 #$makeindex = 'texindy -M lang/latin/utf8.xdy -M hyperxindy.xdy %O -o %D %S 2>&1 | tee';
-$makeindex = 'makeindex -s mkidxhead.ist -L %O -o %D %S 2>&1 | tee';
+$makeindex = 'makeindex -s mkidxhead.ist -l -c %O -o %D %S 2>&1 | tee';
 
 $pdf_mode = 1;
 
