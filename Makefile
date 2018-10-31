@@ -4,34 +4,40 @@
 THESIS_NAME := tese-exemplo
 ALL_TARGETS := $(THESIS_NAME)
 
-all: tese
+all: $(ALL_TARGETS)
 
-thesis: tese
+thesis: $(THESIS_NAME)
 
-tese: $(THESIS_NAME).pdf
+tese: thesis
 
-.PHONY: all clean tmpclean distclean tese thesis
+.PHONY: all clean tmpclean distclean tese thesis $(ALL_TARGETS)
 
 LATEX := pdflatex
 #LATEX := lualatex
 #LATEX := xelatex
 
+BIBTEX := biber
+#BIBTEX := bibtex
+
+MAKEINDEX := makeindex
+#MAKEINDEX := texindy
+
 # Ativando esta opcao, nao e preciso chamar "$(MAKEINDEX) $(BASENAME).idx"
 # mais abaixo. Ela nao esta habilitada por padrao porque pode acarretar
 # problemas de seguranca
-#OPTS := --shell-escape
-OPTS := -synctex=1 -halt-on-error -file-line-error -interaction nonstopmode -recorder
+#LATEXOPTS := --shell-escape
+LATEXOPTS := -synctex=1 -halt-on-error -file-line-error -interaction nonstopmode -recorder
 
-#BIBTEX := bibtex
-BIBTEX := biber
+# Opcoes para makeindex
+MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 
+# Opcoes para xindy
 # "-C utf8" ou "-M lang/latin/utf8.xdy" sao truques para contornar este
 # bug, que existe em outras distribuicoes tambem:
 # https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
 # Se "-C utf8" nao funcionar, tente "-M lang/latin/utf8.xdy"
-#MAKEINDEX := texindy -C utf8 -M hyperxindy.xdy
-#MAKEINDEX := texindy -M lang/latin/utf8.xdy -M hyperxindy.xdy
-MAKEINDEX := makeindex -s mkidxhead.ist -l -c
+#MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
+#MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
 EXTRAFILES      := plainnat-ime.bbx plainnat-ime.cbx
 OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(EXTRAFILES)
@@ -44,6 +50,27 @@ MISCFILES     :=
 ###############################################################################
 ######## Nada que precise ser modificado pelo usuario daqui para baixo ########
 ###############################################################################
+
+# Tres maneiras de detectar se estamos rodando em windows. Dependendo
+# do ambiente usado para executar make no windows, pode nao ser necessario
+# acrescentar a extensao.
+ifdef COMSPEC
+  LATEX := $(addsuffix .exe,$(LATEX))
+  BIBTEX := $(addsuffix .exe,$(BIBTEX))
+  MAKEINDEX := $(addsuffix .exe,$(MAKEINDEX))
+else
+  ifdef SystemRoot
+    LATEX := $(addsuffix .exe,$(LATEX))
+    BIBTEX := $(addsuffix .exe,$(BIBTEX))
+    MAKEINDEX := $(addsuffix .exe,$(MAKEINDEX))
+  else
+    ifdef SYSTEMROOT
+      LATEX := $(addsuffix .exe,$(LATEX))
+      BIBTEX := $(addsuffix .exe,$(BIBTEX))
+      MAKEINDEX := $(addsuffix .exe,$(MAKEINDEX))
+    endif
+  endif
+endif
 
 # LaTeX e os demais comandos sao executados mais de uma vez e, a cada
 # execucao, enviam muitas mensagens para a tela. Vamos tentar reduzir
@@ -76,7 +103,7 @@ FILTER_MSGS := grep -Eav '(^$$)|(^ *\(.*(sty|ldf|def|cfg|dfu|fd|bbx|cbx|lbx|tex)
 # Copia os arquivos gerados pelo LaTeX para "*-current", se for o caso,
 # para podermos usar esses arquivos como dependencias para o make.
 define REFRESH
-grep "^OUTPUT $*" $*.fls | grep -Ev '\.(log|pdf)$$' | cut -f 2 -d" "| while read filename; do \
+grep "^OUTPUT $*" $*.fls | tr -d '\r' | grep -Ev '\.(log|pdf)$$' | cut -f 2 -d" "| while read filename; do \
   if ! test -f "$$filename"-current || ! diff -q "$$filename" "$$filename"-current > /dev/null; then \
     cp -f "$$filename" "$$filename"-current 2>/dev/null; touch "$$filename-current"; \
   fi; \
@@ -87,7 +114,7 @@ endef
 # nas iteracoes seguintes esta variavel lista os arquivos gerados
 # pelo proprio LaTeX (exceto .log e .pdf, que nao sao dependencias
 # e sao modificados toda vez, pois incluem a data de compilacao).
-TEX_TEMP_FILES = $(shell grep "^OUTPUT $*" $*.fls 2>/dev/null | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$' | sed -e 's/$$/-current/')
+TEX_TEMP_FILES = $(shell grep "^OUTPUT $*" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$' | sed -e 's/$$/-current/')
 
 # LaTeX indica no arquivo de log se e preciso executa-lo novamente;
 # por seguranca, vamos checar isso tambem
@@ -102,7 +129,7 @@ TEXFOT=; \
 if texfot --version >/dev/null 2>&1; then \
         TEXFOT=texfot; \
 fi; \
-msgs="`$$TEXFOT $(LATEX) $(OPTS) $*`"; \
+msgs="`$$TEXFOT $(LATEX) $(LATEXOPTS) $*`"; \
 stat=$$?; \
 echo "$$msgs"| $(FILTER_MSGS) > latex-out.log 2>&1; \
 if test $$stat -ne 0; then \
@@ -116,6 +143,9 @@ fi; \
 touch -r timestamp $*.pdf;
 endef
 
+# "make tese-exemplo" -> "make tese-exemplo.pdf"
+$(ALL_TARGETS): % : %.pdf
+
 # O arquivo pdf final depende dos arquivos de bibliografia/indice, alem
 # dos demais arquivos que compoem o documento e dos arquivos temporarios
 # gerados pelo LaTeX na iteracao anterior que foram modificados
@@ -128,7 +158,7 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(TEX_TEMP_FILES) %.tex 
 		touch $*.aux-current; \
 		exit 1; \
 	fi
-	@echo "       Executando $(LATEX) $(OPTS) $* (iteração $(MAKELEVEL))..."
+	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteração $(MAKELEVEL))..."
 	@$(RUN_LATEX)
 	@$(REFRESH)
 	@echo
@@ -146,14 +176,14 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(TEX_TEMP_FILES) %.tex 
 
 # bitex/biber e makeindex/xindy dependem de arquivos gerados pelo LaTeX
 %.idx-current %.bcf-current: %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
-	@echo "       Executando $(LATEX) $(OPTS) $* (iteração auxiliar $(MAKELEVEL))..."
+	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteração auxiliar $(MAKELEVEL))..."
 	@$(RUN_LATEX)
 	@$(REFRESH)
 	@echo
 
 %.ind: %.idx-current
-	@echo "       Executando $(MAKEINDEX) $*.idx..."
-	@if ! $(MAKEINDEX) $*.idx > makeindex-out.log 2>&1; then \
+	@echo "       Executando $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx..."
+	@if ! $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx > makeindex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
 		echo "    **** Erro durante a execucao do makeindex/xindy ****"; \
