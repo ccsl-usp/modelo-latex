@@ -44,24 +44,32 @@
   % A primeira opção (como \annex só é definida mais à frente, pela
   % package annex, adiamos a execução com \AtEndPreamble).
   \RequirePackage{titletoc}
-  \AtEndPreamble{
-    \appto\appendix{
-      \titlecontents{chapter}[45pt]
-        {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
-        {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
-        {\hspace{-45pt}}
-        {\hfill\thecontentspage}
-    }
 
-    \appto\annex{
-      \titlecontents{chapter}[45pt]
-        {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
-        {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
-        {\hspace{-45pt}}
-        {\hfill\thecontentspage}
-    }
+  % Como comandos separados, é possível modificar a formatação
+  % com "renewcommand"
+  \newcommand\setAppendixFormat{
+    \titlecontents{chapter}[45pt]
+      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+      {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
+      {\hspace{-45pt}}
+      {\hfill\thecontentspage}
   }
+
+  \newcommand\setAnnexFormat{
+    \titlecontents{chapter}[45pt]
+      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+      {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
+      {\hspace{-45pt}}
+      {\hfill\thecontentspage}
+  }
+
+  \AtEndPreamble{
+    \appto\appendix{\setAppendixFormat}
+    \appto\annex{\setAnnexFormat}
+  }
+
 \else
+
   % A segunda opção; primeiro, definimos as traduções:
   \providecommand\annexnameplural{Annexes}
   \providecommand\appendixnameplural{Appendices}
@@ -76,24 +84,23 @@
     \renewcommand\appendixnameplural{Appendices}
   }
 
+  \newcommand\appendixTOCLine{
+    \vspace{.8\baselineskip}
+    {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
+  }
+
+  \newcommand\annexTOCLine{
+    \vspace{.8\baselineskip}
+    {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
+  }
   % Depois, modificamos os comandos \appendix e \annex para modificar
   % o sumário (como \annex só é definida mais à frente, pela package
   % annex, adiamos a execução com \AtEndPreamble):
   \AtEndPreamble{
-    \appto\appendix{
-      \addtocontents{toc}{
-        \vspace{.8\baselineskip}
-        {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
-      }
-    }
-
-    \appto\annex{
-      \addtocontents{toc}{
-        \vspace{.8\baselineskip}
-        {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
-      }
-    }
+    \appto\appendix{\addtocontents{toc}{\appendixTOCLine}}
+    \appto\annex{\addtocontents{toc}{\annexTOCLine}}
   }
+
 \fi
 
 \endinput
