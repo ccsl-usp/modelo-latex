@@ -2,15 +2,23 @@
 # This file is distributed under the MIT Licence
 
 THESIS_NAME := tese-exemplo
-ALL_TARGETS := $(THESIS_NAME)
-
-all: $(ALL_TARGETS)
+POSTER_NAME := poster-exemplo
+PRESENTATION_NAME := apresentacao-exemplo
+ALL_TARGETS := $(THESIS_NAME) $(POSTER_NAME) $(PRESENTATION_NAME)
 
 thesis: $(THESIS_NAME)
 
+poster: $(POSTER_NAME)
+
+presentation: $(PRESENTATION_NAME)
+
 tese: thesis
 
-.PHONY: all clean tmpclean distclean tese thesis $(ALL_TARGETS)
+apresentacao: presentation
+
+all: $(ALL_TARGETS)
+
+.PHONY: all clean tmpclean distclean tese thesis poster presentation apresentacao $(ALL_TARGETS)
 
 LATEX := pdflatex
 #LATEX := lualatex

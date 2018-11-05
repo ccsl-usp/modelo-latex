@@ -1,0 +1,94 @@
+% Author: Nelson Lago
+% This file is distributed under the MIT Licence
+
+\ProvidesPackage{beamercolorthemeimeusp}[2018/10/16 v1.0 IME/USP Beamer color theme]
+
+\RequirePackage{etoolbox}
+\RequirePackage{xcolor}
+
+\definecolor{InterSCity}{HTML}{00998C}
+\definecolor{DarkInterSCity}{HTML}{0D6D65}
+\definecolor{DarkRed}{HTML}{872718}
+\definecolor{GreenishBrown}{HTML}{363020}
+\definecolor{SandyPaper}{HTML}{FFFCE2}
+\definecolor{Blackish}{HTML}{232830}
+\definecolor{PastelGreen}{HTML}{73937E}
+\definecolor{BrownishGreen}{HTML}{5F603A}
+
+\setbeamercolor{structure}{fg=DarkRed}
+%\setbeamercolor{alerted text}{fg=PastelGreen!80!black}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed!40!red}
+\setbeamercolor{separation line}{bg=DarkRed!40!red,fg=}
+
+\setbeamercolor{normal text}{fg=Blackish}
+\setbeamercolor{palette primary}{fg=white,bg=DarkRed!80!black}
+\setbeamercolor{palette secondary}{fg=DarkRed, bg=SandyPaper}
+\setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper}
+\setbeamercolor{headline}{fg=white,bg=DarkRed}
+\setbeamercolor{footline}{fg=white,bg=DarkRed}
+% Bug: this actually affects the institution, not the author...
+\setbeamercolor{author in footline}{fg=DarkRed!20!white}
+
+% Cores default para blocos
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg}
+
+% Cores especiais para bloco example
+\setbeamercolor{block title example}{use=example text,fg=example text.fg,bg=example text.fg!20!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!50!bg}
+
+% Cores especiais para bloco proof.
+% Não existe um template específico para definir as
+% cores do bloco proof, então fazemos de outra maneira
+\addtobeamertemplate{proof begin}{%
+    \setbeamercolor{block title}{fg=black,bg=orange!50!white}
+    \setbeamercolor{block body}{fg=orange!80!black,bg=orange!20!white}
+}{}
+
+% Não é boa ideia fazer "\addtobeamertemplate{theorem begin}" para definir
+% cores para teoremas porque essa template vale para theorem, corollary,
+% definition, fact e example e não tem como fazer override depois. Vamos
+% usar isto no lugar
+\AtBeginEnvironment{theorem}{
+    \setbeamercolor{block title}{use=example text,fg=white,bg=example text.fg!75!black}
+    \setbeamercolor{block body}{parent=normal text,use=block title example,bg=block title example.bg!50!bg}
+}{}
+
+% Cor especial para definition
+\AtBeginEnvironment{definition}{%
+    \setbeamercolor{block title}{fg=black,bg=brown!80!red!70!white}
+    \setbeamercolor{block body}{fg=brown!70!black,bg=brown!80!red!30!white}
+}{}
+
+% Exemplo de novo tipo de teorema (proposition) com cor personalizada
+\newtheorem{proposition}{Proposition}
+\AtBeginEnvironment{proposition}{
+    \setbeamercolor{block title}{fg=black,bg=yellow!50!black!50!white}
+    \setbeamercolor{block body}{fg=yellow!50!black,bg=yellow!50!black!30!white}
+}{}
+
+\DeclareOption{greeny}{
+    \setbeamercolor{structure}{fg=InterSCity}
+    \setbeamercolor{alerted text}{fg=DarkRed}
+    \setbeamercolor{palette primary}{fg=white,bg=DarkInterSCity}
+    \setbeamercolor{progress bar}{fg=InterSCity!75!green}
+    \setbeamercolor{headline}{fg=PastelGreen!10!white,bg=InterSCity}
+    \setbeamercolor{footline}{fg=white,bg=InterSCity}
+    \setbeamercolor{separation line}{bg=PastelGreen,fg=}
+    % Bug: this actually affects the institution, not the author...
+    \setbeamercolor{author in footline}{fg=PastelGreen!30!white}
+}
+
+\DeclareOption{sandy}{
+    \ExecuteOptions{greeny}
+    % Cores default para blocos
+    % block body preto é melhor para impressão
+    \setbeamercolor{block body}{fg=black,bg=SandyPaper}
+    %\setbeamercolor{block body}{fg=BrownishGreen!50!black,bg=SandyPaper}
+    \setbeamercolor{block title}{fg=BrownishGreen!50!black,bg=SandyPaper!90!black}
+}
+
+\ProcessOptions
+
+\endinput

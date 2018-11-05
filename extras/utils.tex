@@ -12,6 +12,7 @@
 % índice (mais abaixo) e configurando xindy para que ele gere esses hyperlinks
 % por conta própria. Para isso, modifique a chamada ao pacote imakeidx (aqui)
 % e altere as opções do pacote hyperref.
+\providecommand\theindex{} % evita erros de compilação se a classe não tem index
 %\usepackage[xindy]{imakeidx} % usando xindy
 \usepackage{imakeidx} % usando makeindex
 
@@ -127,8 +128,15 @@ heading_suffix "}\\nopagebreak\n"
 % ao criar uma referência hyperref para um float, a referência aponta
 % para o final do caption do float, o que não é muito bom. Este pacote
 % faz a referência apontar para o início do float (é possível personalizar
-% também).
-\usepackage[all]{hypcap}
+% também). Esta package é incompatível com a classe beamer (usada para
+% criar posters e apresentações), então testamos a compatibilidade antes
+% de carregá-la.
+\ifboolexpr{
+  test {\ifcsdef{figure}} and
+  test {\ifcsdef{figure*}} and
+  test {\ifcsdef{table}} and
+  test {\ifcsdef{table*}}
+}{\usepackage[all]{hypcap}}{}
 
 % XMP (eXtensible Metadata Platform) is a mechanism proposed by Adobe for
 % embedding document metadata within the document itself. The package

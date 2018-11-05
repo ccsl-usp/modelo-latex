@@ -1,0 +1,177 @@
+% Author: Nelson Lago
+% This file is distributed under the MIT Licence
+
+\ProvidesPackage{beamerthemeimeusp}[2018/10/16 v1.0 IME/USP Beamer theme]
+
+% Caso LaTeX faça alguma substituição de fontes, vamos garantir que ele
+% use Latin Modern e não outra versão das fontes Computer Modern.
+\usepackage{lmodern}
+\usepackage{fix-cm}
+
+\usetheme[sectionpage=progressbar,subsectionpage=none,numbering=fraction,progressbar=frametitle]{metropolis}
+
+\usefonttheme{professionalfonts}
+
+% Estas packages precisam ser carregadas depois do tema metropolis
+\PassOptionsToPackage{mono=false}{libertine}
+\PassOptionsToPackage{scale=0.92}{inconsolata}
+\usepackage{inconsolata}
+\usepackage{libertine}
+
+% As margens default são muito grandes
+\setbeamersize{
+  text margin left=.03\paperwidth,
+  text margin right=.03\paperwidth
+}
+
+\usefonttheme{structurebold}
+\useinnertheme{circles}
+
+% Customizando "itemize" (bold/itálico, formato dos bullets, margens)
+\setbeamerfont{itemize/enumerate body}{series=\bfseries}
+\setbeamerfont{itemize/enumerate subbody}{series=\normalfont}
+\setbeamerfont{itemize/enumerate subsubbody}{series=\itshape}
+\setbeamertemplate{itemize items}[triangle]
+\setbeamertemplate{itemize item}{\raisebox{-.05em}{\Large\textbf{\textbullet}}}
+\setbeamertemplate{itemize subsubitem}{\raisebox{.02em}{{\textbf\guillemotright}}}
+\addtolength{\leftmargini}{-.9em}
+\addtolength{\leftmarginii}{-1.3em}
+\addtolength{\leftmarginiii}{-1em}
+\addtolength{\labelsep}{-.3em}
+
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{bibliography item}[triangle]
+% Com as margens menores definidas anteriormente, os itens da bibliografia
+% caem fora da tela; isto é um truque sujo para resolver esse problema
+\addtobeamertemplate{bibliography item}{\hspace{1em}}{}
+
+% Remove ícones de navegação
+\beamertemplatenavigationsymbolsempty
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS AUXILIARES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\RequirePackage{qrcode}
+
+\newcommand\presentationurl[1]{
+  \gdef\thepresentationurl{#1}
+}
+
+\newcommand\showqrcode{
+  \ifcsvoid{thepresentationurl}{\relax}{% else
+    \begin{frame}[plain]
+      \vfill
+      {\centering\noindent\qrcode[height=.8\paperheight,level=H]{\thepresentationurl}\par}
+      \vfill
+    \end{frame}
+  }
+}
+
+\newcommand\includeqrcodeintoc{
+  \ifcsvoid{thepresentationurl}{\relax}{% else
+    \gdef\qrcodecontents{\thepresentationurl}
+  }
+}
+
+\newcommand\qrcodeintoc{
+  \ifcsvoid{qrcodecontents}{\relax}{% else
+    \vskip 2\baselineskip plus \baselineskip minus 2.5\baselineskip
+    {\centering\noindent\qrcode[height=.3\paperheight,level=H]{\thepresentationurl}\par}
+  }
+}
+
+\newcommand\spaceforqrcode{
+  \ifcsvoid{qrcodecontents}{\relax}{% else
+    \vskip 2\baselineskip plus \baselineskip minus 2.5\baselineskip
+    ~\vspace{.3\paperheight}\par
+  }
+}
+
+\newcommand\toccolumns[1]{
+  \gdef\thetoccolumns{#1}
+}
+
+\newcommand{\theoverview}{\tableofcontents\qrcodeintoc}
+\newcommand{\intermezzo}{\tableofcontents[currentsection]\spaceforqrcode}
+
+\newcommand\overview{
+  \ifcsvoid{thetoccolumns}{\relax}{% else
+
+    \gdef\theoverview{%
+      \begin{columns}[t]
+        \column{.45\textwidth}
+          \tableofcontents[sections={1-\thetoccolumns}]
+        \column{.45\textwidth}
+          \tableofcontents[sections={\the\numexpr 1 + \thetoccolumns\relax-}]
+
+	      \qrcodeintoc
+      \end{columns}
+    }
+
+    \gdef\intermezzo{%
+      \begin{columns}[t]
+        \column{.45\textwidth}
+          \tableofcontents[currentsection,sections={1-\thetoccolumns}]
+        \column{.45\textwidth}
+          \tableofcontents[currentsection,sections={\the\numexpr 1 + \thetoccolumns\relax-}]
+
+          \spaceforqrcode
+      \end{columns}
+    }
+  } % end ifnumequal
+
+  \theoverview
+}
+
+\newcommand\bgimage[1]{
+  \gdef\thebgimage{%
+      \noindent\begin{minipage}[b][\paperheight][b]{\paperwidth}
+        \vfill
+        \centering\noindent#1\par
+      \end{minipage}%
+  }
+}
+
+\newcommand\logos[1]{
+  \gdef\thelogos{%
+      \noindent\begin{minipage}[b][\paperheight][b]{\paperwidth}
+          % O centro da área de impressão não é o centro do papel;
+          % aqui queremos centralizar no papel, então compensamos
+          % a diferença (esse ajuste foi feito "no olho") com
+          % \hspace
+          \vfill
+          \centering%
+          \noindent\hspace*{-.04\textwidth}#1\par
+          \noindent\hspace*{-.04\textwidth}\includegraphics[height=.0311\paperheight]{cc-by}\par
+          \vspace{.3\baselineskip}
+      \end{minipage}%
+  }
+}
+
+\newcommand\customtitlepage{
+  {
+      % Traz o título para cima para deixar mais espaço para a imagem
+      % de fundo que fica mais para baixo
+      \addtobeamertemplate{title}{\vspace*{-3\baselineskip}}{}
+      \addtobeamertemplate{title separator}{\vspace*{-.5\baselineskip}}{\vspace*{-\baselineskip}}
+      \definecolor{bggray}{RGB}{238,238,236}
+      \setbeamercolor{background canvas}{bg=bggray}
+      \setbeamercolor{background}{bg=}
+      % Duas minipages sobrepostas, uma com a imagem de
+      % fundo e a outra com os logotipos das agências
+      % Precisa estar dentro das minipages porque fica
+      % mais fácil fazer o alinhamento vertical
+      \setbeamertemplate{background}{%
+          \ifcsvoid{thebgimage}{\relax}{%
+              \thebgimage%
+              \hspace{-\paperwidth}% "Volta o cursor"
+	  }%
+	  \ifcsvoid{thelogos}{\relax}{\thelogos}%
+      }
+
+      \begin{frame}
+          \titlepage
+      \end{frame}
+  }
+}
+
+\endinput

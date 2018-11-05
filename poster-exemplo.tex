@@ -1,0 +1,324 @@
+% Authors: Nelson Lago, Arthur Del Esposte and Eduardo Zambom Santana
+% Portions of the example contents: Arthur Del Esposte
+% This file is distributed under the MIT Licence
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREÂMBULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% A língua padrão é a última citada
+\documentclass[xcolor={usenames,svgnames,dvipsnames},brazil,english]{beamer}
+
+% Funções auxiliares essenciais
+\usepackage{etoolbox}
+\usepackage{xstring}
+\usepackage{xparse}
+
+% Vários pacotes e opções de configuração genéricos
+\input{extras/basics}
+\input{extras/fonts}
+\input{extras/floats}
+\input{extras/utils}
+
+% Diretório onde estão as figuras; com isso, não é preciso colocar o caminho
+% completo em \includegraphics (e nem a extensão).
+\graphicspath{{figuras/}}
+
+% Comandos rápidos para mudar de língua:
+% \en -> muda para o inglês
+% \br -> muda para o português
+% \texten{blah} -> o texto "blah" é em inglês
+% \textbr{blah} -> o texto "blah" é em português
+\babeltags{br = brazil, en = english}
+
+% Os triângulos na lista de itens ficam melhores com esta fonte
+\usepackage{MnSymbol}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% APARÊNCIA DO BEAMER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Possible paper sizes: a0, a0b, a1, a2, a3, a4.
+%% Possible orientations: portrait, landscape
+%% Font sizes can be changed using the scale option.
+\usepackage[size=a1,orientation=portrait,scale=1.8]{beamerposter}
+
+\usethemefromsubdir{extras/}{imeusp-poster}
+
+% O padrão usa um tom de vermelho escuro como cor principal; a opção
+% "greeny" troca essa cor por um tom de verde; a opção "sandy" usa o
+% mesmo tom de verde mas modifica a cor padrão dos blocos para um
+% tom amarelado.
+\usecolorthemefromsubdir[sandy]{extras/}{imeusp}
+
+%Remove ícones de navegação
+\beamertemplatenavigationsymbolsempty
+
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{bibliography item}[triangle]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Medidas feitas "a olho"
+\newcommand\singlecol{\column{.963\textwidth}}
+\newcommand\halfcol{\column{.46\textwidth}}
+\newcommand\onethirdcol{\column{.2922\textwidth}}
+\newcommand\twothirdscol{\column{.626\textwidth}}
+\newcommand\onefourthcol{\column{.2084\textwidth}}
+
+% Blocos de cor personalizada
+\newenvironment{coloredblock}[2]%
+{
+    \setbeamercolor{block title}{fg=white,bg=#1!80!white}
+    \setbeamercolor{block body}{fg=darkgray,bg=#1!20!white}
+    \setbeamercolor{local structure}{fg=darkgray,bg=#1!20!white}
+    \begin{block}{#2}
+}{
+    \end{block}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Referências
+\usepackage[style=bwl-FU]{biblatex}
+\addbibresource{bibliografia.bib}
+\nocite{*}
+
+\title[The InterSCity Platform]{InterSCity: A Scalable Microservice-based\\Open Source Platform for Smart Cities}
+
+\institute{Department of Computer Science --- University of São Paulo}
+
+\author[interscity@ime.usp.br]{\textbf{interscity.org}}
+
+\date{Month and day, year}
+
+% Optional foot image
+\footimage{
+  \includegraphics[width=13cm]{interscity-logo-branco}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INÍCIO DO CONTEÚDO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\begin{frame}[fragile]\centering
+
+%%%%%%%% Uma coluna %%%%%%%%
+% (precisamos usar columns para alinhar com os demais blocos)
+\begin{columns}[T]
+
+  \singlecol
+
+  \begin{block}{The InterSCity logo}
+    \begin{figure}
+      \centering
+      \includegraphics[width=.9\textwidth]{interscity-logo}
+    \end{figure}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%%% Quatro colunas %%%%%%%%
+\begin{columns}[T]
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+    \end{figure}
+  \end{block}
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+    \end{figure}
+  \end{block}
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+    \end{figure}
+  \end{block}
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+    \begin{figure}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+    \end{figure}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%% Duas colunas %%%%%%%%
+\begin{columns}[T]
+
+  \halfcol
+
+  \begin{block}{Context}
+    \begin{itemize}
+      \item Large cities have problems related to mobility, pollution,
+            health, energy, housing, among others
+      \item Smart cities emerge as a potential solution that aims at:
+      \begin{itemize}
+        \item Using city resources efficiently
+        \item Providing quality services for citizens
+        \item Tackling urban problems
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{The InterSCity Platform}
+    \begin{itemize}
+      \item An open-source, microservice-based project to enable novel
+            smart city research, development, and deployment initiatives
+      \item It provides a set of high-level cloud-based services that
+            mediate the communication between the applications and the
+            city devices:
+      \begin{itemize}
+        \item Manage heterogeneous city resources
+        \item Integrate  with IoT Systems
+        \item Big Data storage and processing
+        \item Context-aware resource discovery
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \halfcol
+
+  \begin{block}{InterSCity Architecture}
+    \begin{figure}[h]
+      % Ajustando o tamanho para alinhar o final com a coluna ao lado
+      \includegraphics[width=.726\textwidth,trim=0 230 0 0,clip]{ime-logo}
+    \end{figure}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%% Colunas assimétricas %%%%%%%%
+  \begin{columns}[T]
+
+  \twothirdscol
+
+  \begin{block}{Future plans}
+    \begin{itemize}
+      \item We expect the InterSCity platform to be useful for various
+            research projects dealing with smart cities.
+      \item The project involves several important research institutions
+            in Brazil and should produce
+      \begin{itemize}
+        \item Papers
+        \item Theses
+        \item Working software
+      \end{itemize}
+    \end{itemize}
+    % "Estica" ligeiramente o bloco para alinhar com o final da outra coluna
+    \vspace*{.12\baselineskip}
+  \end{block}
+
+  \onethirdcol
+
+  \begin{block}{IME/USP}
+    \begin{figure}
+      \centering
+      \includegraphics[width=.4\textwidth,trim=0 230 0 0,clip]{ime-logo}
+    \end{figure}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%%% Três colunas %%%%%%%%
+\begin{columns}[T]
+
+  \onethirdcol
+
+  \begin{block}{Sponsors}
+    \centering
+    \begin{figure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\includegraphics[width=.9\textwidth]{fapesp-logo}
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{capes-logo}}
+        \raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{interscity-logo}}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{cnpq-logo}}
+        \raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{interscity-logo}}
+      \end{subfigure}
+    \end{figure}
+  \end{block}
+
+  \onethirdcol
+
+  \begin{block}{Sponsors}
+    \centering
+    \begin{figure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\includegraphics[width=.9\textwidth]{fapesp-logo}
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{capes-logo}}
+        \raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{interscity-logo}}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{cnpq-logo}}
+        \raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{interscity-logo}}
+      \end{subfigure}
+    \end{figure}
+  \end{block}
+
+  \onethirdcol
+
+  \begin{block}{Sponsors}
+    \centering
+    \begin{figure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\includegraphics[width=.9\textwidth]{fapesp-logo}
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{capes-logo}}
+        \raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{interscity-logo}}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{cnpq-logo}}
+        \raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{interscity-logo}}
+      \end{subfigure}
+    \end{figure}
+  \end{block}
+
+\end{columns}
+
+\end{frame}
+\end{document}

@@ -57,6 +57,9 @@ gentium, DejaVuSansMono.
 These packages may be useful if you intend to use xelatex/lualatex:
 polyglossia, fontspec.
 
+The example presentation and poster use beamer, beamerposter,
+appendixnumberbeamer, beamertheme-metropolis, MnSymbol and stmaryd.
+
 As of 2018, in debian/ubuntu systems, you need to install (with their
 dependencies) at least: texlive-base, texlive-latex-base,
 texlive-fonts-recommended, texlive-generic-recommended,

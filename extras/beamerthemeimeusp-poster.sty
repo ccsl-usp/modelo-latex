@@ -1,0 +1,73 @@
+% Authors: David Vilar (2007 initial version), Rob J Hyndman (2010), and Lian Tze Lim (2011).
+% Licence: LPPL / GPLv2
+%
+% This file was downloaded from
+% http://latex-my.blogspot.com/2011/03/creating-academic-posters-and-printing.html
+% As the author points out, it is derived from
+% https://robjhyndman.com/hyndsight/beamer-poster/
+% which in turn is derived from the I6dv theme included in the
+% beamerposter package (https://github.com/deselaers/latex-beamerposter ),
+% which is LPPL / GPL, as stated here:
+% https://ctan.org/pkg/beamerposter
+%
+% Small customizations by Nelson Lago
+
+\RequirePackage{tikz}
+\newcommand{\footimage}[1]{\def\footim@ge{#1}}
+\usefonttheme[onlymath]{serif}
+\setbeamertemplate{headline}{
+  \begin{beamercolorbox}[wd=\textwidth]{headline}
+     \vskip2em\centering
+     \parbox{\linewidth}{\normalbaselines\centering\usebeamercolor{title in headline}\color{fg}{\bfseries\rmfamily\huge\inserttitle\par}}%
+     \vskip2em
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{1em}
+  \end{beamercolorbox}
+}
+
+\setbeamerfont{structure}{family=\sffamily,size=\Large}
+
+\setbeamertemplate{itemize/enumerate body begin}{\vspace*{-1ex}}
+\setbeamertemplate{itemize/enumerate body end}{\vspace*{-0.5ex}}
+
+\setbeamertemplate{itemize item}{{\normalsize$\blacktriangleright\,$}}
+\setbeamertemplate{itemize subitem}{{\normalsize$\bullet$ }}
+\setlength\leftmargini{3.5em}
+
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex]{block title}%
+    \usebeamerfont{block title}\insertblocktitle
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[colsep*=.75ex,sep=.2ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+\setbeamertemplate{block end}{
+  \end{beamercolorbox}\vskip1ex
+}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamerfont{footline}{size=\small,family=\rmfamily}
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{.5em}
+  \end{beamercolorbox}
+   \begin{beamercolorbox}[wd=\paperwidth]{footline}
+     \vskip1.5ex
+     \hspace{1em}\usebeamercolor{author in footline}{\bfseries\large\insertauthor}\par\vskip1ex
+     \hspace{1em}{\small\ttfamily\bfseries\insertshortauthor}\par\vskip.8ex
+     \hspace{1em}\usebeamercolor{institute in footline}{\color{fg}\small\bfseries\insertinstitute}\vskip1ex
+   \end{beamercolorbox}
+%
+\ifdefined\footim@ge
+  \tikz[overlay,remember picture]%
+  \node[anchor=south east,inner sep=12pt] at (current page.south east) %
+  {\footim@ge};
+\fi
+}
+
+\endinput
