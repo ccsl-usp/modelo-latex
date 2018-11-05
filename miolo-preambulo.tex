@@ -6,6 +6,7 @@
 % aqui, usamos em alguns comandos de formatação e condicionais.
 \usepackage{etoolbox}
 \usepackage{xstring}
+\usepackage{xparse}
 
 % Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
 % verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
@@ -971,7 +972,21 @@ heading_suffix "}\\nopagebreak\n"
 \urlstyle{sf}
 
 % Permite inserir comentários, muito bom durante a escrita do texto
-%\usepackage{todonotes}
+\usepackage[textsize=scriptsize,colorinlistoftodos,textwidth=2.5cm]{todonotes}
+\presetkeys{todonotes}{color=orange!40!white}{}
+
+% Comando para fazer notas com highlight no texto correspondente:
+% \hltodo[texto][opções]{comentário}
+\makeatletter
+\if@todonotes@disabled
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{#1}
+\else
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{
+    \ifstrempty{#1}{}{\texthl{#1}}%
+    \todo[#2]{#3}{}%
+  }
+\fi
+\makeatother
 
 % para formatar código-fonte (ex. em Java).
 \usepackage{listings}
