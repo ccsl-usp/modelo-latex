@@ -116,9 +116,15 @@
 % desabilita a contagem de capítulos (ele não existe na classe "article")
 \frontmatter
 
+% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+\pagestyle{plain}
+%\pagestyle{frontback}
+
 % As folhas de rosto no formato sugerido para teses/dissertações do IME/USP,
 % usando as informações incluídas acima em metadados-tese. Se estiver
 % escrevendo um artigo ou não quiser usar, remova.
+
+\onehalfspacing % Espaçamento 1,5 nas páginas iniciais
 \input{folhas-de-rosto}
 
 % Um parágrafo em LaTeX termina com uma linha vazia; como não é possível ter
@@ -135,6 +141,14 @@
 % modifica a numeração para números arábicos e ativa a contagem de capítulos
 % (ele não existe na classe "article")
 \mainmatter
+
+% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+% e só funciona com book/report, pois usa o nome dos capítulos nos cabeçalhos;
+% se estiver usando article, comente ou troque por "plain"
+\pagestyle{mainmatter}
+
+% Espaçamento simples
+\singlespacing
 
 \input{capitulos}
 \par
@@ -155,6 +169,9 @@
 % "article". Além disso, "annex" não faz parte de nenhuma classe padrão,
 % ele foi definido em miolo-preambulo.tex. Se o trabalho não tiver apêndices
 % ou anexos, remova.
+
+% Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
+\pagestyle{appendix}
 
 % Apêndices
 \appendix
@@ -178,8 +195,6 @@
 
 % Este formato está definido em miolo-preambulo na seção "APARÊNCIA/FORMATAÇÃO"
 \pagestyle{frontback}
-
-\singlespacing   % espaçamento simples
 
 % A bibliografia é obrigatória
 
