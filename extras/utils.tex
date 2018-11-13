@@ -308,6 +308,66 @@ heading_suffix "}\\nopagebreak\n"
 % Permite formatar texto em colunas
 \usepackage{multicol}
 
+% Gantt charts; útil para fazer o cronograma para o exame de
+% qualificação, por exemplo.
+\usepackage{pgfgantt}
+
+% Na versão 5 do pacote pgfgantt, a opção "compress calendar"
+% deixou de existir, sendo substituída por "time slot unit=month".
+% Aqui, um truque para a configuração abaixo funcionar com ambas
+% as versões.
+\makeatletter
+\newcommand*\columnsAsMonths{%
+  \@ifpackagelater{pgfgantt}{2018/01/01}{time slot unit=month}{compress calendar}%
+}
+\makeatother
+
+% Estes parâmetros definem a aparência das gantt charts e variam
+% em função da fonte do documento.
+\ganttset{
+    time slot format=isodate-yearmonth,
+    %time slot unit=month, % versão 5 ou posterior
+    %compress calendar, % versão anterior à 5
+    \columnsAsMonths, % veja mais abaixo
+    vgrid,
+    x unit=1.7em,
+    y unit title=3ex,
+    y unit chart=4ex,
+    % O "strut" é necessário para alinhar o baseline dos nomes dos meses
+    title label font=\strut\footnotesize,
+    group label font=\footnotesize\bfseries,
+    bar label font=\footnotesize,
+    milestone label font=\footnotesize\itshape,
+    % "align=right" é necessário para \ganttalignnewline funcionar
+    group label node/.append style={align=right},
+    bar label node/.append style={align=right},
+    milestone label node/.append style={align=right},
+    group incomplete/.append style={fill=black!50},
+    bar/.append style={fill=black!25,draw=black},
+    bar incomplete/.append style={fill=white,draw=black},
+    % Não é preciso imprimir "0%"
+    progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
+    % Formato e tamanho dos elementos
+    title height=.9,
+    group top shift=.4,
+    group left shift=0,
+    group right shift=0,
+    group peaks tip position=0,
+    group peaks width=.2,
+    group peaks height=.3,
+    milestone height=.4,
+    milestone top shift=.4,
+    milestone left shift=.8,
+    milestone right shift=.2,
+}
+
+% Em inglês, tanto o nome completo quanto a abreviação do mês de maio
+% são "May"; por conta disso, na tradução em português LaTeX erra a
+% abreviação. Como talvez usemos o nome inteiro do mês em outro lugar,
+% ao invés de forçar a tradução para "Mai" globalmente, fazemos isso
+% apenas em ganttchart.
+\AtBeginEnvironment{ganttchart}{\deftranslation[to=Portuguese]{May}{Mai}}
+
 % Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta os
 % comandos \XeLaTeX e \LuaLaTeX. Você provavelmente não precisa desse recurso
 % e, portanto, pode removê-la.

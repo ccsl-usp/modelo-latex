@@ -69,33 +69,34 @@ denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
 
 \section{\emph{Floats} (Tabelas e Figuras)}\index{Floats}
 
-Muitos trabalhos acadêmicos incluem figuras; um exemplo é a
-Figura~\ref{fig:humanbeta}. Também é possível girar figuras
-e criar subfiguras (com sublegendas\index{Legendas}), como no exemplo da
+Evidentemente, \LaTeX{} permite inserir figuras no texto; além
+disso, ele também permite girá-las e criar subfiguras
+(com sublegendas\index{Legendas}), como no exemplo da
 Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui as
 subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
-Finalmente, uma ``figura'', na verdade, pode ser um trecho de
-código-fonte, como se vê na Figura~\ref{fig:java}.\index{Floats}
+Uma ``figura'', na verdade, também pode ser algum outro tipo
+de conteúdo ilustrativo: um trecho de
+código-fonte, como se vê na Figura~\ref{fig:java}, um cronograma,
+como se vê na Figura~\ref{fig:gantt} etc.\index{Floats}
 
 % As packages relevantes para lidar com figuras são graphicx,
 % float, caption, rotating e subcaption. Observe que "subfigure"
 % e "subtable" são definidos na package subcaption, *não* na
 % package subfigure! A package subfigure é obsoleta.
-\begin{figure}
-  \centering
-  \includegraphics[width=.6\textwidth]{graph}
-  \caption{Exemplo de grafo simples.}
-  \label{fig:humanbeta}
-\end{figure}
 
 \begin{figure}
   \centering
+
   \begin{subfigure}{0.4\textwidth}
     \centering
     \includegraphics[width=.7\textwidth]{graph}
-    \caption{O mesmo exemplo.}
+    \caption{Uma figura simples.}
     \label{fig:subfigures:a}
   \end{subfigure}
+  % ATENÇÃO: Se você deixar uma linha em branco entre as subfiguras,
+  % LaTeX vai considerar que cada uma delas pertence a um "parágrafo"
+  % diferente e, portanto, vai colocá-las em linhas separadas ao invés
+  % de lado a lado.
   \begin{subfigure}{0.4\textwidth}
     \centering
     \begin{turn}{90}
@@ -104,16 +105,17 @@ código-fonte, como se vê na Figura~\ref{fig:java}.\index{Floats}
     \caption{O mesmo exemplo, girado.}
     \label{fig:subfigures:b}
   \end{subfigure}
+
   \caption{Exemplo de subfiguras.}
   \label{fig:subfigures}
 \end{figure}
-
 
 % Foi utilizado o pacote listings para formatar o código fonte
 % Veja no preambulo do arquivo tese-exemplo.tex os parâmetros de configuração.
 \begin{figure}
   \index{Java}
   \centering
+
 \begin{lstlisting}[language=Java, style=wider]
 for (i = 0; i < 20; i++)
 {
@@ -121,8 +123,34 @@ for (i = 0; i < 20; i++)
 	System.out.println("Mensagem...");
 }
 \end{lstlisting}
+
   \caption{Exemplo de laço em Java.}
   \label{fig:java}
+\end{figure}
+
+\begin{figure}
+  \centering
+
+  \begin{ganttchart}{2017-11}{2018-5}
+    \gantttitlecalendar{year,month=shortname} \ganttnewline
+
+    \ganttgroup[progress=45]{Experimento}{2017-11}{2018-2} \ganttnewline
+    \ganttbar[progress=100]{
+      Preparação\ganttalignnewline
+      (compra de insumos)
+      }{2017-11}{2017-12} \ganttnewline
+    \ganttbar[progress=30]{Execução}{2017-12}{2018-1} \ganttnewline
+    \ganttbar[progress=0]{Análise}{2017-12}{2018-2} \ganttnewline
+
+    \ganttgroup[progress=0]{Artigo}{2018-1}{2018-4} \ganttnewline
+    \ganttbar[progress=0]{Escrita}{2018-1}{2018-3} \ganttnewline
+    \ganttbar[progress=0]{Revisão}{2018-3}{2018-4} \ganttnewline
+
+    \ganttmilestone{Submissão}{2018-4}
+  \end{ganttchart}
+
+  \caption{Exemplo de cronograma.}
+  \label{fig:gantt}
 \end{figure}
 
 Talvez você precise organizar a apresentação da informação na forma de
@@ -142,38 +170,41 @@ Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
 
 \begin{table}
 \centering
+
   \hspace*{\fill}
   \begin{subtable}[b]{0.42\textwidth}
     \centering
     \begin{tabular}{ccl}
       \toprule
-      Código & Abreviatura & \makecell{Nome\\completo} \\
+      Código      & Abreviatura  & \makecell{Nome\\completo} \\
       \midrule
-      \texttt{A}      & Ala                   & Alanina \\
-      \texttt{C}      & Cys                   & Cisteína \\
-      ...             & ...                   & ... \\
-      \texttt{W}      & Trp                   & Triptofano \\
-      \texttt{Y}      & Tyr                   & Tirosina \\
+      \texttt{A}  & Ala          & Alanina \\
+      \texttt{C}  & Cys          & Cisteína \\
+      ...         & ...          & ... \\
+      \texttt{W}  & Trp          & Triptofano \\
+      \texttt{Y}  & Tyr          & Tirosina \\
       \bottomrule
     \end{tabular}
     \caption{Uma tabela simples.}
   \end{subtable}
+  % Como mencionado mais acima, não deixe linhas em branco aqui
   \hspace*{\fill}\hspace*{\fill}\hspace*{\fill}
   \begin{subtable}[b]{0.37\textwidth}
     \centering
     \begin{tabular}{ccl}
       \rothead{Código} & \rothead{Abreviatura} & \rothead{Nome\\completo} \\
       \midrule
-      \texttt{A}      & Ala                   & Alanina \\
-      \texttt{C}      & Cys                   & Cisteína \\
-      ...             & ...                   & ... \\
-      \texttt{W}      & Trp                   & Triptofano \\
-      \texttt{Y}      & Tyr                   & Tirosina \\
+      \texttt{A}       & Ala                   & Alanina \\
+      \texttt{C}       & Cys                   & Cisteína \\
+      ...              & ...                   & ... \\
+      \texttt{W}       & Trp                   & Triptofano \\
+      \texttt{Y}       & Tyr                   & Tirosina \\
       \bottomrule
     \end{tabular}
     \caption{Com cabeçalhos girados.}
   \end{subtable}
   \hspace*{\fill}
+
   \caption{Códigos, abreviaturas e nomes dos aminoácidos.}
   \label{tab:amino_acidos}
 \end{table}
@@ -184,6 +215,7 @@ Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
 % sidewaystable e comandos relacionados são definidos na package rotating
 \begin{sidewaystable}
 \centering
+
 \begin{tabular}{|M{0.265}|M{0.073}|M{0.084}|M{0.073}|M{0.073}|M{0.08}|M{0.082}|M{0.067}|}
   \hline
     \textbf{Experimento número:} & \multicolumn{2}{c|}{1} & \multicolumn{4}{c|}{\textbf{Data:}} & jan 2017
@@ -197,6 +229,7 @@ Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
     \textbf{Valores obtidos} & 0.2       & 0.3            & 0.2          & 0.7    & 0.5    & 0.1      & 0.4
   \tabularnewline \hline
 \end{tabular}
+
 \caption{Exemplo de tabela similar a uma ficha.}
 \label{tab:ficha}
 \end{sidewaystable}
