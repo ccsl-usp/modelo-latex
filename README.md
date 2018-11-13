@@ -44,7 +44,7 @@ wrapfig, pdfpages, tablefootnote, array, dcolumn, longtable, multirow,
 makecell, booktabs, tocbibind, imakeidx, verbatim, latexsym, amsmath,
 amssymb, mathtools, csquotes, hypcap, hyperxmp, url, listings,
 textcomp, multicol, metalogo, epigraph, imakeidx, todonotes, soul,
-soulutf8. Many others are loaded indirectly by these.
+soulutf8, translator, pgfgantt. Many others are loaded indirectly by these.
 
 The default fonts depend on these packages: lmodern, fix-cm,
 inconsolata, libertine, newtxmath, biolinum.
