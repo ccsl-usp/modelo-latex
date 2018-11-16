@@ -145,6 +145,11 @@ text text text.
 %\listoftables
 {\let\cleardoublepage\relax \listoftables }
 
+% Esta lista é criada "automaticamente" pela package float quando
+% definimos o novo tipo de float "program" (em utils.tex)
+%\listof{program}{\proglistname}
+{\let\cleardoublepage\relax \listof{program}{\proglistname} }
+
 } % Final de "raggedbottom"
 
 % Sumário (obrigatório)

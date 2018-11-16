@@ -74,10 +74,12 @@ disso, ele também permite girá-las e criar subfiguras
 (com sublegendas\index{Legendas}), como no exemplo da
 Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui as
 subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
-Uma ``figura'', na verdade, também pode ser algum outro tipo
-de conteúdo ilustrativo: um trecho de
-código-fonte, como se vê na Figura~\ref{fig:java}, um cronograma,
-como se vê na Figura~\ref{fig:gantt} etc.\index{Floats}
+Uma ``figura'', na verdade, pode ser qualquer tipo de conteúdo
+ilustrativo (como no caso da Figura~\ref{fig:gantt}, que é
+um cronograma) mas, com a \textit{package} \textsf{float}, é
+possível definir ambientes específicos para cada tipo de
+conteúdo adicional (cada um com numeração independente), como
+é o caso do Programa~\ref{prog:java}.\index{Floats}
 
 % As packages relevantes para lidar com figuras são graphicx,
 % float, caption, rotating e subcaption. Observe que "subfigure"
@@ -112,7 +114,7 @@ como se vê na Figura~\ref{fig:gantt} etc.\index{Floats}
 
 % Foi utilizado o pacote listings para formatar o código fonte
 % Veja no preambulo do arquivo tese-exemplo.tex os parâmetros de configuração.
-\begin{figure}
+\begin{program}
   \index{Java}
   \centering
 
@@ -125,8 +127,8 @@ for (i = 0; i < 20; i++)
 \end{lstlisting}
 
   \caption{Exemplo de laço em Java.}
-  \label{fig:java}
-\end{figure}
+  \label{prog:java}
+\end{program}
 
 \begin{figure}
   \centering

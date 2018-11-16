@@ -22,6 +22,7 @@
 *.nav
 *.snm
 *.vrb
+*.lop
 timestamp
 mkidxhead.ist
 hyperxindy.xdy

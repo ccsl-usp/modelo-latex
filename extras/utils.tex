@@ -295,6 +295,20 @@ heading_suffix "}\\nopagebreak\n"
   morekeywords={xmlns,version,type}% list your attributes here
 }
 
+% Novo tipo de float para programas, possível graças à package
+% float, carregada em floats.tex
+\ifcsdef{chapter}
+    {\newfloat{program}{htbp}{lop}[chapter]}
+    {\newfloat{program}{htbp}{lop}}
+\addto\extrasbrazil{\floatname{program}{Programa}}
+\addto\extrasenglish{\floatname{program}{Program}}
+
+% A lista de programas é criada automaticamente pela package float,
+% mas precisamos definir o nome da lista em cada língua
+\newcommand*\proglistname{List of Programs}
+\addto\extrasbrazil{\renewcommand*\proglistname{Lista de Programas}}
+\addto\extrasenglish{\renewcommand*\proglistname{List of Programs}}
+
 % Símbolos adicionais, como \celsius, \ohm, \perthousand etc.
 %\usepackage{gensymb}
 
