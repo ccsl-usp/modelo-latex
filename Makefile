@@ -53,6 +53,9 @@ IMGFILES      := $(wildcard figuras/*)
 # Voce pode acrescentar outras dependencias aqui
 MISCFILES     :=
 
+# Arquivos de nomes "$(ALL_TARGETS).$(TMP_EXTENSIONS)" sao apagados por "make clean"
+TMP_EXTENSIONS := bbl aux log toc cb out blg brf ilg ind lof lot idx bcf fls run.xml synctex.gz fdb_latexmk nav snm tdo vrb
+
 
 ###############################################################################
 ######## Nada que precise ser modificado pelo usuario daqui para baixo ########
@@ -142,12 +145,13 @@ echo "$$msgs"| $(FILTER_MSGS) > latex-out.log 2>&1; \
 if test $$stat -ne 0; then \
 	$(SHOW_REPORT); \
 	echo; \
-	echo "    **** Erro durante a execucao do LaTeX ****"; \
+	echo "    **** Erro durante a execucao do LaTeX (processando $*) ****"; \
 	touch $*.aux-current; \
 	rm -f $*.fls; \
 	exit 1; \
 fi; \
-touch -r timestamp $*.pdf;
+touch -r timestamp $*.pdf; \
+rm -f timestamp
 endef
 
 # "make tese-exemplo" -> "make tese-exemplo.pdf"
@@ -165,7 +169,7 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(TEX_TEMP_FILES) %.tex 
 		touch $*.aux-current; \
 		exit 1; \
 	fi
-	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteração $(MAKELEVEL))..."
+	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteracao $(MAKELEVEL))..."
 	@$(RUN_LATEX)
 	@$(REFRESH)
 	@echo
@@ -177,13 +181,13 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(TEX_TEMP_FILES) %.tex 
 	elif [ $$result -eq 1 ]; then \
 		make -s $@; \
 	else \
-		echo "    **** Erro durante a execucao do latex ****"; \
+		echo "    **** Erro durante a execucao do LaTeX (processando $*) ****"; \
 		exit 1; \
 	fi
 
 # bitex/biber e makeindex/xindy dependem de arquivos gerados pelo LaTeX
 %.idx-current %.bcf-current: %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
-	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteração auxiliar $(MAKELEVEL))..."
+	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteracao auxiliar $(MAKELEVEL))..."
 	@$(RUN_LATEX)
 	@$(REFRESH)
 	@echo
@@ -193,7 +197,7 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(TEX_TEMP_FILES) %.tex 
 	@if ! $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx > makeindex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
-		echo "    **** Erro durante a execucao do makeindex/xindy ****"; \
+		echo "    **** Erro durante a execucao do makeindex/xindy (processando $*) ****"; \
 		exit 1; \
 	fi
 	@echo
@@ -203,14 +207,14 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(TEX_TEMP_FILES) %.tex 
 	@if ! $(BIBTEX) $* > bibtex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
-		echo "    **** Erro durante a execucao do bibtex/biber ****"; \
+		echo "    **** Erro durante a execucao do bibtex/biber (processando $*) ****"; \
 		exit 1; \
 	fi
 	@echo
 
 clean: tmpclean
 	@echo; \
-	echo '       Os arquivos PDF gerados *não* foram apagados; para removê-los, use "make distclean"'; \
+	echo '       Os arquivos PDF gerados *nao* foram apagados; para remove-los, use "make distclean"'; \
 	echo;
 
 tmpclean: $(addsuffix -tmpclean,$(ALL_TARGETS))
@@ -218,45 +222,37 @@ tmpclean: $(addsuffix -tmpclean,$(ALL_TARGETS))
 distclean: tmpclean $(addsuffix -distclean,$(ALL_TARGETS))
 
 %-distclean:
-	-rm -f $*.ps $*.pdf $*.dvi
+	@echo '       removendo arquivos gerados ($*: pdf, ps, dvi)'
+	-@rm -f $*.ps $*.pdf $*.dvi
 
 %-tmpclean:
-	-rm -f timestamp missfont.log mkidxhead.ist hyperxindy.xdy \
+	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
+	-@rm -f timestamp missfont.log \
+		mkidxhead.ist mkidxhead.ist-current hyperxindy.xdy hyperxindy.xdy-current \
 		latex-out.log makeindex-out.log bibtex-out.log \
-		hyperxindy.xdy-current mkidxhead.ist-current \
-		$*.bbl $*.aux $*.log $*.toc $*.cb $*.out $*.blg \
-		$*.brf $*.ilg $*.ind $*.lof $*.lot $*.idx $*.bcf \
-		$*.fls $*.run.xml $*.synctex.gz $*.fdb_latexmk \
-		$*.nav $*.snm $*.tdo $*.vrb \
-		$*.bbl-current $*.aux-current $*.log-current \
-		$*.toc-current $*.cb-current $*.out-current \
-		$*.blg-current $*.brf-current $*.ilg-current \
-		$*.ind-current $*.lof-current $*.lot-current \
-		$*.idx-current $*.bcf-current $*.fls-current \
-		$*.run.xml-current $*.synctex.gz-current \
-		$*.fdb_latexmk-current $*.nav-current \
-		$*.snm-current $*.tdo-current $*.vrb-current \
+		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)) \
+		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)-current) \
 		$*.ps-current $*.pdf-current $*.dvi-current
 
 define SHOW_REPORT
 	if test -f bibtex-out.log; then \
 		echo; \
 		echo "***********************************************************************"; \
-		echo "       Mensagens geradas por bibtex/biber na última iteração:"; \
+		echo "       Mensagens geradas por bibtex/biber (processando $*) na ultima iteracao:"; \
 		echo; \
 		cat bibtex-out.log; \
 	fi; \
 	if test -f makeindex-out.log; then \
 		echo; \
 		echo "***********************************************************************"; \
-		echo "       Mensagens geradas por makeindex/xindy na última iteração:"; \
+		echo "       Mensagens geradas por makeindex/xindy (processando $*) na ultima iteracao:"; \
 		echo; \
 		cat makeindex-out.log; \
 	fi; \
 	if test -f latex-out.log; then \
 		echo; \
 		echo "***********************************************************************"; \
-		echo "       Mensagens geradas por LaTeX na última iteração:"; \
+		echo "       Mensagens geradas por LaTeX (processando $*) na ultima iteracao:"; \
 		echo; \
 		cat latex-out.log; \
 	fi
@@ -265,7 +261,7 @@ endef
 define SHOW_SUCCESS_MSG
 	echo; \
 	echo; \
-	echo "   A compilação parece ter terminado com sucesso!"; \
+	echo "   A compilacao do arquivo $* parece ter terminado com sucesso!"; \
 	echo
 endef
 
@@ -273,8 +269,9 @@ define SHOW_LOOP_ERROR
 	echo; \
 	echo "***********************************************************************" >&2; \
 	echo "***********************************************************************" >&2; \
-	echo "   LaTeX entrou em um laço infinito; leia a documentação da package" >&2; \
-	echo "   labelschanged (http://ctan.org/pkg/labelschanged )" >&2; \
+	echo "   LaTeX entrou em um laco infinito processando $*;" >&2; \
+	echo "   leia a documentacao da package labelschanged" >&2; \
+	echo "   (http://ctan.org/pkg/labelschanged )" >&2; \
 	echo "***********************************************************************" >&2; \
 	echo "***********************************************************************" >&2; \
 	echo
