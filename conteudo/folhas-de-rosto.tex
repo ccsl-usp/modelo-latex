@@ -102,7 +102,14 @@ text text text.
 % no sumário. As listas geradas automaticamente também não são incluídas
 % por conta das opções "notlot" e "notlof" que usamos mais acima.
 
+% Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
+% a opção correspondente e as listas dentro de um par de chaves para ativar
+% raggedbottom apenas temporariamente.
+{
+\raggedbottom
+
 % Listas criadas manualmente
+
 \chapter*{Lista de Abreviaturas}
 \begin{tabular}{rl}
          CFT         & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
@@ -121,19 +128,24 @@ text text text.
 % desabilitar a quebra de página.
 
 %\chapter*{Lista de Símbolos}
-{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \chapter*{Lista de Símbolos} }
+{\let\cleardoublepage\relax \chapter*{Lista de Símbolos} }
 \begin{tabular}{rl}
         $\omega$    & Frequência angular\\
         $\psi$      & Função de análise \emph{wavelet}\\
         $\Psi$      & Transformada de Fourier de $\psi$\\
 \end{tabular}
 
+\pagebreak
+
 % Listas criadas automaticamente
+
 %\listoffigures
-{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoffigures }
+{\let\cleardoublepage\relax \listoffigures }
 
 %\listoftables
-{\let\cleardoublepage\relax \addvspace{55pt plus 15pt minus 15pt} \listoftables }
+{\let\cleardoublepage\relax \listoftables }
+
+} % Final de "raggedbottom"
 
 % Sumário (obrigatório)
 \tableofcontents
