@@ -604,16 +604,19 @@ alfabetos ou se gostaria de escolher fontes diferentes, use \XeLaTeX{}
 ou \LuaLaTeX{}.
 
 \section{Limitações do \LaTeX{} e algumas dicas}
+\label{sec:limitations}
 
 Como qualquer ferramenta, \LaTeX{} tem limitações e características
 indesejáveis:
 
 \begin{itemize}
+    % \linebreak[0]{} -> sugestão (não-obrigatória) de quebra de linha
     \item A linguagem é muito prolixa: é bastante tedioso escrever
-    coisas como ``\ltxcmd{begin\{itemize\}}'' etc. Linguagens
-    como asciidoc/asciidoctor (\url{asciidoctor.org}) funcionam de
+    coisas como ``\ltxcmd{begin\linebreak[0]{}\{itemize\}}'' etc. Linguagens
+    como asciidoc/asciidoctor (\url{asciidoctor.org}) e markdown
+    (\url{daringfireball.net/projects/markdown}) funcionam de
     maneira similar a \LaTeX{}, mas sua sintaxe é bem mais enxuta.
-    No entanto, asciidoc não tem alguns recursos avançados oferecidos
+    No entanto, elas não têm alguns recursos avançados oferecidos
     por \LaTeX{}, em particular para a gestão de bibliografias.
 
     \item \LaTeX{} procura ser uma linguagem \emph{declarativa}, ou seja,
@@ -672,15 +675,20 @@ indesejáveis:
     se isso for possível.
 
     \item Como muitos outros sistemas de texto, \LaTeX{} pode usar mais de
-    um padrão para a codificação de caracteres acentuados. Alguns anos atrás,
+    um padrão para a codificação de caracteres acentuados (através da
+    configuração da package \pkg{inputenc}). Alguns anos atrás,
     o mais comum era o ISO-8859-1, também conhecido como latin1 (esse é o
     nome usado no \LaTeX{}) ou Windows-1252; atualmente, o mais comum é o
     UTF-8. No entanto, usuários que escrevem apenas em língua inglesa às
     vezes não configuram seus sistemas para usar qualquer tipo de caracter
     acentuado. De maneira geral, é simples reconhecer e resolver os problemas
-    causados por inconsistências na codificação, mas arquivos ``.bib'' são um
-    caso especial: é bastante comum que um arquivo desse tipo seja
-    compartilhado por várias pessoas. Para evitar problemas com os acentos
+    causados por inconsistências na codificação (seja trocando a opção
+    de \pkg{inputenc}, seja recodificando o arquivo), mas arquivos ``.bib''
+    são um caso especial: biblatex (usado neste modelo) funciona normalmente
+    com caracteres acentuados, mas bibtex oficialmente não tem suporte a eles
+    (embora em geral funcione corretamente). Além disso, é bastante comum que
+    um arquivo desse tipo seja compartilhado por várias pessoas, com diferentes
+    configurações. Para evitar problemas com os acentos
     nesse caso, uma possibilidade é representar os caracteres acentuados
     usando comandos \LaTeX{}: \cmd{\sla\textquotesingle\{a\}} para á,
     \cmd{\sla{}c\{c\}} para cedilha etc., independentemente da
