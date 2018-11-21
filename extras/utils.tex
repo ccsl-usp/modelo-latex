@@ -195,6 +195,13 @@ heading_suffix "}\\nopagebreak\n"
 % URL com fonte sem serifa ao invés de teletype
 \urlstyle{sf}
 
+% hyperref detecta url's definidas com \url que começam com "http" e
+% "www" e cria links adequados. No entanto, quando a url não começa
+% com essas strings (por exemplo, "usp.br"), hyperref considera que
+% se trata de um link para um arquivo local. Isto força todas as
+% \url's que não tem esquema definido a serem do tipo http.
+\hyperbaseurl{http://}
+
 % Permite inserir comentários, muito bom durante a escrita do texto
 \usepackage[textsize=scriptsize,colorinlistoftodos,textwidth=2.5cm]{todonotes}
 \presetkeys{todonotes}{color=orange!40!white}{}
