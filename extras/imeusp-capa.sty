@@ -39,7 +39,8 @@
 % com o texto alinhado à direita e margens esquerda e
 % superior muito grandes. Vamos fazer isso com uma minipage.
 \newenvironment{dedicatoria} {
-  \cleardoublepage
+  \if@openright\cleardoublepage\else\clearpage\fi
+
   \thispagestyle{empty}
   \vspace*{140mm plus 0mm minus 100mm}
   \noindent
@@ -52,12 +53,12 @@
      \end{minipage}\hspace*{3em}
   \end{FlushRight}
   \vspace*{50mm plus 0mm minus 10mm}
-  \cleardoublepage
+  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 % A página de resumo deve existir em português e inglês
 \NewDocumentEnvironment{resumo}{m} {
-  \cleardoublepage
+  \if@openright\cleardoublepage\else\clearpage\fi
   \thispagestyle{empty}
   \vspace*{2em}
 
@@ -555,7 +556,7 @@
     \@detalhescapa[#1]
   \end{hyphenrules}
 
-  \cleardoublepage
+  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 % As informações da banca que vão apenas na versão definitiva
@@ -635,7 +636,7 @@
 
   \vspace*{8cm plus 5cm minus 6cm}
 
-  \cleardoublepage
+  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 \endinput
