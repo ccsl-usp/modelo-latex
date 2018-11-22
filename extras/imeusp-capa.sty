@@ -118,14 +118,14 @@
 % abaixo deve ser suficiente para este caso. Se tiver curiosidade:
 % http://www.matijs.net/blog/2006/07/20/how-to-trim-spaces-in-tex
 
-\NewDocumentCommand\disablepagebreak{s o}{\unskip{} \ignorespaces}
+\NewDocumentCommand\disablelinebreak{s o}{\unskip{} \ignorespaces}
 
 \newcommand*{\titulopt}[1]{
     \gdef\@tituloptcapa{#1}
     \gdef\@titulopt{%
-        \let \\ \disablepagebreak%
-        \let \newline \disablepagebreak%
-        \let \break \disablepagebreak%
+        \let \\ \disablelinebreak%
+        \let \newline \disablelinebreak%
+        \let \break \disablelinebreak%
         #1%
     }
 }
@@ -133,9 +133,9 @@
 \newcommand*{\tituloeng}[1]{
     \gdef\@tituloengcapa{#1}
     \gdef\@tituloeng{%
-        \let \\ \disablepagebreak%
-        \let \newline \disablepagebreak%
-        \let \break \disablepagebreak%
+        \let \\ \disablelinebreak%
+        \let \newline \disablelinebreak%
+        \let \break \disablelinebreak%
         #1%
     }
 }
@@ -143,9 +143,9 @@
 \newcommand*{\subtitulo}[1]{
     \gdef\@subtitulocapa{#1}
     \gdef\@subtitulo{%
-        \let \\ \disablepagebreak%
-        \let \newline \disablepagebreak%
-        \let \break \disablepagebreak%
+        \let \\ \disablelinebreak%
+        \let \newline \disablelinebreak%
+        \let \break \disablelinebreak%
         #1%
     }
 }
@@ -153,9 +153,9 @@
 \newcommand*{\subtituloeng}[1]{
     \gdef\@subtituloengcapa{#1}
     \def\@subtituloeng{%
-        \let \\ \disablepagebreak%
-        \let \newline \disablepagebreak%
-        \let \break \disablepagebreak%
+        \let \\ \disablelinebreak%
+        \let \newline \disablelinebreak%
+        \let \break \disablelinebreak%
         #1%
     }
 }
@@ -165,16 +165,16 @@
 \gdef\@tituloengcapa\@title
 
 \gdef\@titulopt{%
-    \let \\ \disablepagebreak%
-    \let \newline \disablepagebreak%
-    \let \break \disablepagebreak%
+    \let \\ \disablelinebreak%
+    \let \newline \disablelinebreak%
+    \let \break \disablelinebreak%
     \@title%
 }
 
 \gdef\@tituloeng{%
-    \let \\ \disablepagebreak%
-    \let \newline \disablepagebreak%
-    \let \break \disablepagebreak%
+    \let \\ \disablelinebreak%
+    \let \newline \disablelinebreak%
+    \let \break \disablelinebreak%
     \@title%
 }
 
