@@ -96,11 +96,27 @@ text text text text text text text text text text text text text text text text
 text text text.
 \end{resumo}
 
+% Como as listas que se seguem podem não incluir uma quebra de página
+% obrigatória, inserimos uma quebra manualmente aqui.
+\makeatletter
+\if@openright\cleardoublepage\else\clearpage\fi
+\makeatother
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%% LISTAS DE FIGURAS ETC. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Todas as listas são opcionais; Usando "\chapter*" elas não são incluídas
 % no sumário. As listas geradas automaticamente também não são incluídas
 % por conta das opções "notlot" e "notlof" que usamos mais acima.
+
+% Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página, e as
+% listas geradas automaticamente também por padrão ficam em páginas separadas.
+% Como cada uma destas listas é muito curta, não faz muito sentido fazer isso
+% aqui, então usamos este comando para desabilitar essas quebras de página.
+% Se você preferir, comente as linhas com esse comando e des-comente as linhas
+% sem ele para criar as listas em páginas separadas. Observe que você também
+% pode inserir quebras de página manualmente (com \clearpage, veja o exemplo
+% mais abaixo).
+\newcommand\disablenewpage[1]{{\let\clearpage\relax\let\cleardoublepage\relax#1}}
 
 % Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
 % a opção correspondente e as listas dentro de um par de chaves para ativar
@@ -108,9 +124,11 @@ text text text.
 {
 \raggedbottom
 
-% Listas criadas manualmente
+%%%%% Listas criadas manualmente
 
-\chapter*{Lista de Abreviaturas}
+%\chapter*{Lista de Abreviaturas}
+\disablenewpage{\chapter*{Lista de Abreviaturas}}
+
 \begin{tabular}{rl}
          CFT         & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
          DFT         & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
@@ -122,33 +140,30 @@ text text text.
 	USP          & Universidade de São Paulo
 \end{tabular}
 
-% Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página.
-% Como cada uma destas listas é muito curta, não faz muito sentido fazer
-% isso aqui. "\let\clearpage\relax" é um "truque sujo" para temporariamente
-% desabilitar a quebra de página.
-
 %\chapter*{Lista de Símbolos}
-{\let\cleardoublepage\relax \chapter*{Lista de Símbolos} }
+\disablenewpage{\chapter*{Lista de Símbolos}}
+
 \begin{tabular}{rl}
         $\omega$    & Frequência angular\\
         $\psi$      & Função de análise \emph{wavelet}\\
         $\Psi$      & Transformada de Fourier de $\psi$\\
 \end{tabular}
 
-\pagebreak
+% Quebra de página manual
+\clearpage
 
-% Listas criadas automaticamente
+%%%%% Listas criadas automaticamente
 
 %\listoffigures
-{\let\cleardoublepage\relax \listoffigures }
+\disablenewpage{\listoffigures}
 
 %\listoftables
-{\let\cleardoublepage\relax \listoftables }
+\disablenewpage{\listoftables}
 
 % Esta lista é criada "automaticamente" pela package float quando
 % definimos o novo tipo de float "program" (em utils.tex)
 %\listof{program}{\proglistname}
-{\let\cleardoublepage\relax \listof{program}{\proglistname} }
+\disablenewpage{\listof{program}{\proglistname}}
 
 } % Final de "raggedbottom"
 
