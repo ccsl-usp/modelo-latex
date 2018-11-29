@@ -105,23 +105,18 @@
   % Use with excludedelims=comments to typeset a triangle as
   % the comment indicator character. Notice the use of global
   % in only some of the boolean commands: AtBeginComment is
-  % set globally, so we need to check a global variable in
-  % order not to append the same code to it twice. But we
-  % check a local variable to determine whether to typeset
-  % the triangle or not. Still, this local variable needs
-  % to exist globally (as false), otherwise there will be a
-  % syntax error when typesetting code *without* the triangle.
+  % set globally, so we need to the boolean to exist globally,
+  % but we check it *locally* to determine whether to typeset
+  % the triangle or not.
   \global\let\lst@ifTriangleComments\iffalse
-  \global\let\lst@ifTriangleCommentsAlreadySet\iffalse
+
+  \lst@AddToHook{AfterBeginComment}{\lst@ifTriangleComments{\hspace*{0.5em}\ensuremath{\triangleright}}\fi}
+
   \lst@Key{trianglecomments}\relax[true]{
     \lstKV@SetIf{#1}{\lst@ifTriangleComments}
 
     \lst@ifTriangleComments
       \lstset{fixexcludedelims}
-      \lst@ifTriangleCommentsAlreadySet\else
-        \lst@AddToHook{AfterBeginComment}{\lst@ifTriangleComments{\hspace*{0.5em}\ensuremath{\triangleright}}\fi}
-        \global\let\lst@ifTriangleCommentsAlreadySet\iftrue
-      \fi
     \fi
 
   }
