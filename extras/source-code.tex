@@ -1,5 +1,26 @@
-% para formatar código-fonte (ex. em Java).
+% Para formatar código-fonte (ex. em Java). listings funciona bem mas
+% tem algumas limitações (https://tex.stackexchange.com/a/153915 ).
+% Se isso for um problema, a package minted pode oferecer resultados
+% melhores; a desvantagem é que ela depende de um programa externo,
+% o pygments (escrito em python).
+%
+% listings também não tem suporte específico a pseudo-código, mas
+% incluímos uma configuração para isso que deve ser suficiente.
+% Caso contrário, há diversas packages específicas para a criação
+% de pseudocódigo:
+%
+%  * a mais comum é algorithmicx ("\usepackage{algpseudocode}");
+%  * algorithm2e é bastante flexível, mas um tanto complexa;
+%  * clrscode3e foi usada no livro "Introduction to Algorithms"
+%    de Cormen, Leiserson, Rivert e Stein.
+%  * pseudocode foi usada no livro "Combinatorial Algorithms"
+%    de Kreher e Stinson.
+
 \usepackage{listings}
+\appto{\lstaspectfiles}{,imeusp-pseudocode.sty}
+\appto{\lstlanguagefiles}{,imeusp-pseudocode.sty}
+\lstloadaspectsfromsubdir{extras/}{simulatex,fixexcludedelims,pseudocode}
+\lstloadlanguagesfromsubdir{extras/}{[base]pseudocode,[english]pseudocode,[brazil]pseudocode}
 
 % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
 % usados em português é possível contornar o problema com a tabela abaixo.
@@ -23,6 +44,7 @@
 % Opções default para o pacote listings
 % Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
 \lstset{
+  columns=[l]fullflexible,            % do not try to align text with proportional fonts
   basicstyle=\footnotesize\ttfamily,  % the font that is used for the code
   numbers=left,                       % where to put the line-numbers
   numberstyle=\footnotesize\ttfamily, % the font that is used for the line-numbers
@@ -35,7 +57,7 @@
   showspaces=false,                   % show spaces adding particular underscores
   showstringspaces=false,             % underline spaces within strings
   showtabs=false,                     % show tabs within strings adding particular underscores
-  frame=single,                       % adds a frame around the code
+  %frame=single,                       % adds a frame around the code
   framerule=0.6pt,
   tabsize=2,                          % sets default tabsize to 2 spaces
   captionpos=b,                       % sets the caption-position to bottom
@@ -51,6 +73,7 @@
   framexleftmargin=25pt,
   framexrightmargin=5pt,
   framesep=5pt,
+  defaultdialect=[english]{pseudocode},
 }
 
 % Um exemplo de estilo personalizado para listings (tabulações maiores)
@@ -66,7 +89,7 @@
   commentstyle=\color{darkgray}\upshape,
   stringstyle=\color{black},
   identifierstyle=\color{black},
-  keywordstyle=\color{black},
+  keywordstyle=\color{black}\bfseries,
 }
 
 % Um exemplo de definição de linguagem para listings (XML)
@@ -81,16 +104,42 @@
   morekeywords={xmlns,version,type}% list your attributes here
 }
 
+\lstdefinestyle{pseudocode}{
+  basicstyle=\rmfamily\small,
+  commentstyle=\itshape,
+  keywordstyle=\bfseries,
+  % as palavras "function" e "procedure"
+  keywordstyle=[2]\bfseries\scshape,
+  identifierstyle=\itshape,
+  % funções precedidas por function/procedure ou com \func{}
+  procnamestyle=\ttfamily,
+  specialidentifierstyle=\ttfamily\bfseries,
+}
+
 % Novo tipo de float para programas, possível graças à package
 % float, carregada em floats.tex
+\floatstyle{ruled}
 \ifcsdef{chapter}
     {\newfloat{program}{htbp}{lop}[chapter]}
     {\newfloat{program}{htbp}{lop}}
-\addto\extrasbrazil{\floatname{program}{Programa}}
-\addto\extrasenglish{\floatname{program}{Program}}
+\floatstyle{plain}
+\addto\extrasbrazil{
+  \floatname{program}{Programa}
+  \gdef\lstlistingname{Program}
+}
+\addto\extrasenglish{
+  \floatname{program}{Program}
+  \gdef\lstlistingname{Programa}
+}
 
 % A lista de programas é criada automaticamente pela package float,
 % mas precisamos definir o nome da lista em cada língua
 \newcommand*\proglistname{List of Programs}
-\addto\extrasbrazil{\renewcommand*\proglistname{Lista de Programas}}
-\addto\extrasenglish{\renewcommand*\proglistname{List of Programs}}
+\addto\extrasbrazil{
+  \renewcommand*\proglistname{Lista de Programas}
+  \gdef\lstlistlistingname{Lista de Programas}
+}
+\addto\extrasenglish{
+  \renewcommand*\proglistname{List of Programs}
+  \gdef\lstlistlistingname{List of Programs}
+}

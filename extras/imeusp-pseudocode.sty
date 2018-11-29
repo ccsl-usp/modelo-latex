@@ -1,0 +1,205 @@
+\ProvidesFile{imeusp-pseudocode.sty}
+    [2018/11/29 1.0 listings pseudocode language file]
+% Author: Nelson Lago
+% Licence: LPPL 1.3 or later
+
+% A "linguagem" pseudocódigo:
+%
+%   * É possível acrescentar palavras-chave com a opção
+%     "morekeywords={pchave1,pchave2}" ou com
+%     \lstset{morekeywords={pchave1,pchave2}}.
+%
+%   * Comentários seguem o padrão de C++ (// e /* ... */).
+%
+%   * "$...$" ativa o modo matemático em qualquer lugar
+%
+%   * Outros comandos LaTeX funcionam apenas em comentários; fora, a
+%     linguagem simula alguns pré-definidos (\textit{}, \texttt{}...)
+%
+%   * Para suspender a formatação automática, use \noparse{blah}.
+%
+%   * Para forçar a formatação de um texto como função, identificador,
+%     palavra-chave ou comentário, use \func{blah}, \id{blah}, \kw{blah}
+%     ou \comment{blah}.
+%
+%   * Palavras-chave dentro de comentários não são formatadas
+%     automaticamente; se necessário, use \func{}, \id{} etc.
+%     ou comandos LaTeX padrão.
+%
+%   * As palavras "Program", "Procedure" e "Function" têm formatação
+%     especial e fazem a palavra seguinte ser formatada como função.
+%     Funções em outros lugares não são detectadas automaticamente;
+%     use \func{}, a opção "functions={func1,func2}" ou
+%     "\lstset{functions={func1,func2}}" para que elas sejam detectadas.
+%
+%   * Além de funções, palavras-chave, strings, comentários e
+%     identificadores, há "specialidentifiers". Você pode usá-los
+%     com \specialid{blah}, com a opção "specialidentifiers={id1,id2}"
+%     ou "\lstset{specialidentifiers={id1,id2}}".
+
+%%%%%%%%%% ASPECTS %%%%%%%%
+
+% I am not sure whether it makes sense to keep these in different
+% aspects or whether they should all be part of a single one.
+
+\lst@BeginAspect{simulatex}
+  \lst@Key{simulatex}\relax[true]{
+    \lstKV@SetIf{#1}{\lst@ifsimulatex}
+
+    \lst@ifsimulatex
+      \lstset{
+        moredelim=**[is][\normalfont]{\\textnormal\{}{\}},
+        moredelim=**[is][\itshape]{\\textit\{}{\}},
+        moredelim=**[is][\scshape]{\\textsc\{}{\}},
+        moredelim=**[is][\slshape]{\\textsl\{}{\}},
+        moredelim=**[is][\upshape]{\\textup\{}{\}},
+        moredelim=**[is][\bfseries]{\\textbf\{}{\}},
+        moredelim=**[is][\mdseries]{\\textmd\{}{\}},
+        moredelim=**[is][\rmfamily]{\\textrm\{}{\}},
+        moredelim=**[is][\sffamily]{\\textsf\{}{\}},
+        moredelim=**[is][\ttfamily]{\\texttt\{}{\}},
+        moredelim=**[is][\em]{\\emph\{}{\}},
+      }
+    \fi
+
+  }
+\lst@EndAspect
+
+% "excludedelims" does not work as I expected; I believe
+% that is a bug. This redefines the default listings macros
+% to fix that, but only when the key fixexcludedelims is
+% set to true.
+\lst@BeginAspect{fixexcludedelims}
+  \lst@Key{fixexcludedelims}\relax[true]{
+    \lstKV@SetIf{#1}{\lst@iffixexcludedelims}
+
+    \lst@iffixexcludedelims
+      \def\lst@DelimOpen##1##2##3##4##5##6\@empty{%
+        \lst@TrackNewLines \lst@XPrintToken
+        \lst@EnterMode{##4}{\def\lst@currstyle##5}%
+        \lst@DelimPrint{##1##2}{##6}%
+        ##3}
+
+      \def\lst@DelimClose##1##2##3\@empty{%
+        \lst@TrackNewLines \lst@XPrintToken
+        \lst@DelimPrint{##1##2}{##3}%
+        \lst@LeaveMode}
+    \fi
+
+  }
+\lst@EndAspect
+
+\lst@BeginAspect[emph,procnames,comments,style,keywords,fixexcludedelims]{pseudocode}
+
+  % Automatically identify and format the given function names
+  % with the same formatting as procnamestyle using "emph".
+  \lst@Key{otherfunctions}\relax{
+    \lstset{emph={[10]#1}}
+    \lstset{emphstyle={[10]\lst@procnamestyle}}
+  }
+
+  % Just a more friendly name for "emph[X] / emphstyle[X]".
+  \lst@Key{specialidentifiers}\relax{\lstset{emph={[11]#1}}}
+  \lst@Key{specialidentifierstyle}\relax{\lstset{emphstyle={[11]#1}}}
+
+  % Use with excludedelims=comments to typeset a triangle as
+  % the comment indicator character. Notice the use of global
+  % in only some of the boolean commands: AtBeginComment is
+  % set globally, so we need to check a global variable in
+  % order not to append the same code to it twice. But we
+  % check a local variable to determine whether to typeset
+  % the triangle or not. Still, this local variable needs
+  % to exist globally (as false), otherwise there will be a
+  % syntax error when typesetting code *without* the triangle.
+  \global\let\lst@ifTriangleComments\iffalse
+  \global\let\lst@ifTriangleCommentsAlreadySet\iffalse
+  \lst@Key{trianglecomments}\relax[true]{
+    \lstKV@SetIf{#1}{\lst@ifTriangleComments}
+
+    \lst@ifTriangleComments
+      \lstset{fixexcludedelims}
+      \lst@ifTriangleCommentsAlreadySet\else
+        \lst@AddToHook{AfterBeginComment}{\lst@ifTriangleComments{\hspace*{0.5em}\ensuremath{\triangleright}}\fi}
+        \global\let\lst@ifTriangleCommentsAlreadySet\iftrue
+      \fi
+    \fi
+
+  }
+
+  \lst@Key{manualclassification}\relax[true]{
+    \lstKV@SetIf{#1}{\lst@ifmanualclassification}
+
+    \lst@ifmanualclassification
+      % Make it possible to manually set specific formatting
+      \lstset{
+        moredelim=**[is][identifierstyle]{\\id\{}{\}},
+        moredelim=**[is][commentstyle]{\\comment\{}{\}},
+        moredelim=**[is][keywordstyle]{\\kw\{}{\}},
+        moredelim=**[is][procnamestyle]{\\func\{}{\}},
+        moredelim=**[is][emphstyle11]{\\specialid\{}{\}},
+        moredelim=[is][]{\\noparse\{}{\}},
+      }
+      % Make the same commands available to LaTeX so that
+      % they may be used in comments with the "texcl" option.
+      % These definitions are local, so they only work within
+      % the listing itself.
+      \def\id##1{\lst@identifierstyle##1}
+      \def\comment##1{\lst@commentstyle##1}
+      \def\kw##1{\lst@keywordstyle##1}
+      \def\func##1{\lst@procnamestyle##1}
+      \def\specialid##1{\csname lst@emphstyle11\endcsname##1}
+    \fi
+
+  }
+
+\lst@EndAspect
+
+%%%%%% LANGUAGE %%%%%%
+
+\lst@definelanguage[brazil]{pseudocode}[base]{pseudocode}{
+  keywords={
+    faca, feito, cancele, continue,
+    inicio, fim,
+    escolhe, caso,
+    para, de, ate,
+    laco, enquanto, repita, vapara,
+    se, entao, senao,
+    e, ou, oux, nao,
+    verdadeiro, falso,
+    devolva,
+  },
+  procnamekeys={programa,rotina,funcao},
+  keywords={[2]programa,rotina,funcao},
+}
+
+\lst@definelanguage[english]{pseudocode}[base]{pseudocode}{
+  keywords={
+    do, done, break, continue,
+    begin, end,
+    switch, case,
+    for, from, to,
+    loop, while, repeat, until, goto,
+    if, then, else,
+    and, or, xor, not,
+    true, false,
+    return,
+  },
+  procnamekeys={program,procedure,function},
+  keywords={[2]program,procedure,function},
+}
+
+\lst@definelanguage[base]{pseudocode}{
+  mathescape=true,
+  sensitive=false,
+  texcl=true,
+  %escapechar=\&,
+  simulatex,
+  excludedelims={comments,strings},
+  fixexcludedelims,
+  manualclassification,
+  trianglecomments,
+  morestring=[b]{'},
+  morestring=[b]{"},
+  morecomment=[s]{/*}{*/},
+  morecomment=[l]{//},
+}[keywords,comments,strings,procnames,simulatex,fixexcludedelims,pseudocode]
