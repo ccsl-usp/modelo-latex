@@ -1,0 +1,102 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% HIPERLINKS E REFERÊNCIAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O comando \ref por padrão mostra apenas o número do elemento a que se
+% refere; assim, é preciso escrever "veja a Figura \ref{grafico}" ou
+% "como visto na Seção \ref{sec:introducao}". Usando o pacote hyperref
+% (carregado mais abaixo), esse número é transformado em um hiperlink.
+%
+% Se você quiser mudar esse comportamento, ative as packages varioref
+% e cleveref e também as linhas "labelformat" e "crefname" mais abaixo.
+% Nesse caso, você deve escrever apenas "veja a \ref{grafico}" ou
+% "como visto na \ref{sec:introducao}" etc. e o nome do elemento será
+% gerado automaticamente como hiperlink.
+%
+% Se, além dessa mudança, você quiser usar os recursos de varioref ou
+% cleveref, mantenha as linhas labelformat comentadas e use os comandos
+% \vref ou \cref, conforme sua preferência, também sem indicar o nome do
+% elemento, que é inserido automaticamente. Vale lembrar que o comando
+% \vref de varioref pode causar problemas com hyperref, impedindo a
+% geração do PDF final.
+%
+% ATENÇÃO: varioref, hyperref e cleveref devem ser carregadas nessa ordem!
+%\usepackage{varioref}
+
+%\labelformat{figure}{Figura~#1}
+%\labelformat{table}{Tabela~#1}
+%\labelformat{equation}{Equação~#1}
+%% Isto não funciona corretamente com os apêndices; o comando seguinte
+%% contorna esse problema
+%%\labelformat{chapter}{Capítulo~#1}
+%\makeatletter
+%\labelformat{chapter}{\@chapapp~#1}
+%\makeatother
+%\labelformat{section}{Seção~#1}
+%\labelformat{subsection}{Seção~#1}
+%\labelformat{subsubsection}{Seção~#1}
+
+% Usamos "PassOptions" aqui porque outras packages definem opções para
+% hyperref também e chamar a package com opções diretamente gera conflitos.
+\PassOptionsToPackage{
+  unicode=true,
+  plainpages=false,
+  pdfpagelabels,
+  colorlinks=true,
+  %citecolor=black,
+  %linkcolor=black,
+  %urlcolor=black,
+  %filecolor=black,
+  citecolor=DarkGreen,
+  linkcolor=NavyBlue,
+  urlcolor=DarkRed,
+  filecolor=green,
+  bookmarksopen=true,
+  % hyperref não gera hyperlinks corretos em índices remissivos criados com
+  % xindy; assim, é possível desabilitar essa função aqui e gerar os
+  % hyperlinks através da configuração de xindy definida anteriormente. Com
+  % makeindex (o default), quem precisa criar os hyperlinks é hyperref.
+  %hyperindex=false,
+}{hyperref}
+
+% Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
+\usepackage{hyperref}
+
+%\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
+%% cleveref não tem tradução para o português
+%\crefname{figure}{Figura}{Figuras}
+%\crefname{table}{Tabela}{Tabelas}
+%\crefname{chapter}{Capítulo}{Capítulos}
+%\crefname{section}{Seção}{Seções}
+%\crefname{subsection}{Seção}{Seções}
+%\crefname{subsubsection}{Seção}{Seções}
+%\crefname{appendix}{Apêndice}{Apêndices}
+%\crefname{subappendix}{Apêndice}{Apêndices}
+%\crefname{subsubappendix}{Apêndice}{Apêndices}
+
+% ao criar uma referência hyperref para um float, a referência aponta
+% para o final do caption do float, o que não é muito bom. Este pacote
+% faz a referência apontar para o início do float (é possível personalizar
+% também). Esta package é incompatível com a classe beamer (usada para
+% criar posters e apresentações), então testamos a compatibilidade antes
+% de carregá-la.
+\ifboolexpr{
+  test {\ifcsdef{figure}} and
+  test {\ifcsdef{figure*}} and
+  test {\ifcsdef{table}} and
+  test {\ifcsdef{table*}}
+}{\usepackage[all]{hypcap}}{}
+
+% XMP (eXtensible Metadata Platform) is a mechanism proposed by Adobe for
+% embedding document metadata within the document itself. The package
+% integrates seamlessly with hyperref and requires virtually no modifications
+% to documents that already exploit hyperref's mechanisms for specifying PDF
+% metadata.
+\usepackage{hyperxmp}
+
+% hyperref detecta url's definidas com \url que começam com "http" e
+% "www" e cria links adequados. No entanto, quando a url não começa
+% com essas strings (por exemplo, "usp.br"), hyperref considera que
+% se trata de um link para um arquivo local. Isto força todas as
+% \url's que não tem esquema definido a serem do tipo http.
+\hyperbaseurl{http://}
