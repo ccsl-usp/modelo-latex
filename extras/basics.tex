@@ -242,42 +242,9 @@
 % *não* seja normalmente recomendado.
 %\usepackage{import}
 
-% Para carregar packages "normais"
-\newcommand\usepackagefromsubdir[3][]{
-    \csletcs{@oldinput@path}{input@path}
-    \csappto{input@path}{{#2}}
-    \usepackage[#1]{#3}
-    \csletcs{input@path}{@oldinput@path}
-}
-
-% Para carregar temas do beamer
-\newcommand\usethemefromsubdir[3][]{
-    \csletcs{@oldinput@path}{input@path}
-    \csappto{input@path}{{#2}}
-    \usetheme[#1]{#3}
-    \csletcs{input@path}{@oldinput@path}
-}
-
-% Idem
-\newcommand\usecolorthemefromsubdir[3][]{
-    \csletcs{@oldinput@path}{input@path}
-    \csappto{input@path}{{#2}}
-    \usecolortheme[#1]{#3}
-    \csletcs{input@path}{@oldinput@path}
-}
-
-% Para carregar aspectos da package listings
-\newcommand\lstloadaspectsfromsubdir[2]{
+\newcommand\dowithsubdir[2]{
     \csletcs{@oldinput@path}{input@path}
     \csappto{input@path}{{#1}}
-    \lstloadaspects{#2}
-    \csletcs{input@path}{@oldinput@path}
-}
-
-% Para carregar linguagens da package listings
-\newcommand\lstloadlanguagesfromsubdir[2]{
-    \csletcs{@oldinput@path}{input@path}
-    \csappto{input@path}{{#1}}
-    \lstloadlanguages{#2}
+    #2
     \csletcs{input@path}{@oldinput@path}
 }

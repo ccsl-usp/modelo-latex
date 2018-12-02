@@ -44,13 +44,13 @@
 \usepackage{appendixnumberbeamer}
 
 % Tema metropolis com algumas modificações
-\usethemefromsubdir{extras/}{imeusp}
+\dowithsubdir{extras/}{\usetheme{imeusp}}
 
 % O padrão usa um tom de vermelho escuro como cor principal; a opção
 % "greeny" troca essa cor por um tom de verde; a opção "sandy" usa o
 % mesmo tom de verde mas modifica a cor padrão dos blocos para um
 % tom amarelado.
-\usecolorthemefromsubdir[greeny]{extras/}{imeusp}
+\dowithsubdir{extras/}{\usecolortheme[greeny]{imeusp}}
 % Desabilita a cor de rodapé
 \setbeamercolor{footline}{fg=,bg=}
 

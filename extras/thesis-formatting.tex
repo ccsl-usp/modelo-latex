@@ -7,7 +7,7 @@
 
 % Coloca as linhas "Apêndices" e "Anexos" no sumário. Com a opção "inline",
 % cada apêndice/anexo aparece como "Apêndice X" ao invés de apenas "X".
-\usepackagefromsubdir{extras/}{appendixlabel}
+\dowithsubdir{extras/}{\usepackage{appendixlabel}}
 
 % Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
@@ -25,7 +25,7 @@
 \usepackage{fancyhdr}
 
 % Personalização de fancyhdr
-\usepackagefromsubdir{extras/}{imeusp-headers}
+\dowithsubdir{extras/}{\usepackage{imeusp-headers}}
 
 % acrescentamos a bibliografia/indice/conteudo no Sumário, mas excluímos as
 % listas de figuras e tabelas e o próprio sumário.

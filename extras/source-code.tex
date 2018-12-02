@@ -17,10 +17,11 @@
 %    de Kreher e Stinson.
 
 \usepackage{listings}
+% Carrega a "linguagem" pseudocode para listings
 \appto{\lstaspectfiles}{,imeusp-pseudocode.sty}
 \appto{\lstlanguagefiles}{,imeusp-pseudocode.sty}
-\lstloadaspectsfromsubdir{extras/}{simulatex,fixexcludedelims,pseudocode}
-\lstloadlanguagesfromsubdir{extras/}{[base]pseudocode,[english]pseudocode,[brazil]pseudocode}
+\dowithsubdir{extras/}{\lstloadaspects{simulatex,fixexcludedelims,pseudocode}}
+\dowithsubdir{extras/}{\lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazil]pseudocode}}
 
 % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
 % usados em português é possível contornar o problema com a tabela abaixo.

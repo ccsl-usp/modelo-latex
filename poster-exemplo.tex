@@ -45,13 +45,13 @@
 %% Font sizes can be changed using the scale option.
 \usepackage[size=a1,orientation=portrait,scale=1.8]{beamerposter}
 
-\usethemefromsubdir{extras/}{imeusp-poster}
+\dowithsubdir{extras/}{\usetheme{imeusp-poster}}
 
 % O padrão usa um tom de vermelho escuro como cor principal; a opção
 % "greeny" troca essa cor por um tom de verde; a opção "sandy" usa o
 % mesmo tom de verde mas modifica a cor padrão dos blocos para um
 % tom amarelado.
-\usecolorthemefromsubdir[sandy]{extras/}{imeusp}
+\dowithsubdir{extras/}{\usecolortheme[sandy]{imeusp}}
 
 %Remove ícones de navegação
 \beamertemplatenavigationsymbolsempty
