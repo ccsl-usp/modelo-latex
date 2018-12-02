@@ -1,41 +1,43 @@
-\ProvidesFile{imeusp-pseudocode.sty}
-    [2018/11/29 1.0 listings pseudocode language file]
+\ProvidesFile{lstpseudocode.sty}
+    [2018/12/03 1.0.1 listings pseudocode language file]
 % Author: Nelson Lago
 % Licence: LPPL 1.3 or later
 
-% A "linguagem" pseudocódigo:
+% The pseudocode "language":
 %
-%   * É possível acrescentar palavras-chave com a opção
-%     "morekeywords={pchave1,pchave2}" ou com
-%     \lstset{morekeywords={pchave1,pchave2}}.
+%   * You may add keywords with the "morekeywords={keyword1,keyword2}"
+%     option or with "\lstset{morekeywords={keyword1,keyword2}}".
 %
-%   * Comentários seguem o padrão de C++ (// e /* ... */).
+%   * Comments follow the C++ style (// and /* ... */).
 %
-%   * "$...$" ativa o modo matemático em qualquer lugar
+%   * "$...$" activates math mode anywhere
 %
-%   * Outros comandos LaTeX funcionam apenas em comentários; fora, a
-%     linguagem simula alguns pré-definidos (\textit{}, \texttt{}...)
+%   * Other LaTeX commands work only inside comments; out of them, the
+%     language simulates some predefined ones (\textit{}, \texttt{}...)
 %
-%   * Para suspender a formatação automática, use \noparse{blah}.
+%   * \label{} works within comments and the corresponding reference
+%     points to the line number. To use it without a visible comment,
+%     use "///"; it works similarly to "//" but does not print the
+%     comment indicator (the small triangle).
 %
-%   * Para forçar a formatação de um texto como função, identificador,
-%     palavra-chave ou comentário, use \func{blah}, \id{blah}, \kw{blah}
-%     ou \comment{blah}.
+%   * To prevent automatic formatting, use \noparse{blah}.
 %
-%   * Palavras-chave dentro de comentários não são formatadas
-%     automaticamente; se necessário, use \func{}, \id{} etc.
-%     ou comandos LaTeX padrão.
+%   * To force some text to be formatted as function, identifier, keyword
+%     or comment, use \func{blah}, \id{blah}, \kw{blah} or \comment{blah}.
 %
-%   * As palavras "Program", "Procedure" e "Function" têm formatação
-%     especial e fazem a palavra seguinte ser formatada como função.
-%     Funções em outros lugares não são detectadas automaticamente;
-%     use \func{}, a opção "functions={func1,func2}" ou
-%     "\lstset{functions={func1,func2}}" para que elas sejam detectadas.
+%   * Keywords inside comments are *not* automatically formatted; if that
+%     is needed, use \func{}, \id{} etc. or standard LaTeX commands.
 %
-%   * Além de funções, palavras-chave, strings, comentários e
-%     identificadores, há "specialidentifiers". Você pode usá-los
-%     com \specialid{blah}, com a opção "specialidentifiers={id1,id2}"
-%     ou "\lstset{specialidentifiers={id1,id2}}".
+%   * The keywords "Program", "Procedure" and "Function" have special
+%     formatting and make the next word to be formatted as a function.
+%     Functions in other places are *not* automatically detected;
+%     use \func{}, the "functions={func1,func2}" option or
+%     "\lstset{functions={func1,func2}}" to make them be.
+%
+%   * Besides functions, keywords, strings, comments, and identifiers,
+%     there are "specialidentifiers". You may use them with
+%     \specialid{blah}, with the "specialidentifiers={id1,id2}" option,
+%     or with "\lstset{specialidentifiers={id1,id2}}".
 
 %%%%%%%%%% ASPECTS %%%%%%%%
 
@@ -91,23 +93,33 @@
 
 \lst@BeginAspect[emph,procnames,comments,style,keywords,fixexcludedelims]{pseudocode}
 
-  % Automatically identify and format the given function names
-  % with the same formatting as procnamestyle using "emph".
-  \lst@Key{otherfunctions}\relax{
+  % Use emph[10] and emphstyle[10] to automatically identify and format
+  % the given function names with the same formatting as procnamestyle
+  \lst@Key{functions}\relax{
     \lstset{emph={[10]#1}}
     \lstset{emphstyle={[10]\lst@procnamestyle}}
   }
 
-  % Just a more friendly name for "emph[X] / emphstyle[X]".
+  % Use keywords[10] and keywordstyle[10] to format the keywords in
+  % procnamekeys with a specific format. It is not so great to do
+  % "keywords={[10]...} here (this should be done in the marco that
+  % handles the "keywords" key), but it works.
+  \lst@Key{procnamekeystyle}\relax{
+    % Trick to force \lst@procnamekeys to be expanded before \lstset
+    \edef\@tempa{\noexpand\lstset{keywords={[10]\lst@procnamekeys}}}\@tempa
+    \lstset{keywordstyle={[10]#1}}
+  }
+
+  % Just a more friendly name for "emph[10] / emphstyle[10]".
   \lst@Key{specialidentifiers}\relax{\lstset{emph={[11]#1}}}
   \lst@Key{specialidentifierstyle}\relax{\lstset{emphstyle={[11]#1}}}
 
   % Use with excludedelims=comments to typeset a triangle as
   % the comment indicator character. Notice the use of global
   % in only some of the boolean commands: AtBeginComment is
-  % set globally, so we need to the boolean to exist globally,
-  % but we check it *locally* to determine whether to typeset
-  % the triangle or not.
+  % set globally, so we need to the boolean to always exist and,
+  % therefore, we define it globally. BUT we set its *local*
+  % value to determine whether to typeset the triangle or not.
   \global\let\lst@ifTriangleComments\iffalse
 
   \lst@AddToHook{AfterBeginComment}{\lst@ifTriangleComments{\hspace*{0.5em}\ensuremath{\triangleright}}\fi}
@@ -160,11 +172,10 @@
     laco, enquanto, repita, vapara,
     se, entao, senao,
     e, ou, oux, nao,
-    verdadeiro, falso,
+    verdadeiro, falso, estrutura, conjunto,
     devolva,
   },
   procnamekeys={programa,rotina,funcao},
-  keywords={[2]programa,rotina,funcao},
 }
 
 \lst@definelanguage[english]{pseudocode}[base]{pseudocode}{
@@ -176,11 +187,10 @@
     loop, while, repeat, until, goto,
     if, then, else,
     and, or, xor, not,
-    true, false,
+    true, false, struct, set,
     return,
   },
   procnamekeys={program,procedure,function},
-  keywords={[2]program,procedure,function},
 }
 
 \lst@definelanguage[base]{pseudocode}{
@@ -197,4 +207,5 @@
   morestring=[b]{"},
   morecomment=[s]{/*}{*/},
   morecomment=[l]{//},
+  escapeinside={///}{\^^M},
 }[keywords,comments,strings,procnames,simulatex,fixexcludedelims,pseudocode]

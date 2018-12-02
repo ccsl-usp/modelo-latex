@@ -18,8 +18,8 @@
 
 \usepackage{listings}
 % Carrega a "linguagem" pseudocode para listings
-\appto{\lstaspectfiles}{,imeusp-pseudocode.sty}
-\appto{\lstlanguagefiles}{,imeusp-pseudocode.sty}
+\appto{\lstaspectfiles}{,lstpseudocode.sty}
+\appto{\lstlanguagefiles}{,lstpseudocode.sty}
 \dowithsubdir{extras/}{\lstloadaspects{simulatex,fixexcludedelims,pseudocode}}
 \dowithsubdir{extras/}{\lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazil]pseudocode}}
 
@@ -74,7 +74,6 @@
   framexleftmargin=25pt,
   framexrightmargin=5pt,
   framesep=5pt,
-  defaultdialect=[english]{pseudocode},
 }
 
 % Um exemplo de estilo personalizado para listings (tabulações maiores)
@@ -105,42 +104,31 @@
   morekeywords={xmlns,version,type}% list your attributes here
 }
 
+% Estilo padrão para a "linguagem" pseudocode
 \lstdefinestyle{pseudocode}{
   basicstyle=\rmfamily\small,
   commentstyle=\itshape,
   keywordstyle=\bfseries,
-  % as palavras "function" e "procedure"
-  keywordstyle=[2]\bfseries\scshape,
   identifierstyle=\itshape,
+  % as palavras "function" e "procedure"
+  procnamekeystyle=\bfseries\scshape,
   % funções precedidas por function/procedure ou com \func{}
   procnamestyle=\ttfamily,
   specialidentifierstyle=\ttfamily\bfseries,
 }
+\lstset{defaultdialect=[english]{pseudocode}}
 
-% Novo tipo de float para programas, possível graças à package
-% float, carregada em floats.tex
-\floatstyle{ruled}
-\ifcsdef{chapter}
-    {\newfloat{program}{htbp}{lop}[chapter]}
-    {\newfloat{program}{htbp}{lop}}
-\floatstyle{plain}
-\addto\extrasbrazil{
-  \floatname{program}{Programa}
-  \gdef\lstlistingname{Program}
-}
-\addto\extrasenglish{
-  \floatname{program}{Program}
-  \gdef\lstlistingname{Programa}
-}
+% No arquivo "floats.tex" definimos o tipo de float "program".
 
-% A lista de programas é criada automaticamente pela package float,
-% mas precisamos definir o nome da lista em cada língua
-\newcommand*\proglistname{List of Programs}
-\addto\extrasbrazil{
-  \renewcommand*\proglistname{Lista de Programas}
-  \gdef\lstlistlistingname{Lista de Programas}
-}
-\addto\extrasenglish{
-  \renewcommand*\proglistname{List of Programs}
-  \gdef\lstlistlistingname{List of Programs}
-}
+% A package listings tem seu próprio mecanismo para a criação de
+% captions, lista de programas etc. Neste modelo não usamos esses
+% recursos mas, se necessário, lembre-se de traduzir o caption e
+% o título da lista de programas usados por ele:
+%\addto\extrasbrazil{
+%  \gdef\lstlistlistingname{Lista de Programas}
+%  \gdef\lstlistingname{Programa}
+%}
+%\addto\extrasenglish{
+%  \gdef\lstlistlistingname{List of Programs}
+%  \gdef\lstlistingname{Program}
+%}

@@ -113,6 +113,113 @@
 % Caixas de texto coloridas
 %\usepackage{tcolorbox}
 
+% Novo tipo de float para programas, possível graças à package float,
+% carregada em floats.tex. Observe que a lista de floats de cada tipo
+% é criada automaticamente pela package float, mas precisamos:
+%  1. Definir o nome do comando ("\begin{program}")
+%  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
+%  3. Definir a extensão do arquivo temporário a ser usado (pode ser
+%     qualquer coisa, desde que não haja repetições; aqui, usamos "lop")
+%  4. Modificar o Makefile para acrescentar essa extensão em TMP_EXTENSIONS
+%  5. Acrescentar os comandos correspondentes em folhas-de-rosto.tex
+
+% O estilo padrão do novo float a ser criado (veja mais sobre isso na
+% documentação da package float). Para "program" usamos "ruled", mas
+% para outros floats provavelmente é melhor usar o mesmo formato de
+% Figuras e Tables (plain).
+\floatstyle{ruled}
+
+\ifcsdef{chapter}
+    % O novo ambiente se chama "program" ("\begin{program}") e a extensão
+    % temporária é "lop"
+    {\newfloat{program}{htbp}{lop}[chapter]}
+    {\newfloat{program}{htbp}{lop}}
+
+\captionsetup[program]{style=ruled}
+
+% Comando "program", em pt, se refere a "Programa" e "Lista de Programas"
+\addto\extrasbrazil{
+  \floatname{program}{Programa}
+  \gdef\programlistname{Lista de Programas}
+}
+
+% Comando "program", em en, se refere a "Program", e "List of Programs"
+\addto\extrasenglish{
+  \floatname{program}{Program}
+  \gdef\programlistname{List of Programs}
+}
+
+% Retorna o estilo dos floats para o padrão
+\floatstyle{plain}
+
+% Se um programa é maior que uma página, ele não pode ser inserido em um
+% float. Nesse caso, vamos criar o ambiente "ruledcaption", que cria a
+% mesma estrutura visual e os mesmos captions que os floats do tipo
+% "program", mas sem ser um float. Para isso, vamos usar recursos da
+% package framed (a package tcolorbox poderia ter sido usada também).
+% Você provavelmente não vai precisar de nada semelhante se quiser
+% criar outros tipos de float.
+\newcounter{RCtempProgramCounter}
+\usepackage{framed}
+\newenvironment{ruledcaption}[2][]{
+  % For whatever reason, the framed package actually calls "\captionof"
+  % multiple times, messing up the counter. We need to prevent this.
+
+  \setcounter{RCtempProgramCounter}{\value{program}}
+
+  \edef\RCtemparg{#1}
+  \def\doCaption{
+    \setcounter{program}{\value{RCtempProgramCounter}}
+    \ifcsempty{RCtemparg}
+      {\captionof{program}[#2]{#2}}
+      {\captionof{program}[#1]{#2}}
+    \par
+  }
+
+  \def\FrameCommand{
+    \CustomFBox
+    {
+      \vspace*{.15\baselineskip}
+      \doCaption
+      \vspace*{-.7\baselineskip}
+      \kern 2pt\hrule\kern 2pt\relax
+    }
+    {}{.8pt}{.4pt}{0pt}{0pt}
+  }
+
+  \def\FirstFrameCommand{
+    \CustomFBox
+    {
+      \vspace*{.15\baselineskip}
+      \doCaption
+      \vspace*{-.7\baselineskip}
+      \kern 2pt\hrule\kern 2pt\relax
+    }
+    {\hfill\textit{cont}\enspace$\longrightarrow$}
+    {.8pt}{0pt}{0pt}{0pt}
+  }
+
+  \def\MidFrameCommand{
+    \CustomFBox
+    {$\longrightarrow$\enspace\textit{cont}\par}
+    {\hfill\textit{cont}\enspace$\longrightarrow$}
+    {0pt}{0pt}{0pt}{0pt}
+  }
+
+  \def\LastFrameCommand{
+    \CustomFBox
+    {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+    {}{0pt}{.4pt}{0pt}{0pt}
+  }
+
+  \vspace{.5\baselineskip plus .3\baselineskip minus 0pt}
+  \MakeFramed{\FrameRestore}
+
+}{
+  \endMakeFramed
+  \setcounter{program}{\value{RCtempProgramCounter}}
+  \stepcounter{program}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TABELAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -194,4 +301,3 @@
 
 % Permite colorir linhas, colunas ou células
 %\usepackage{colortbl}
-
