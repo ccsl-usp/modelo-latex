@@ -197,6 +197,9 @@
 % Este formato está definido na package imeusp-headers
 \pagestyle{appendix}
 
+% Sem esta linha, a palavra "Apêndices" no sumário ficava no final da
+% primeira página; assim, forçamos uma quebra de página antes.
+\addtocontents{toc}{\newpage}
 % Apêndices
 \appendix
 
@@ -213,6 +216,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES FINAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Aqui vão a bibliografia, índice remissivo e outras seções similares.
+
+% Espaço adicional no sumário antes das referências / índice remissivo
+\addtocontents{toc}{\vspace{2\baselineskip plus .5\baselineskip minus .5\baselineskip}}
+
 % O comando backmatter desabilita a numeração de capítulos e também não existe
 % na classe "article".
 \backmatter

@@ -85,13 +85,19 @@
   }
 
   \newcommand\appendixTOCLine{
+    \protect\pagebreak[2]
     \vspace{.8\baselineskip}
     {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
+    % This doesn't really work...
+    \protect\nopagebreak[4]
   }
 
   \newcommand\annexTOCLine{
+    \protect\pagebreak[2]
     \vspace{.8\baselineskip}
     {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
+     % This doesn't really work...
+    \protect\nopagebreak[4]
   }
   % Depois, modificamos os comandos \appendix e \annex para modificar
   % o sumário (como \annex só é definida mais à frente, pela package

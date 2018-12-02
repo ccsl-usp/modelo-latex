@@ -116,7 +116,7 @@ text text text.
 % sem ele para criar as listas em páginas separadas. Observe que você também
 % pode inserir quebras de página manualmente (com \clearpage, veja o exemplo
 % mais abaixo).
-\newcommand\disablenewpage[1]{{\let\clearpage\relax\let\cleardoublepage\relax#1}}
+\newcommand\disablenewpage[1]{{\let\clearpage\par\let\cleardoublepage\par #1}}
 
 % Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
 % a opção correspondente e as listas dentro de um par de chaves para ativar
@@ -165,10 +165,10 @@ text text text.
 %\listof{program}{\programlistname}
 \disablenewpage{\listof{program}{\programlistname}}
 
-} % Final de "raggedbottom"
-
 % Sumário (obrigatório)
 \tableofcontents
+
+} % Final de "raggedbottom"
 
 % Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
 % pois o índice é opcional). É comum colocar esses itens no final do documento,
