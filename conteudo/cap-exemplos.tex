@@ -69,23 +69,31 @@ denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
 
 \section{\emph{Floats} (Tabelas e Figuras)}\index{Floats}
 
-Evidentemente, \LaTeX{} permite inserir figuras no texto; além
-disso, ele também permite girá-las e criar subfiguras
-(com sublegendas\index{Legendas}), como no exemplo da
-Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui as
-subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
-Uma ``figura'', na verdade, pode ser qualquer tipo de conteúdo
-ilustrativo (como no caso da Figura~\ref{fig:gantt}, que é
-um cronograma) mas, com a \textit{package} \textsf{float}, é
-possível definir ambientes específicos para cada tipo de
-conteúdo adicional (cada um com numeração independente), como
-é o caso do Programa~\ref{prog:java}.\index{Floats}
+Evidentemente, \LaTeX{} permite inserir figuras no texto; além disso, ele
+também permite girá-las e criar subfiguras (com sublegendas\index{Legendas}),
+como no exemplo da Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui
+as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}. Uma
+``figura'', na verdade, pode ser qualquer tipo de conteúdo ilustrativo
+(como no caso da Figura~\ref{fig:gantt}, que é um cronograma) mas, com a
+\textit{package} \textsf{float}, também é possível definir ambientes
+específicos para cada tipo de conteúdo adicional (cada um com numeração
+independente), como é o caso do Programa~\ref{prog:java}\index{Floats}. Há
+mais informações e dicas sobre recursos específicos para inclusão de
+código-fonte e pseudocódigo no Apêndice \ref{ap:pseudocode}\footnote{
+Observe que o nome do Apêndice (``\ref{ap:pseudocode}'') foi impresso em
+uma linha separada, o que não é muito bom visualmente. Para evitar que isso
+aconteça (não só no final do parágrafo, mas em qualquer quebra de linha),
+faça o que já foi discutido na Seção~\ref{orphanchar} sobre símbolos
+matemáticos: utilize um espaço não-separável para fazer referências a
+figuras, tabelas, seções etc.: ``\textsf{\dots no
+Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
 
 % As packages relevantes para lidar com figuras são graphicx,
 % float, caption, rotating e subcaption. Observe que "subfigure"
 % e "subtable" são definidos na package subcaption, *não* na
 % package subfigure! A package subfigure é obsoleta.
 
+%%%%%%%%% Figuras lado-a-lado %%%%%%%%%
 \begin{figure}
   \centering
 
@@ -112,8 +120,10 @@ conteúdo adicional (cada um com numeração independente), como
   \label{fig:subfigures}
 \end{figure}
 
-% Foi utilizado o pacote listings para formatar o código fonte
-% Veja no preambulo do arquivo tese-exemplo.tex os parâmetros de configuração.
+%%%%%%%% Código fonte %%%%%%%%
+
+% Foi utilizado o pacote listings para formatar o código fonte.
+% Veja os parâmetros de configuração no arquivo source-code.tex.
 \begin{program}
   \index{Java}
   \centering
@@ -129,6 +139,8 @@ for (i = 0; i < 20; i++)
   \caption{Exemplo de laço em Java.}
   \label{prog:java}
 \end{program}
+
+%%%%%%% Cronograma %%%%%%%
 
 \begin{figure}
   \centering
@@ -155,20 +167,12 @@ for (i = 0; i < 20; i++)
   \label{fig:gantt}
 \end{figure}
 
+%%%%%
+
 Talvez você precise organizar a apresentação da informação na forma de
-tabelas\index{Floats}. Há diversos estilos de tabela; um exemplo simples é a
-Tabela~\ref{tab:amino_acidos}. A Tabela~\ref{tab:ficha} mostra como construir
-uma tabela em forma de ficha larga que deve ser impressa em modo paisagem (ela
-é um \textit{float}, mas sempre é impressa em uma página separada). Outro
-exemplo de tabela em modo paisagem, esta distribuída em duas páginas (sem ser
-um \textit{float}), está no Apêndice \ref{ape:sequencias}\footnote{
-Observe que o nome do Apêndice (``\ref{ape:sequencias}'') foi impresso em uma
-linha separada, o que não é muito bom visualmente. Para evitar que isso
-aconteça (não só no final do parágrafo, mas em qualquer quebra de linha),
-faça o que já foi discutido na Seção~\ref{orphanchar} sobre símbolos
-matemáticos: utilize um espaço não-separável para fazer referências a
-figuras, tabelas, seções etc.: ``\textsf{... está no
-Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
+tabelas\index{Floats}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
+
+%%%%%%%% Tabelas lado-a-lado %%%%%%%%
 
 \begin{table}
 \centering
@@ -210,6 +214,153 @@ Apêndice\textasciitilde\textbackslash{}ref\{ape:sequencias\}}''.}.
   \caption{Códigos, abreviaturas e nomes dos aminoácidos.}
   \label{tab:amino_acidos}
 \end{table}
+
+Se a tabela tem muitas linhas e, portanto, não cabe em uma única página, é
+possível fazê-la continuar ao longo de várias páginas com a \textit{package}
+\textsf{longtable}, como é o caso da Tabela~\ref{tab:numeros}. Nesse caso,
+a tabela não é um \textit{float} e, portanto, ela aparece de acordo com a
+sequência normal do texto. Se, além de muito longa, a tabela for também
+muito larga, você pode usar o comando \textsf{landscape} (da
+\textit{package} \textsf{pdflscape}) em conjunto com \textsf{longtable}
+para imprimi-la em modo paisagem ao longo de várias páginas. A
+Tabela~\ref{tab:numeros} tem essa configuração comentada; experimente
+des-comentar as linhas correspondentes\footnote{Observe que, nesse caso,
+vai sempre haver uma quebra de página no texto para fazer a tabela
+começar em uma página em modo paisagem.}.
+
+%%%%%%%% Tabela longa em várias páginas %%%%%%%%
+
+%%%% É possível fazer esta mesma tabela em modo paisagem des-comentando
+%%%% esta linha e a correspondente no final da tabela
+%\begin{landscape}
+\begin{center}
+\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\caption{Exemplo de tabela com valores numéricos.}\\
+\hline
+\emph{Lim.} &
+\multicolumn{3}{c|}{MGWT} &
+\multicolumn{3}{c|}{AMI} &
+\multicolumn{3}{c|}{\emph{Spectrum} de Fourier} &
+\multicolumn{3}{c|}{Caract. espectrais} \\
+\cline{2-4} \cline{5-7} \cline{8-10} \cline{11-13} &
+\emph{Sn} & \emph{Sp} & \emph{AC} &
+\emph{Sn} & \emph{Sp} & \emph{AC} &
+\emph{Sn} & \emph{Sp} & \emph{AC} &
+\emph{Sn} & \emph{Sp} & \emph{AC} \\
+\hline \hline
+\endfirsthead
+% Final do cabeçalho que aparece na primeira página; neste caso,
+% igual ao das páginas seguintes, definido logo abaixo, exceto
+% pelo comando caption; essa diferença impede que a lista de
+% tabelas inclua uma referência para cada página da tabela
+
+	\caption[]{Exemplo de tabela com valores numéricos (cont.).}\\
+\hline
+\emph{Lim.} &
+\multicolumn{3}{c|}{MGWT} &
+\multicolumn{3}{c|}{AMI} &
+\multicolumn{3}{c|}{\emph{Spectrum} de Fourier} &
+\multicolumn{3}{c|}{Caract. espectrais} \\
+\cline{2-4} \cline{5-7} \cline{8-10} \cline{11-13} &
+\emph{Sn} & \emph{Sp} & \emph{AC} &
+\emph{Sn} & \emph{Sp} & \emph{AC} &
+\emph{Sn} & \emph{Sp} & \emph{AC} &
+\emph{Sn} & \emph{Sp} & \emph{AC} \\
+\hline \hline
+\endhead % Final do cabeçalho que aparece em todas as páginas
+
+\hline
+\multicolumn{13}{|r|}{\textit{continua}\enspace$\longrightarrow$}\\
+\hline
+\endfoot % Final do rodapé que aparece em todas as páginas exceto a última
+
+\hline
+\endlastfoot % Final do rodapé da última página (neste caso, apenas uma linha)
+\label{tab:numeros} % O label não deve ficar em um cabeçalho que se repete!
+ 1 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 \\
+ 2 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 \\
+ 3 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 \\
+ 4 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 \\
+ 5 & 1.00 & 0.16 & 0.11 & 1.00 & 0.16 & 0.11 & 1.00 & 0.16 & 0.11 & 1.00 & 0.16 & 0.11 \\
+ 6 & 1.00 & 0.16 & 0.12 & 1.00 & 0.16 & 0.12 & 1.00 & 0.16 & 0.12 & 1.00 & 0.16 & 0.12 \\
+ 7 & 1.00 & 0.17 & 0.12 & 1.00 & 0.17 & 0.12 & 1.00 & 0.17 & 0.12 & 1.00 & 0.17 & 0.13 \\
+ 8 & 1.00 & 0.17 & 0.13 & 1.00 & 0.17 & 0.13 & 1.00 & 0.17 & 0.13 & 1.00 & 0.17 & 0.13 \\
+ 9 & 1.00 & 0.17 & 0.14 & 1.00 & 0.17 & 0.14 & 1.00 & 0.17 & 0.14 & 1.00 & 0.17 & 0.14 \\
+10 & 1.00 & 0.17 & 0.15 & 1.00 & 0.17 & 0.15 & 1.00 & 0.17 & 0.15 & 1.00 & 0.17 & 0.15 \\
+11 & 1.00 & 0.17 & 0.15 & 1.00 & 0.17 & 0.15 & 1.00 & 0.17 & 0.15 & 1.00 & 0.17 & 0.15 \\
+12 & 1.00 & 0.18 & 0.16 & 1.00 & 0.18 & 0.16 & 1.00 & 0.18 & 0.16 & 1.00 & 0.18 & 0.16 \\
+13 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 \\
+14 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 \\
+15 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 \\
+16 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 \\
+17 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 \\
+18 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 \\
+19 & 1.00 & 0.19 & 0.21 & 1.00 & 0.19 & 0.21 & 1.00 & 0.19 & 0.21 & 1.00 & 0.19 & 0.21 \\
+20 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+21 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+23 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+24 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+25 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+26 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+27 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+28 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+29 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+30 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+31 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+32 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+33 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+34 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+35 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+36 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+37 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+38 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+39 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+40 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+41 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+42 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+43 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+44 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+45 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+46 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+47 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+48 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+49 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+50 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+51 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+52 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+53 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+54 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+55 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+56 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+57 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+58 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+59 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
+
+\end{longtable}
+\end{center}
+%\end{landscape}
+
+Tabelas mais complexas são um tanto trabalhosas em \LaTeX{}; a
+Tabela~\ref{tab:ficha} mostra como construir uma tabela em forma de ficha.
+Além de complexa, ela é larga e, portanto, deve ser impressa em modo
+paisagem. No entanto, usamos um outro mecanismo para girar a tabela: o
+comando \textsf{sidewaystable} (da \textit{package} \textsf{rotating}).
+Com esse mecanismo, ela continua sendo um \textit{float} (e, portanto,
+não força quebras de página no meio do texto), mas sempre é impressa em
+uma página separada.
+
+Resumindo:
+
+\begin{itemize}
+  \item Se uma tabela cabe em uma página, defina-a como um \textit{float};
+  \item se cabe em uma página em modo paisagem, use \textsf{sidewaystable};
+  \item se não cabe em uma página, use \textsf{longtable};
+  \item se não cabe em uma página e precisa ser impressa em modo paisagem,
+        use \textsf{longtable} em conjunto com \textsf{landscape}.
+\end{itemize}
+
+%%%%%%%% Tabela em forma de ficha %%%%%%%%
 
 % Aumenta o espaçamento entre as linhas da tabela (default: 0pt)
 \setlength\extrarowheight{4pt}

@@ -1,0 +1,114 @@
+\chapter{Código-Fonte e Pseudocódigo}
+\label{ap:pseudocode}
+
+Com a \textit{package} \textsf{listings}, programas podem ser inseridos
+diretamente no arquivo, como feito no caso do Programa~\ref{prog:java},
+ou importados de um arquivo externo com o comando
+\textsf{\textbackslash{}lstinputlisting}, como no caso
+do Programa~\ref{prog:mdcinput}.
+
+% O exemplo foi copiado da documentação de algorithmicx
+\begin{program}
+  \lstinputlisting[
+    language=pseudocode,
+    style=pseudocode,
+    style=wider,
+    functions={},
+    specialidentifiers={},
+  ]
+  {conteudo/euclid.psc}
+
+  \caption{Máximo divisor comum (arquivo importado).}
+  \label{prog:mdcinput}
+\end{program}
+
+Trechos de código curtos (menores que uma página) podem ou não ser
+incluídos como \textit{floats}; trechos longos necessariamente incluem
+quebras de página e, portanto, não podem ser \textit{floats}. Com
+\textit{floats}, a legenda e as linhas separadoras são colocadas pelo
+comando \textsf{\textbackslash{}begin\{program\}}; sem eles, utilize
+o ambiente \textsf{ruledcaption} (atenção para a colocação do comando
+\textsf{\textbackslash{}label\{\}}), como no Programa~\ref{prog:mdc}\footnote{
+\textsf{listings} oferece alguns recursos próprios para a definição
+de \textit{floats} e legendas, mas neste modelo não os utilizamos.}:
+
+\begin{ruledcaption}{Máximo divisor comum.\label{prog:mdc}}
+  \begin{lstlisting}[
+    language=pseudocode,
+    style=pseudocode,
+    style=wider,
+    functions={},
+    specialidentifiers={},
+  ]
+function euclid($a,b$) // The \textbf{g.c.d.} of $a$ and $b$
+	$r \gets a \bmod b$
+	while $r \neq 0$ // We have the answer if $r$ is 0
+		$a \gets b$
+		$b \gets r$
+		$r \gets a \bmod b$
+	end
+	return $b$ // The \textbf{g.c.d.} is $b$
+end
+  \end{lstlisting}
+\end{ruledcaption}
+
+Além do suporte às várias linguagens incluídas em \textsf{listings},
+este modelo traz uma extensão para permitir o uso de pseudocódigo,
+útil para a descrição de algoritmos em alto nível. Ela oferece
+diversos recursos:
+
+\begin{itemize}
+
+    \item É possível acrescentar palavras-chave com a opção
+          ``\textsf{morekeywords=\{pchave1,\linebreak[0]{}pchave2\}}''
+          (para um código específico) ou com o comando
+          \textsf{\textbackslash{}lstset\{morekeywords=\linebreak[0]{}\{pchave1,pchave2\}\}}
+          (como comando de configuração geral).
+
+    \item É possível usar pequenos trechos de texto, como nomes de variáveis,
+          dentro de um parágrafo normal com \textsf{\textbackslash{}lstinline\{blah\}}.
+
+    \item Comentários seguem o padrão de C++ (\lstinline{//} e
+          \lstinline{/* ... */}).
+
+    \item ``\$\dots\$'' ativa o modo matemático em qualquer lugar.
+
+    \item Outros comandos LaTeX funcionam apenas em comentários; fora, a
+          linguagem simula alguns pré-definidos (\textsf{\textbackslash{}textit\{\}},
+          \textsf{\textbackslash{}texttt\{\}} etc.).
+
+    \item O comando \textsf{\textbackslash{}label} também funciona em
+          comentários; a referência correspondente (\textsf{\textbackslash{}ref})
+          indica o número da linha de código. Se quiser usá-lo numa linha sem
+          comentários, use \lstinline{///}~\textsf{\textbackslash{}label\{blah\}};
+          ``\lstinline{///}'' funciona como \lstinline{//}, permitindo
+          a inserção de comandos \LaTeX{}, mas não imprime o delimitador
+          (\ensuremath{\triangleright}).
+
+    \item Para suspender a formatação automática, use \textsf{\textbackslash{}noparse\{blah\}}.
+
+    \item Para forçar a formatação de um texto como função, identificador,
+          palavra-chave ou comentário, use \textsf{\textbackslash{}func\{blah\}},
+          \textsf{\textbackslash{}id\{blah\}}, \textsf{\textbackslash{}kw\{blah\}} ou
+          \textsf{\textbackslash{}comment\{blah\}}.
+
+    \item Palavras-chave dentro de comentários não são formatadas
+          automaticamente; se necessário, use \textsf{\textbackslash{}func\{\}},
+          \textsf{\textbackslash{}id\{\}} etc. ou comandos \LaTeX{} padrão.
+
+    \item As palavras ``Program'', ``Procedure'' e ``Function'' têm formatação
+          especial e fazem a palavra seguinte ser formatada como função.
+          Funções em outros lugares \emph{não} são detectadas automaticamente;
+          use \textsf{\textbackslash{}func\{\}}, a opção ``\textsf{functions=\{func1,func2\}}''
+          ou o comando ``\textsf{\textbackslash{}lstset\{functions=\{func1,func2\}\}}''
+          para que elas sejam detectadas.
+
+    \item Além de funções, palavras-chave, strings, comentários e
+          identificadores, há ``\textsf{specialidentifiers}''. Você pode
+          usá-los com \textsf{\textbackslash{}specialid\{blah\}}, com a opção
+          ``\textsf{specialidentifiers=\{id1,id2\}}'' ou com o comando
+          ``\textsf{\textbackslash{}lstset\{specialidentifiers=\{id1,id2\}\}}''.
+
+\end{itemize}
+
+

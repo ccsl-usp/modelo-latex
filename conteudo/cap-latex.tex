@@ -25,10 +25,13 @@ ele, sendo composto dos arquivos principais de cada exemplo
         os comentários neles se quiser modificar algum aspecto do
         documento ou acrescentar alguma \textit{package}):
   \begin{itemize}
-    \item \texttt{extras/basics.tex} (\textit{packages} e configurações essenciais)
-    \item \texttt{extras/fonts.tex} (definição das fontes do documento)
-    \item \texttt{extras/floats.tex} (configurações e melhorias para \textit{floats})
+    \item \texttt{extras/basics.tex} (\textit{packages} e configurações essenciais),
+          \texttt{extras/fonts.tex} (definição das fontes do documento) e
+          \texttt{extras/floats.tex} (configurações e melhorias para \textit{floats})
     \item \texttt{extras/thesis-formatting.tex} (aparência: espaçamento, sumário etc.)
+    \item \texttt{extras/index.tex} (configuração do índice remissivo)
+    \item \texttt{extras/hyperlinks.tex} (configuração das referências cruzadas)
+    \item \texttt{extras/source-code.tex} (exibição de código-fonte e pseudocódigo)
     \item \texttt{extras/utils.tex} (\textit{packages} adicionais diversas)
     \item \texttt{extras/bibconfig.tex} (configuração da bibliografia)
   \end{itemize}
@@ -37,6 +40,7 @@ ele, sendo composto dos arquivos principais de cada exemplo
   \begin{itemize}
     \item \texttt{extras/imeusp-capa.sty} (formatação da capa e demais páginas iniciais)
     \item \texttt{extras/imeusp-headers.sty} (formatação dos cabeçalhos)
+    \item \texttt{extras/lstpseudocode.sty} (suporte a pseudocódigo com \textsf{listings})
     \item \texttt{extras/annex.sty} (permite adicionar anexos) e
           \texttt{extras/appendixlabel.sty} (melhora a lista de
           apêndices/anexos no sumário)
@@ -82,15 +86,7 @@ componentes mais usados, e oferecem um gestor de pacotes que permite adicionar
 outros. Embora uma instalação completa do \LaTeX{} seja relativamente grande
 (perto de 5GB), em geral vale a pena instalar a maior parte dos pacotes. Se
 você preferir uma instalação mais ``enxuta'', não deixe de incluir todos os
-pacotes necessários para este modelo. Por exemplo, no debian:
-
-\begin{description}
-  \item [inconsolata] -- está incluído em ``texlive-fonts-extra''
-  \item [siunitx] -- está incluído em ``texlive-science''
-  \item [biblatex] -- está incluído em ``texlive-bibtex-extra''
-  \item [biber] -- é um pacote separado
-  \item [xindy] -- é um pacote separado
-\end{description}
+pacotes necessários para este modelo, como indicado no arquivo README.md.
 
 Também é muito importante ter o \textsf{latexmk} (ou o \textsf{make}). No Linux,
 a instalação é similar à de outros programas. No MacOS X e no Windows,
