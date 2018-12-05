@@ -17,6 +17,7 @@
 %    de Kreher e Stinson.
 
 \usepackage{listings}
+\usepackage{lstautogobble}
 % Carrega a "linguagem" pseudocode para listings
 \appto{\lstaspectfiles}{,lstpseudocode.sty}
 \appto{\lstlanguagefiles}{,lstpseudocode.sty}
@@ -51,6 +52,7 @@
   numberstyle=\footnotesize\ttfamily, % the font that is used for the line-numbers
   stepnumber=1,                       % the step between two line-numbers. If it's 1 each line will be numbered
   numbersep=20pt,                     % how far the line-numbers are from the code
+  autogobble,                         % ignore irrelevant indentation
   commentstyle=\color{Brown}\upshape,
   stringstyle=\color{black},
   identifierstyle=\color{DarkBlue},
