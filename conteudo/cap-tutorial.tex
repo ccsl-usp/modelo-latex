@@ -464,12 +464,15 @@ Em \LaTeX{}, é possível importar imagens fotográficas nos formatos
 \textsc{png} e \textsc{jpg} e imagens dos demais tipos no formato
 \textsc{pdf}. Além disso, \LaTeX{} tem recursos para criar ilustrações,
 diagramas e gráficos diretamente, mas usá-los em geral não é trivial.
-Ainda assim, para traçar linhas ou curvas simples, o comando
-\textsf{picture} e a package \textsf{pict2e} podem ser úteis, e Gnuplot
-é capaz de exportar gráficos na forma de comandos \textsf{picture}.
-A package \textsf{tikz} oferece bons recursos para a criação de
-ilustrações e diagramas, e o programa \textsf{Asymptote} tem excelente
-integração com \LaTeX{}.
+Em particular, a package \pkg{tikz} oferece bons recursos para a
+criação de ilustrações e diagramas (incluindo funções pré-prontas
+para formas geométricas, grafos, matrizes etc.) e é fácil usá-la
+para traçar linhas ou curvas simples. Você também pode criar gráficos
+de dados ou de funções matemáticas com ela ou com a package
+\pkg{pgfplots}; \cmd{Gnuplot} é capaz de exportar gráficos na forma
+de comandos para \pkg{tikz} (garantindo maior consistência visual entre
+o texto principal e o gráfico), e o programa \cmd{Asymptote} tem
+excelente integração com \LaTeX{}.
 
 \section{Formatação Manual}
 

@@ -51,7 +51,8 @@ inconsolata, libertine, newtxmath, biolinum.
 
 These packages are not used, but are mentioned and might be useful:
 paralist, lastpage, braket, siunitx, varioref, cleveref, gensymb,
-glossaries, backref, newtxtt, newtxtext, gentium, DejaVuSansMono.
+glossaries, backref, newtxtt, newtxtext, gentium, DejaVuSansMono,
+tikz, pgfplots.
 
 These packages may be useful if you intend to use xelatex/lualatex:
 polyglossia, fontspec.
