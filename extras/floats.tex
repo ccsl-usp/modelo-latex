@@ -159,66 +159,73 @@
 % package framed (a package tcolorbox poderia ter sido usada também).
 % Você provavelmente não vai precisar de nada semelhante se quiser
 % criar outros tipos de float.
-\newcounter{RCtempProgramCounter}
+\newsavebox{\captiontextBox}
 \usepackage{framed}
 \newenvironment{ruledcaption}[2][]{
+  % All spacing measurements were adjusted to visually reproduce
+  % the float captions
+  \setlength\fboxsep{0pt}
+
+  % topsep means space before AND after
+  \setlength\topsep{.28\baselineskip plus .3\baselineskip minus 0pt}
+
+  \vspace{.3\baselineskip} % Some extra top space
+
   % For whatever reason, the framed package actually calls "\captionof"
-  % multiple times, messing up the counter. We need to prevent this.
+  % multiple times, messing up the counter. We need to prevent this,
+  % so we put the caption in a box once and reuse the box.
 
-  \setcounter{RCtempProgramCounter}{\value{program}}
+  \savebox{\captiontextBox}{%
+    \parbox[b]{\textwidth}{%
+      \ifstrempty{#1}
+        {\captionof{program}[#2]{#2}}%
+        {\captionof{program}[#1]{#2}}%
+    }
+  }
 
-  \edef\RCtemparg{#1}
-  \def\doCaption{
-    \setcounter{program}{\value{RCtempProgramCounter}}
-    \ifcsempty{RCtemparg}
-      {\captionof{program}[#2]{#2}}
-      {\captionof{program}[#1]{#2}}
-    \par
+  \def\fullcaption{
+    \vspace*{-.325\baselineskip}
+    \noindent\usebox{\captiontextBox}%
+    \vspace*{-.56\baselineskip}%
+    \kern 2pt\hrule\kern 2pt\relax
   }
 
   \def\FrameCommand{
+    \hspace{-.007\textwidth}%
     \CustomFBox
-    {
-      \vspace*{.15\baselineskip}
-      \doCaption
-      \vspace*{-.7\baselineskip}
-      \kern 2pt\hrule\kern 2pt\relax
-    }
-    {}{.8pt}{.4pt}{0pt}{0pt}
+      {\fullcaption}
+      {\vspace{.13\baselineskip}}
+      {.8pt}{.4pt}{0pt}{0pt}
   }
 
   \def\FirstFrameCommand{
+    \hspace{-.007\textwidth}%
     \CustomFBox
-    {
-      \vspace*{.15\baselineskip}
-      \doCaption
-      \vspace*{-.7\baselineskip}
-      \kern 2pt\hrule\kern 2pt\relax
-    }
-    {\hfill\textit{cont}\enspace$\longrightarrow$}
-    {.8pt}{0pt}{0pt}{0pt}
+      {\fullcaption}
+      {\hfill\textit{cont}\enspace$\longrightarrow$}
+      {.8pt}{0pt}{0pt}{0pt}
   }
 
   \def\MidFrameCommand{
+    \hspace{-.007\textwidth}%
     \CustomFBox
-    {$\longrightarrow$\enspace\textit{cont}\par}
-    {\hfill\textit{cont}\enspace$\longrightarrow$}
-    {0pt}{0pt}{0pt}{0pt}
+      {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+      {\hfill\textit{cont}\enspace$\longrightarrow$}
+      {0pt}{0pt}{0pt}{0pt}
   }
 
   \def\LastFrameCommand{
+    \hspace{-.007\textwidth}%
     \CustomFBox
-    {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
-    {}{0pt}{.4pt}{0pt}{0pt}
+      {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+      {\vspace{.13\baselineskip}}
+      {0pt}{.4pt}{0pt}{0pt}
   }
 
-  \vspace{.5\baselineskip plus .3\baselineskip minus 0pt}
   \MakeFramed{\FrameRestore}
 
 }{
   \endMakeFramed
-  \setcounter{program}{\value{RCtempProgramCounter}}
-  \stepcounter{program}
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
