@@ -70,6 +70,8 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 
 \section{Visão Geral}
 
+\enlargethispage{.5\baselineskip}
+
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
 mas é comum usar a extensão ``.tex'' ao invés de ``.txt'') e processa esse
@@ -148,6 +150,8 @@ documentos científicos.
 \section{Comandos Básicos}
 \label{sec:basico}
 
+\enlargethispage{.5\baselineskip}
+
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
 apresentação. Assim, os comandos usados durante a produção do conteúdo
@@ -222,8 +226,6 @@ uma linha em branco e versos são separados por \cmd{\sla\sla{}*}. O asterisco
 é opcional; ele instrui \LaTeX{} a manter as linhas na mesma página). A package
 \pkg{csquotes} acrescenta recursos sofisticados para citações.
 
-\enlargethispage{\baselineskip}
-
 Para inserir uma nota de rodapé, use o comando
 \ltxcmd{footnote\{texto da nota\}}\index{Notas de rodapé}. Um espaço
 não-separável é indicado pelo caractere til (``\cmd{\textasciitilde{}}'')
@@ -239,7 +241,7 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 \label{sec:refs}
 
 É comum que um trecho do texto faça referência a outro trecho (``como
-discutimos no capítulo~X\ldots''). Isso pode ser feito diretamente, mas
+discutimos no Capítulo~X\ldots''). Isso pode ser feito diretamente, mas
 se você reorganizar o documento ou acrescentar seções, a numeração pode
 mudar. Para evitar esse problema, você pode gerar essas referências
 automaticamente com o par de comandos \ltxcmd{label\{nome-sugestivo\}} e
@@ -249,15 +251,18 @@ automaticamente com o par de comandos \ltxcmd{label\{nome-sugestivo\}} e
 Esse mecanismo também é muito útil para figuras e tabelas.
 É claro que o ideal seria que tabelas e figuras sempre aparecessem junto ao
 texto a que se referem. No entanto, isso é impossível por conta da divisão
-do texto em páginas. Em \LaTeX{}, figuras e tabelas são incluídas como
-\emph{floats} (localização flexível) usando \ltxcmd{begin\{figure\}}
-e \ltxcmd{begin\{table\}} e o programa procura o ``melhor''
-lugar para colocá-las. Dentro do \emph{float} é inserido um
-\ltxcmd{label} para que se possa fazer referência à figura/tabela
-no texto (com o comando \ltxcmd{ref}). A figura/tabela em
-si é definida com \ltxcmd{includegraphics} ou \ltxcmd{begin\{tabular\}},
-e em geral é uma boa ideia acrescentar uma descrição com
-\ltxcmd{caption}\index{Legendas}.
+do texto em páginas. Em \LaTeX{}, é melhor incluir figuras e tabelas como
+\emph{floats} (localização flexível) usando \ltxcmd{begin\{figure\}} e
+\ltxcmd{begin\{table\}} e deixar o programa procurar o ``melhor'' lugar para
+colocá-las. A figura/tabela em si é definida com \ltxcmd{includegraphics}
+ou \ltxcmd{begin\{tabular\}}, e em geral é uma boa ideia acrescentar uma
+legenda com \ltxcmd{caption}\index{Legendas}. Finalmente, dentro da
+legenda, é possível inserir um \ltxcmd{label} para que se possa fazer
+referência à figura/tabela no texto (com os comandos \ltxcmd{ref} e
+\ltxcmd{pageref})\footnote{Em alguns casos, é possível colocar o
+\ltxcmd{label} de uma figura ou tabela fora do comando \ltxcmd{caption}
+mas, como em muitos casos isso gera problemas, é um bom hábito sempre
+colocá-lo dentro dele.}.
 
 \LaTeX{}\index{Floats!Ordem} garante que a sequência das figuras e a
 sequência das tabelas sejam respeitadas (a Figura~6 nunca aparece depois da
@@ -265,8 +270,6 @@ Figura~7). No entanto, isso \emph{não} se aplica a \emph{floats} de tipos
 diferentes, ou seja, se você definiu a Figura~5, a Tabela~3 e a Figura~6,
 elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
 ``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
-
-\enlargethispage{\baselineskip}
 
 \section{Múltiplas Execuções e Comandos Auxiliares}
 
@@ -341,8 +344,6 @@ A geração de bibliografias no \LaTeX{} é feita através da package
 O funcionamento geral dos dois mecanismos é similar e o formato do banco
 de dados de ambos é o mesmo.} e envolve três passos:
 
-\enlargethispage{\baselineskip}
-
 \begin{enumerate}
 \item A criação de um banco de dados, no formato ``.bib'', das obras de
 interesse. Esse banco de dados pode incluir obras que não vão ser de fato
@@ -414,8 +415,6 @@ para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
 basta colocá-los entre chaves (``Automated Application-Level Checkpointing
 of \{MPI\} Programs'').
 
-\enlargethispage{\baselineskip}
-
 Finalmente, os campos \textsf{author} e \textsf{publisher} podem incluir uma
 lista de nomes separados por \textsf{and}; biblatex reconhece que cada nome é
 composto por nome e sobrenome, às vezes com partículas como ``de'', ``dos''
@@ -435,6 +434,8 @@ Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
 podem exportar para o formato .bib.
 
 \section{Imagens, Ilustrações, Diagramas e Gráficos}
+
+\enlargethispage{.5\baselineskip}
 
 Podemos classificar imagens em quatro categorias:
 
@@ -517,6 +518,8 @@ pode consultar o início do arquivo \LaTeX{} deste capítulo para alguns
 exemplos.
 
 \section{Detalhes da Linguagem}
+
+\enlargethispage{.5\baselineskip}
 
 Há quatro estilos típicos de comandos \LaTeX{}:
 

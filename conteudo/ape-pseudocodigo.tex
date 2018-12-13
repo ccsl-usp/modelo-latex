@@ -18,8 +18,7 @@ do Programa~\ref{prog:mdcinput}.
   ]
   {conteudo/euclid.psc}
 
-  \caption{Máximo divisor comum (arquivo importado).}
-  \label{prog:mdcinput}
+  \caption{Máximo divisor comum (arquivo importado).\label{prog:mdcinput}}
 \end{program}
 
 Trechos de código curtos (menores que uma página) podem ou não ser
@@ -28,9 +27,10 @@ quebras de página e, portanto, não podem ser \textit{floats}. Com
 \textit{floats}, a legenda e as linhas separadoras são colocadas pelo
 comando \textsf{\textbackslash{}begin\{program\}}; sem eles, utilize
 o ambiente \textsf{ruledcaption} (atenção para a colocação do comando
-\textsf{\textbackslash{}label\{\}}), como no Programa~\ref{prog:mdc}\footnote{
-\textsf{listings} oferece alguns recursos próprios para a definição
-de \textit{floats} e legendas, mas neste modelo não os utilizamos.}:
+\textsf{\textbackslash{}label\{\}}, dentro da legenda), como no
+Programa~\ref{prog:mdc}\footnote{\textsf{listings} oferece alguns
+recursos próprios para a definição de \textit{floats} e legendas, mas
+neste modelo não os utilizamos.}:
 
 \begin{ruledcaption}{Máximo divisor comum.\label{prog:mdc}}
   \begin{lstlisting}[

@@ -60,10 +60,10 @@ denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
 \end{equation}
 
 \begin{gather}
-\label{eq:bhaskara}
+  \label{eq:bhaskara}
     y=0 \Leftrightarrow x=\frac{-b \pm \sqrt{\Delta}}{2a}
     \Leftrightarrow x \text{ é raiz da equação}\\
-\label{eq:delta}
+  \label{eq:delta}
     \Delta\enspace(\mathit{delta}) = b^2-4ac
 \end{gather}
 
@@ -100,8 +100,7 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
   \begin{subfigure}{0.4\textwidth}
     \centering
     \includegraphics[width=.7\textwidth]{graph}
-    \caption{Uma figura simples.}
-    \label{fig:subfigures:a}
+    \caption{Uma figura simples.\label{fig:subfigures:a}}
   \end{subfigure}
   % ATENÇÃO: Se você deixar uma linha em branco entre as subfiguras,
   % LaTeX vai considerar que cada uma delas pertence a um "parágrafo"
@@ -112,12 +111,10 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
     \begin{turn}{90}
       \includegraphics[width=.7\textwidth]{graph}
     \end{turn}
-    \caption{O mesmo exemplo, girado.}
-    \label{fig:subfigures:b}
+    \caption{O mesmo exemplo, girado.\label{fig:subfigures:b}}
   \end{subfigure}
 
-  \caption{Exemplo de subfiguras.}
-  \label{fig:subfigures}
+  \caption{Exemplo de subfiguras.\label{fig:subfigures}}
 \end{figure}
 
 %%%%%%%% Código fonte %%%%%%%%
@@ -136,8 +133,7 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
   }
 \end{lstlisting}
 
-  \caption{Exemplo de laço em Java.}
-  \label{prog:java}
+  \caption{Exemplo de laço em Java.\label{prog:java}}
 \end{program}
 
 %%%%%%% Cronograma %%%%%%%
@@ -163,8 +159,7 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
     \ganttmilestone{Submissão}{2018-4}
   \end{ganttchart}
 
-  \caption{Exemplo de cronograma.}
-  \label{fig:gantt}
+  \caption{Exemplo de cronograma.\label{fig:gantt}}
 \end{figure}
 
 %%%%%
@@ -211,8 +206,7 @@ tabelas\index{Floats}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
   \end{subtable}
   \hspace*{\fill}
 
-  \caption{Códigos, abreviaturas e nomes dos aminoácidos.}
-  \label{tab:amino_acidos}
+  \caption{Códigos, abreviaturas e nomes dos aminoácidos.\label{tab:amino_acidos}}
 \end{table}
 
 Se a tabela tem muitas linhas e, portanto, não cabe em uma única página, é
@@ -235,7 +229,8 @@ começar em uma página em modo paisagem.}.
 %\begin{landscape}
 \begin{center}
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-\caption{Exemplo de tabela com valores numéricos.}\\
+ % O label não deve ficar em um cabeçalho que se repete!
+\caption{Exemplo de tabela com valores numéricos.\label{tab:numeros}}\\
 \hline
 \emph{Lim.} &
 \multicolumn{3}{c|}{MGWT} &
@@ -254,7 +249,7 @@ começar em uma página em modo paisagem.}.
 % pelo comando caption; essa diferença impede que a lista de
 % tabelas inclua uma referência para cada página da tabela
 
-	\caption[]{Exemplo de tabela com valores numéricos (cont.).}\\
+\caption[]{Exemplo de tabela com valores numéricos (cont.).}\\
 \hline
 \emph{Lim.} &
 \multicolumn{3}{c|}{MGWT} &
@@ -276,7 +271,6 @@ começar em uma página em modo paisagem.}.
 
 \hline
 \endlastfoot % Final do rodapé da última página (neste caso, apenas uma linha)
-\label{tab:numeros} % O label não deve ficar em um cabeçalho que se repete!
  1 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 \\
  2 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 \\
  3 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 \\
@@ -383,8 +377,7 @@ Resumindo:
   \tabularnewline \hline
 \end{tabular}
 
-\caption{Exemplo de tabela similar a uma ficha.}
-\label{tab:ficha}
+\caption{Exemplo de tabela similar a uma ficha.\label{tab:ficha}}
 \end{sidewaystable}
 
 % Redefinindo para o valor default
