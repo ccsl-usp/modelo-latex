@@ -4,7 +4,8 @@
 THESIS_NAME := tese-exemplo
 POSTER_NAME := poster-exemplo
 PRESENTATION_NAME := apresentacao-exemplo
-ALL_TARGETS := $(THESIS_NAME) $(POSTER_NAME) $(PRESENTATION_NAME)
+ARTICLE_NAME := artigo-exemplo
+ALL_TARGETS := $(THESIS_NAME) $(POSTER_NAME) $(PRESENTATION_NAME) $(ARTICLE_NAME)
 
 thesis: $(THESIS_NAME)
 
@@ -12,13 +13,17 @@ poster: $(POSTER_NAME)
 
 presentation: $(PRESENTATION_NAME)
 
+article: $(ARTICLE_NAME)
+
 tese: thesis
 
 apresentacao: presentation
 
+artigo: article
+
 all: $(ALL_TARGETS)
 
-.PHONY: all clean tmpclean distclean tese thesis poster presentation apresentacao $(ALL_TARGETS)
+.PHONY: all clean tmpclean distclean tese thesis poster presentation apresentacao article artigo $(ALL_TARGETS)
 
 LATEX := pdflatex
 #LATEX := lualatex

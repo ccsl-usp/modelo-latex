@@ -1,4 +1,4 @@
-% Arquivo LaTeX de exemplo de dissertação/tese a ser apresentada à CPG do IME-USP
+% Arquivo LaTeX de exemplo de artigo
 %
 % Criação: Jesús P. Mena-Chalco
 % Revisão: Fabio Kon e Paulo Feofiloff
@@ -15,14 +15,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREÂMBULO LaTeX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% "Book" tem capítulos (e partes, mas normalmente não usamos) e, se o documento
-% é frente-e-verso, cada capítulo começa em uma página de numeração ímpar.
-% Report é similar, mas cada capítulo começa em uma nova página, par ou ímpar.
-% É possível mudar esse comportamento com a opção "openany". Observe que você
-% pode adaptar este modelo para escrever artigos, mudando a classe do
-% documento de "book" para "article" ou a classe de algum periódico específico.
-% No entanto, o arquivo "artigo-exemplo.tex" é um ponto de partida melhor: ele
-% é similar a este, mas já inclui as mudanças necessárias para a classe article.
+% Você pode adaptar este modelo mudando a classe para a de algum periódico
+% específico. Para isso, no entanto, você provavelmente vai ter que desabilitar
+% diversas coisas definidas aqui em prol do padrão do periódico, como o formato
+% da bibliografia, fontes, tamanho do papel e margens etc. Em geral, se o
+% periódico fornece um modelo, é melhor usá-lo.
 %
 % A opção frente-e-verso aqui significa, por exemplo, que as margens das páginas
 % ímpares e pares são diferentes ou que números de página aparecem à direita
@@ -34,8 +31,8 @@
 % elas são repassadas para todas as packages, e diversas packages mudam
 % seu comportamento em função da língua (em especial, babel/polyglossia).
 % A última língua da lista é a língua padrão do documento.
-%\documentclass[12pt,twoside,brazil,english]{book}
-\documentclass[12pt,twoside,english,brazil]{book}
+%\documentclass[12pt,twoside,brazil,english]{article}
+\documentclass[12pt,twoside,english,brazil]{article}
 
 % tamanho da página e margens
 \usepackage[a4paper]{geometry}
@@ -90,6 +87,9 @@
 
 % Para personalizar o formato da bibliografia e citações, modifique este arquivo.
 \input{extras/bibconfig}
+% A configuração do arquivo acima foi definida para teses/dissertações;
+% para artigos, vamos mudar esta opção.
+\ExecuteBibliographyOptions{backref=false}
 
 % O arquivo com os dados bibliográficos; você pode usar este comando
 % mais de uma vez para acrescentar múltiplos arquivos
@@ -99,24 +99,21 @@
 %%%%%%%%%%%%%%%%%%%%%%% METADADOS (TÍTULO, AUTOR ETC.) %%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
-% definidos, pois além de serem utilizados para criar a capa (tanto no estilo
-% do IME quanto com o comando padrão \maketitle), também são armazenados nos
-% metadados do PDF.
-\title{Título do trabalho}
-\author{Nome Completo}
+% definidos, pois além de serem utilizados para criar a capa (com o comando
+% \maketitle), também são armazenados nos metadados do PDF. O estilo padrão
+% de diversos periódicos exige também outros dados, como email, filiação etc.
+\title{Título do artigo}
+\author{Primeiro Autor\thanks{Filiação do primeiro autor}, Segundo Autor\thanks{Filiação do segundo autor}}
 
 % O pacote hyperref armazena alguns metadados no PDF gerado (em particular,
 % o conteúdo de "\title" e "\author"). Também é possível armazenar outros
 % dados, como uma lista de palavras-chave.
 \hypersetup{
-  pdfkeywords={LaTeX, tese, dissertação, IME/USP},
+  % Usando "\thanks" no comando \author, hyperref gera uma mensagem
+  % de erro. Para contornar isso, repetimos os autores aqui.
+  pdfauthor={Primeiro Autor, Segundo Autor},
+  pdfkeywords={LaTeX, artigo},
 }
-
-% Os dados (nome do orientador, banca etc.) que devem ser incluídos na capa
-% e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
-% Esses dados são usados mais abaixo (no arquivo "folhas-de-rosto"). Se
-% for gerar a capa etc. manualmente, remova.
-\input{conteudo/metadados-tese}
 
 % É possível definir como determinadas palavras podem (ou não) ser
 % hifenizadas; no entanto, a hifelização automática geralmente funciona bem
@@ -128,102 +125,22 @@
 
 \begin{document}
 
-% Para gerar o título sem seguir o formato deste modelo, você pode usar o
-% comando padrão do LaTeX "\maketitle".
-%\maketitle
+% Espaçamento simples
+\singlespacing
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Por padrão, article inclui a data atual; com este comando, você pode
+% definir uma data específica, inserir algum outro texto ou, deixando o
+% conteúdo em branco, removê-la.
+\date{}
 
-% Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
-% página de rosto, resumo, sumário etc. O comando frontmatter faz números
-% de página aparecem em algarismos romanos ao invés de arábicos e
-% desabilita a contagem de capítulos.
-\frontmatter
+\maketitle
 
-% Este formato está definido na package imeusp-headers
-\pagestyle{plain}
-%\pagestyle{frontback}
-
-% As folhas de rosto no formato sugerido para teses/dissertações do IME/USP,
-% usando as informações incluídas acima em metadados-tese. Se não quiser
-% usar, remova.
-
-\onehalfspacing % Espaçamento 1,5 nas páginas iniciais
-\input{conteudo/folhas-de-rosto}
-
+\input{conteudo/artigo}
 % Um parágrafo em LaTeX termina com uma linha vazia; como não é possível ter
 % certeza que um arquivo incluído (neste caso, "folhas-de-rosto") terminou
 % com uma linha vazia, é recomendável usar o comando "par" após "input" para
 % garantir que o último parágrafo do arquivo incluído realmente terminou.
 \par
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Aqui vai o conteúdo principal do trabalho, ou seja, os capítulos que compõem
-% a dissertação/tese. O comando mainmatter reinicia a contagem de páginas,
-% modifica a numeração para números arábicos e ativa a contagem de capítulos.
-\mainmatter
-
-% Este formato está definido na package imeusp-headers e só funciona com
-% book/report, pois usa o nome dos capítulos nos cabeçalhos.
-\pagestyle{mainmatter}
-
-% Espaçamento simples
-\singlespacing
-
-\input{conteudo/capitulos}
-\par
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Um apêndice é algum conteúdo adicional de sua autoria que colabora com a
-% ideia geral do texto mas que, por alguma razão, não precisa fazer parte
-% da sequência do discurso; por exemplo, a demonstração de um teorema, as
-% perguntas usadas em uma pesquisa qualitativa etc.
-%
-% Um anexo é um documento que não é de sua autoria mas que é relevante para
-% a tese; por exemplo, a especificação do padrão que o trabalho discute.
-%
-% Os comandos appendix e annex reiniciam a numeração de capítulos e passam
-% a numerá-los com letras. "annex" não faz parte de nenhuma classe padrão,
-% ele foi criado para este modelo (em annex.sty e utils.tex). Se o
-% trabalho não tiver apêndices ou anexos, remova estas linhas.
-
-% Este formato está definido na package imeusp-headers
-\pagestyle{appendix}
-
-% Sem esta linha, a palavra "Apêndices" no sumário ficava no final da
-% primeira página; assim, forçamos uma quebra de página antes.
-\addtocontents{toc}{\newpage}
-% Apêndices
-\appendix
-
-\input{conteudo/apendices}
-\par
-
-% Anexos
-\annex
-
-\input{conteudo/anexos}
-\par
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES FINAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Aqui vão a bibliografia, índice remissivo e outras seções similares.
-
-% Espaço adicional no sumário antes das referências / índice remissivo
-\addtocontents{toc}{\vspace{2\baselineskip plus .5\baselineskip minus .5\baselineskip}}
-
-% O comando backmatter desabilita a numeração de capítulos.
-\backmatter
-
-% Este formato está definido na package imeusp-headers
-\pagestyle{frontback}
-
-% A bibliografia é obrigatória
 
 %%%%%%%%% Bibliografia com natbib (preterido): %%%%%%%%%
 %\bibliographystyle{extras/alpha-ime}% citação bibliográfica alpha
@@ -235,11 +152,6 @@
 \printbibliography[
   title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
   %title=\bibname\label{bibliografia}, % "Bibliografia"
-  % Inclui a bibliografia no sumário
-  heading=bibintoc,
 ]
-
-% imprime o índice remissivo no documento (opcional)
-\printindex
 
 \end{document}

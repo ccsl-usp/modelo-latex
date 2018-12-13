@@ -30,7 +30,7 @@
 % manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
 % identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
 % No entanto, refsection e refsegment são incompatíveis com o pacote
-% titlesec, mencionado em miolo-preambulo. Se você pretende criar
+% titlesec, mencionado em thesis-formatting.tex. Se você pretende criar
 % bibliografias independentes por seções, há duas soluções: (1) desabilitar
 % o pacote titlesec; (2) indicar as seções manualmente.
 
@@ -128,19 +128,23 @@
 
 % biblatex redefine os cabeçalhos das páginas na bibliografia;
 % vamos deixar essa tarefa para fancyhdr.
+% Sem incluir a bibliografia no sumário:
 \defbibheading{bibliography}[\bibname]{%
-  \chapter*{#1}%
-  %\section*{#1}% Se for a classe "article"
-  \chaptermark{#1}%
-  %\sectionmark{#1}% Se for a classe "article"
+  % Testamos chaptermark e não chapter porque titlesec
+  % define chapter, mesmo na classe article. Este teste
+  % depende da package fancyhdr; no entanto, a razão de
+  % ser desta configuração é configurar fancyhdr, então
+  % isso não é um problema.
+  \ifcsdef{chaptermark}
+    {\chapter*{#1}\chaptermark{#1}}
+    {\section*{#1}\sectionmark{#1}}
 }
 
+% Incluindo a bibliografia no sumário:
 \defbibheading{bibintoc}[\bibname]{%
-  \chapter*{#1}%
-  %\section*{#1}% Se for a classe "article"
-  \addcontentsline{toc}{chapter}{#1}%
-  \chaptermark{#1}%
-  %\sectionmark{#1}% Se for a classe "article"
+  \ifcsdef{chaptermark}
+    {\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\chaptermark{#1}}
+    {\section*{#1}\sectionmark{#1}}
 }
 
 % bibtex assume que os títulos no arquivo .bib seguem o formato "title case",
@@ -166,8 +170,7 @@
 %\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
 %
 % Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
-% ou capítulos de livro (o comando \NoChangeOrSentenceCase está definido
-% no arquivo miolo-preambulo.tex):
+% ou capítulos de livro.
 \DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
 
 % Esta macro implementa o mecanismo descrito acima
