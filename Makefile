@@ -216,7 +216,7 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(CURRENT_TEX_TEMP_FILES
 	fi
 	@echo
 
-%.bbl: %.bcf-current
+%.bbl: %.bcf-current $(BIBFILES)
 	@echo "       Executando $(BIBTEX) $*..."
 	@if ! $(BIBTEX) $* > bibtex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
