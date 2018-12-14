@@ -214,7 +214,11 @@
 \newcommand*{\direitos}[1]{\gdef\@direitos{#1}}
 \newcommand{\fichacatalografica}[1]{\gdef\@fichacatalografica{#1}}
 
-\NewDocumentCommand{\tese}{O{masc}}{
+\newtoggle{@mestrado}
+\newtoggle{@doutorado}
+\newtoggle{@qualificacao}
+
+\NewDocumentCommand{\tese}{O{masc} O{}}{
   % "Tese" e "dissertação" têm sentido contrário em língua inglesa:
   % http://guides.lib.berkeley.edu/dissertations_theses
   % https://www.grad.ubc.ca/handbook-graduate-supervision/graduate-thesis
@@ -224,32 +228,46 @@
   \renewcommand*{\@nometituloeng}{Doctor}
   \renewcommand*{\@grau}{Doutorado}
   \renewcommand*{\@graueng}{Doctorate}
+  \toggletrue{@doutorado}
+  \togglefalse{@mestrado}
   \ifstrequal{#1}{masc}{
     \renewcommand*{\@nometitulo}{Doutor}
-    \RenewDocumentCommand{\@porquem}{m}{pelo candidato}
+    \RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
   }{
     \renewcommand*{\@nometitulo}{Doutora}
-    \RenewDocumentCommand{\@porquem}{m}{pela candidata}
+    \RenewDocumentCommand{\@porquem}{m}{pela candidata \@author}
   }
+  \ifstrequal{#2}{quali}{
+    \toggletrue{@qualificacao}
+    \renewcommand\@nometrabalho{Exame de Qualificação}
+    \renewcommand\@nometrabalhoeng{Qualifying Exam}
+  }{}
 }
-\NewDocumentCommand{\doutorado}{O{masc}}{\tese[#1]}
+\NewDocumentCommand{\doutorado}{O{masc} O{}}{\tese[#1][#2]}
 
-\NewDocumentCommand{\dissertacao}{O{masc}}{
+\NewDocumentCommand{\dissertacao}{O{masc} O{}}{
   % Veja observação acima
   \renewcommand*{\@nometrabalho}{Dissertação}
   \renewcommand*{\@nometrabalhoeng}{Thesis}
   \renewcommand*{\@nometituloeng}{Master}
   \renewcommand*{\@grau}{Mestrado}
   \renewcommand*{\@graueng}{Masters}
+  \toggletrue{@mestrado}
+  \togglefalse{@doutorado}
   \ifstrequal{#1}{masc}{
     \renewcommand*{\@nometitulo}{Mestre}
-    \RenewDocumentCommand{\@porquem}{m}{pelo candidato}
+    \RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
   }{
     \renewcommand*{\@nometitulo}{Mestra}
-    \RenewDocumentCommand{\@porquem}{m}{pela candidata}
+    \RenewDocumentCommand{\@porquem}{m}{pela candidata \@author}
   }
+  \ifstrequal{#2}{quali}{
+    \toggletrue{@qualificacao}
+    \renewcommand\@nometrabalho{Exame de Qualificação}
+    \renewcommand\@nometrabalhoeng{Qualifying Exam}
+  }{}
 }
-\NewDocumentCommand{\mestrado}{O{masc}}{\dissertacao[#1]}
+\NewDocumentCommand{\mestrado}{O{masc} O{}}{\dissertacao[#1][#2]}
 
 % Defaults quando o usuário não define alguma dessas variáveis
 \newcommand*{\@orientador}{Orientador não definido!}
@@ -262,7 +280,7 @@
 \newcommand*{\@keywords}{Keywords não definidas!}
 \newcommand*{\@subtitulo}{}
 \newcommand*{\@direitos}{}
-\NewDocumentCommand{\@porquem}{m}{pelo candidato}
+\NewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
 \newcommand{\@fichacatalografica}{}
 
 % Se estes não forem definidos, usamos a variável correspondente
@@ -289,21 +307,37 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand*{\@textocapa}[1][port] {%
-  \ifstrequal{port}{#1}{%
-    \@nometrabalho{} apresentada ao\\[-0.25cm]
-    Instituto de Matemática e Estatística\\[-0.25cm]
-    da Universidade de São Paulo\\[-0.25cm]
-    para obtenção do título de\\[-0.25cm]
-    \@nometitulo{} em Ciências%
+  \iftoggle{@qualificacao} {%
+    \ifstrequal{port}{#1}{%
+      Texto apresentado ao\\[-0.25cm]
+      Instituto de Matemática e Estatística\\[-0.25cm]
+      da Universidade de São Paulo\\[-0.25cm]
+      para exame de qualificação de\\[-0.25cm]
+      \@grau{} em Ciências%
+    }{%
+      Text presented to the \\[-0.25cm]
+      Institute of Mathematics and Statistics\\[-0.25cm]
+      of the University of São Paulo\\[-0.25cm]
+      for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\[-0.25cm]
+      qualifying examination\\[-0.25cm]%
+    }%
   }{%
-    \@nometrabalhoeng{} presented to the \\[-0.25cm]
-    Institute of Mathematics and Statistics\\[-0.25cm]
-    of the University of São Paulo\\[-0.25cm]
-    in partial fulfillment\\[-0.25cm]
-    of the requirements\\[-0.25cm]
-    for the degree of\\[-0.25cm]
-    \@nometituloeng{} of Science%
-  }
+    \ifstrequal{port}{#1}{%
+      \@nometrabalho{} apresentada ao\\[-0.25cm]
+      Instituto de Matemática e Estatística\\[-0.25cm]
+      da Universidade de São Paulo\\[-0.25cm]
+      para obtenção do título de\\[-0.25cm]
+      \@nometitulo{} em Ciências%
+    }{%
+      \@nometrabalhoeng{} presented to the \\[-0.25cm]
+      Institute of Mathematics and Statistics\\[-0.25cm]
+      of the University of São Paulo\\[-0.25cm]
+      in partial fulfillment\\[-0.25cm]
+      of the requirements\\[-0.25cm]
+      for the degree of\\[-0.25cm]
+      \@nometituloeng{} of Science%
+    }%
+  }%
 }
 
 \newcommand*{\@pessoascapa}[1][port] {%
@@ -321,13 +355,23 @@
 }
 
 \newcommand*{\@textorostoprovisoria}[1][port] {%
-  \ifstrequal{port}{#1}{%
-    Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada
-    \@porquem{} \@author, tal como submetida à Comissão Julgadora.%
+  \iftoggle{@qualificacao}{%
+    \ifstrequal{port}{#1}{%
+      Esta é a versão original do texto de qualificação elaborado
+      \@porquem{}, tal como submetido à Comissão Julgadora.%
+    }{%
+      This is the original version of the qualifying text prepared
+      by the candidate \@author, as submitted to the Examining Committee.%
+    }%
   }{%
-    This is the original version of the \MakeLowercase{\@nometrabalhoeng} prepared
-    by the candidate \@author, as submitted to the Examining Committee.%
-  }
+    \ifstrequal{port}{#1}{%
+      Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada
+      \@porquem{}, tal como submetida à Comissão Julgadora.%
+    }{%
+      This is the original version of the \MakeLowercase{\@nometrabalhoeng} prepared
+      by the candidate \@author, as submitted to the Examining Committee.%
+    }%
+  }%
 }
 
 \newcommand*{\@textorostodefinitiva}[1][port] {%
@@ -346,7 +390,7 @@
     ~\\
     A copy of the original version is available at the Institute of
     Mathematics and Statistics of the University of São Paulo.%
-  }
+  }%
 }
 
 \newcommand{\@textobanca}[1][port] {%
@@ -374,7 +418,7 @@
     Institute of Mathematics and Statistics,
     University of São Paulo,%
   }
-  São Paulo, \@ano.
+  São Paulo, \@ano.%
 }
 
 
