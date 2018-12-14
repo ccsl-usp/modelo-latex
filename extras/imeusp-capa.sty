@@ -166,16 +166,28 @@
 \let\subtitulopt\subtitulo
 
 \NewDocumentCommand{\orientador}{O{masc} m}{
+  \iftoggle{@tcc}{
   \ifstrequal{#1}{masc}
-    {\gdef\@labelorientador{Orientador}}
-    {\gdef\@labelorientador{Orientadora}}
+      {\gdef\@labelorientador{Supervisor}}
+      {\gdef\@labelorientador{Supervisora}}
+  }{
+    \ifstrequal{#1}{masc}
+      {\gdef\@labelorientador{Orientador}}
+      {\gdef\@labelorientador{Orientadora}}
+  }
   \gdef\@orientador{#2}
 }
 
 \NewDocumentCommand{\coorientador}{O{masc} m}{
-  \ifstrequal{#1}{masc}
-    {\gdef\@labelcoorientador{Coorientador}}
-    {\gdef\@labelcoorientador{Coorientadora}}
+  \iftoggle{@tcc}{
+    \ifstrequal{#1}{masc}
+      {\gdef\@labelcoorientador{Cosupervisor}}
+      {\gdef\@labelcoorientador{Cosupervisora}}
+  }{
+    \ifstrequal{#1}{masc}
+      {\gdef\@labelcoorientador{Coorientador}}
+      {\gdef\@labelcoorientador{Coorientadora}}
+  }
   \gdef\@coorientador{#2}
 }
 
@@ -198,6 +210,7 @@
 
 \newtoggle{@mestrado}
 \newtoggle{@doutorado}
+\newtoggle{@tcc}
 \newtoggle{@qualificacao}
 
 \NewDocumentCommand{\tese}{O{masc} O{}}{
@@ -212,6 +225,7 @@
   \renewcommand*{\@graueng}{Doctorate}
   \toggletrue{@doutorado}
   \togglefalse{@mestrado}
+  \togglefalse{@tcc}
   \ifstrequal{#1}{masc}{
     \renewcommand*{\@nometitulo}{Doutor}
     \RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
@@ -236,6 +250,7 @@
   \renewcommand*{\@graueng}{Masters}
   \toggletrue{@mestrado}
   \togglefalse{@doutorado}
+  \togglefalse{@tcc}
   \ifstrequal{#1}{masc}{
     \renewcommand*{\@nometitulo}{Mestre}
     \RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
@@ -250,6 +265,21 @@
   }{}
 }
 \NewDocumentCommand{\mestrado}{O{masc} O{}}{\dissertacao[#1][#2]}
+
+\NewDocumentCommand{\tcc}{O{masc}}{
+  \renewcommand*{\@nometrabalho}{Monografia}
+  \renewcommand*{\@nometrabalhoeng}{Undergraduate Thesis}
+  \renewcommand*{\@nometituloeng}{Bachelor}
+  \renewcommand*{\@grau}{Bacharelado}
+  \renewcommand*{\@graueng}{Bachelor}
+  \renewcommand*{\@nometitulo}{Bacharel}
+  \togglefalse{@mestrado}
+  \togglefalse{@doutorado}
+  \toggletrue{@tcc}
+  \ifstrequal{#1}{masc}
+    {\RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}}
+    {\RenewDocumentCommand{\@porquem}{m}{pela candidata \@author}}
+}
 
 % Defaults quando o usuário não define alguma dessas variáveis
 
@@ -298,8 +328,35 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%% TEXTOS PADRÃO EM PT E ENG %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Com fontspec (ou seja, lualatex/xelatex), o comando \oldstylenums funciona
+% com qualquer fonte que tenha suporte a números old-style. Já com pdflatex,
+% o comando para escolher números old style depende da fonte em uso. Nesse
+% caso, se não soubermos qual a fonte atual (ou seja, não é nem libertine
+% nem libertinus), vamos usar latin modern e torcer para o resultado não ser
+% muito discrepante do restante do texto.
+
+\@ifpackageloaded{fontspec}
+  {\providecommand{\macQuatroNoveNove}{mac~\oldstylenums{0499}}}
+  {
+    \providecommand{\macQuatroNoveNove}{{\fontfamily{lmr}\selectfont mac~\oldstylenums{0499}}}
+
+    \@ifpackageloaded{libertinus}
+      {\renewcommand{\macQuatroNoveNove}{\LibertinusSerifOsF mac~0499}}
+      {}
+
+    \@ifpackageloaded{libertine}
+      {\renewcommand{\macQuatroNoveNove}{\libertineOsF mac~0499}}
+      {}
+  }
+
 \newcommand*{\@textocapa}[1][port] {%
   \vspace{-\baselineskip}\singlespacing\setstretch{.9}%
+  \iftoggle{@tcc} {%
+      Monografia Final\vspace{.5\baselineskip}\\
+      \macQuatroNoveNove\space%
+      --- Trabalho de\\
+      Formatura Supervisionado%
+  }{}
   \iftoggle{@qualificacao} {%
     \ifstrequal{port}{#1}{%
       Texto apresentado ao\\
@@ -314,7 +371,8 @@
       for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\
       qualifying examination\\%
     }%
-  }{%
+  }{}
+  \ifboolexpr{ togl {@mestrado} or togl {@doutorado} } {%
     \ifstrequal{port}{#1}{%
       \@nometrabalho{} apresentada ao\\
       Instituto de Matemática e Estatística\\
@@ -330,14 +388,14 @@
       for the degree of\\
       \@nometituloeng{} of Science%
     }%
-  }%
+  }{}%
   \par%
 }
 
 \newcommand*{\@pessoascapa}[1][port] {%
   \begin{tabular}{rl}
     \ifstrequal{port}{#1}{%
-      Programa: & \@programa \tabularnewline
+      \iftoggle{@tcc}{}{Programa: & \@programa \tabularnewline}
       \@labelorientador: & \@orientador \tabularnewline
       \@if@expand@empty{@coorientador}{}{\@labelcoorientador: & \@coorientador \tabularnewline}%
     }{%
