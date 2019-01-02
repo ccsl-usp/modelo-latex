@@ -54,7 +54,7 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 
 OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo/*)
 BIBFILES      := $(wildcard *.bib)
-IMGFILES      := $(wildcard figuras/*)
+IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
 # Voce pode acrescentar outras dependencias aqui
 MISCFILES     :=
 
