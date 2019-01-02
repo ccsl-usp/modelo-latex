@@ -1,0 +1,80 @@
+\providecommand\aviso[1]{
+  \centering\bfseries\Large
+  \null
+  \vfill
+  \begin{hyphenrules}{nohyphenation}
+    #1\par
+  \end{hyphenrules}
+  \vfill
+  \clearpage
+}
+
+\providecommand\avisoFolhasDeRosto{
+  \aviso{
+    {\huge Você precisa editar os arquivos no diretório ``\texttt{conteudo}''!}
+    \par\bigskip\bigskip\bigskip\bigskip
+    Para gerar a capa e demais folhas de rosto no formato correto,
+    modifique o arquivo ``\texttt{conteudo/folhas-de-rosto.tex}'',
+    usando como base o arquivo correspondente no diretório
+    ``\texttt{conteudo-exemplo}''.
+  }
+}
+
+\providecommand\avisoCapitulos{
+  \aviso{
+    Insira o conteúdo dos capítulos do seu trabalho no arquivo
+    ``\texttt{capitulos.tex}'' do diretório ``\texttt{conteudo}''.
+  }
+}
+
+\providecommand\avisoApendices{
+  \aviso{
+    Insira o conteúdo dos apêndices do seu trabalho no arquivo
+    ``\texttt{apendices.tex}'' do diretório ``\texttt{conteudo}''.
+  }
+}
+
+\providecommand\avisoAnexos{
+  \aviso{
+    Insira o conteúdo dos anexos do seu trabalho no arquivo
+    ``\texttt{anexos.tex}'' do diretório ``\texttt{conteudo}''.
+  }
+}
+
+\providecommand\avisoArtigo{
+  \aviso{
+    Insira o conteúdo do artigo no arquivo ``\texttt{corpo-artigo.tex}''
+    do diretório ``\texttt{conteudo}''. Não se esqueça de consultar
+    o exemplo no diretório ``\texttt{conteudo-exemplo}'' para a
+    definição do título, autoria etc.
+  }
+}
+
+\providecommand\avisoApresentacao{
+  \begin{frame}{Insira o conteúdo!}
+  \aviso{
+    Insira o conteúdo da apresentação no arquivo ``\texttt{corpo-apresentacao.tex}''
+    do diretório ``\texttt{conteudo}''. Não se esqueça de consultar
+    o exemplo no diretório ``\texttt{conteudo-exemplo}'' para a
+    definição do título, autoria, estrutura etc.
+  }
+  \end{frame}
+}
+
+\providecommand\avisoPoster{
+  \begin{document}
+  \aviso{
+    Insira o conteúdo do poster no arquivo ``\texttt{corpo-poster.tex}''
+    do diretório ``\texttt{conteudo}''. Não se esqueça de consultar
+    o exemplo no diretório ``\texttt{conteudo-exemplo}'' para a
+    definição do título, autoria, estrutura etc.
+  }
+  \end{document}
+}
+
+\providecommand\avisoResumo{
+  \aviso{
+    Insira o conteúdo do resumo e do abstract no arquivo
+    ``\texttt{resumo-abstract.tex}'' do diretório ``\texttt{conteudo}''.
+  }
+}

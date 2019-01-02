@@ -52,7 +52,7 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 #MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
 #MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
-OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo/*)
+OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo-exemplo/*) $(wildcard conteudo/*)
 BIBFILES      := $(wildcard *.bib)
 IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
 # Voce pode acrescentar outras dependencias aqui

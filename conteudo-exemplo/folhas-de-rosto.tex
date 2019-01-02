@@ -1,0 +1,248 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS DA TESE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define o texto da capa e da referência que vai na página do resumo;
+% "masc" ou "fem" definem se serão usadas palavras no masculino ou feminino
+% (Mestre/Mestra, Doutor/Doutora, candidato/candidata). O segundo parâmetro
+% é opcional e determina que se trata de exame de qualificação.
+\mestrado[fem]
+%\mestrado[fem][quali]
+%\doutorado[masc]
+%\doutorado[masc][quali]
+
+% Se "\title" está em inglês, você pode definir o título em português aqui
+\tituloport{Título do trabalho}
+
+% Se "\title" está em português, você pode definir o título em inglês aqui
+\tituloeng{Title of the document}
+
+% Se o trabalho não tiver subtítulo, basta remover isto.
+\subtitulo{um subtítulo}
+
+% Se isto não for definido, "\subtitulo" é utilizado no lugar
+\subtituloeng{a subtitle}
+
+\orientador[fem]{Profª. Drª. Fulana de Tal}
+
+% Se isto não for definido, "\orientador" é utilizado no lugar
+\orientadoreng{Prof. Dr. Fulana de Tal}
+
+% Se não houver, remova
+\coorientador[masc]{Prof. Dr. Ciclano}
+
+% Se isto não for definido, "\coorientador" é utilizado no lugar
+%\coorientadoreng{Prof. Dr. Ciclano}
+
+\programa{Ciência da Computação}
+
+% Se isto não for definido, "\programa" é utilizado no lugar
+\programaeng{Computer Science}
+
+% Se não houver, remova
+\apoio{Durante o desenvolvimento deste trabalho o autor recebeu auxílio
+financeiro da XXXX}
+
+% Se isto não for definido, "\apoio" é utilizado no lugar
+\apoioeng{During this work, the author was supported by XXX}
+
+\localdefesa{São Paulo}
+
+\datadefesa{10 de agosto de 2017}
+
+% Se isto não for definido, "\datadefesa" é utilizado no lugar
+\datadefesaeng{August 10th, 2017}
+
+% Necessário para criar a referência do documento que aparece
+% na página do resumo
+\ano{2017}
+
+\banca{
+  \begin{itemize}
+    \item Profª. Drª. Nome Completo (orientadora) - IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo - IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo - IMPA [sem ponto final]
+  \end{itemize}
+}
+
+% Se isto não for definido, "\banca" é utilizado no lugar
+\bancaeng{
+  \begin{itemize}
+    \item Prof. Dr. Nome Completo (advisor) - IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo - IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo - IMPA [sem ponto final]
+  \end{itemize}
+}
+
+% Palavras-chave separadas por ponto e finalizadas também com ponto.
+\palavraschave{Palavra-chave1. Palavra-chave2. Palavra-chave3.}
+
+\keywords{Keyword1. Keyword2. Keyword3.}
+
+% Se quiser estabelecer regras diferentes, converse com seu
+% orientador
+\direitos{Autorizo a reprodução e divulgação total ou parcial
+deste trabalho, por qualquer meio convencional ou
+eletrônico, para fins de estudo e pesquisa, desde que
+citada a fonte.}
+
+% Isto deve ser preparado em conjunto com o bibliotecário
+%\fichacatalografica{
+% nome do autor, título, etc.
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Embora as páginas iniciais *pareçam* não ter numeração, a numeração existe,
+% só não é impressa. O comando \mainmatter (mais abaixo) reinicia a contagem
+% de páginas e elas passam a ser impressas. Isso significa que existem duas
+% páginas com o número "1": a capa e a página do primeiro capítulo. O pacote
+% hyperref não lida bem com essa situação. Assim, vamos desabilitar hyperlinks
+% para números de páginas no início do documento e reabilitar mais adiante.
+\hypersetup{pageanchor=false}
+
+% A capa; o parâmetro pode ser "port" ou "eng" para definir a língua
+\capaime[port]
+%\capaime[eng]
+
+% Se você não quiser usar a capa padrão, você pode criar uma outra
+% capa manualmente ou em um programa diferente. No segundo caso, é só
+% importar a capa como uma página adicional usando o pacote pdfpages.
+%\includepdf{./arquivo_da_capa.pdf}
+
+% A página de rosto da versão para depósito (ou seja, a versão final
+% antes da defesa) deve ser diferente da página de rosto da versão
+% definitiva (ou seja, a versão final após a incorporação das sugestões
+% da banca). Os parâmetros podem ser "port/eng" para a língua e
+% "provisoria/definitiva" para o tipo de página de rosto.
+%\pagrostoime[port]{definitiva}
+\pagrostoime[port]{provisoria}
+%\pagrostoime[eng]{definitiva}
+%\pagrostoime[eng]{provisoria}
+
+%%%%%%%%%%%%%%%%%%%% DEDICATÓRIA, RESUMO, AGRADECIMENTOS %%%%%%%%%%%%%%%%%%%%%%%
+
+% A definição deste ambiente está no pacote imeusp; se você não
+% carregar esse pacote, precisa cuidar desta página manualmente.
+\begin{dedicatoria}
+Esta seção é opcional e fica numa página separada; ela pode ser usada para
+uma dedicatória ou epígrafe.
+\end{dedicatoria}
+
+% Após a capa e as páginas de rosto, começamos a numerar as páginas; com isso,
+% podemos também reabilitar links para números de páginas no pacote hyperref.
+% Isso porque, embora contagem de páginas aqui começe em 1 e no primeiro
+% capítulo também, o fato de uma numeração usar algarismos romanos e a outra
+% algarismos arábicos é suficiente para evitar problemas.
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+
+% Agradecimentos:
+% Se o candidato não quer fazer agradecimentos, deve simplesmente eliminar
+% esta página. A epígrafe, obviamente, é opcional; é possível colocar
+% epígrafes em todos os capítulos. O comando "\chapter*" faz esta seção
+% não ser incluída no sumário.
+\chapter*{Agradecimentos}
+\epigrafe{Do. Or do not. There is no try.}{Mestre Yoda}
+
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto. Texto opcional.
+
+%\input{conteudo-exemplo/resumo-abstract}
+\input{conteudo/resumo-abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% LISTAS DE FIGURAS ETC. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Como as listas que se seguem podem não incluir uma quebra de página
+% obrigatória, inserimos uma quebra manualmente aqui.
+\makeatletter
+\if@openright\cleardoublepage\else\clearpage\fi
+\makeatother
+
+% Todas as listas são opcionais; Usando "\chapter*" elas não são incluídas
+% no sumário. As listas geradas automaticamente também não são incluídas
+% por conta das opções "notlot" e "notlof" que usamos mais acima.
+
+% Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página, e as
+% listas geradas automaticamente também por padrão ficam em páginas separadas.
+% Como cada uma destas listas é muito curta, não faz muito sentido fazer isso
+% aqui, então usamos este comando para desabilitar essas quebras de página.
+% Se você preferir, comente as linhas com esse comando e des-comente as linhas
+% sem ele para criar as listas em páginas separadas. Observe que você também
+% pode inserir quebras de página manualmente (com \clearpage, veja o exemplo
+% mais abaixo).
+\newcommand\disablenewpage[1]{{\let\clearpage\par\let\cleardoublepage\par #1}}
+
+% Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
+% a opção correspondente e as listas dentro de um par de chaves para ativar
+% raggedbottom apenas temporariamente.
+{
+\raggedbottom
+
+%%%%% Listas criadas manualmente
+
+%\chapter*{Lista de Abreviaturas}
+\disablenewpage{\chapter*{Lista de Abreviaturas}}
+
+\begin{tabular}{rl}
+         CFT         & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
+         DFT         & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
+        EIIP         & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
+        STFT         & Transformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
+	ABNT         & Associação Brasileira de Normas Técnicas\\
+	URL          & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
+	IME          & Instituto de Matemática e Estatística\\
+	USP          & Universidade de São Paulo
+\end{tabular}
+
+%\chapter*{Lista de Símbolos}
+\disablenewpage{\chapter*{Lista de Símbolos}}
+
+\begin{tabular}{rl}
+        $\omega$    & Frequência angular\\
+        $\psi$      & Função de análise \emph{wavelet}\\
+        $\Psi$      & Transformada de Fourier de $\psi$\\
+\end{tabular}
+
+% Quebra de página manual
+\clearpage
+
+%%%%% Listas criadas automaticamente
+
+%\listoffigures
+\disablenewpage{\listoffigures}
+
+%\listoftables
+\disablenewpage{\listoftables}
+
+% Esta lista é criada "automaticamente" pela package float quando
+% definimos o novo tipo de float "program" (em utils.tex)
+%\listof{program}{\programlistname}
+\disablenewpage{\listof{program}{\programlistname}}
+
+% Sumário (obrigatório)
+\tableofcontents
+
+} % Final de "raggedbottom"
+
+% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
+% pois o índice é opcional). É comum colocar esses itens no final do documento,
+% junto com o comando \printindex, mas em alguns casos isso torna necessário
+% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
+\index{Inglês|see{Língua estrangeira}}
+\index{Figuras|see{Floats}}
+\index{Tabelas|see{Floats}}
+\index{Código-fonte|see{Floats}}
+\index{Subcaptions|see{Subfiguras}}
+\index{Sublegendas|see{Subfiguras}}
+\index{Equações|see{Modo Matemático}}
+\index{Fórmulas|see{Modo Matemático}}
+\index{Rodapé, notas|see{Notas de rodapé}}
+\index{Captions|see{Legendas}}
+\index{Versão original|see{Tese/Dissertação, versões}}
+\index{Versão corrigida|see{Tese/Dissertação, versões}}
+\index{Palavras estrangeiras|see{Língua estrangeira}}
+\index{Floats!Algoritmo|see{Floats, Ordem}}
