@@ -61,7 +61,14 @@ MISCFILES     :=
 # Arquivos de nomes "$(ALL_TARGETS).$(TMP_EXTENSIONS)" sao apagados
 # por "make clean" (juntamente com arquivos "$(ALL_TARGETS).*"
 # citados nos arquivos .fls).
-TMP_EXTENSIONS := bbl blg ilg ind log fls synctex.gz fdb_latexmk
+TMP_EXTENSIONS := bbl blg ilg ind fls fdb_latexmk
+
+# Arquivos de nomes "$(ALL_TARGETS).*" citados nos arquivos .fls sao
+# apagados por make clean.  No entanto, se algo falhar ou o arquivo
+# .fls nao for gerado, vamos apagar pelo menos os arquivos com as
+# extensoes mais "obvias", ou seja, $(ALL_TARGETS).$(FLS_TMP_EXTENSIONS),
+# embora isso em geral seja redundante.
+FLS_TMP_EXTENSIONS := log aux bcf idx lof lop lot out run.xml toc
 
 ###############################################################################
 ######## Nada que precise ser modificado pelo usuario daqui para baixo ########
@@ -236,8 +243,8 @@ tmpclean: $(addsuffix -tmpclean,$(ALL_TARGETS))
 distclean: tmpclean $(addsuffix -distclean,$(ALL_TARGETS))
 
 %-distclean:
-	@echo '       removendo arquivos gerados ($*: pdf, ps, dvi)'
-	-@rm -f $*.ps $*.pdf $*.dvi
+	@echo '       removendo arquivos gerados ($*: pdf, ps, dvi, synctex.gz)'
+	-@rm -f $*.ps $*.pdf $*.dvi $*.synctex.gz
 
 %-tmpclean:
 	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
@@ -246,7 +253,9 @@ distclean: tmpclean $(addsuffix -distclean,$(ALL_TARGETS))
 		latex-out.log makeindex-out.log bibtex-out.log \
 		$(TEX_TEMP_FILES) $(CURRENT_TEX_TEMP_FILES) \
 		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)) \
+		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext)) \
 		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)-current) \
+		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext)-current) \
 		$*.ps-current $*.pdf-current $*.dvi-current
 
 define SHOW_REPORT
