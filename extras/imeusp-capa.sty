@@ -1,7 +1,7 @@
 % Authors: Nelson Lago and Jesus P. Mena-Chalco
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{imeusp-capa}[2018/10/19 IME/USP initial thesis pages]
+\ProvidesPackage{imeusp-capa}[2019/01/02 IME/USP initial thesis pages]
 
 % Várias funções úteis
 \RequirePackage{etoolbox}
@@ -152,30 +152,12 @@
 
 \newcommand*{\subtituloeng}[1]{
     \gdef\@subtituloengcapa{#1}
-    \def\@subtituloeng{%
+    \gdef\@subtituloeng{%
         \let \\ \disablelinebreak%
         \let \newline \disablelinebreak%
         \let \break \disablelinebreak%
         #1%
     }
-}
-
-% Default é usar o valor definido por \title
-\gdef\@tituloptcapa\@title
-\gdef\@tituloengcapa\@title
-
-\gdef\@titulopt{%
-    \let \\ \disablelinebreak%
-    \let \newline \disablelinebreak%
-    \let \break \disablelinebreak%
-    \@title%
-}
-
-\gdef\@tituloeng{%
-    \let \\ \disablelinebreak%
-    \let \newline \disablelinebreak%
-    \let \break \disablelinebreak%
-    \@title%
 }
 
 % Caso alguém se confunda e use o comando errado
@@ -200,15 +182,15 @@
 \newcommand*{\orientadoreng}[1]{\gdef\@orientadoreng{#1}}
 \newcommand*{\coorientadoreng}[1]{\gdef\@coorientadoreng{#1}}
 \newcommand*{\programa}[1]{\gdef\@programa{#1}}
-\newcommand*{\programaeng}[1]{\renewcommand*{\@programaeng}{#1}}
+\newcommand*{\programaeng}[1]{\gdef\@programaeng{#1}}
 \newcommand*{\apoio}[1]{\gdef\@apoio{#1}}
-\newcommand*{\apoioeng}[1]{\renewcommand*{\@apoioeng}{#1}}
+\newcommand*{\apoioeng}[1]{\gdef\@apoioeng{#1}}
 \newcommand*{\ano}[1]{\gdef\@ano{#1}}
 \newcommand*{\datadefesa}[1]{\gdef\@datadefesa{#1}}
-\newcommand*{\datadefesaeng}[1]{\renewcommand*{\@datadefesaeng}{#1}}
+\newcommand*{\datadefesaeng}[1]{\gdef\@datadefesaeng{#1}}
 \newcommand*{\localdefesa}[1]{\gdef\@localdefesa{#1}}
 \newcommand{\banca}[1]{\gdef\@banca{#1}}
-\newcommand{\bancaeng}[1]{\renewcommand{\@bancaeng}{#1}}
+\newcommand{\bancaeng}[1]{\gdef\@bancaeng{#1}}
 \newcommand*{\palavraschave}[1]{\gdef\@palavraschave{#1}}
 \newcommand*{\keywords}[1]{\gdef\@keywords{#1}}
 \newcommand*{\direitos}[1]{\gdef\@direitos{#1}}
@@ -270,29 +252,39 @@
 \NewDocumentCommand{\mestrado}{O{masc} O{}}{\dissertacao[#1][#2]}
 
 % Defaults quando o usuário não define alguma dessas variáveis
-\newcommand*{\@orientador}{Orientador não definido!}
-\newcommand*{\@programa}{Programa não definido!}
-\newcommand*{\@ano}{Ano não definido!}
-\newcommand*{\@datadefesa}{Data não definida!}
-\newcommand*{\@localdefesa}{Local não definido!}
-\newcommand*{\@banca}{Banca não definida!}
-\newcommand*{\@palavraschave}{Palavras-chave não definidas!}
-\newcommand*{\@keywords}{Keywords não definidas!}
-\newcommand*{\@subtitulo}{}
-\newcommand*{\@direitos}{}
+
+\titulopt{\@title}
+\tituloeng{\@title}
+
+% Default é vazio; não vamos usar "\subtitulo{}" porque, com isso,
+% \@subtitulo deixa de ser vazio (embora nada seja impresso, ele
+% inclui os comandos para desabilitar quebras de linha)
+\gdef\@subtitulocapa{}
+\gdef\@subtitulo{}
+
+\orientador{Orientador não definido!}
+\programa{Programa não definido!}
+\apoio{}
+\ano{Ano não definido!}
+\datadefesa{Data não definida!}
+\localdefesa{Local não definido!}
+\banca{Banca não definida!}
+\palavraschave{Palavras-chave não definidas!}
+\keywords{Keywords não definidas!}
+\direitos{}
 \NewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
-\newcommand{\@fichacatalografica}{}
+\fichacatalografica{}
 
 % Se estes não forem definidos, usamos a variável correspondente
 % em português.
 \newcommand*{\@subtituloeng}{\@subtitulo}
 \newcommand*{\@subtituloengcapa}{\@subtitulocapa}
+\newcommand*{\@orientadoreng}{\@orientador}
+\newcommand*{\@coorientadoreng}{\@coorientador}
 \newcommand*{\@programaeng}{\@programa}
 \newcommand*{\@apoioeng}{\@apoio}
 \newcommand*{\@datadefesaeng}{\@datadefesa}
 \newcommand*{\@bancaeng}{\@banca}
-\newcommand*{\@orientadoreng}{\@orientador}
-\newcommand*{\@coorientadoreng}{\@coorientador}
 
 \newcommand*{\@nometrabalho}{Dissertação}
 \newcommand*{\@nometrabalhoeng}{Thesis}
