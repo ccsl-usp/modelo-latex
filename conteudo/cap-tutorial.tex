@@ -70,8 +70,6 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 
 \section{Visão Geral}
 
-\enlargethispage{.5\baselineskip}
-
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
 mas é comum usar a extensão ``.tex'' ao invés de ``.txt'') e processa esse
@@ -150,8 +148,6 @@ documentos científicos.
 \section{Comandos Básicos}
 \label{sec:basico}
 
-\enlargethispage{.5\baselineskip}
-
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
 apresentação. Assim, os comandos usados durante a produção do conteúdo
@@ -226,6 +222,8 @@ uma linha em branco e versos são separados por \cmd{\sla\sla{}*}. O asterisco
 é opcional; ele instrui \LaTeX{} a manter as linhas na mesma página). A package
 \pkg{csquotes} acrescenta recursos sofisticados para citações.
 
+\enlargethispage{.5\baselineskip}
+
 Para inserir uma nota de rodapé, use o comando
 \ltxcmd{footnote\{texto da nota\}}\index{Notas de rodapé}. Um espaço
 não-separável é indicado pelo caractere til (``\cmd{\textasciitilde{}}'')
@@ -272,6 +270,8 @@ elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
 ``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
 
 \section{Múltiplas Execuções e Comandos Auxiliares}
+
+\enlargethispage{.5\baselineskip}
 
 \LaTeX{} numera capítulos, seções, figuras etc. automaticamente
 e pode fazer referências a seções ou figuras que aparecem tanto antes
@@ -354,15 +354,15 @@ não é necessário.}.
 
 \item A inserção de referências às obras ao longo do texto, usando
 diferentes comandos dependendo do caso: \ltxcmd{cite}, \ltxcmd{citet},
-\ltxcmd{citep} etc. Esses comandos estão descritos tanto na documentação
-da package \pkg{biblatex}\index{biblatex} quanto na da package
-\pkg{natbib}\index{natbib}. Normalmente, apenas as obras efetivamente
-citadas são incluídas na bibliografia, mas é possível forçar a inclusão
-de uma obra não-citada com o comando \ltxcmd{nocite}.
+\ltxcmd{citep} etc. Como já mencionado, esses comandos estão descritos
+na documentação da package \pkg{natbib}\index{natbib} \citep{natbib}.
 
 \item A escolha do estilo bibliográfico (usando as opções da package
 \pkg{biblatex}) que formata as citações ao longo do texto e gera a bibliografia
-automaticamente através do comando \ltxcmd{printbibliography}.
+automaticamente através do comando \ltxcmd{printbibliography}.  Normalmente,
+apenas as obras efetivamente citadas são incluídas na lista de referências,
+mas é possível forçar a inclusão de uma obra sem citá-la explicitamente com
+o comando \ltxcmd{nocite}.
 \end{enumerate}
 
 O banco de dados é um arquivo de texto contendo uma \emph{entrada} para cada
@@ -425,13 +425,18 @@ instituição entre chaves (``\{Universidade de São Paulo --- Sistema Integrado
 de Bibliotecas\}'') para que biblatex não faça alterações desse tipo. Se o
 nome é longo, pode ser interessante definir o campo \textsf{shortauthor}.
 
-A fonte mais detalhada de informações sobre o banco de dados é a
-documentação da package \pkg{biblatex}, mas o material ali é um tanto denso.
+A fonte mais detalhada de informações sobre o banco de dados é a documentação
+da package \pkg{biblatex} \citep[em especial as seções 2.1.1 e 2.2.2]{biblatex},
+mas o material ali é um tanto denso.
 Há muito material introdutório ao formato ``.bib'' e ao bibtex disponível
 \emph{online}, e você pode se inspirar em exemplos para criar seu banco de
 dados bibliográfico. Além disso, ferramentas como Zotero\index{Zotero} ou
 Mendeley\index{Mendeley} (o uso de uma delas é altamente recomendado!)
-podem exportar para o formato .bib.
+podem exportar para o formato .bib. Observe que \pkg{biblatex}
+\index{biblatex} oferece recursos bastante sofisticados para o tratamento de
+referências e bibliografias. Se você precisar de alguma funcionalidade
+especial, consulte a documentação do pacote ou a Internet; é quase certeza
+que \pkg{biblatex} oferece uma solução.
 
 \section{Imagens, Ilustrações, Diagramas e Gráficos}
 

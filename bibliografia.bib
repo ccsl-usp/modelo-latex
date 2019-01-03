@@ -1,3 +1,52 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% INSERINDO COMENTÁRIOS EM ARQUIVOS .bib %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 1. Como em outros arquivos LaTeX, comentários são iniciados por "%" e,
+%    portanto, é preciso usar "\%" para imprimir o caractere "%". Esquecer
+%    disso pode gerar erros difíceis de encontrar!
+%
+% 2. Não é possível inserir comentários dentro de uma entrada, apenas fora.
+%
+% 3. Não é possível incluir o caractere arroba em um comentário.
+%
+% 4. Se quiser desabilitar temporariamente um campo ("comentar" o campo),
+%    troque seu nome para algum nome inválido, como "author-disable".
+%    Se quiser fazer alguma observação permanente dentro de uma entrada,
+%    você também pode usar algum nome de campo inválido, como "lembrete",
+%    ou usar o campo "annotation", que normalmente é ignorado.
+%
+% 5. Se quiser desabilitar temporariamente uma entrada inteira ("comentar" a
+%    entrada), não basta colocar "%" nas linhas correspondentes por causa do
+%    caractere arroba; também é preciso remover a arroba.
+%
+% 6. Na verdade, as regras não são bem essas, mas segui-las é uma boa ideia:
+%    https://tex.stackexchange.com/a/262282
+
+
+% Esta entrada está comentada, ou seja, não tem efeito: se houvesse uma
+% referência a ela no texto, a referência ficaria inválida. Observe que,
+% para isso, o caractere arroba foi apagado!
+%Book{JW82,
+% author    = {Richard A. Johnson and Dean W. Wichern},
+% title     = {Applied Multivariate Statistical Analysis},
+% publisher = {Prentice-Hall},
+% year      = {1983}
+%}
+
+% Esta entrada não está em uso em tese-exemplo, apenas em
+% apresentacao-exemplo, mas isso não é um problema: você pode
+% ter um banco de dados com todos os papers que são de seu
+% interesse e, em um dado texto, citar apenas alguns deles.
+@Manual{CORBA:spec,
+ title       = {{CORBA} v3.0 Specification},
+ author      = {{Object Management Group}},
+ shortauthor = {OMG},
+ month       = Jul,
+ year        = {2002},
+ note        = {OMG Document 02-06-33}
+}
+
 @Book{eco:09,
  author   = {Umberto Eco},
  title    = {Como se Faz uma Tese},
@@ -74,20 +123,20 @@
  year     = {2003}
 }
 
-@Book{JW82,
- author    = {Richard A. Johnson and Dean W. Wichern},
- title     = {Applied Multivariate Statistical Analysis},
- publisher = {Prentice-Hall},
- year      = {1983}
+@Manual{natbib,
+ title       = "Reference sheet for \texttt{natbib} usage",
+ author      = "Patrick W. Daly",
+ date        = {2010-09-13},
+ urldate     = {2018-12-20},
+ url         = {mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf},
 }
 
-@Manual{CORBA:spec,
- title       = {{CORBA} v3.0 Specification},
- author      = {{Object Management Group}},
- shortauthor = {OMG},
- month       = Jul,
- year        = {2002},
- note        = {OMG Document 02-06-33}
+@Manual{biblatex,
+ title       = "The \texttt{biblatex} Package",
+ author      = "Philipp Lehman and Philip Kime and Moritz Wemheuer and Audrey Boruvka and Joseph Wright",
+ date        = {2018-10-30},
+ urldate     = {2018-12-20},
+ url         = {mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf},
 }
 
 @PhdThesis{garcia01:PhD,

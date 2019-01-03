@@ -3,9 +3,10 @@
 
 \section{Bibliografia e Referências}
 
-A documentação do pacote biblatex\index{biblatex} é bastante extensa e explica
-os diversos tipos de documento suportados, bem como o significado
-de cada campo. Na prática, às vezes é preciso fazer escolhas sobre
+A documentação do pacote biblatex\index{biblatex} \citep{biblatex} é
+bastante extensa e explica (nas Seções 2.1.1 e 2.2.2) os diversos
+tipos de documento suportados, bem como o significado de cada campo.
+Na prática, às vezes é preciso fazer escolhas sobre
 o que incluir na descrição de um item bibliográfico e muitas vezes
 é mais fácil aprender copiando exemplos já existentes, como estes (consulte o
 arquivo \texttt{bibliografia.bib} para ver como foi criado o banco de dados e a
@@ -13,15 +14,13 @@ bibliografia na página \pageref{bibliografia} para ver o resultado impresso):
 
 \begin{multicols}{2}
   \begin{itemize}
-    \item @Book: \cite{JW82}.
+    \item @Book: \cite{Knuth:96}.
 
-    \item @Article: \cite{MenaChalco08}.
+    \item @Article (em periódico): \cite{MenaChalco08}.
 
-    \item @InProceedings: \cite{alves03:simi}.
+    \item @InProceedings (ou @Conference): \cite{alves03:simi}.
 
-    \item @Conference (sinônimo de @InProceedings): \cite{bronevetsky02}.
-
-    \item @InCollection: \cite{bobaoglu93:concepts}.
+    \item @InCollection (capítulo de livro ou coletânea): \cite{bobaoglu93:concepts}.
 
     \item @PhdThesis: \cite{garcia01:PhD}.
 
@@ -29,7 +28,7 @@ bibliografia na página \pageref{bibliografia} para ver o resultado impresso):
 
     \item @Techreport: \cite{alvisi99:analysisCIC}.
 
-    \item @Manual: \cite{CORBA:spec}.
+    \item @Manual: \cite{biblatex}.
 
     \item @Misc: \cite{gridftp}.
 
