@@ -36,6 +36,10 @@
 \setbeamertemplate{itemize subitem}{{\normalsize$\bullet$ }}
 \setlength\leftmargini{3.5em}
 
+% Com as margens menores definidas anteriormente, os itens da bibliografia
+% caem fora do quadro; isto é um truque sujo para resolver esse problema
+\addtobeamertemplate{bibliography item}{\hspace*{1.3em}}{}
+
 \setbeamertemplate{block begin}{
   \vskip.75ex
   \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex]{block title}%

@@ -38,6 +38,9 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazil, en = english}
 
+% Espaçamento simples
+\singlespacing
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APARÊNCIA DO BEAMER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -77,15 +80,54 @@
     \end{block}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Referências
-\usepackage[style=bwl-FU]{biblatex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O estilo de citação e de lista de referências usado por biblatex
+\PassOptionsToPackage{
+  % Estilo similar a plainnat
+  %bibstyle=extras/plainnat-ime,
+  %citestyle=extras/plainnat-ime,
+  % Estilo similar a alpha
+  %bibstyle=alphabetic,
+  %citestyle=alphabetic,
+  % O estilo numérico é comum em artigos
+  %bibstyle=numeric,
+  %citestyle=numeric,
+  % Um estilo que busca ser compatível com a ABNT:
+  %bibstyle=abnt,
+  %citestyle=abnt,
+  style=bwl-FU,
+}{biblatex}
+
+% Para personalizar outros aspectos da bibliografia e citações ou
+% para utilizar bibtex, modifique este arquivo.
+\input{extras/bibconfig}
+
+% A configuração do arquivo acima foi definida para teses/dissertações;
+% vamos mudar algumas opções
+\ExecuteBibliographyOptions{
+  backref=false,
+  maxbibnames=2,
+}
+
+\AtBeginBibliography{
+  % Volta para o label default definido por beamer
+  % (extras/bibconfig.tex modifica o label)
+  \let\makelabel\originalmakelabel
+  % Numa apresentação, a bibliografia pode ficar em tamanho menor
+  \footnotesize
+}
+
+% O arquivo com os dados bibliográficos; você pode usar este comando
+% mais de uma vez para acrescentar múltiplos arquivos
 \addbibresource{bibliografia.bib}
-% Acrescenta à lista de referências sem precisar incluir uma referência
-% de fato no texto
-\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
-% Acrescenta tudo do arquivo .bib
+
+% Este comando permite acrescentar itens à lista de referências sem incluir
+% uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
+%\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
+% Com este comando, todos os itens do arquivo .bib são incluídos na lista
+% de referências
 %\nocite{*}
 
 \title[The shortened title]{The full title, which may be quite,\\ quite long indeed}
@@ -273,6 +315,7 @@
 \section{References}
 
 \begin{frame}[allowframebreaks]{References}
+  \nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
   \printbibliography
 \end{frame}
 

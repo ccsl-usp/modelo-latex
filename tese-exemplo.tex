@@ -85,15 +85,43 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazil, en = english}
 
+% Espaçamento simples
+\singlespacing
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Para personalizar o formato da bibliografia e citações, modifique este arquivo.
+% O estilo de citação e de lista de referências usado por biblatex
+\PassOptionsToPackage{
+  % Estilo similar a plainnat
+  bibstyle=extras/plainnat-ime,
+  citestyle=extras/plainnat-ime,
+  % Estilo similar a alpha
+  %bibstyle=alphabetic,
+  %citestyle=alphabetic,
+  % O estilo numérico é comum em artigos
+  %bibstyle=numeric,
+  %citestyle=numeric,
+  % Um estilo que busca ser compatível com a ABNT:
+  %bibstyle=abnt,
+  %citestyle=abnt,
+  %style=bwl-FU,
+}{biblatex}
+
+% Para personalizar outros aspectos da bibliografia e citações ou
+% para utilizar bibtex, modifique este arquivo.
 \input{extras/bibconfig}
 
 % O arquivo com os dados bibliográficos; você pode usar este comando
 % mais de uma vez para acrescentar múltiplos arquivos
 \addbibresource{bibliografia.bib}
+
+% Este comando permite acrescentar itens à lista de referências sem incluir
+% uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
+%\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
+% Com este comando, todos os itens do arquivo .bib são incluídos na lista
+% de referências
+%\nocite{*}
 
 
 %%%%%%%%%%%%%%%%%%%%%%% METADADOS (TÍTULO, AUTOR ETC.) %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,6 +149,7 @@
 % É possível definir como determinadas palavras podem (ou não) ser
 % hifenizadas; no entanto, a hifelização automática geralmente funciona bem
 \hyphenation{documentclass latexmk Fu-la-no}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% AQUI COMEÇA O CONTEÚDO DE FATO %%%%%%%%%%%%%%%%%%%%%%%%%

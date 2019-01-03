@@ -50,11 +50,14 @@
 %%%%%%%%%%% Usando biblatex: %%%%%%%%%%%
 % https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
 % https://github.com/PaulStanley/biblatex-tutorial/releases
-\usepackage[
+
+% "natbib=true" faz biblatex reconhecer comandos no estilo
+% do pacote natbib (\citet, \citep)
+\usepackage[natbib=true,]{biblatex}
+
+\ExecuteBibliographyOptions{
   % Ativa o suporte ao pacote hyperref
   hyperref=true,
-  % Reconhece comandos no estilo do pacote natbib (\citet, \citep)
-  natbib=true,
   % Se um item da bibliografia tem língua definida (com langid), permite
   % hifenizar com base na língua selecionada.
   autolang=hyphen,
@@ -66,19 +69,7 @@
   % Com mais de 2 nomes, usa "et. al." nas citações (só faz
   % diferença nos estilos autor-data, como plainnat-ime)
   maxcitenames=2,
-  % Estilo similar a plainnat
-  bibstyle=extras/plainnat-ime,
-  citestyle=extras/plainnat-ime,
-  % Estilo similar a alpha
-  %bibstyle=alphabetic,
-  %citestyle=alphabetic,
-  % O estilo numérico é comum em artigos
-  %bibstyle=numeric,
-  %citestyle=numeric,
-  % Um estilo que busca ser compatível com a ABNT:
-  %bibstyle=abnt,
-  %citestyle=abnt,
-]{biblatex}
+}
 
 % Sobrenomes nas citações e na bibliografia em Small Caps
 \renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
@@ -106,6 +97,7 @@
   % No estilo alfabético, biblatex coloca o "label" de cada item
   % alinhado à esquerda; bibtex alinha à direita e isso faz
   % mais sentido, então redefinimos o alinhamento aqui.
+  \let\originalmakelabel\makelabel
   \renewcommand*{\makelabel}[1]{\hss#1}
 }
 
