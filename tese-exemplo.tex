@@ -140,11 +140,10 @@
   pdfkeywords={LaTeX, tese, dissertação, IME/USP},
 }
 
-% Os dados (nome do orientador, banca etc.) que devem ser incluídos na capa
-% e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
-% Esses dados são usados mais abaixo (no arquivo "folhas-de-rosto"). Se
-% for gerar a capa etc. manualmente, remova.
-\input{conteudo/metadados-tese}
+% Este pacote define o formato sugerido da capa, páginas de rosto,
+% dedicatória e resumo. Se você pretende criar essas páginas manualmente,
+% não precisa carregar este pacote nem carregar o arquivo folhas-de-rosto.
+\dowithsubdir{extras/}{\usepackage{imeusp-capa}}
 
 % É possível definir como determinadas palavras podem (ou não) ser
 % hifenizadas; no entanto, a hifelização automática geralmente funciona bem
@@ -173,10 +172,8 @@
 \pagestyle{plain}
 %\pagestyle{frontback}
 
-% As folhas de rosto no formato sugerido para teses/dissertações do IME/USP,
-% usando as informações incluídas acima em metadados-tese. Se não quiser
-% usar, remova.
-
+% Capa e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
+% Se for gerar a capa etc. manualmente, remova.
 \onehalfspacing % Espaçamento 1,5 nas páginas iniciais
 \input{conteudo/folhas-de-rosto}
 
