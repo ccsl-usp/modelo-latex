@@ -174,4 +174,22 @@
   }
 }
 
+% Há um bug em beamer, no arquivo beamerbasetoc.sty, na definição da
+% macro \beamer@sectionintoc. Essa macro faz \hbox{\vbox{...}} para
+% cada item do sumário. O problema é que, se alguma das entradas do
+% sumário tem mais de uma linha, o espaçamento entre essa entrada e
+% a entrada anterior fica errado (ligeiramente menor). Normalmente
+% esse problema não chama muito a atenção, mas se há muitos itens
+% (e, portanto, o espaço entre eles é pequeno) ou se colocamos o
+% sumário em uma minipage ou um ambiente em colunas (que minimiza o
+% espaçamento vertical), o resultado é ruim.
+%
+% \beamer@subsectionintoc e \beamer@subsubsectionintoc não fazem
+% \hbox{\vbox{...}}; num teste preliminar, remover esses comandos
+% de \beamer@sectionintoc parece funcionar. Outra solução seria
+% acrescentar um \strut: \hbox{\vbox{\strut ...}}. Aqui, no entanto,
+% contornamos o problema acrescentando o \strut em outro lugar, que
+% é mais simples de fazer e (esperemos!) não vai causar problemas.
+\pretocmd{\beamer@tocact}{\strut}{}{}
+
 \endinput
