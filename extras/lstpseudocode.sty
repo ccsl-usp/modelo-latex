@@ -1,5 +1,5 @@
 \ProvidesFile{lstpseudocode.sty}
-    [2018/12/03 1.0.1 listings pseudocode language file]
+    [2019/01/07 1.0.2 listings pseudocode language file]
 % Author: Nelson Lago
 % Licence: LPPL 1.3 or later
 
@@ -67,15 +67,16 @@
   }
 \lst@EndAspect
 
-% "excludedelims" does not work as I expected; I believe
-% that is a bug. This redefines the default listings macros
-% to fix that, but only when the key fixexcludedelims is
-% set to true.
-\lst@BeginAspect{fixexcludedelims}
-  \lst@Key{fixexcludedelims}\relax[true]{
-    \lstKV@SetIf{#1}{\lst@iffixexcludedelims}
+% "excludedelims" makes the chosen delimiters (comments, strings, or
+% tags) to not be formatted in the same style as whatever they delimit.
+% This aspect creates the "invisibledelims" option that makes them
+% invisible instead (by patching the default macros). Note that this
+% only affects the delimiters indicated by excludedelims.
+\lst@BeginAspect{invisibledelims}
+  \lst@Key{invisibledelims}\relax[true]{
+    \lstKV@SetIf{#1}{\lst@ifinvisibledelims}
 
-    \lst@iffixexcludedelims
+    \lst@ifinvisibledelims
       \def\lst@DelimOpen##1##2##3##4##5##6\@empty{%
         \lst@TrackNewLines \lst@XPrintToken
         \lst@EnterMode{##4}{\def\lst@currstyle##5}%
@@ -91,7 +92,7 @@
   }
 \lst@EndAspect
 
-\lst@BeginAspect[emph,procnames,comments,style,keywords,fixexcludedelims]{pseudocode}
+\lst@BeginAspect[emph,procnames,comments,style,keywords,invisibledelims]{pseudocode}
 
   % Use emph[10] and emphstyle[10] to automatically identify and format
   % the given function names with the same formatting as procnamestyle
@@ -110,7 +111,7 @@
     \lstset{keywordstyle={[10]#1}}
   }
 
-  % Just a more friendly name for "emph[10] / emphstyle[10]".
+  % Just a more friendly name for "emph[11] / emphstyle[11]".
   \lst@Key{specialidentifiers}\relax{\lstset{emph={[11]#1}}}
   \lst@Key{specialidentifierstyle}\relax{\lstset{emphstyle={[11]#1}}}
 
@@ -128,7 +129,7 @@
     \lstKV@SetIf{#1}{\lst@ifTriangleComments}
 
     \lst@ifTriangleComments
-      \lstset{fixexcludedelims}
+      \lstset{invisibledelims}
     \fi
 
   }
@@ -200,7 +201,7 @@
   %escapechar=\&,
   simulatex,
   excludedelims={comments,strings},
-  fixexcludedelims,
+  invisibledelims,
   manualclassification,
   trianglecomments,
   morestring=[b]{'},
@@ -208,4 +209,4 @@
   morecomment=[s]{/*}{*/},
   morecomment=[l]{//},
   escapeinside={///}{\^^M},
-}[keywords,comments,strings,procnames,simulatex,fixexcludedelims,pseudocode]
+}[keywords,comments,strings,procnames,simulatex,invisibledelims,pseudocode]
