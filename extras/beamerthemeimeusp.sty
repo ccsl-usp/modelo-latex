@@ -190,6 +190,7 @@
 % acrescentar um \strut: \hbox{\vbox{\strut ...}}. Aqui, no entanto,
 % contornamos o problema acrescentando o \strut em outro lugar, que
 % é mais simples de fazer e (esperemos!) não vai causar problemas.
+% Bug report: https://github.com/josephwright/beamer/issues/524
 \pretocmd{\beamer@tocact}{\strut}{}{}
 
 \endinput
