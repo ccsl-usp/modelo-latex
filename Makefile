@@ -301,8 +301,10 @@ define SHOW_LOOP_ERROR
 	echo
 endef
 
-# Burla bug #53 do bash-completion
+# Contorna bug/limitacao #53 do bash-completion:
 # https://github.com/scop/bash-completion/issues/53
+# Este ifeq eh sempre verdadeiro, mas o bash-completion
+# nao "percebe" isso e, portanto, tudo funciona :)
 ifeq ($(filter npq%,$(firstword $(MAKEFLAGS))),)
 # Nao apaga arquivos intermediarios gerados durante a compilacao
 .SECONDARY:
