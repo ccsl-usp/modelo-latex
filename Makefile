@@ -301,5 +301,9 @@ define SHOW_LOOP_ERROR
 	echo
 endef
 
+# Burla bug #53 do bash-completion
+# https://github.com/scop/bash-completion/issues/53
+ifeq ($(filter npq%,$(firstword $(MAKEFLAGS))),)
 # Nao apaga arquivos intermediarios gerados durante a compilacao
 .SECONDARY:
+endif
