@@ -440,8 +440,6 @@ que \pkg{biblatex} oferece uma solução.
 
 \section{Imagens, Ilustrações, Diagramas e Gráficos}
 
-\enlargethispage{.5\baselineskip}
-
 Podemos classificar imagens em quatro categorias:
 
 \begin{enumerate}
@@ -483,7 +481,7 @@ excelente integração com \LaTeX{}.
 \section{Formatação Manual}
 
 Às vezes é preciso inserir formatação de forma manual; os comandos mais
-importantes são
+importantes são:
 \ltxcmd{emph} (texto \emph{enfatizado}, em geral itálico),
 \ltxcmd{texttt} (texto \texttt{teletype}, imitando um
 terminal de texto ou uma impressora),
@@ -504,12 +502,28 @@ as fontes oferecem essa possibilidade),
 \ltxcmd{vspace\{\sla{}baselineskip\}} (deixa uma linha em branco),
 \ltxcmd{begin\{center\}} (centraliza parágrafos),
 \ltxcmd{begin\{flushleft\}} (alinha parágrafos à esquerda),
-\ltxcmd{begin\{flushright\}} (alinha parágrafos à direita)\footnote{É altamente
-recomendável carregar a package \pkg{ragged2e} e utilizar \cmd{Center},
-\cmd{FlushLeft} e \cmd{FlushRight} ao invés de \cmd{center},
-\cmd{flushleft} e \cmd{flushright}.},
-\ltxcmd{leftskip=1cm} (aumenta a margem esquerda) e
-\ltxcmd{rightskip=1cm} (aumenta a margem direita).
+\ltxcmd{begin\{flushright\}} (alinha parágrafos à direita)\footnote{É
+altamente recomendável carregar a package \pkg{ragged2e} (já incluída
+neste modelo) e utilizar \ltxcmd{Center}, \ltxcmd{FlushLeft} e
+\ltxcmd{FlushRight} ao invés de \ltxcmd{center}, \ltxcmd{flushleft}
+e \ltxcmd{flushright}.},
+\ltxcmd{hyphenation} (permite ``ensinar'' \LaTeX{} como hifenizar uma
+lista de palavras; note que, em geral, a hifenização automática de \LaTeX{}
+é excelente),
+\ltxcmd{-} (sugere uma possível hifenização localizada),
+\ltxcmd{leftskip=1cm} (aumenta a margem esquerda),
+\ltxcmd{rightskip=1cm} (aumenta a margem direita),
+\ltxcmd{linebreak}[0--4] (sugere uma quebra de linha; o número indica
+quão forte é a sugestão, ou seja, 4 faz a quebra obrigatória; se o
+parágrafo é justificado, a linha quebrada também é justificada),
+\ltxcmd{newline} ou \cmd{\sla\sla} (força uma quebra de linha; a
+linha \emph{não} é justificada nesse caso),
+\ltxcmd{pagebreak}[0--4] (sugere uma quebra de página; como
+\ltxcmd{linebreak}, o número indica quão forte é a sugestão; o texto
+da página é espalhado verticalmente de maneira a fazer a última linha
+alinhada com o final das demais páginas) e
+\ltxcmd{newpage} (força uma quebra de página; o final da página
+\emph{não} é alinhado com o final das demais páginas nesse caso).
 
 Mas, como discutido na Seção~\ref{sec:basico}, não é recomendável
 usar esses comandos ao longo do texto: o ideal em \LaTeX{} é expressar
@@ -520,11 +534,9 @@ facilidade. Assim, quando os recursos pré-definidos do \LaTeX{}
 o mais adequado é definir comandos novos, em geral usando os comandos
 de formatação mencionados acima. Esse é um tópico avançado, mas você
 pode consultar o início do arquivo \LaTeX{} deste capítulo para alguns
-exemplos.
+exemplos simples.
 
 \section{Detalhes da Linguagem}
-
-\enlargethispage{.5\baselineskip}
 
 Há quatro estilos típicos de comandos \LaTeX{}:
 
@@ -591,28 +603,22 @@ embora também só possa usar as fontes adaptadas para uso com o \LaTeX{}.
 \item \XeLaTeX{} que, além dos recursos do pdf\LaTeX{}, opera internamente
 em UTF-8 (ou seja, funciona melhor com múltiplas línguas) e pode funcionar
 não só com as fontes adaptadas para o \LaTeX{} como também com as fontes
-instaladas no sistema. A desvantagem desta versão é que ela é um pouco
-mais lenta que pdf\LaTeX{}.
+instaladas no sistema.
 
 \item \LuaLaTeX{}, que oferece os mesmos recursos que o \XeLaTeX{} e
 também pode ser estendido internamente com mais facilidade (através da
-linguagem de programação Lua). Como \XeLaTeX{}, esta versão é um pouco
-mais lenta que pdf\LaTeX{}.
+linguagem de programação Lua).
 \end{enumerate}
 
-Todas essas versões são instaladas quando você instala o \LaTeX{} no seu
-sistema, então trocar de uma para outra é muito fácil (basta escolher o
-comando a executar: pdflatex, xelatex ou lualatex). \XeLaTeX{} e
-\LuaLaTeX{} são as duas propostas da comunidade para o futuro novo padrão
-do sistema, mas você não tem nada a perder se escolher a ``errada'', pois
-para todos os efeitos práticos elas são equivalentes.
-
-Se você pretende escrever apenas com línguas no alfabeto latino e não
-pretende usar fontes diferentes das disponíveis por padrão no \LaTeX{},
-então qualquer uma das três versões modernas (pdf\LaTeX{}, \XeLaTeX{}
-e \LuaLaTeX{}) é adequada. Se você pretende usar línguas com outros
-alfabetos ou se gostaria de escolher fontes diferentes, use \XeLaTeX{}
-ou \LuaLaTeX{}.
+Todas essas versões são instaladas quando você instala o \LaTeX{} na sua
+máquina. \XeLaTeX{} e \LuaLaTeX{} são as duas propostas da comunidade para
+o futuro novo padrão do sistema, mas você não tem nada a perder se escolher
+a ``errada'', pois para todos os efeitos práticos elas são equivalentes.
+Em geral, se você pretende escrever apenas com línguas no alfabeto latino e
+não pretende usar fontes diferentes das disponíveis por padrão no \LaTeX{},
+qualquer das três versões modernas (pdf\LaTeX{}, \XeLaTeX{}
+e \LuaLaTeX{}) é adequada. Se você pretende usar outros
+alfabetos ou se gostaria de escolher fontes diferentes, use \LuaLaTeX{}.
 
 \section{Limitações do \LaTeX{} e Algumas Dicas}
 \label{sec:limitations}
@@ -649,14 +655,13 @@ indesejáveis:
     isso pode ser contornado mudando a ordem em que elas são carregadas,
     mas em outros pode simplesmente não ser possível combiná-las.
 
-    \item Embora o algoritmo de colocação dos \emph{floats} funcione bem,
-    às vezes ele pode gerar resultados não tão bons. Isso acontece porque
-    \LaTeX{} decide o posicionamento de cada \emph{float} individualmente,
-    sem levar em conta os próximos \emph{floats}, e nunca reavalia essa
-    decisão. No exemplo da Seção~\ref{sec:refs}, se a ordem ``Figura~5,
-    Tabela~3, Figura~6'' for aceitável, esse vai ser o resultado, mesmo
-    que a ordem ``Tabela~3, Figura~5, Figura~6'' seja melhor. Apenas se
-    não for possível encontrar um lugar aceitável para a Figura~5
+    \item A colocação automática dos \emph{floats} em geral funciona bem, mas
+    nem sempre. Isso acontece porque \LaTeX{} decide o posicionamento de cada
+    \emph{float} individualmente, sem levar em conta os próximos \emph{floats},
+    e nunca reavalia essa decisão. No exemplo da Seção~\ref{sec:refs}, se a
+    ordem ``Figura~5, Tabela~3, Figura~6'' for aceitável, esse vai ser o
+    resultado, mesmo que a ordem ``Tabela~3, Figura~5, Figura~6'' seja melhor.
+    Apenas se não for possível encontrar um lugar aceitável para a Figura~5
     imediatamente (ou seja, na página atual) é que \LaTeX{} processa os
     \emph{floats} seguintes e, depois, procura novamente um lugar para ela.
     Por isso, depois que seu trabalho estiver finalizado, vale a pena
@@ -664,7 +669,7 @@ indesejáveis:
     mudar a ordem em que eles são definidos no documento pode fazer \LaTeX{}
     gerar um resultado melhor (mas lembre-se que isso só faz sentido depois
     que o documento estiver pronto, pois qualquer mudança no texto pode
-    mudar totalmente a colocação dos \emph{floats}).
+    mudar totalmente a posição final dos \emph{floats}).
 
     \item O algoritmo que \LaTeX{} usa para quebrar páginas é excelente,
     minimizando linhas órfãs ou viúvas e garantindo uma distribuição
