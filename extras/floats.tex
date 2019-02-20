@@ -113,15 +113,16 @@
 % Caixas de texto coloridas
 %\usepackage{tcolorbox}
 
-% Novo tipo de float para programas, possível graças à package float,
-% carregada em floats.tex. Observe que a lista de floats de cada tipo
-% é criada automaticamente pela package float, mas precisamos:
+% Novo tipo de float para programas, possível graças à package float.
+% Observe que a lista de floats de cada tipo é criada automaticamente
+% pela package float, mas precisamos:
 %  1. Definir o nome do comando ("\begin{program}")
 %  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
-%  3. Definir a extensão do arquivo temporário a ser usado (pode ser
-%     qualquer coisa, desde que não haja repetições; aqui, usamos "lop")
-%  4. Modificar o Makefile para acrescentar essa extensão em TMP_EXTENSIONS
-%  5. Acrescentar os comandos correspondentes em folhas-de-rosto.tex
+%  3. Definir a extensão do arquivo temporário a ser usada. Pode ser
+%     qualquer coisa, desde que não haja repetições. Aqui, usamos "lop";
+%     lembre-se que LaTeX já usa várias outras, como "lof", "lot" etc.,
+%     então seja cuidadoso na escolha!
+%  4. Acrescentar os comandos correspondentes em folhas-de-rosto.tex
 
 % O estilo padrão do novo float a ser criado (veja mais sobre isso na
 % documentação da package float). Para "program" usamos "ruled", mas
@@ -152,13 +153,16 @@
 % Retorna o estilo dos floats para o padrão
 \floatstyle{plain}
 
-% Se um programa é maior que uma página, ele não pode ser inserido em um
-% float. Nesse caso, vamos criar o ambiente "ruledcaption", que cria a
-% mesma estrutura visual e os mesmos captions que os floats do tipo
+% Se um programa é maior que uma página, ele não pode ser inserido em
+% um float. Nesse caso, vamos criar o ambiente "ruledcaption", que cria
+% a mesma estrutura visual e os mesmos captions que os floats do tipo
 % "program", mas sem ser um float. Para isso, vamos usar recursos da
 % package framed (a package tcolorbox poderia ter sido usada também).
-% Você provavelmente não vai precisar de nada semelhante se quiser
-% criar outros tipos de float.
+%
+% Observe que "ruledcaption" funciona *apenas* para os floats do tipo
+% "program". Se quiser criar algo similar para outro tipo de float,
+% você vai precisar criar um novo comando ("myfloatruledcaption")
+% copiando os comandos abaixo e modificando-os conforme necessário.
 \newsavebox{\captiontextBox}
 \usepackage{framed}
 \newenvironment{ruledcaption}[2][]{
