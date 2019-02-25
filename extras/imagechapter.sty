@@ -1,19 +1,31 @@
 % Author: Nelson Lago
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{imagechapter}[2019/02/21 Images along with chapter titles]
+\ProvidesPackage{imagechapter}[2019/02/25 1.1 Images along chapter titles]
 
 % Permite colocar uma imagem ilustrativa junto do
 % título do capítulo, através do comando
 %
-% \imgchapter[posição]{largura-da-imagem}{arquivo-da-imagem}{título}
+% \imgchapter[opts]{arquivo-da-imagem}{título}
 %
-% "posição" é opcional, o valor default é "top". Nesse caso, a imagem
-% é impressa centralizada na página acima do título. "top" é adequado
-% para imagens largas. Se você definir esse parâmetro como "right", a
-% imagem é impressa à direita do título e, portanto, não pode ser muito
-% larga.
-
+% "opts" são:
+%
+%   * right -> a imagem é impressa alinhada à direita ao invés de
+%     acima do título; na verdade, ela ultrapassa ligeiramente (8pt)
+%     a margem direita.
+%
+%   * width=\textwidth -> a largura da imagem; se não for definida,
+%     o padrão é \textwidth para imagens acima do título e a largura
+%     natural da imagem para imagens à direita do título.
+%
+%   * bleed[=8pt] -> ao usar "right", modifica o quanto a imagem
+%     ultrapassa a margem direita do texto; 0pt alinha à margem
+%
+%   * sep=30pt -> ao usar "right", o espaço horizontal entre
+%     o texto e a imagem
+%
+%   * shift=20pt -> ao usar "right", desloca a imagem para baixo/cima
+%
 % Esta package depende de titlesec; observe que titlesec é incompatível
 % com os comandos refsection e refsegment do pacote biblatex!
 
@@ -21,63 +33,83 @@
 
 % Para podermos ter a opção de imprimir ou não a imagem ilustrativa
 % junto ao título dos capítulos, redefinimos o comando \chapter
-% padrão para fazê-lo verificar um booleano e decidir se se deve ou
-% não imprimir a imagem. Quando \chapter é chamado normalmente, esse
-% booleano é falso e o comando funciona como sempre.
+% para utilizar duas macros auxiliares para imprimir o título.
+% Essas macros auxiliares são redefinidas em função do uso ou não de
+% imagem no título. Por padrão, essas macros imprimem o título "normal".
 %
-% Criamos também o comando \imgchapter, que define esse booleano como
-% verdadeiro, prepara as demais variáveis necessárias e chama \chapter.
-% Nesse contexto, \chapter se comporta diferentemente e imprime a imagem.
+% Criamos também o comando \imgchapter, que redefine essas macros
+% temporariamente e chama \chapter. Nesse contexto, \chapter se comporta
+% diferentemente e imprime a imagem.
 
 \RequirePackage[calcwidth,explicit,notocpart*,newparttoc,raggedright]{titlesec}
+\RequirePackage{keyval}
 
-\newtoggle{@chapterimage} % Inicializado como "false"
-
-% O label ("Capítulo X")
-\newcommand\@chimlabel{\chaptertitlename\space\thechapter\filright}
-
-% O nome do capítulo
-\newcommand\@chimtitle[1]{#1\filright}
-
+% Reproduz o formato padrão da classe book
 \titleformat{\chapter}[display]
     {\normalfont\huge\bfseries}
-    {
-      \iftoggle{@chapterimage}
-      {\@chimlabelwithimage}
-      {\@chimlabel}%
-    }
+    {\@ChImlabel}
     {24pt}
-    {
-      \iftoggle{@chapterimage}
-      {\@chimtitlewithimage{#1}}
-      {\@chimtitle{#1}}%
-    }
+    {\@ChImtitle{#1}}
 
 \titlespacing{\chapter}{0pt}{50pt}{40pt}[40pt]
 
+% O label ("Capítulo X")
+\newcommand\@ChImlabeltext{\chaptertitlename\space\thechapter\filright}
+
+% O nome do capítulo
+\newcommand\@ChImtitletext[1]{#1\filright}
+
+% Default: só o texto
+\let\@ChImlabel\@ChImlabeltext
+\let\@ChImtitle\@ChImtitletext
+
 %%%%%%%%%%%%%%%%%%%%%%
 
-\newsavebox{\@chimbox}
+\def\@ChImsep{30pt}
+\define@key{ChIm}{sep}{\def\@ChImsep{#1}}
 
-\newcommand\imgchapter[4][top]{
-    \ifstrequal{#1}{top}
-      {
-        \let\@chimlabelwithimage\@chimtop
-        \let\@chimtitlewithimage\@chimtitle
-      }{
-        \let\@chimlabelwithimage\@chimright
-        \let\@chimtitlewithimage\@chimtitlewithmargin
-      }
+\define@key{ChIm}{width}{\def\@ChImwidth{#1}}
 
-    \sbox{\@chimbox}{\includegraphics[width=#2]{#3}}
+\define@key{ChIm}{right}[]{\toggletrue{@ChImright}}
 
-    \global\toggletrue{@chapterimage}
-    \chapter{#4}
-    \global\togglefalse{@chapterimage}
+\def\@ChImbleed{\hspace*{8pt}}
+\define@key{ChIm}{bleed}{\def\@ChImbleed{\hspace*{#1}}}
+
+\def\@ChImshift{.5\baselineskip}
+\define@key{ChIm}{shift}{\def\@ChImshift{#1}}
+
+\newsavebox{\@ChImbox}
+
+\newcommand\imgchapter[3][]{
+  { % Cria um novo escopo temporário
+
+      \newtoggle{@ChImright}
+
+      \setkeys{ChIm}{#1}
+
+      \iftoggle{@ChImright}
+        {
+          \let\@ChImlabel\@ChImlabelimageright
+          \let\@ChImtitle\@ChImnarrowtitletext
+
+          \ifcsdef{@ChImwidth}
+	    {\sbox{\@ChImbox}{\includegraphics[width=\@ChImwidth]{#2}}}
+	    {\sbox{\@ChImbox}{\includegraphics{#2}}}
+        }{
+          \let\@ChImlabel\@ChImlabelimagetop
+          \let\@ChImtitle\@ChImtitletext
+
+          \ifcsdef{@ChImwidth}
+	    {\sbox{\@ChImbox}{\includegraphics[width=\@ChImwidth]{#2}}}
+	    {\sbox{\@ChImbox}{\includegraphics[width=\textwidth]{#2}}}
+        }
+
+      \chapter{#3}
+  }
 }
 
 % Imprime a imagem e o label ("Capítulo X") logo abaixo
-\newcommand\@chimtop{
+\newcommand\@ChImlabelimagetop{
     % Usamos \normalsize aqui porque o espaçamento neste caso é
     % definido em função de \baselineskip no tamanho normal da
     % fonte, não no tamanho do título (\huge).
@@ -85,54 +117,57 @@
     % \titlespacing, mais acima, define que o nome do capítulo é
     % impresso 50pt abaixo do topo da página. Com a imagem, não
     % queremos isso, então vamos colocar um espaçamento negativo.
-    {\normalsize\dimgdef{\@backtotop}{50pt + 2\baselineskip}}
-    \vspace{-\@backtotop}
+    {\normalsize\dimgdef{\@ChImtopmargin}{50pt + 2\baselineskip}}
+    \vspace{-\@ChImtopmargin}
 
     % Colocamos a imagem em um parbox para facilitar
     % o alinhamento vertical
-    {\normalsize\Centering\parbox[t][][c]{\wd\@chimbox}{\usebox{\@chimbox}}\newline}
+    {\normalsize\Centering\parbox[t][][c]{\wd\@ChImbox}{\usebox{\@ChImbox}}\newline}
 
     % Após a imagem, acrescentamos o espaçamento necessário para
     % que o título seja impresso na mesma altura dos demais.
-    {\normalsize\dimgdef{\@chimspace}{50pt - \ht\@chimbox - \dp\@chimbox + 1\baselineskip}}
-    \vspace{\@chimspace}
-    \@chimlabel
+    {\normalsize\dimgdef{\@ChImvspace}{50pt - \ht\@ChImbox - \dp\@ChImbox + 1\baselineskip}}
+    \vspace{\@ChImvspace}
+
+    \@ChImlabeltext
 }
 
 % Imprime o label ("Capítulo X") e a imagem à direita
-\newcommand\@chimright{
-      % Vamos colocar a imagem em uma box desta altura para podermos
-      % centralizá-la verticalmente. O correto seria calcular a altura
-      % de "Capítulo X" + o título (que pode ter uma ou mais linhas),
-      % mas não faço ideia de como fazer isso, então vamos definir um
-      % valor fixo e boa sorte :). 24pt é o espaço que definimos entre
-      % o label e o título.
-      \dimgdef{\@chimheight}{24pt + 1\baselineskip}
+\newcommand\@ChImlabelimageright{
+    % Vamos colocar a imagem em uma box desta altura para podermos
+    % centralizá-la verticalmente. O correto seria calcular a altura
+    % de "Capítulo X" + o título (que pode ter uma ou mais linhas),
+    % mas não faço ideia de como fazer isso, então vamos definir um
+    % valor fixo e boa sorte :). 24pt é o espaço que definimos entre
+    % o label e o título; usamos 1.5\baselineskip para termos um valor
+    % razoável para títulos com 1 e com 2 linhas :-p
+    \dimgdef{\@ChImheight}{24pt + 1.5\baselineskip}
 
-      % Primeiro o texto, com largura reduzida
-      \dimgdef{\@chimtextwidth}{\textwidth - \wd\@chimbox - 30pt}
+    % Primeiro o texto, com largura reduzida
+    \dimgdef{\@ChImnarrowtextwidth}{\textwidth - \wd\@ChImbox - \@ChImsep}
 
-      \parbox[t]{\@chimtextwidth}{\@chimlabel}%
-      %
-      % Como estamos colocando a imagem à direita, não queremos que ela
-      % influencie o espaçamento vertical; assim, usamos \smash.
-      \smash{
-        % Acrescenta a margem de separação entre o texto e a imagem
-        \hspace{30pt}
-        % Como colocamos a imagem em um parbox alinhado pelo topo, LaTeX
-        % vai alinhar a borda da parbox com a baseline da linha externa.
-        % Vamos usar raisebox para fazer o alinhamento no topo da linha
-        % externa.
-        \raisebox
-          {1\baselineskip}
-          {
-            \parbox[t][\@chimheight][c]{\wd\@chimbox}{\usebox{\@chimbox}}
-          }
-      }%
+    \parbox[t]{\@ChImnarrowtextwidth}{\@ChImlabeltext}\relax
+    % Como estamos colocando a imagem à direita, não queremos que ela
+    % influencie o espaçamento vertical; assim, usamos \smash.
+    \smash{\relax
+      % Acrescenta a margem de separação entre o texto e a imagem;
+      % coloca um espaço a mais para a imagem ultrapassar um pouco
+      % a margem direita
+      \hspace{\@ChImsep}\@ChImbleed
+      % Como colocamos a imagem em um parbox alinhado pelo topo, LaTeX
+      % vai alinhar a borda da parbox com a baseline da linha externa.
+      % Vamos usar raisebox para trazer a imagem mais para perto do
+      % topo da linha; se o usuário definir um valor para shift, ele
+      % é aplicado aqui.
+      \raisebox
+        {\@ChImshift}
+	{\parbox[t][\@ChImheight][c]{\wd\@ChImbox}{\usebox{\@ChImbox}}}
+    }\relax
 }
 
 % Ao imprimir a imagem à direita, é preciso colocar
 % uma margem no nome do capítulo
-\newcommand\@chimtitlewithmargin[1]{\parbox[t]{\@chimtextwidth}{\@chimtitle{#1}}}
+\newcommand\@ChImnarrowtitletext[1]
+    {\parbox[t]{\@ChImnarrowtextwidth}{\@ChImtitletext{#1}}}
 
 \endinput
