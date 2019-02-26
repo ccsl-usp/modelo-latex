@@ -65,47 +65,52 @@
 
 %%%%%%%%%%%%%%%%%%%%%%
 
-\def\@ChImsep{30pt}
 \define@key{ChIm}{sep}{\def\@ChImsep{#1}}
 
 \define@key{ChIm}{width}{\def\@ChImwidth{#1}}
 
 \define@key{ChIm}{right}[]{\toggletrue{@ChImright}}
 
-\def\@ChImbleed{\hspace*{8pt}}
 \define@key{ChIm}{bleed}{\def\@ChImbleed{\hspace*{#1}}}
 
-\def\@ChImshift{.5\baselineskip}
 \define@key{ChIm}{shift}{\def\@ChImshift{#1}}
 
 \newsavebox{\@ChImbox}
 
+\newtoggle{@ChImright}
+
 \newcommand\imgchapter[3][]{
-  { % Cria um novo escopo temporário
 
-      \newtoggle{@ChImright}
+    % Defaults
+    \def\@ChImsep{30pt}
+    \def\@ChImbleed{\hspace*{8pt}}
+    \def\@ChImshift{.5\baselineskip}
+    \togglefalse{@ChImright}
 
-      \setkeys{ChIm}{#1}
+    \setkeys{ChIm}{#1}
 
-      \iftoggle{@ChImright}
-        {
-          \let\@ChImlabel\@ChImlabelimageright
-          \let\@ChImtitle\@ChImnarrowtitletext
+    \iftoggle{@ChImright}
+      {
+        \let\@ChImlabel\@ChImlabelimageright
+        \let\@ChImtitle\@ChImnarrowtitletext
 
-          \ifcsdef{@ChImwidth}
-	    {\sbox{\@ChImbox}{\includegraphics[width=\@ChImwidth]{#2}}}
-	    {\sbox{\@ChImbox}{\includegraphics{#2}}}
-        }{
-          \let\@ChImlabel\@ChImlabelimagetop
-          \let\@ChImtitle\@ChImtitletext
+        \ifcsdef{@ChImwidth}
+          {\sbox{\@ChImbox}{\includegraphics[width=\@ChImwidth]{#2}}}
+          {\sbox{\@ChImbox}{\includegraphics{#2}}}
+      }{
+        \let\@ChImlabel\@ChImlabelimagetop
+        \let\@ChImtitle\@ChImtitletext
 
-          \ifcsdef{@ChImwidth}
-	    {\sbox{\@ChImbox}{\includegraphics[width=\@ChImwidth]{#2}}}
-	    {\sbox{\@ChImbox}{\includegraphics[width=\textwidth]{#2}}}
-        }
+        \ifcsdef{@ChImwidth}
+          {\sbox{\@ChImbox}{\includegraphics[width=\@ChImwidth]{#2}}}
+          {\sbox{\@ChImbox}{\includegraphics[width=\textwidth]{#2}}}
+      }
 
-      \chapter{#3}
-  }
+    \chapter{#3}
+
+    % Volta ao formato padrão (só texto)
+    \let\@ChImlabel\@ChImlabeltext
+    \let\@ChImtitle\@ChImtitletext
 }
 
 % Imprime a imagem e o label ("Capítulo X") logo abaixo
