@@ -219,21 +219,43 @@
 % a numerá-los com letras. "annex" não faz parte de nenhuma classe padrão,
 % ele foi criado para este modelo (em annex.sty e utils.tex). Se o
 % trabalho não tiver apêndices ou anexos, remova estas linhas.
+%
+% Diferentemente de \mainmatter, \backmatter etc., \appendix e \annex não
+% forçam o início de uma nova página. Em geral isso não é importante, pois
+% o comando seguinte costuma ser "\chapter", mas pode causar problemas com
+% a formatação dos cabeçalhos. Assim, vamos forçar uma nova página antes
+% de cada um deles.
 
-% Este formato está definido na package imeusp-headers
+%%%% Apêndices %%%%
+\makeatletter
+\if@openright\cleardoublepage\else\clearpage\fi
+\makeatother
+
+% Este formato está definido na package imeusp-headers.
 \pagestyle{appendix}
 
 % Sem esta linha, a palavra "Apêndices" no sumário ficava no final da
-% primeira página; assim, forçamos uma quebra de página antes.
+% primeira página; assim, forçamos uma quebra de página antes. Dependendo
+% do formato final do seu sumário, você pode manter ou remover esta linha.
 \addtocontents{toc}{\newpage}
-% Apêndices
 \appendix
 
 %\input{conteudo-exemplo/apendices}
 \input{conteudo/apendices}
 \par
 
-% Anexos
+%%%% Anexos %%%%
+\makeatletter
+\if@openright\cleardoublepage\else\clearpage\fi
+\makeatother
+
+% Este formato está definido na package imeusp-headers (note que é o mesmo
+% que o anterior; repetimos aqui caso você queira desabilitar toda a seção
+% de apêndices).
+\pagestyle{appendix}
+
+% Como em "Apêndices", você pode manter ou remover esta linha.
+%\addtocontents{toc}{\newpage}
 \annex
 
 %\input{conteudo-exemplo/anexos}
