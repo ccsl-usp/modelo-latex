@@ -156,12 +156,6 @@
 
 \begin{document}
 
-% Para gerar o título sem seguir o formato deste modelo, você pode usar o
-% comando padrão do LaTeX "\maketitle".
-%\maketitle
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
 % página de rosto, resumo, sumário etc. O comando frontmatter faz números
 % de página aparecem em algarismos romanos ao invés de arábicos e
@@ -171,6 +165,13 @@
 % Este formato está definido na package imeusp-headers
 \pagestyle{plain}
 %\pagestyle{frontback}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Para gerar o título sem seguir o formato deste modelo, você pode usar o
+% comando padrão do LaTeX "\maketitle".
+%\maketitle
 
 % Capa e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
 % Se for gerar a capa etc. manualmente, remova.
@@ -244,14 +245,14 @@
 
 % Aqui vão a bibliografia, índice remissivo e outras seções similares.
 
-% Espaço adicional no sumário antes das referências / índice remissivo
-\addtocontents{toc}{\vspace{2\baselineskip plus .5\baselineskip minus .5\baselineskip}}
-
 % O comando backmatter desabilita a numeração de capítulos.
 \backmatter
 
 % Este formato está definido na package imeusp-headers
 \pagestyle{frontback}
+
+% Espaço adicional no sumário antes das referências / índice remissivo
+\addtocontents{toc}{\vspace{2\baselineskip plus .5\baselineskip minus .5\baselineskip}}
 
 % A bibliografia é obrigatória
 
