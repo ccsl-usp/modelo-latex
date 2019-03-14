@@ -95,12 +95,13 @@
 
 % Na frontmatter e backmatter, não há números de capítulos e (em geral)
 % não há subdivisões (capítulos/seções/subseções), apenas um nível.
-% O correto, então, é usar o mesmo texto (nome do capítulo ou seção)
-% nas páginas pares ou ímpares. Isso na verdade não está funcionando
-% na frontmatter, pois os capítulos ali não definem os cabeçalhos (não
-% executam "chaptermark/sectionmark"), mas "forçamos" a bibliografia
-% e o índice a usarem.
-\fancypagestyle{frontback}{
+% O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
+% sem número) nas páginas pares ou ímpares.
+%
+% Normalmente, a bibliografia e o índice remissivo não definem os
+% cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
+% isso manualmente (em bibconfig.tex e index.tex).
+\fancypagestyle{backmatter}{
   \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
   \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
 
