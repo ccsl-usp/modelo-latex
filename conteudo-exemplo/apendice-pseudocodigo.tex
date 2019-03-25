@@ -40,14 +40,14 @@ neste modelo não os utilizamos.}:
     functions={},
     specialidentifiers={},
   ]
-      function euclid($a,b$) // The \textbf{g.c.d.} of $a$ and $b$
-          $r \gets a \bmod b$
-          while $r \neq 0$ // We have the answer if $r$ is 0
-              $a \gets b$
-              $b \gets r$
-              $r \gets a \bmod b$
+      function euclid(a, b) // The \textbf{g.c.d.} of a and b
+          r := a $\bmod$ b
+          while r != 0 // We have the answer if r is 0
+              a := b
+              b := r
+              r := a $\bmod$ b
           end
-          return $b$ // The \textbf{g.c.d.} is $b$
+          return b // The \textbf{g.c.d.} is b
       end
   \end{lstlisting}
 \end{ruledcaption}
@@ -59,17 +59,21 @@ diversos recursos:
 
 \begin{itemize}
 
-    \item É possível acrescentar palavras-chave com a opção
-          ``\textsf{morekeywords=\{pchave1,\linebreak[0]{}pchave2\}}''
+    \item Comentários seguem o padrão de C++ (\lstinline{//} e
+          \lstinline{/* ... */}), mas o delimitador é impresso
+          como $\triangleright$.
+
+    \item ``:='', ``<>'', ``<='', ``>='' e ``!='' são substituídos
+          pelo símbolo matemático adequado.
+
+    \item É possível acrescentar palavras-chave além de ``if'', ``and''
+          etc. com a opção ``\textsf{morekeywords=\{pchave1,\linebreak[0]{}pchave2\}}''
           (para um código específico) ou com o comando
           \textsf{\textbackslash{}lstset\{morekeywords=\linebreak[0]{}\{pchave1,pchave2\}\}}
           (como comando de configuração geral).
 
     \item É possível usar pequenos trechos de texto, como nomes de variáveis,
           dentro de um parágrafo normal com \textsf{\textbackslash{}lstinline\{blah\}}.
-
-    \item Comentários seguem o padrão de C++ (\lstinline{//} e
-          \lstinline{/* ... */}).
 
     \item ``\$\dots\$'' ativa o modo matemático em qualquer lugar.
 
