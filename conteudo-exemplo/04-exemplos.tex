@@ -228,48 +228,80 @@ começar em uma página em modo paisagem.}.
 %\begin{landscape}
 \begin{center}
 \begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
- % O label não deve ficar em um cabeçalho que se repete!
+
+%%%%%%%%%%%%
+% O cabeçalho da tabela na primeira página em que ela aparece.
+
+% Colocamos o label aqui porque ele não deve ficar em um
+% cabeçalho/rodapé que se repete
 \caption{Exemplo de tabela com valores numéricos.\label{tab:numeros}}\\
+
 \hline
+
 \emph{Lim.} &
 \multicolumn{3}{c|}{MGWT} &
 \multicolumn{3}{c|}{AMI} &
 \multicolumn{3}{c|}{\emph{Spectrum} de Fourier} &
 \multicolumn{3}{c|}{Caract. espectrais} \\
+
 \cline{2-4} \cline{5-7} \cline{8-10} \cline{11-13} &
 \emph{Sn} & \emph{Sp} & \emph{AC} &
 \emph{Sn} & \emph{Sp} & \emph{AC} &
 \emph{Sn} & \emph{Sp} & \emph{AC} &
 \emph{Sn} & \emph{Sp} & \emph{AC} \\
+
 \hline \hline
-\endfirsthead
-% Final do cabeçalho que aparece na primeira página; neste caso,
-% igual ao das páginas seguintes, definido logo abaixo, exceto
-% pelo comando caption; essa diferença impede que a lista de
-% tabelas inclua uma referência para cada página da tabela
+
+\endfirsthead % Final do cabeçalho que aparece na primeira página
+
+%%%%%%%%%%%%
+% O cabeçalho da tabela em todas as páginas em que ela aparece
+% exceto a primeira; praticamente igual ao anterior, exceto
+% pelo comando caption: como ele aparece em múltiplas páginas,
+% ele não deve ser incluído na lista de tabelas, por isso
+% usamos "[]". Ele também não deve ter um \label.
 
 \caption[]{Exemplo de tabela com valores numéricos (cont.).}\\
+
 \hline
+
 \emph{Lim.} &
 \multicolumn{3}{c|}{MGWT} &
 \multicolumn{3}{c|}{AMI} &
 \multicolumn{3}{c|}{\emph{Spectrum} de Fourier} &
 \multicolumn{3}{c|}{Caract. espectrais} \\
+
 \cline{2-4} \cline{5-7} \cline{8-10} \cline{11-13} &
 \emph{Sn} & \emph{Sp} & \emph{AC} &
 \emph{Sn} & \emph{Sp} & \emph{AC} &
 \emph{Sn} & \emph{Sp} & \emph{AC} &
 \emph{Sn} & \emph{Sp} & \emph{AC} \\
+
 \hline \hline
-\endhead % Final do cabeçalho que aparece em todas as páginas
+
+\endhead % Final do cabeçalho das páginas seguintes à primeira
+
+%%%%%%%%%%%%
+% O rodapé da tabela em todas as páginas em que ela aparece
+% exceto a última
 
 \hline
+
 \multicolumn{13}{|r|}{\textit{continua}\enspace$\longrightarrow$}\\
+
 \hline
+
 \endfoot % Final do rodapé que aparece em todas as páginas exceto a última
+
+%%%%%%%%%%%%
+% O rodapé da tabela na última página em que ela aparece
 
 \hline
 \endlastfoot % Final do rodapé da última página (neste caso, apenas uma linha)
+
+%%%%%%%%%%%%
+% O conteúdo da tabela de fato.
+
  1 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 & 1.00 & 0.16 & 0.08 \\
  2 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 & 1.00 & 0.16 & 0.09 \\
  3 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 & 1.00 & 0.16 & 0.10 \\
