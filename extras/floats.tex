@@ -9,14 +9,15 @@
 % melhor evitar.
 \usepackage{graphicx}
 
-% Mais tipos de float e mais opções para personalização; este pacote
-% também acrescenta a possibilidade de definir "H" como opção de
-% posicionamento do float, que significa "aqui, incondicionalmente".
-\usepackage{float}
+% Esta é uma versão aprimorada da package "float". Ela permite definir novos
+% tipos de float, oferece mais opções para personalização e também acrescenta
+% a possibilidade de definir "H" como opção de posicionamento do float, que
+% significa "aqui, incondicionalmente".
+\usepackage{floatrow}
 
 % Por padrão, LaTeX prefere colocar floats no topo da página que
 % onde eles foram definidos; vamos mudar isso. Este comando depende
-% do pacote "float", carregado logo acima.
+% do pacote "floatrow", carregado logo acima.
 \floatplacement{table}{htbp}
 \floatplacement{figure}{htbp}
 
@@ -40,7 +41,7 @@
 % com floats. É possível modificar esse comportamento com as opções de
 % posicionamento: "tp", por exemplo, instrui LaTeX a não colocar floats
 % no pé da página, e "htbp" o instrui para tentar "aqui" como a primeira
-% opção. O pacote "float" acrescenta a opção "H", que significa "aqui,
+% opção. O pacote "floatrow" acrescenta a opção "H", que significa "aqui,
 % incondicionalmente".
 %
 % A escolha do "melhor" lugar leva em conta os parâmetros abaixo, mas é
@@ -119,9 +120,9 @@
 % Caixas de texto coloridas
 %\usepackage{tcolorbox}
 
-% Novo tipo de float para programas, possível graças à package float.
+% Novo tipo de float para programas, possível graças à package floatrow.
 % Observe que a lista de floats de cada tipo é criada automaticamente
-% pela package float, mas precisamos:
+% pela package floatrow, mas precisamos:
 %  1. Definir o nome do comando ("\begin{program}")
 %  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
 %  3. Definir a extensão do arquivo temporário a ser usada. Pode ser
@@ -130,18 +131,15 @@
 %     então seja cuidadoso na escolha!
 %  4. Acrescentar os comandos correspondentes em folhas-de-rosto.tex
 
-% O estilo padrão do novo float a ser criado (veja mais sobre isso na
-% documentação da package float). Para "program" usamos "ruled", mas
-% para outros floats provavelmente é melhor usar o mesmo formato de
-% Figuras e Tables (plain).
-\floatstyle{ruled}
-
 \ifcsdef{chapter}
     % O novo ambiente se chama "program" ("\begin{program}") e a extensão
     % temporária é "lop"
-    {\newfloat{program}{htbp}{lop}[chapter]}
-    {\newfloat{program}{htbp}{lop}}
+    {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
+    {\DeclareNewFloatType{program}{placement=htbp,fileext=lop}}
 
+% Ajusta ligeiramente o espaçamento do estilo "ruled".
+\DeclareFloatVCode{customrule}{{\kern 0pt\hrule\kern 2.5pt\relax}}
+\floatsetup[program]{style=ruled,precode=customrule}
 \captionsetup[program]{style=ruled}
 
 % Comando "program", em pt, se refere a "Programa" e "Lista de Programas"
@@ -155,9 +153,6 @@
   \floatname{program}{Program}
   \gdef\programlistname{List of Programs}
 }
-
-% Retorna o estilo dos floats para o padrão
-\floatstyle{plain}
 
 % Se um programa é maior que uma página, ele não pode ser inserido em
 % um float. Nesse caso, vamos criar o ambiente "ruledcaption", que cria
