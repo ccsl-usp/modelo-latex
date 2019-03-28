@@ -232,11 +232,14 @@ começar em uma página em modo paisagem.}.
 %%%%%%%%%%%%
 % O cabeçalho da tabela na primeira página em que ela aparece.
 
-% Colocamos o label aqui porque ele não deve ficar em um
-% cabeçalho/rodapé que se repete
-\caption{Exemplo de tabela com valores numéricos.\label{tab:numeros}}\\
-
 \hline
+% Como a tabela pode se estender por várias páginas, precisamos tomar
+% cuidado especial com \caption e \label: se esses comandos forem
+% executados mais de uma vez, a lista de tabelas e as referências à
+% tabela ficarão incorretas. Há diversas soluções, mas a mais simples
+% é usar "\caption[]", que não coloca a tabela na lista de tabelas, e
+% incluí-la manualmente na lista apenas uma vez aqui junto com o \label.
+\captionlistentry{Exemplo de tabela com valores numéricos.}\label{tab:numeros}
 
 \emph{Lim.} &
 \multicolumn{3}{c|}{MGWT} &
@@ -256,12 +259,7 @@ começar em uma página em modo paisagem.}.
 
 %%%%%%%%%%%%
 % O cabeçalho da tabela em todas as páginas em que ela aparece
-% exceto a primeira; praticamente igual ao anterior, exceto
-% pelo comando caption: como ele aparece em múltiplas páginas,
-% ele não deve ser incluído na lista de tabelas, por isso
-% usamos "[]". Ele também não deve ter um \label.
-
-\caption[]{Exemplo de tabela com valores numéricos (cont.).}\\
+% exceto a primeira; aqui, igual ao anterior
 
 \hline
 
@@ -291,13 +289,20 @@ começar em uma página em modo paisagem.}.
 
 \hline
 
+% Como usamos \captionlistentry mais acima, usamos "[]" aqui.
+\caption[]{Exemplo de tabela com valores numéricos.}\\
+
 \endfoot % Final do rodapé que aparece em todas as páginas exceto a última
 
 %%%%%%%%%%%%
 % O rodapé da tabela na última página em que ela aparece
 
 \hline
-\endlastfoot % Final do rodapé da última página (neste caso, apenas uma linha)
+
+% Como usamos \captionlistentry mais acima, usamos "[]" aqui.
+\caption[]{Exemplo de tabela com valores numéricos.}\\
+
+\endlastfoot % Final do rodapé da última página
 
 %%%%%%%%%%%%
 % O conteúdo da tabela de fato.
@@ -333,8 +338,8 @@ começar em uma página em modo paisagem.}.
 29 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 30 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 31 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-% Como nesta página há uma nota de rodapé, a linha separadora da nota
-% e a linha final da tabela ficam muito próximas; vamos forçar uma
+% Como nesta página há uma nota de rodapé, a linha separadora da
+% nota e o final da tabela ficam muito próximos; vamos forçar uma
 % quebra de página uma linha antes para resolver isso.
 \pagebreak
 32 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
@@ -360,7 +365,6 @@ começar em uma página em modo paisagem.}.
 52 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 53 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 54 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-55 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 
 \end{longtable}
 \end{center}
