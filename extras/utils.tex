@@ -75,6 +75,15 @@
 \fi
 \makeatother
 
+% Vamos reduzir o espaçamento entre linhas nas notas/comentários
+\makeatletter
+\xpatchcmd{\@todo}
+  {\renewcommand{\@todonotes@text}{#2}}
+  {\renewcommand{\@todonotes@text}{\begin{spacing}{0.5}#2\end{spacing}}}
+  {}
+  {}
+\makeatother
+
 % Símbolos adicionais, como \celsius, \ohm, \perthousand etc.
 %\usepackage{gensymb}
 
