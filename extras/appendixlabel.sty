@@ -103,8 +103,8 @@
   % o sumário (como \annex só é definida mais à frente, pela package
   % annex, adiamos a execução com \AtEndPreamble):
   \AtEndPreamble{
-    \appto\appendix{\addtocontents{toc}{\appendixTOCLine}}
-    \appto\annex{\addtocontents{toc}{\annexTOCLine}}
+    \appto\appendix{\addtocontents{toc}{\protect\appendixTOCLine}}
+    \appto\annex{\addtocontents{toc}{\protect\annexTOCLine}}
   }
 
 \fi
