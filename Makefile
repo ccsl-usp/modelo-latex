@@ -138,7 +138,7 @@ endef
 # Obtem a lista dos arquivos temporarios gerados pelo proprio
 # LaTeX (exceto .log e .pdf, que nao sao dependencias e sao
 # modificados toda vez, pois incluem a data de compilacao).
-FIND_TEX_TEMP_FILES = grep "^OUTPUT $*" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
+FIND_TEX_TEMP_FILES = grep -E "^OUTPUT (.*/)?$*" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
 TEX_TEMP_FILES = $(shell $(FIND_TEX_TEMP_FILES))
 CURRENT_TEX_TEMP_FILES = $(addsuffix -current,$(TEX_TEMP_FILES))
 
