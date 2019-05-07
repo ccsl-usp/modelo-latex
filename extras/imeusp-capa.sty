@@ -299,37 +299,39 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand*{\@textocapa}[1][port] {%
+  \vspace{-\baselineskip}\singlespacing\setstretch{.9}%
   \iftoggle{@qualificacao} {%
     \ifstrequal{port}{#1}{%
-      Texto apresentado ao\\[-0.25cm]
-      Instituto de Matemática e Estatística\\[-0.25cm]
-      da Universidade de São Paulo\\[-0.25cm]
-      para exame de qualificação de\\[-0.25cm]
+      Texto apresentado ao\\
+      Instituto de Matemática e Estatística\\
+      da Universidade de São Paulo\\
+      para exame de qualificação de\\
       \@grau{} em Ciências%
     }{%
-      Text presented to the \\[-0.25cm]
-      Institute of Mathematics and Statistics\\[-0.25cm]
-      of the University of São Paulo\\[-0.25cm]
-      for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\[-0.25cm]
-      qualifying examination\\[-0.25cm]%
+      Text presented to the\\
+      Institute of Mathematics and Statistics\\
+      of the University of São Paulo\\
+      for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\
+      qualifying examination\\%
     }%
   }{%
     \ifstrequal{port}{#1}{%
-      \@nometrabalho{} apresentada ao\\[-0.25cm]
-      Instituto de Matemática e Estatística\\[-0.25cm]
-      da Universidade de São Paulo\\[-0.25cm]
-      para obtenção do título de\\[-0.25cm]
+      \@nometrabalho{} apresentada ao\\
+      Instituto de Matemática e Estatística\\
+      da Universidade de São Paulo\\
+      para obtenção do título de\\
       \@nometitulo{} em Ciências%
     }{%
-      \@nometrabalhoeng{} presented to the \\[-0.25cm]
-      Institute of Mathematics and Statistics\\[-0.25cm]
-      of the University of São Paulo\\[-0.25cm]
-      in partial fulfillment\\[-0.25cm]
-      of the requirements\\[-0.25cm]
-      for the degree of\\[-0.25cm]
+      \@nometrabalhoeng{} presented to the\\
+      Institute of Mathematics and Statistics\\
+      of the University of São Paulo\\
+      in partial fulfillment\\
+      of the requirements\\
+      for the degree of\\
       \@nometituloeng{} of Science%
     }%
   }%
+  \par%
 }
 
 \newcommand*{\@pessoascapa}[1][port] {%
