@@ -70,6 +70,8 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 
 \section{Visão Geral}
 
+\enlargethispage{-.5\baselineskip}
+
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
 mas é comum usar a extensão ``.tex'' ao invés de ``.txt'') e processa esse
@@ -148,6 +150,8 @@ documentos científicos.
 \section{Comandos Básicos}
 \label{sec:basico}
 
+\enlargethispage{-.5\baselineskip}
+
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
 apresentação. Assim, os comandos usados durante a produção do conteúdo
@@ -222,8 +226,6 @@ uma linha em branco e versos são separados por \cmd{\sla\sla{}*}. O asterisco
 é opcional; ele instrui \LaTeX{} a manter as linhas na mesma página). A package
 \pkg{csquotes} acrescenta recursos sofisticados para citações.
 
-\enlargethispage{.5\baselineskip}
-
 Para inserir uma nota de rodapé, use o comando
 \ltxcmd{footnote\{texto da nota\}}\index{Notas de rodapé}. Um espaço
 não-separável é indicado pelo caractere til (``\cmd{\textasciitilde{}}'')
@@ -270,8 +272,6 @@ elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
 ``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
 
 \section{Múltiplas Execuções e Comandos Auxiliares}
-
-\enlargethispage{.5\baselineskip}
 
 \LaTeX{} numera capítulos, seções, figuras etc. automaticamente
 e pode fazer referências a seções ou figuras que aparecem tanto antes
@@ -473,10 +473,10 @@ criação de ilustrações e diagramas (incluindo funções pré-prontas
 para formas geométricas, grafos, matrizes etc.) e é fácil usá-la
 para traçar linhas ou curvas simples. Você também pode criar gráficos
 de dados ou de funções matemáticas com a package \pkg{pgfplots}.
-\cmd{Gnuplot}, com o \emph{driver} \cmd{lua tikz}
-(\url{www.gnuplot.info/docs\_5.2/Gnuplot\_5.2.pdf\#section*.516}), e
-\cmd{matplotlib}, com o \emph{backend} \textsc{pgf}
-(\url{matplotlib.org/users/pgf.html}), são capazes de exportar gráficos
+\cmd{Gnuplot}, com o \emph{driver} \cmd{lua tikz}\footnote{
+\url{www.gnuplot.info/docs\_5.2/Gnuplot\_5.2.pdf\#section*.516}}, e
+\cmd{matplotlib}, com o \emph{backend} \textsc{pgf}\footnote{
+\url{matplotlib.org/users/pgf.html}}, são capazes de exportar gráficos
 de dados na forma de comandos para \pkg{tikz} (garantindo maior
 consistência visual entre o texto principal e o gráfico), e o programa
 \cmd{Asymptote} tem excelente integração com \LaTeX{}.
