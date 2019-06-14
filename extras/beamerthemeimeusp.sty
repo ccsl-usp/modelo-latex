@@ -140,7 +140,8 @@
           % \hspace
           \vfill
           \centering%
-          \noindent\hspace*{-.04\textwidth}#1\par
+          % "\strut" para garantir que "\hfil" à direita funcione
+          \noindent\hspace*{-.04\textwidth}#1\strut\par
           \noindent\hspace*{-.04\textwidth}\includegraphics[height=.0311\paperheight]{cc-by}\par
           \vspace{.3\baselineskip}
       \end{minipage}%
