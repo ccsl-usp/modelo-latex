@@ -156,11 +156,16 @@
 
 % Ilustrações, diagramas, gráficos etc. criados diretamente em LaTeX.
 % Também é útil se você quiser importar gráficos gerados com GnuPlot.
-%\usepackage{tikz}
+\usepackage{tikz}
 
 % Gráficos gerados diretamente em LaTeX; é possível usar tikz para
 % isso também.
-%\usepackage{pgfplots}
+\usepackage{pgfplots}
+
+% Importação direta de arquivos gerados por gnuplot com o
+% driver/terminal "lua tikz"; esta package não faz parte da
+% instalação padrão do LaTeX, mas sim do gnuplot.
+%\usepackage{gnuplot-lua-tikz}
 
 % Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta os
 % comandos \XeLaTeX e \LuaLaTeX. Você provavelmente não precisa desse recurso

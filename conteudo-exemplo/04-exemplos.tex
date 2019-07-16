@@ -71,21 +71,7 @@ denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
 Evidentemente, \LaTeX{} permite inserir figuras no texto; além disso, ele
 também permite girá-las e criar subfiguras (com sublegendas\index{Legendas}),
 como no exemplo da Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui
-as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}. Uma
-``figura'', na verdade, pode ser qualquer tipo de conteúdo ilustrativo
-(como no caso da Figura~\ref{fig:gantt}, que é um cronograma) mas, com a
-\textit{package} \textsf{float}, também é possível definir ambientes
-específicos para cada tipo de conteúdo adicional (cada um com numeração
-independente), como é o caso do Programa~\ref{prog:java}\index{Floats}. Há
-mais informações e dicas sobre recursos específicos para inclusão de
-código-fonte e pseudocódigo no Apêndice \ref{ap:pseudocode}\footnote{
-Observe que o nome do Apêndice (``\ref{ap:pseudocode}'') foi impresso em
-uma linha separada, o que não é muito bom visualmente. Para evitar que isso
-aconteça (não só no final do parágrafo, mas em qualquer quebra de linha),
-faça o que já foi discutido na Seção~\ref{orphanchar} sobre símbolos
-matemáticos: utilize um espaço não-separável para fazer referências a
-figuras, tabelas, seções etc.: ``\textsf{\dots no
-Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
+as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
 
 % As packages relevantes para lidar com figuras são graphicx,
 % float, caption, rotating e subcaption. Observe que "subfigure"
@@ -116,24 +102,20 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
   \caption{Exemplo de subfiguras.\label{fig:subfigures}}
 \end{figure}
 
-%%%%%%%% Código fonte %%%%%%%%
-
-% Foi utilizado o pacote listings para formatar o código fonte.
-% Veja os parâmetros de configuração no arquivo source-code.tex.
-\begin{program}
-  \index{Java}
-  \centering
-
-\begin{lstlisting}[language=Java, style=wider]
-  for (i = 0; i < 20; i++)
-  {
-      // Comentário
-      System.out.println("Mensagem...");
-  }
-\end{lstlisting}
-
-  \caption{Exemplo de laço em Java.\label{prog:java}}
-\end{program}
+Uma ``figura'', na verdade, pode ser qualquer tipo de conteúdo ilustrativo
+(um exemplo interessante é o cronograma mostrado na Figura~\ref{fig:gantt}) mas, com a
+\textit{package} \textsf{float}, também é possível definir ambientes
+específicos para cada tipo de conteúdo adicional (cada um com numeração
+independente), como é o caso do Programa~\ref{prog:java}\index{Floats}. Há
+mais informações e dicas sobre recursos específicos para inclusão de
+código-fonte e pseudocódigo no Apêndice \ref{ap:pseudocode}\footnote{
+Observe que o nome do Apêndice (``\ref{ap:pseudocode}'') foi impresso em
+uma linha separada, o que não é muito bom visualmente. Para evitar que isso
+aconteça (não só no final do parágrafo, mas em qualquer quebra de linha),
+faça o que já foi discutido na Seção~\ref{orphanchar} sobre símbolos
+matemáticos: utilize um espaço não-separável para fazer referências a
+figuras, tabelas, seções etc.: ``\textsf{\dots no
+Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
 
 %%%%%%% Cronograma %%%%%%%
 
@@ -161,9 +143,49 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
   \caption{Exemplo de cronograma.\label{fig:gantt}}
 \end{figure}
 
+%%%%%%%% Código fonte %%%%%%%%
+
+% Foi utilizado o pacote listings para formatar o código fonte.
+% Veja os parâmetros de configuração no arquivo source-code.tex.
+\begin{program}
+  \index{Java}
+  \centering
+
+\begin{lstlisting}[language=Java, style=wider]
+  for (i = 0; i < 20; i++)
+  {
+      // Comentário
+      System.out.println("Mensagem...");
+  }
+\end{lstlisting}
+
+  \caption{Exemplo de laço em Java.\label{prog:java}}
+\end{program}
+
 %%%%%
 
-Talvez você precise organizar a apresentação da informação na forma de
+\LaTeX{} pode importar gráficos gerados por \texttt{matplotlib} e por
+\texttt{gnuplot} como qualquer outra imagem, mas nesse caso a fonte
+usada nesses gráficos provavelmente será diferente do corpo do texto.
+Conforme mencionado na Seção~\ref{sec:graficos}, há mecanismos para
+resolver esse problema\footnote{Você pode se interessar também pela
+package \texttt{gnuplottex}.}, como pode ser visto na
+Figura~\ref{fig:graficos}.
+
+\begin{figure}
+  \centering
+  \begin{subfigure}{.65\textwidth}
+    \input{figuras/gnuplot.tkz}
+    \caption{\texttt{gnuplot}.\label{fig:gnuplot}}
+  \end{subfigure}
+  \begin{subfigure}{.3\textwidth}
+    \input{figuras/matplotlib.pgf}
+    \caption{\texttt{matplotlib}.\label{fig:matplotlib}}
+  \end{subfigure}
+	\caption{Exemplos de gráficos gerados externamente}\label{fig:graficos}
+\end{figure}
+
+Finalmente, talvez você precise organizar a apresentação da informação na forma de
 tabelas\index{Floats}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
 
 %%%%%%%% Tabelas lado-a-lado %%%%%%%%
@@ -321,6 +343,10 @@ começar em uma página em modo paisagem.}.
 13 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 \\
 14 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 \\
 15 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 \\
+% Como nesta página há uma nota de rodapé, a linha separadora da
+% nota e o final da tabela ficam muito próximos; vamos forçar uma
+% quebra de página uma linha antes para resolver isso.
+\pagebreak
 16 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 \\
 17 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 \\
 18 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 \\
@@ -341,30 +367,11 @@ começar em uma página em modo paisagem.}.
 33 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 34 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 35 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-% Como nesta página há uma nota de rodapé, a linha separadora da
-% nota e o final da tabela ficam muito próximos; vamos forçar uma
-% quebra de página uma linha antes para resolver isso.
-\pagebreak
 36 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 37 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 38 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 39 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 40 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-41 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-42 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-43 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-44 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-45 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-46 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-47 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-48 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-49 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-50 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-51 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-52 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-53 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-54 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
-
 \end{longtable}
 %\end{landscape}
 
