@@ -226,8 +226,7 @@ começar em uma página em modo paisagem.}.
 %%%% É possível fazer esta mesma tabela em modo paisagem des-comentando
 %%%% esta linha e a correspondente no final da tabela
 %\begin{landscape}
-\begin{center}
-\begin{longtable}{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\begin{longtable}[c]{|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 
 %%%%%%%%%%%%
 % O cabeçalho da tabela na primeira página em que ela aparece.
@@ -290,7 +289,7 @@ começar em uma página em modo paisagem.}.
 \hline
 
 % Como usamos \captionlistentry mais acima, usamos "[]" aqui.
-\caption[]{Exemplo de tabela com valores numéricos.}\\
+\caption[]{Exemplo de tabela com valores numéricos.}
 
 \endfoot % Final do rodapé que aparece em todas as páginas exceto a última
 
@@ -300,7 +299,7 @@ começar em uma página em modo paisagem.}.
 \hline
 
 % Como usamos \captionlistentry mais acima, usamos "[]" aqui.
-\caption[]{Exemplo de tabela com valores numéricos.}\\
+\caption[]{Exemplo de tabela com valores numéricos.}
 
 \endlastfoot % Final do rodapé da última página
 
@@ -367,7 +366,6 @@ começar em uma página em modo paisagem.}.
 54 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
 
 \end{longtable}
-\end{center}
 %\end{landscape}
 
 Tabelas mais complexas são um tanto trabalhosas em \LaTeX{}; a
