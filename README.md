@@ -77,10 +77,6 @@ lmodern, biber, and latexmk. Just run
 
 ## TODO
 
- * Recent biblatex versions (2017) use "labeldate+extradate" instead of
-   "labelyear+extrayear"; in a couple of years we should modify the
-   files plainnat-ime.bbx and plainnat-ime.cbx accordingly.
-
  * The translated version of the natbib package included in the template
    is old; we should update it.
 
