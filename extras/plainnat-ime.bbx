@@ -6,133 +6,135 @@
 [\abx@bbxid]
 
 % Vamos usar um formato similar a alphabetic, mas mudamos o label; ao
-% invés de alpha, inserimos o \textcite de authoryear.cbx como label.
-% Para isso, copiamos as macros de authoryear.cbx com algumas modificações.
+% invés de alpha, inserimos o \cite de authoryear.cbx como label.
 % Também não vamos fazer uma margem do tamanho do maior label, como
 % alphabetic faz, porque os labels aqui são muito grandes. Vamos usar
 % apenas "hanging indent" na primeira linha.
 
-% TODO: versões muito recentes (final de 2017) do biblatex usam
-% "labeldate+extradate" ao invés de "labelyear+extrayear"
-
 \RequireBibliographyStyle{alphabetic}
+\RequirePackage{regexpatch}
 
-% Se quiser fazer o "citado na pg. X" em fonte menor; isto é uma cópia
-% das macros em biblatex.def
-%\newbibmacro*{pageref}{\scriptsize%
-%  \iflistundef{pageref}
-%    {}
-%    {\printtext[parens]{%
-%       \ifnumgreater{\value{pageref}}{1}
-%         {\bibstring{backrefpages}\ppspace}
-%         {\bibstring{backrefpage}\ppspace}%
-%       \printlist[pageref][-\value{listtotal}]{pageref}}}}
-%
-%\newbibmacro*{setpageref}{\scriptsize%
-%  \iflistundef{pageref}
-%    {}
-%    {\printtext{%
-%       \ifnumgreater{\value{pageref}}{1}
-%         {\bibstring{backrefpages}\ppspace}
-%         {\bibstring{backrefpage}\ppspace}%
-%       \printlist[pageref][-\value{listtotal}]{pageref}}}}
-
-% No texto, se estamos usando o pacote hyperref, o label é um
-% link para o item na bibliografia. Usando o label na própria
-% bibliografia, não faz sentido criar esse link. Por conta disso,
-% precisamos redefinir as macros de authoryear.cbx que incluem
-% o comando "bibhyperref" removendo esse comando.
-
-% Cópia da macro em authoryear.cbx, mas sem "bibhyperref"
-\newbibmacro*{citenohyper:label}{%
-  \iffieldundef{label}
-    {\printtext{\printfield[citetitle]{labeltitle}}}
-    {\printtext{\printfield{label}}}}
-
-% Cópia da macro em authoryear.cbx, mas sem "bibhyperref"
-\newbibmacro*{citenohyper:labelyear+extrayear}{%
-  \iffieldundef{labelyear}
-    {}
-    {\printtext{%
-     \ifdefstring\blx@dateformat@labeldate{edtf}
-       {}
-       {\datecircaprint}%
-     \dateeraprintpre{labelyear}%
-     \printfield{labelyear}%
-     \printfield{extrayear}%
-     \dateuncertainprint%
-     \iffieldsequal{labeldateera}{labelenddateera}{}
-       {\dateeraprint{labelyear}}%
-     \ifdefstring\blx@dateformat@labeldate{edtf}
-       {\datecircaprintedtf}
-       {}%
-     \iffieldundef{labelendyear}
-       {}
-       {\iffieldsequal{labelyear}{labelendyear}{}
-        {\ifdefstring\blx@dateformat@labeldate{edtf}
-          {\slash}% strict EDTF
-          {\bibdaterangesep
-           \enddatecircaprint}%
-         \dateeraprintpre{labelendyear}%
-         \printfield{labelendyear}%
-         \enddateuncertainprint
-         \ifdefstring\blx@dateformat@labeldate{edtf}
-           {\enddatecircaprintedtf}
-           {}%
-         \dateeraprint{labelendyear}}}}}}
-
-% Cópia da macro em authoryear.cbx, mas sem "bibhyperref"
-\newbibmacro*{citenohyperyear}{%
-  \iffieldundef{shorthand}
-    {\iffieldundef{labelyear}
-       {\usebibmacro{citenohyper:label}}
-       {\usebibmacro{citenohyper:labelyear+extrayear}}}
-    {\usebibmacro{cite:shorthand}}}
+% Se quisermos fazer o "citado na pg. X" em fonte menor, modificamos
+% o comando definido em biblatex.def
+%\xpretobibmacro{pageref}{\scriptsize}{}{}
+%\xpretobibmacro{setpageref}{\scriptsize}{}{}
 
 % Por padrão, os labels na bibliografia não têm nada de
 % especial (além do que for definido, por exemplo, com
 % \mkbibnamefamily). O usuário pode redefinir este comando
 % para fazer, por exemplo, negrito.
-\newcommand*{\labelhighlight}[1]{#1}
+\providecommand*{\labelhighlight}[1]{#1}
 
-% Esta é a macro que efetivamente cria o label; copiada com
-% adaptações de authoryear.cbx
-\newbibmacro*{textcitelabel}{%
-  \c@maxnames\blx@maxcitenames\relax
-  \c@minnames\blx@mincitenames\relax
-  \ifnameundef{labelname}
-    {\iffieldundef{shorthand}
-       {\usebibmacro{citenohyper:label}%
-        \setunit{%
-          \global\booltrue{cbx:parens}%
-          \printdelim{nonameyeardelim}}%
-          {\usebibmacro{prenote}}
-        \usebibmacro{citenohyper:labelyear+extrayear}}
-       {\usebibmacro{cite:shorthand}}}
-    {\printnames{labelname}%
-     \setunit{%
-       \global\booltrue{cbx:parens}%
-       \printdelim{nameyeardelim}}%
-       {\usebibmacro{prenote}}
-     \usebibmacro{citenohyperyear}}%
-  \c@maxnames\blx@maxbibnames\relax
-  \c@minnames\blx@minbibnames\relax}
+% No estilo alfabético, biblatex coloca o "label" de cada item
+% alinhado à esquerda; com os labels longos que estamos usando,
+% faz mais sentido alinhar à direita.
+\renewcommand*{\makelabel}[1]{\hss#1}
+
+\newcommand{\disablelinksinlabels}{
+  % No texto, se estamos usando o pacote hyperref, o label é um
+  % link para o item na bibliografia. Usando o label na própria
+  % bibliografia, não faz sentido criar esse link. Por conta disso,
+  % precisamos redefinir as macros de authoryear.cbx que incluem
+  % o comando "bibhyperref" removendo esse comando.
+
+  \xpatchbibmacro*{cite:label}
+    {[bibhyperref]}{}{}{}
+
+  \xpatchbibmacro*{cite:shorthand}
+    {[bibhyperref]}{}{}{}
+
+  \xpatchbibmacro*{cite:labeldate+extradate}
+    {[bibhyperref]}{}{}{}
+
+  \xpatchbibmacro*{cite:labelyear+extrayear}
+    {[bibhyperref]}{}{}{}
+}
 
 % Baseado em alphabetic.bbx
 \defbibenvironment{bibliography}
-  {\list
-     {\printtext{%
+  {\makeatletter%
+  \disablelinksinlabels%
+  \list
+      {\printtext{%
         \mkbibbrackets{%
           \labelhighlight{%
-            \usebibmacro{textcitelabel}%
-          }%
-        }%
-     }}
+              % Generate the bibliography labels with the same number
+              % of authors before "et al." as when generating citation
+              % labels in the text
+              {\c@maxnames\blx@maxcitenames\relax%
+              \c@minnames\blx@mincitenames\relax%
+              \usebibmacro{cite}}}}}}
       {\setlength{\labelwidth}{\bibhang}%
       \setlength{\labelsep}{\biblabelsep}%
       \addtolength{\leftmargin}{\labelsep}%
       \setlength{\itemsep}{\bibitemsep}%
       \setlength{\parsep}{\bibparsep}}%
-      \renewcommand*{\makelabel}[1]{##1\hss}}
+  \makeatother}
   {\endlist}
   {\item}
+
+
+% bibtex assume que os títulos no arquivo .bib seguem o formato "title case",
+% ou seja, "A Maioria das Palavras É Iniciada por Maiúsculas". Se o estilo
+% bibliográfico usa esse formato, o título é impresso sem mudanças; se o
+% estilo bibliográfico não usa esse formato, bibtex transforma o título
+% em caixa baixa.
+%
+% Por padrão, biblatex não faz nada e mantém o título como digitado no
+% arquivo bib, mas fornece a possibilidade de modificar esse comportamento.
+% Isso depende (1) da língua do documento (ou a língua de entrada do
+% item na bibliografia) e (2) da definição do comando que deve realizar
+% o processamento.
+%
+% Para ativar esse mecanismo para a língua portuguesa:
+%\DeclareCaseLangs{brazilian,brazil,portuges}
+
+% Três opções de processamento:
+%
+% Não faz nada (default):
+%\DeclareFieldFormat{titlecase}{#1}
+%
+% Transforma todos os títulos em caixa baixa, que é o usual em português.
+% Esse é também o default de biblatex para o inglês.
+%\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
+%
+% Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
+% ou capítulos de livro (essa é uma convenção relativamente comum).
+\DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
+
+% Esta macro implementa o mecanismo descrito acima
+% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
+\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
+  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
+    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
+    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
+    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
+    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
+    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
+    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
+    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
+    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
+    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
+    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
+    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
+    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
+    {#1}
+    {\MakeSentenceCase*{#1}}}
+
+
+% "et al." em itálico, conforme
+% https://github.com/plk/biblatex/issues/899#issuecomment-502967208
+
+\providecommand*{\mkbibetal}[1]{\mkbibitalic{#1}}
+
+\renewbibmacro*{name:andothers}{%
+  \ifboolexpr{
+    test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+    and
+    test \ifmorenames
+  }
+    {\ifnumgreater{\value{liststop}}{1}
+       {\finalandcomma}
+       {}%
+     \printdelim{andothersdelim}\bibstring[\mkbibetal]{andothers}}
+    {}}

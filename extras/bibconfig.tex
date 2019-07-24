@@ -17,8 +17,8 @@
 % da bibliografia, é complexo e pouco flexível.
 %
 % Por conta disso, a comunidade está migrando para um novo sistema chamado
-% biblatex. No biblatex, a formatação da bibliografia e das citações são feitas
-% pelo próprio pacote biblatex, dentro do LaTeX. Assim, é bem mais fácil
+% biblatex. No biblatex, as formatações da bibliografia e das citações são
+% feitas pelo próprio pacote biblatex, dentro do LaTeX. Assim, é bem mais fácil
 % modificar e personalizar o estilo da bibliografia. biblatex usa o mesmo
 % formato de arquivo de dados do bibtex (".bib") e, portanto, não é difícil
 % migrar de um para o outro. biblatex também usa um programa auxiliar (biber),
@@ -74,10 +74,6 @@
 % Sobrenomes nas citações e na bibliografia em Small Caps
 \renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
 
-% Se desejável, o label na bibliografia no formato
-% plainnat-ime pode ser feito em negrito
-%\renewcommand*{\labelhighlight}[1]{\textbf{#1}}
-
 % Autores no formato "nome sobrenome"
 \DeclareNameAlias{sortname}{given-family}
 \DeclareNameAlias{default}{given-family}
@@ -93,29 +89,14 @@
 % que as demais; aqui definimos essa diferença:
 \setlength{\bibhang}{2em}
 
-\AtBeginBibliography{
-  % No estilo alfabético, biblatex coloca o "label" de cada item
-  % alinhado à esquerda; bibtex alinha à direita e isso faz
-  % mais sentido, então redefinimos o alinhamento aqui.
-  \let\originalmakelabel\makelabel
-  \renewcommand*{\makelabel}[1]{\hss#1}
-}
-
 \DefineBibliographyStrings{brazilian}{
   % Na bibliografia, criamos links para as páginas onde uma
   % determinada obra foi citada. O texto padrão para indicar
   % isso é "ver...", vamos trocar.
   backrefpage  = {citado na pg\adddot},
   backrefpages = {citado nas pgs\adddot},
-  % "et al." em itálico
-  andothers    = {\textit{et\addabbrvspace al}\adddot},
   page         = {pg\adddot},
   pages        = {pgs\adddot},
-}
-
-\DefineBibliographyStrings{american}{
-  % "et al." em itálico
-  andothers    = {\textit{et\addabbrvspace al}\adddot},
 }
 
 % biblatex redefine os cabeçalhos das páginas na bibliografia;
@@ -139,47 +120,12 @@
     {\section*{#1}\sectionmark{#1}}
 }
 
-% bibtex assume que os títulos no arquivo .bib seguem o formato "title case",
-% ou seja, "A Maioria das Palavras É Iniciada por Maiúsculas". Se o estilo
-% bibliográfico usa esse formato, o título é impresso sem mudanças; se o
-% estilo bibliográfico não usa esse formato, bibtex transforma o título
-% em caixa baixa.
+% Por padrão, biblatex mantém os títulos como digitados no arquivo bib,
+% mas fornece a possibilidade de modificar esse comportamento em função
+% da língua. Se a opção abaixo for ativada, plainnat-ime mantém
+% maiúsculas/minúsculas como no arquivo .bib, exceto para artigos ou
+% capítulos de livro (essa é uma convenção comum). Para mais opções,
+% leia os comentários em plainnat-ime.bbx.
 %
-% Por padrão, biblatex não faz nada e mantém o título como digitado no
-% arquivo bib, mas fornece a possibilidade de modificar esse comportamento.
-% Isso depende (1) da língua do documento (ou a língua de entrada do
-% item na bibliografia) e (2) da definição do comando que deve realizar
-% o processamento.
 % Aqui, ativamos esse mecanismo para a língua portuguesa:
 \DeclareCaseLangs{brazilian,brazil,portuges}
-
-% Três opções de processamento:
-%
-% Não faz nada (default):
-%\DeclareFieldFormat{titlecase}{#1}
-%
-% Transforma todos os títulos em caixa baixa, que é o usual em português.
-%\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
-%
-% Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
-% ou capítulos de livro.
-\DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
-
-% Esta macro implementa o mecanismo descrito acima
-% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
-\newrobustcmd{\NoChangeOrSentenceCase}[1]{%
-  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
-    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
-    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
-    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
-    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
-    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
-    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
-    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
-    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
-    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
-    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
-    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
-    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
-    {#1}
-    {\MakeSentenceCase*{#1}}}
