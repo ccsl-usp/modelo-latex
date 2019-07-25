@@ -10,75 +10,21 @@
 
 % Usando o pacote hyperref, o estilo de citação authoryear transforma
 % apenas o ano da citação em um link para a bibliografia; aqui fazemos
-% toda a citação ser um link.
-%
-% authoryear por padrão faz o link incluindo bibhyperref nos comandos
-% "cite:label" e "cite:shorthand", definidos com "\newbibmacro" (ou
-% seja, os comandos abx@macro@cite:label etc.). Esses comandos e os
-% demais criados com newbibmacro ("cite", "citeyear" etc.) constroem
-% os "pedaços" da citação (nome, ano) e são usados pelos comandos
-% "cite", "textcite" etc. definidos com \DeclareCiteCommand, que são
-% os comandos "de verdade". Seria razoável seguir esse padrão e
-% modificar também "cite", "citeyear" etc. definidos por newbibmacro.
-% No entanto, como queremos modificar a citação inteira (que pode
-% incluir vírgulas ou "e"), é melhor fazer isso em DeclareCiteCommand.
-% A exceção é textcite: o tratamento dos parênteses de textcite é
-% complexo e, por conta disso, é mais simples incluir o link na macro
-% textcite. A desvantagem é que os parênteses não são parte do link.
+% toda a citação ser um link, modificando as macros definidas em
+% authoryear.cbx.
+% TODO: os parênteses de textcite não fazem parte do link; isso
+% não é trivial de consertar.
 
-% Modifica a macro definida em authoryear.cbx
 \xpatchbibmacro*{textcite}
   {\printnames{labelname}}
   {\bibhyperref{\printnames{labelname}}}
   {}{}
 
-% Cópia dos comandos de authoryear.cbx (exceto textcite) adicionando
-% "bibhyperref"
-\DeclareCiteCommand{\cite}
-  {\usebibmacro{prenote}}%
-  {\usebibmacro{citeindex}%
-   \bibhyperref{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
+% letbibmacro não está disponível em versões de biblatex anteriores a
+% nov/2017; vamos fazer a alteração manualmente.
+%\letbibmacro{imedefaultcite}{cite}
+\csletcs{abx@macro@imedefaultcite}{abx@macro@cite}
 
-\DeclareCiteCommand*{\cite}
-  {\usebibmacro{prenote}}%
-  {\usebibmacro{citeindex}%
-   \bibhyperref{\usebibmacro{citeyear}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\parencite}[\mkbibparens]
-  {\usebibmacro{prenote}}%
-  {\usebibmacro{citeindex}%
-   \bibhyperref{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand*{\parencite}[\mkbibparens]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \bibyperref{\usebibmacro{citeyear}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\footcite}[\mkbibfootnote]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \bibhyperref{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\footcitetext}[\mkbibfootnotetext]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \bibhyperref{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
-
-\DeclareCiteCommand{\smartcite}[\iffootnote\mkbibparens\mkbibfootnote]
-  {\usebibmacro{prenote}}
-  {\usebibmacro{citeindex}%
-   \bibhyperref{\usebibmacro{cite}}}
-  {\multicitedelim}
-  {\usebibmacro{postnote}}
+\renewbibmacro{cite}{%
+    \printtext[bibhyperref]{\usebibmacro{imedefaultcite}}%
+}

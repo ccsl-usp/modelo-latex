@@ -48,19 +48,22 @@
 
   \xpatchbibmacro*{cite:labelyear+extrayear}
     {[bibhyperref]}{}{}{}
+
+  \xpatchbibmacro*{cite}
+    {[bibhyperref]}{}{}{}
 }
 
 % Baseado em alphabetic.bbx
 \defbibenvironment{bibliography}
-  {\makeatletter%
+  {\makeatletter% necessário para disablelinksinlabels (note o escopo restrito)
   \disablelinksinlabels%
   \list
       {\printtext{%
         \mkbibbrackets{%
           \labelhighlight{%
-              % Generate the bibliography labels with the same number
-              % of authors before "et al." as when generating citation
-              % labels in the text
+              % Gera os labels da bibliografia com o mesmo número de autores
+              % antes de "et al." que quando da geração dos labels no texto.
+              % Note o escopo restrito.
               {\c@maxnames\blx@maxcitenames\relax%
               \c@minnames\blx@mincitenames\relax%
               \usebibmacro{cite}}}}}}
@@ -80,26 +83,34 @@
 % estilo bibliográfico não usa esse formato, bibtex transforma o título
 % em caixa baixa.
 %
-% Por padrão, biblatex não faz nada e mantém o título como digitado no
-% arquivo bib, mas fornece a possibilidade de modificar esse comportamento.
-% Isso depende (1) da língua do documento (ou a língua de entrada do
-% item na bibliografia) e (2) da definição do comando que deve realizar
-% o processamento.
-%
-% Para ativar esse mecanismo para a língua portuguesa:
+% biblatex permite controlar esse processo, definindo um FieldFormat
+% chamado titlecase que armazena uma macro que altera a caixa do
+% título. A macro registrada por padrão é \MakeSentenceCase, que modifica
+% todas as palavras do título exceto a primeira para caixa baixa. Essa
+% macro, no entanto, apenas modifica o título se a língua atual corresponder
+% a uma das línguas para as quais esse comportamento é desejado. biblatex
+% ativa a macro para a língua inglesa; para ativar esse mecanismo para a
+% língua portuguesa:
 %\DeclareCaseLangs{brazilian,brazil,portuges}
 
-% Três opções de processamento:
+% Mais abaixo, definimos uma outra macro, \NoChangeOrSentenceCase, que
+% mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
+% ou capítulos de livro. Essa é uma convenção relativamente comum, embora
+% um tanto anacrônica: ela fazia sentido quando a capitalização era o único
+% mecanismo de destacar o título do documento. Essa macro utiliza
+% \MakeSentenceCase, então ela também é afetada por \DeclareCaseLangs.
 %
-% Não faz nada (default):
+% Assim, há três opções de processamento:
+%
+% 1. Não faz nada, apenas reproduz o que está no arquivo .bib:
 %\DeclareFieldFormat{titlecase}{#1}
 %
-% Transforma todos os títulos em caixa baixa, que é o usual em português.
-% Esse é também o default de biblatex para o inglês.
+% 2. Transforma todos os títulos em caixa baixa, que é o usual em português.
+% Esse é o default de biblatex, que por padrão afeta apenas o inglês:
 %\DeclareFieldFormat{titlecase}{\MakeSentenceCase*{#1}}
 %
-% Mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos
-% ou capítulos de livro (essa é uma convenção relativamente comum).
+% 4. Transforma apenas os títulos de artigos ou capítulos de livros em
+% caixa baixa:
 \DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
 
 % Esta macro implementa o mecanismo descrito acima
