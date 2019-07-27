@@ -12,60 +12,129 @@
 %   adequado usar negrito ou itálico;
 % * uma fonte "teletype", para trechos de programas.
 %
-% A escolha de uma família de fontes para o documento por default seleciona as
-% quatro fontes de uma vez.
-%
+% A escolha de uma família de fontes para o documento normalmente é feita
+% carregando uma package específica que, em geral, seleciona as quatro fontes
+% de uma vez. Com LuaLaTeX/XeLaTeX, é possível usar os comandos da package
+% fontspec para controlar em detalhes as fontes do documento.
+
 % LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
 % precisaram ser re-criadas diversas vezes em formatos diferentes, então há
 % diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX), a
-% versão usada é a BlueSky Computer Modern, que é de boa qualidade, mas com os
-% problemas do OT1. Com fontenc T1 (padrão deste modelo e recomendado), o
-% LaTeX usa o conjunto "cm-super". Essa versão das fontes tem vantagens e
-% desvantagens; em particular, às vezes o sistema usa fontes bitmap, que são
-% ruins para leitura na tela. Ao longo do tempo, versões diferentes dessas
-% fontes foram recomendadas como "a melhor"; atualmente, a melhor opção para
-% usar a família Computer Modern é a versão "Latin Modern".
-\usepackage{lmodern}
+% versão usada é a BlueSky Computer Modern, que é de boa qualidade, mas com
+% os problemas do OT1. Com fontenc T1 (padrão deste modelo quando usamos
+% pdfLaTeX e recomendado), o LaTeX usa o conjunto "cm-super". Com fontspec
+% (ou seja, com LuaLaTeX e XeLaTeX), LaTeX utiliza a versão "Latin Modern".
+% Ao longo do tempo, versões diferentes dessas fontes foram recomendadas
+% como "a melhor"; atualmente, a melhor opção para usar a família Computer
+% Modern é a versão "Latin Modern".
 
-% Latin Modern não tem fontes bold + Small Caps, mas cm-super sim;
-% assim, vamos ativar o suporte às fontes cm-super (sem ativá-las
-% como a fonte padrão do documento) e configurar substituições
-% automáticas para que a fonte Latin Modern seja substituída por
-% cm-super quando o texto for bold + Small Caps.
-\usepackage{fix-cm}
+\ifunicodeengine
+    % Com LuaLaTex e XeLaTeX, Latin Modern é a fonte padrão. Existem
+    % diversas packages e "truques" para melhorar alguns aspectos de
+    % Latin Modern, mas eles foram feitos para pdflatex (veja o "else"
+    % logo abaixo). Assim, se você pretende usar Latin Modern como a
+    % fonte padrão do documento, é melhor usar pdfLaTeX. Deve ser
+    % possível implementar essas melhorias com fontspec também, mas
+    % este modelo não faz isso, apenas ativamos Small Caps aqui.
 
-% Com Latin Modern, é preciso incluir substituições para o encoding TS1
-% também por conta dos números oldstyle, porque para inclui-los nas fontes
-% computer modern foi feita uma hack: os dígitos são declarados como sendo
-% os números itálicos da fonte matemática e, portanto, estão no encoding TS1.
-%
-% Primeiro forçamos o LaTeX a carregar a fonte Latin Modern (ou seja, ler
-% o arquivo que inclui "DeclareFontFamily") e, a seguir, definimos a
-% substituição
-\fontencoding{TS1}\fontfamily{lmr}\selectfont
-\DeclareFontShape{TS1}{lmr}{b}{sc}{<->ssub * cmr/bx/n}{}
-\DeclareFontShape{TS1}{lmr}{bx}{sc}{<->ssub * cmr/bx/n}{}
+    \ifluatex
+      % Com LuaTeX, basta indicar o nome de cada fonte; para descobrir
+      % o nome "certo", use o comando "otfinfo -i" e veja os itens
+      % "preferred family" e "full name"
+      \setmainfont{Latin Modern Roman}[
+        SmallCapsFont = {LMRomanCaps10-Regular},
+        ItalicFeatures = {
+          SmallCapsFont = {LMRomanCaps10-Oblique},
+        },
+        SlantedFont = {LMRomanSlant10-Regular},
+        SlantedFeatures = {
+          SmallCapsFont = {LMRomanCaps10-Oblique},
+          BoldFont = {LMRomanSlant10-Bold}
+        },
+      ]
+    \fi
 
-\fontencoding{T1}\fontfamily{lmr}\selectfont
-\DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub * cmr/bx/sc}{}
-\DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub * cmr/bx/sc}{}
+    \ifxetex
+      % Com XeTeX, é preciso informar o nome do arquivo de cada fonte.
+      \setmainfont{lmroman10-regular.otf}[
+        SmallCapsFont = {lmromancaps10-regular.otf},
+        ItalicFeatures = {
+          SmallCapsFont = {lmromancaps10-oblique.otf},
+        },
+        SlantedFont = {lmromanslant10-regular.otf},
+        SlantedFeatures = {
+          SmallCapsFont = {lmromancaps10-oblique.otf},
+          BoldFont = {lmromanslant10-bold.otf}
+        },
+      ]
+    \fi
 
-% Latin Modern não tem "small caps + itálico", mas tem "small caps + slanted";
-% vamos definir mais uma substituição aqui.
-\fontencoding{T1}\fontfamily{lmr}\selectfont % já feito acima, mas tudo bem
-\DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
-\DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub * lmr/bx/scsl}{}
+\else
+    % Usando pdfLaTeX
 
-% Se fizermos mudanças manuais na fonte Latin Modern, estes comandos podem
-% vir a ser úteis
-%\newcommand\lmodern{%
-%  \renewcommand{\oldstylenums}[1]{{\fontencoding{TS1}\selectfont ##1}}%
-%  \fontfamily{lmr}\selectfont%
-%}
-%
-%\DeclareRobustCommand\textlmodern[1]{%
-%  {\lmodern #1}%
-%}
+    % Ativa Latin Modern como a fonte padrão.
+    \usepackage{lmodern}
+
+    % Alguns truques para melhorar a aparência das fontes Latin Modern;
+    % eles não funcionam com LuaLaTeX e XeLaTeX.
+
+    % Latin Modern não tem fontes bold + Small Caps, mas cm-super sim;
+    % assim, vamos ativar o suporte às fontes cm-super (sem ativá-las
+    % como a fonte padrão do documento) e configurar substituições
+    % automáticas para que a fonte Latin Modern seja substituída por
+    % cm-super quando o texto for bold + Small Caps.
+    \usepackage{fix-cm}
+
+    % Com Latin Modern, é preciso incluir substituições para o encoding TS1
+    % também por conta dos números oldstyle, porque para inclui-los nas fontes
+    % computer modern foi feita uma hack: os dígitos são declarados como sendo
+    % os números itálicos da fonte matemática e, portanto, estão no encoding TS1.
+    %
+    % Primeiro forçamos o LaTeX a carregar a fonte Latin Modern (ou seja, ler
+    % o arquivo que inclui "DeclareFontFamily") e, a seguir, definimos a
+    % substituição
+    \fontencoding{TS1}\fontfamily{lmr}\selectfont
+    \DeclareFontShape{TS1}{lmr}{b}{sc}{<->ssub * cmr/bx/n}{}
+    \DeclareFontShape{TS1}{lmr}{bx}{sc}{<->ssub * cmr/bx/n}{}
+
+    \fontencoding{T1}\fontfamily{lmr}\selectfont
+    \DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub * cmr/bx/sc}{}
+    \DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub * cmr/bx/sc}{}
+
+    % Latin Modern não tem "small caps + itálico", mas tem "small caps + slanted";
+    % vamos definir mais uma substituição aqui.
+    \fontencoding{T1}\fontfamily{lmr}\selectfont % já feito acima, mas tudo bem
+    \DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
+    \DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub * lmr/bx/scsl}{}
+
+    % Se fizermos mudanças manuais na fonte Latin Modern, estes comandos podem
+    % vir a ser úteis
+    %\newcommand\lmodern{%
+    %  \renewcommand{\oldstylenums}[1]{{\fontencoding{TS1}\selectfont ##1}}%
+    %  \fontfamily{lmr}\selectfont%
+    %}
+    %
+    %\DeclareRobustCommand\textlmodern[1]{%
+    %  {\lmodern #1}%
+    %}
+
+    % Tanto Small Caps quanto itálico (ou slanted) são "shapes" de uma fonte.
+    % Sendo assim, os comandos \scshape (ou \textsc) e \itshape (ou \textit) são
+    % "incompatíveis" entre si, ou seja, um cancela o outro. O que LaTeX faz é
+    % considerar que há um outro shape: "small caps + itálico" (ou "small caps +
+    % slanted"), chamado "scit" ou "scsl". Se a fonte oferece esse shape, é só
+    % usar \fontshape(scit}\selectfont. Mas isso é muito desconfortável, já que
+    % o usual seria algo como "\textsc{Algumas \textit{palavras} podem ser
+    % diferentes}". Esta package resolve esse problema. Observe que esta
+    % package só é necessária com pdfLaTeX; com fontspec (LuaLaTeX/XeLaTeX),
+    % Small Caps + itálicos funcionam normalmente.
+    \usepackage{slantsc}
+\fi
+
+% Algumas packages mais novas que tratam de fontes funcionam corretamente
+% tanto em LuaLaTeX/XeLaTeX quanto em pdfLaTeX, mas várias funcionam
+% apenas em pdfLaTeX. Nesse caso, em LuaLaTeX/XeLaTeX é preciso usar os
+% comandos de fontspec, como exemplificado mais abaixo.
 
 % É possível mudar apenas uma das fontes. Em particular, a fonte
 % teletype da família Computer Modern foi criada para simular
@@ -77,17 +146,68 @@
 % esse fim:
 %\usepackage{newtxtt}
 %\usepackage{DejaVuSansMono}
-\usepackage{inconsolata}
+\ifunicodeengine
+  \setmonofont{inconsolatan}
+\else
+  \usepackage[narrow]{inconsolata}
+\fi
 
 % Ao invés da família Computer Modern, é possível usar outras como padrão.
 % Uma ótima opção é a libertine, similar (mas não igual) à Times mas com
 % suporte a Small Caps e outras qualidades. A fonte teletype da família
 % é serifada, então é melhor definir outra; a opção "mono=false" faz
 % o pacote não carregar sua própria fonte, mantendo a escolha anterior.
-\usepackage[mono=false]{libertine}
-% A família libertine por padrão não define uma fonte matemática específica;
-% uma opção que funciona bem com ela:
-\usepackage[libertine]{newtxmath}
+% Versões mais novas de LaTeX oferecem um fork desta fonte, libertinus.
+% As packages libertine/libertinus funcionam corretamente com pdfLaTeX,
+% LuaLaTeX e XeLaTeX.
+\makeatletter
+\IfFileExists{libertinus.sty}
+    {
+      \usepackage[mono=false]{libertinus}
+      % Com LuaLaTeX/XeLaTeX, Libertinus configura também
+      % a fonte matemática; aqui só precisamos corrigir \mathit
+      \ifunicodeengine
+        \ifluatex
+          \setmathfontface\mathit{Libertinus Serif Italic}
+        \fi
+        \ifxetex
+          % O nome de arquivo da fonte mudou na versão 2019-04-04
+          \@ifpackagelater{libertinus-otf}{2019/04/03}
+              {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+              {\setmathfontface\mathit{libertinusserif-italic.otf}}
+        \fi
+      \fi
+    }
+    {
+      % Libertinus não está disponível; vamos usar libertine
+      \usepackage[mono=false]{libertine}
+
+      % Com Libertine, é preciso modificar também a fonte
+      % matemática, além de \mathit
+      \ifunicodeengine
+        \ifluatex
+	  \setmathfont{Libertinus Math}
+          \setmathfontface\mathit{Linux Libertine O Italic}
+        \fi
+
+        \ifxetex
+          \setmathfont{libertinusmath-regular.otf}
+          \setmathfontface\mathit{LinLibertine_RI.otf}
+        \fi
+      \fi
+    }
+\makeatother
+
+\ifunicodeengine
+  \relax
+\else
+  % A família libertine por padrão não define uma fonte matemática
+  % específica para pdfLaTeX; uma opção que funciona bem com ela:
+  %\usepackage[libertine]{newtxmath}
+  % Outra, provavelmente melhor:
+  \usepackage{libertinust1math}
+\fi
+
 % Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
 %\usepackage{biolinum}
 

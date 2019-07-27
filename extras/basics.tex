@@ -2,30 +2,56 @@
 %%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÕES E PACOTES BÁSICOS %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Detecta o tipo de sistema que estamos usando (XeTeX, LuaTeX ou pdfTeX). Na
-% verdade, ifpdf não detecta pdfTeX, mas sim se estamos gerando um PDF; como
-% só XeTeX, LuaTeX e pdfTeX geram PDFs, combinando todos é possível identificar
-% pdfTeX também.
+% Vários comandos auxiliares para o desenvolvimento de packages e classes;
+% aqui, usamos em alguns comandos de formatação e condicionais.
+\usepackage{etoolbox}
+\usepackage{xstring}
+\usepackage{xparse}
+\usepackage{regexpatch}
+
+% Esta package permite detectar XeTeX, LuaTeX e pdfTeX, mas pode não estar
+% disponível em todas as instalações de TeX.
+%\usepackage{iftex}
+% Por conta disso, usaremos estas (que não detectam pdfTeX):
 \usepackage{ifxetex}
 \usepackage{ifluatex}
+
+\newbool{unicodeengine}
+\ifboolexpr{bool{xetex} or bool{luatex}}
+  {\booltrue{unicodeengine}}
+  {\boolfalse{unicodeengine}}
+
+% Detecta se estamos produzindo um arquivo PDF ou DVI (lembrando que tanto
+% pdfTeX quanto LuaTeX podem gerar ambos)
 \usepackage{ifpdf}
-
-% "fontenc" é um parâmetro interno do LaTeX. O fontenc default é OT1, mas ele
-% tem algumas limitações; a mais importante é que, com ele, palavras acentuadas
-% não podem ser hifenizadas. Por conta disso, quase todos os documentos LaTeX
-% utilizam o fontenc T1. A escolha do fontenc tem consequências para as fontes
-% que podem ser usadas no documento; hoje em dia T1 tem mais opções de
-% qualidade, então não se perde nada.
-\usepackage[T1]{fontenc}
-
-% apenas útil para LaTeX tradicional e pdfTeX; XeTeX e LuaTeX usam sempre utf8.
-\usepackage[utf8]{inputenc}
 
 % Permite criar "headed lists", ou seja, "listas" de elementos que vão
 % aparecendo ao longo do documento (como, por exemplo, teoremas). Podem ser
 % também citações a autores específicos, seções de um documento que está
 % sendo analisado etc. Precisa ser carregado antes das definições de fontes.
 \usepackage{amsthm}
+
+% Outras packages "padrão" da AMS que, embora tratem especificamente
+% de recursos matemáticos, são praticamente obrigatórias
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\ifunicodeengine
+  % Não é preciso carregar fontenc e inputenc com LuaTeX e XeTeX!
+  \usepackage{fontspec}
+  \usepackage{unicode-math}
+\else
+  % "fontenc" é um parâmetro interno do LaTeX. Com pdfLaTeX, o fontenc
+  % default é OT1, mas ele tem algumas limitações; a mais importante é
+  % que, com ele, palavras acentuadas não podem ser hifenizadas. Por
+  % conta disso, quase todos os documentos LaTeX utilizam o fontenc T1.
+  % A escolha do fontenc tem consequências para as fontes que podem ser
+  % usadas no documento; hoje em dia T1 tem mais opções de qualidade,
+  % então não se perde nada.
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\fi
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
@@ -73,6 +99,14 @@
   kerning=false,
   spacing=false
 }
+
+% TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
+% 1.07 de luatex. Essa combinação faz aparecer um bug:
+% https://tex.stackexchange.com/questions/476740/microtype-error-with-lualatex-attempt-to-call-field-warning-a-nil-value
+% Aqui, aplicamos a solução sugerida, que não tem "contra-indicações".
+\ifluatex
+  \usepackage{luatexbase}
+\fi
 
 \ifxetex
   \usepackage[expansion=false,\microtypeopts]{microtype}
@@ -206,16 +240,6 @@
 % Esta opção desabilita isso e, consequentemente, evita problemas com
 % "id est" (i.e.) e "exempli gratia" (e.g.)
 \frenchspacing
-
-% Tanto Small Caps quanto itálico (ou slanted) são "shapes" de uma fonte.
-% Sendo assim, os comandos \scshape (ou \textsc) e \itshape (ou \textit) são
-% "incompatíveis" entre si, ou seja, um cancela o outro. O que LaTeX faz é
-% considerar que há um outro shape: "small caps + itálico" (ou "small caps +
-% slanted"), chamado "scit" ou "scsl". Se a fonte oferece esse shape, é só
-% usar \fontshape(scit}\selectfont. Mas isso é muito desconfortável, já que
-% o usual seria algo como "\textsc{Algumas \textit{palavras} podem ser
-% diferentes}". Esta package resolve esse problema.
-\usepackage{slantsc}
 
 % LaTeX procura por arquivos adicionais no diretório atual e nos diretórios
 % padrão do sistema. Assim, é preciso usar caminhos relativos para incluir
