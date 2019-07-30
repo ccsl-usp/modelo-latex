@@ -31,6 +31,14 @@
 
 # Exemplo com o terminal cairolatex; utilize "header" para inserir
 # comandos LaTeX que afetem o texto do gráfico como um todo.
+# ATENÇÃO: gnuplot 5.0.5 tem um bug
+# (https://sourceforge.net/p/gnuplot/bugs/1945/) que gera um arquivo
+# pdf fora do padrão; Ele funciona com pdflatex, mas não com lualatex.
+# Para contornar o problema, faça uma conversão de pdf para pdf
+# com algum programa. Por exemplo, em Linux:
+# pdftocairo -pdf original.pdf corrigido.pdf
+# ou
+# pdftk original.pdf output corrigido.pdf
 set terminal cairolatex pdf input size 3.8in,2.5in header "\\footnotesize"
 
 # Exemplo com terminal lua tikz
