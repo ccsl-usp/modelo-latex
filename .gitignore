@@ -23,6 +23,7 @@
 *.snm
 *.vrb
 *.lop
+*.(busy)
 timestamp
 mkidxhead.ist
 hyperxindy.xdy

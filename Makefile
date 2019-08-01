@@ -248,7 +248,7 @@ distclean: tmpclean $(addsuffix -distclean,$(ALL_TARGETS))
 
 %-tmpclean:
 	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
-	-@rm -f timestamp missfont.log \
+	-@rm -f timestamp missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
 		mkidxhead.ist mkidxhead.ist-current hyperxindy.xdy hyperxindy.xdy-current \
 		latex-out.log makeindex-out.log bibtex-out.log \
 		$(TEX_TEMP_FILES) $(CURRENT_TEX_TEMP_FILES) \
