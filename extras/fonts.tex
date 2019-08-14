@@ -117,18 +117,6 @@
     %\DeclareRobustCommand\textlmodern[1]{%
     %  {\lmodern #1}%
     %}
-
-    % Tanto Small Caps quanto itálico (ou slanted) são "shapes" de uma fonte.
-    % Sendo assim, os comandos \scshape (ou \textsc) e \itshape (ou \textit) são
-    % "incompatíveis" entre si, ou seja, um cancela o outro. O que LaTeX faz é
-    % considerar que há um outro shape: "small caps + itálico" (ou "small caps +
-    % slanted"), chamado "scit" ou "scsl". Se a fonte oferece esse shape, é só
-    % usar \fontshape(scit}\selectfont. Mas isso é muito desconfortável, já que
-    % o usual seria algo como "\textsc{Algumas \textit{palavras} podem ser
-    % diferentes}". Esta package resolve esse problema. Observe que esta
-    % package só é necessária com pdfLaTeX; com fontspec (LuaLaTeX/XeLaTeX),
-    % Small Caps + itálicos funcionam normalmente.
-    \usepackage{slantsc}
 \fi
 
 % Algumas packages mais novas que tratam de fontes funcionam corretamente
