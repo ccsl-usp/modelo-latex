@@ -25,17 +25,9 @@
 % pdfTeX quanto LuaTeX podem gerar ambos)
 \usepackage{ifpdf}
 
-% Permite criar "headed lists", ou seja, "listas" de elementos que vão
-% aparecendo ao longo do documento (como, por exemplo, teoremas). Podem ser
-% também citações a autores específicos, seções de um documento que está
-% sendo analisado etc. Precisa ser carregado antes das definições de fontes.
-\usepackage{amsthm}
-
-% Outras packages "padrão" da AMS que, embora tratem especificamente
-% de recursos matemáticos, são praticamente obrigatórias
-\usepackage{amsmath}
+% Esta é uma das packages "padrão" da AMS, que são praticamente
+% obrigatórias. Ela deve ser carregada antes de unicode-math
 \usepackage{amssymb}
-\usepackage{mathtools}
 
 \ifunicodeengine
   % Não é preciso carregar fontenc e inputenc com LuaTeX e XeTeX!
@@ -53,6 +45,12 @@
   \usepackage[utf8]{inputenc}
   \usepackage{fontaxes}
 \fi
+
+% Outras packages "padrão" da AMS.
+% amsthm precisa ser carregada antes das definições de fontes.
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mathtools}
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
