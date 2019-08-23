@@ -25,9 +25,13 @@
 % pdfTeX quanto LuaTeX podem gerar ambos)
 \usepackage{ifpdf}
 
-% Esta é uma das packages "padrão" da AMS, que são praticamente
-% obrigatórias. Ela deve ser carregada antes de unicode-math
+% Algumas packages "padrão" da AMS, que são praticamente  obrigatórias.
+% Algumas delas devem ser carregadas antes de unicode-math ou das
+% definições das fontes do documento.
 \usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{mathtools}
 
 \ifunicodeengine
   % Não é preciso carregar fontenc e inputenc com LuaTeX e XeTeX!
@@ -45,12 +49,6 @@
   \usepackage[utf8]{inputenc}
   \usepackage{fontaxes}
 \fi
-
-% Outras packages "padrão" da AMS.
-% amsthm precisa ser carregada antes das definições de fontes.
-\usepackage{amsthm}
-\usepackage{amsmath}
-\usepackage{mathtools}
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
