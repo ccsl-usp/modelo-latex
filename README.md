@@ -12,7 +12,7 @@ and, if appropriate, send us improvements. :)
 The [generated PDF file](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false)
 includes a FAQ, a short (but reasonably
 compreehensive) LaTeX tutorial, and some examples of LaTeX commands.
-Besides that, there are lots of comments in the "tese-exemplo.tex"
+Besides that, there are lots of comments in the "tese.tex"
 and other included .tex files about the packages used and things
 you might want to customize or learn more about. These comments are
 in Brazilian Portuguese. Even if you have some LaTeX experience, you

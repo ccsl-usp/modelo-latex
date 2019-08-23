@@ -1,4 +1,4 @@
-@default_files = ('tese-exemplo');
+@default_files = ('tese');
 
 $custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction nonstopmode ';
 
