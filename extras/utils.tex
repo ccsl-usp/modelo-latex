@@ -151,6 +151,10 @@
 % Gráficos gerados diretamente em LaTeX; é possível usar tikz para
 % isso também.
 \usepackage{pgfplots}
+% sobre níveis de compatibilidade do pgfplots, veja
+% https://tex.stackexchange.com/a/81912/183146
+\pgfplotsset{compat=1.16}
+%\pgfplotsset{compat=newest}
 
 % Importação direta de arquivos gerados por gnuplot com o
 % driver/terminal "lua tikz"; esta package não faz parte da
