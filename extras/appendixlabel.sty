@@ -85,19 +85,30 @@
   }
 
   \newcommand\appendixTOCLine{
+    % Não queremos esta linha como a última da página; para isso:
+    %
+    % 1. Acrescentamos um pouco de espaço elástico logo antes dela
+    %
+    % 2. Colocamos uma sugestão de quebra de página
+    %
+    % 3. Usamos \@afterheading
+    %
+    % 1 e 2 incentivam (mas não forçam) LaTeX a realizar a quebra antes
+    % dela e 3 força LaTeX a mantê-la na mesma página que a próxima linha.
+
+    {\large\vspace{0pt plus 2\baselineskip minus 0pt}}
     \protect\pagebreak[2]
     \vspace{.8\baselineskip}
     {\large\bfseries\hspace{-1.3em}\appendixnameplural\par}
-    % This doesn't really work...
-    \protect\nopagebreak[4]
+    \@afterheading
   }
 
   \newcommand\annexTOCLine{
+    {\large\vspace{0pt plus 2\baselineskip minus 0pt}}
     \protect\pagebreak[2]
     \vspace{.8\baselineskip}
     {\large\bfseries\hspace{-1.3em}\annexnameplural\par}
-     % This doesn't really work...
-    \protect\nopagebreak[4]
+    \@afterheading
   }
   % Depois, modificamos os comandos \appendix e \annex para modificar
   % o sumário (como \annex só é definida mais à frente, pela package
