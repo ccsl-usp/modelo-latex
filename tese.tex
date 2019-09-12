@@ -37,14 +37,29 @@
 %\documentclass[12pt,twoside,brazil,english]{book}
 \documentclass[12pt,twoside,english,brazil]{book}
 
-% tamanho da página e margens
+% Com papel tamanho A4, queremos estas margens:
+%
+% topo: 32mm
+% pé: 28mm
+% esquerda/interna: 24mm
+% direita/externa: 34mm
+%
+% Para isso, definimos os tamanhos do texto, do cabeçalho e do rodapé,
+% e deixamos a package geometry calcular os demais valores. Assim,
+% obtemos o mesmo resultado impresso, mas com margens diferentes, se
+% o tamanho do papel for diferente.
+
 \usepackage[a4paper]{geometry}
+
 \geometry{
-  % distância entre o início da página e o início do texto principal
-  top=32mm,
-  bottom=28mm,
-  left=24mm,
-  right=34mm,
+  %top=32mm,
+  %bottom=28mm,
+  %left=24mm,
+  %right=34mm,
+  textwidth=152mm, % 210-24-34
+  textheight=237mm, % 297-32-28
+  vmarginratio=8:7, % 32:28
+  hmarginratio=12:17, % 24:34
   % Com geometry, esta medida não é tão relevante; basta garantir que ela
   % seja menor que "top" e que o texto do cabeçalho caiba nela.
   headheight=25.4mm,
