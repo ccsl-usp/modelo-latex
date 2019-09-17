@@ -455,12 +455,19 @@
   % é dada por (1in + \voffset + \headsep + \topmargin + \headheight).
   % Queremos colocar a caixa com o título 49mm abaixo do topo, então:
   \dimgdef\@margemquadrotitulotopo{49mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
+
   % Quando \vspace é usado no início da página, ele não tem efeito; como
   % não é isso que queremos, vamos usar \vspace*. No entanto, \vspace*
   % é implementado inserindo uma \hrule de espessura zero e depois
-  % acrescentando o espaço solicitado. Isso faz o espaço ser maior
-  % que o esperado (cerca de uma linha). Vamos compensar isso aqui:
-  \dimgdef{\@margemquadrotitulotopo}{\@margemquadrotitulotopo - \baselineskip}
+  % acrescentando o espaço solicitado. O resultado não é exatamente
+  % o esperado, pois \topskip, \parskip e \baselineskip interagem com
+  % \vspace* de maneira um tanto complexa:
+  % https://tex.stackexchange.com/a/247516/183146
+  %
+  % Aqui, vamos compensar essa diferença. Note que, se a primeira linha
+  % da página tivesse um tamanho de fonte especial, seria necessário
+  % usar o valor de \baselineskip correspondente a essa fonte.
+  \dimgdef\@margemquadrotitulotopo{\@margemquadrotitulotopo - \baselineskip - \parskip}
 
   % Queremos colocar a caixa com o título centralizada na página. "\center"
   % centraliza em função da área de texto, não da página inteira, então
@@ -502,12 +509,36 @@
 % através da janela na capa.
 \NewDocumentCommand{\@quadrotitulo}{O{port}} {
 
+    % Este espaço coloca o topo da próxima linha
+    % na posição que queremos:
     \vspace*{\@margemquadrotitulotopo}
 
-    \noindent%
+    % No entanto, a próxima linha contém apenas
+    % uma minipage, e definir o topo de uma linha
+    % desse tipo é complicado. Assim, vamos:
+    %
+    % 1. Acrescentar um \strut a essa linha;
+    %
+    % 2. mover o baseline dessa linha para o topo do \strut;
+    %
+    % 3. Alinhar o topo da minipage ao baseline da linha.
+    %
+    % Sobre alinhamento de minipages:
+    % https://en.wikibooks.org/wiki/LaTeX/Boxes
+
+    \ifdeflength{\@normalstrutheight}
+      {}
+      {
+        \newlength{\@normalstrutheight}
+        \settoheight{\@normalstrutheight}{\strut}
+      }
+
+    \vspace{-\@normalstrutheight}
+
+    \noindent\strut%
     \hspace*{\@margemquadrotituloesq}%
 %    \fbox{%
-      \begin{minipage}[b][56mm][s]{96mm}
+      \begin{minipage}[t][56mm][s]{96mm}
           \vspace*{2cm plus 1.5cm minus 1.8cm}
 
           \singlespacing\unskip\centering\large
