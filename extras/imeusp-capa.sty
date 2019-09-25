@@ -356,39 +356,40 @@
       \macQuatroNoveNove\space%
       --- Trabalho de\\
       Formatura Supervisionado%
-  }{}
-  \iftoggle{@qualificacao} {%
-    \ifstrequal{port}{#1}{%
-      Texto apresentado ao\\
-      Instituto de Matemática e Estatística\\
-      da Universidade de São Paulo\\
-      para exame de qualificação de\\
-      \@grau{} em Ciências%
-    }{%
-      Text presented to the\\
-      Institute of Mathematics and Statistics\\
-      of the University of São Paulo\\
-      for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\
-      qualifying examination\\%
-    }%
-  }{}
-  \ifboolexpr{ togl {@mestrado} or togl {@doutorado} } {%
-    \ifstrequal{port}{#1}{%
-      \@nometrabalho{} apresentada ao\\
-      Instituto de Matemática e Estatística\\
-      da Universidade de São Paulo\\
-      para obtenção do título de\\
-      \@nometitulo{} em Ciências%
-    }{%
-      \@nometrabalhoeng{} presented to the\\
-      Institute of Mathematics and Statistics\\
-      of the University of São Paulo\\
-      in partial fulfillment\\
-      of the requirements\\
-      for the degree of\\
-      \@nometituloeng{} of Science%
-    }%
   }{}%
+  \ifboolexpr{ togl {@mestrado} or togl {@doutorado} } {%
+        \iftoggle{@qualificacao} {%
+            \ifstrequal{port}{#1}{%
+                Relatório apresentado ao\\
+                Instituto de Matemática e Estatística\\
+                da Universidade de São Paulo\\
+                para exame de qualificação de\\
+                \@grau{} em Ciências%
+            }{%
+                Report presented to the\\
+                Institute of Mathematics and Statistics\\
+                of the University of São Paulo\\
+                for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\
+                qualifying examination\\%
+            }%
+        }{% Não é qualificação
+            \ifstrequal{port}{#1}{%
+                \@nometrabalho{} apresentada ao\\
+                Instituto de Matemática e Estatística\\
+                da Universidade de São Paulo\\
+                para obtenção do título de\\
+                \@nometitulo{} em Ciências%
+            }{%
+                \@nometrabalhoeng{} presented to the\\
+                Institute of Mathematics and Statistics\\
+                of the University of São Paulo\\
+                in partial fulfillment\\
+                of the requirements\\
+                for the degree of\\
+                \@nometituloeng{} of Science%
+            }%
+        }
+   }{}%
   \par%
 }
 
