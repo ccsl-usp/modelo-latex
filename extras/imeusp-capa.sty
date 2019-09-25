@@ -181,8 +181,8 @@
 \NewDocumentCommand{\coorientador}{O{masc} m}{
   \iftoggle{@tcc}{
     \ifstrequal{#1}{masc}
-      {\gdef\@labelcoorientador{Cosupervisor}}
-      {\gdef\@labelcoorientador{Cosupervisora}}
+      {\gdef\@labelcoorientador{Cossupervisor}}
+      {\gdef\@labelcoorientador{Cossupervisora}}
   }{
     \ifstrequal{#1}{masc}
       {\gdef\@labelcoorientador{Coorientador}}
@@ -537,7 +537,6 @@
   \dimgdef\@margemcapaesq{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
 }
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% OS ELEMENTOS QUE COMPÕEM A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -562,6 +561,69 @@
 	\end{center}
       }
   \end{list}
+}
+
+% Só para TCC
+\newcommand{\@quadroinstituicao}{
+
+    % A posição do quadro de título é fixa em relação à página;
+    % a posição deste quadro é definida em função da posição do
+    % quadro de título. Assim, primeiro vamos encontrar onde
+    % deve começar o quadro do título. Veja os comentários em
+    % \@quadrotitulo para entender o mecanismo.
+
+    \vspace*{\@margemquadrotitulotopo}
+
+    \ifdeflength{\@normalstrutheight}
+      {}
+      {
+        \newlength{\@normalstrutheight}
+      }
+    \settoheight{\@normalstrutheight}{\strut}
+    \vspace{-\@normalstrutheight}
+
+    % Estamos alinhados com o quadro do título do trabalho,
+    % mas não é isso que queremos: a parte inferior deste
+    % quadro deve ficar 15mm acima do quadro de título e
+    % este quadro tem 20mm de altura, então precisamos subir:
+    \vspace{-20mm} % Espaço ocupado por este quadro
+    \vspace{-15mm} % Espaço entre este quadro e o quadro de título
+
+    \noindent\strut%
+    \hspace*{\@margemcapaesq}%
+%    \fbox{%
+      \begin{minipage}[t][20mm][s]{160mm}
+        \vspace{0pt plus 20mm}
+
+        \singlespacing\unskip\centering\large
+
+        \textsc{Universidade de São Paulo\\
+        Instituto de Matemática e Estatística\\
+        Bacharelado em Ciência da Computação}
+
+        \vspace{0pt plus 20mm}
+      \end{minipage}
+%    }% fbox
+    \par
+
+    % Agora precisamos voltar o "cursor" para o começo da página
+    % para que o quadro de título seja inserido no lugar certo.
+    % Para isso, vamos:
+    %
+    % 1. Chegar novamente ao início do quadro de título e
+    %
+    % 2. Retroceder o tamanho da margem superior
+
+    % compensa o espaço inserido por \par logo acima
+    \vspace{-\parskip}
+
+    % A altura da minipage já compensou o \vspace{-20mm} acima;
+    % ainda precisamos compensar o \vspace{-15mm}
+    \vspace{15mm}
+
+    % Agora estamos no início do quadro de título, então
+    % podemos recuar exatamente o tamanho da margem superior.
+    \vspace{-\@margemquadrotitulotopo}
 }
 
 % O quadro com o título e o autor que deve ser visível
@@ -677,6 +739,9 @@
   \thispagestyle{empty}
 
   \begin{hyphenrules}{nohyphenation}
+
+    \iftoggle{@tcc}{\@quadroinstituicao}
+
     \@quadrotitulo[#1]
 
     \vfill
