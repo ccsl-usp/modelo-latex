@@ -90,6 +90,18 @@ legendas\index{Legendas} das figuras e tabelas em forma auto-contida: as
 legendas devem ser razoavelmente completas, de modo que o leitor possa entender
 a figura sem ler o texto onde a figura ou tabela é citada.\index{Floats}
 
+Sugerimos que você faça referências bibliográficas de forma similar aos
+estilos ``alpha'' (referências alfanuméricas) ou ``plainnat'' (referências
+por autor-data) de \LaTeX{}.  Se estiver usando natbib+bibtex\index{natbib}\index{bibtex},
+use os arquivos .bst ``alpha-ime.bst'' ou ``plainnat-ime.bst'', que são
+versões desses dois formatos traduzidas para o português. Se estiver usando
+biblatex\index{biblatex} (recomendado), escolha o estilo ``alphabetic''
+(que é um dos estilos padrão do biblatex) ou ``plainnat-ime''. O arquivo de
+exemplo inclui todas essas opções; basta des-comentar as linhas
+correspondentes e, se necessário, modificar o arquivo Makefile para chamar
+o bibtex\index{bibtex} ao invés do biber\index{biber} (este último é usado
+em conjunto com o biblatex).
+
 \section{Ferramentas Bibliográficas}
 
 Embora seja possível pesquisar por material acadêmico na Internet usando sistemas

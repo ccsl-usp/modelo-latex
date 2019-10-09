@@ -1,0 +1,44 @@
+%!TeX root=../tese.tex
+%("dica" para o editor de texto: este arquivo é parte de um documento maior)
+% para saber mais: https://tex.stackexchange.com/q/78101/183146
+
+\chapter[Perguntas Frequentes sobre o Modelo]{Perguntas Frequentes sobre o Modelo\footnote{Esta
+seção não é de fato um anexo, mas sim um apêndice; ela foi definida desta
+forma apenas para servir como exemplo de anexo.}}
+
+\begin{itemize}
+
+\item \textbf{Posso usar pacotes \LaTeX{} adicionais aos sugeridos?}\\
+Com certeza! Você pode modificar o arquivo o quanto desejar, o modelo serve só como uma ajuda inicial para o seu trabalho. Observe, no entanto, que ele é baseado na classe \textsf{book} e deve funcionar, com alterações mínimas, com \textsf{article}; já as classes \textsf{KOMA-Script} ou a classe \textsf{memoir} podem ser mais difíceis de adaptar. Além disso, \textsf{pstricks} e \textit{packages} derivadas dependem da linguagem PostScript e, portanto, não funcionam facilmente com as versões modernas de \LaTeX{}.
+
+\item \textbf{As figuras podem ser colocadas no meio do texto ou devem ficar no final dos capítulos?}\\
+Em geral, as figuras devem ser apresentadas assim que forem referenciadas. Colocá-las no final dos capítulos dificultaria um pouco a leitura, mas isso depende do estilo do autor, orientador ou lugar de publicação. Converse com seu orientador!
+
+\item \textbf{As figuras e tabelas são colocadas em lugares ruins.}\\
+Veja a discussão a respeito na Seção~\ref{sec:limitations}.
+
+\item \textbf{Estou tendo problemas com caracteres acentuados!}\\
+Veja a discussão a respeito na Seção~\ref{sec:limitations}.
+
+\item \textbf{Existe algo específico para citações de páginas web?}\\
+Biblatex define o tipo ``online'', que deve ser usado para materiais com título, autor etc., como uma postagem ou comentário em um blog, um gráfico ou mesmo uma mensagem de email para uma lista de discussão. Bibtex\index{bibtex}, por padrão, não tem um tipo específico para isso; com ele, normalmente usa-se o campo ``howpublished'' para especificar que se trata de um recurso \textit{online}. Se o que você está citando não é algo determinado com título, autor etc. mas sim um sítio (como uma empresa ou um produto), pode ser mais adequado colocar a referência apenas como nota de rodapé e não na lista de referências; nesses casos, algumas pessoas acrescentam uma segunda lista de referências especificamente para recursos \textit{online} (biblatex\index{biblatex} permite criar múltiplas bibliografias). Já artigos disponíveis \textit{online} mas que fazem parte de uma publicação de formato tradicional (mesmo que apenas \textit{online}), como os anais de um congresso, devem ser citados por seu tipo verdadeiro e apenas incluir o campo ``url'' (não é nem necessário usar o comando \textsf{\textbackslash{}url\{\}}), aceito por todos os tipos de documento do bibtex/biblatex.
+
+\item \textbf{A bibliografia está sendo impressa em inglês (usa ``and'' ao invés de ``e'' para separar os nomes dos autores).}\\
+Você deve estar usando um estilo de bibliografia bibtex diferente dos sugeridos. Uma simples solução é copiar o arquivo de estilo correspondente da sua instalação \LaTeX{} para o diretório onde seus arquivos estão e mudar ``and'' por ``e'' (ou ``\&'' se preferir) na função format.names. O mais recomendado, no entanto, é usar biblatex: ele é mais fácil de adaptar para diferentes estilos, tem pleno suporte a diferentes línguas e é possível personalizar as traduções (há um exemplo no modelo).
+
+\item \textbf{Aparece uma folha em branco entre os capítulos}\\
+Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Se quiser mudar esse comportamento, acrescente ``openany'' como opção da classe, i.e., \textsf{\textbackslash{}documentclass[openany,11pt,twoside,a4paper]\{book\}}.
+
+\item \textbf{É possível resumir o nome das seções/capítulos que aparece no topo das páginas e no sumário?}\\
+Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nos \textit{captions}\index{Legendas} das figuras e tabelas, que muitas vezes são demasiadamente longos para a lista de figuras/tabelas.
+
+\item \textbf{Existe algum programa para gerenciar referências em formato bibtex?}\\
+Sim, há vários. Uma opção bem comum é o JabRef; outra é usar Zotero\index{Zotero} ou Mendeley\index{Mendeley} e exportar os dados deles no formato .bib.
+
+\item \textbf{Como faço para usar o Makefile (comando make) no Windows?}\\
+Lembre-se que a ferramenta recomendada para compilação do documento é o \textsf{latexmk}, então você não precisa do \textsf{make}. Mas, se quiser usá-lo, você pode instalar o MSYS2 (\url{www.msys2.org}) ou o Windows Subsystem for Linux (procure as versões de Linux disponíveis na Microsoft Store). Se você pretende usar algum dos editores sugeridos, é possível deixar a compilação a cargo deles, também dispensando o \textsf{make}.
+
+\item \textbf{Como eu faço para...}\\
+Leia os comentários dos arquivos ``tese.tex'' e outros que compõem este modelo, além do tutorial (Capítulo \ref{chap:tutorial}) e dos exemplos do Capítulo \ref{chap:exemplos}; é provável que haja uma dica neles ou, pelo menos, a indicação da \textit{package} relacionada ao que você precisa.
+
+\end{itemize}

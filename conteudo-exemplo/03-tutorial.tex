@@ -74,7 +74,7 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 
 \section{Visão Geral}
 
-\enlargethispage{.5\baselineskip}
+\enlargethispage{\baselineskip}
 
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
@@ -126,26 +126,19 @@ Como definir todas as configurações de impressão desejadas é bastante comple
 função do tipo de documento, que você escolhe com o comando
 \ltxcmd{documentclass\{nome-da-classe\}} no preâmbulo. As principais classes
 são \pkg{book}, \pkg{report} e \pkg{article}; você pode saber mais sobre elas
-(e outras) em qualquer texto introdutório sobre \LaTeX{} na Internet.
-\pkg{book} e \pkg{report} são as mais adequadas para a escrita de teses ou
-dissertações acadêmicas.
+(e outras) em qualquer texto introdutório sobre \LaTeX{} na Internet (veja a
+Seção~\ref{sec:docs}). \pkg{book} e \pkg{report} são as mais adequadas para
+a escrita de teses ou dissertações acadêmicas.
 
 \LaTeX{} também tem \emph{packages} (``\emph{plugins}'') que acrescentam
-funcionalidades ou modificam as classes padrão e também são carregadas no
-preâmbulo, com o comando \ltxcmd{usepackage\{nome-da-package\}}. Várias
-delas podem receber opções adicionais no formato
-\ltxcmd{usepackage[opção1,opção2...]\{nome-da-package\}}; a documentação
-de cada package detalha as opções disponíveis.
-
-Qualquer documento \LaTeX{} utiliza várias packages, portanto é preciso
-conhecê-las. Isso às vezes é trabalhoso porque algumas delas podem se
-tornar obsoletas e, com isso, sítios web com ``dicas'' podem estar
-desatualizados. O sítio \url{www.ctan.org} é um índice com praticamente
-todas as packages disponíveis, incluindo sua documentação. Além dessas,
-é comum que revistas científicas ofereçam packages que pré-definem a
-formatação esperada para os artigos. Finalmente, o sítio
-\url{tex.stackexchange.com} é um fórum de perguntas e respostas sobre
-\LaTeX{} que é muito útil.
+funcionalidades ou modificam as classes padrão. Qualquer documento \LaTeX{}
+utiliza várias delas e é comum que revistas científicas utilizem packages
+próprias que pré-definem a formatação esperada para os artigos. As packages
+também são carregadas no preâmbulo, com o comando
+\ltxcmd{usepackage\{nome-da-package\}},e várias delas podem receber opções
+adicionais no formato \ltxcmd{usepackage[opção1,opção2...]\{nome-da-package\}};
+a documentação de cada package (veja a Seção~\ref{sec:docs}) detalha as opções
+disponíveis.
 
 Usar algum documento existente como base para criar seu texto em geral é
 uma boa ideia; o IME/USP oferece um modelo adequado para teses e
@@ -157,7 +150,7 @@ documentos científicos.
 \section{Comandos Básicos}
 \label{sec:basico}
 
-\enlargethispage{.5\baselineskip}
+\enlargethispage{\baselineskip}
 
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
@@ -247,6 +240,8 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 \section{Referências Cruzadas e \emph{Floats}}
 \label{sec:refs}
 
+\enlargethispage{\baselineskip}
+
 É comum que um trecho do texto faça referência a outro trecho (``como
 discutimos no Capítulo~X\ldots''). Isso pode ser feito diretamente, mas
 se você reorganizar o documento ou acrescentar seções, a numeração pode
@@ -280,6 +275,8 @@ elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
 
 \section{Múltiplas Execuções e Comandos Auxiliares}
 
+\enlargethispage{\baselineskip}
+
 \LaTeX{} numera capítulos, seções, figuras etc. automaticamente
 e pode fazer referências a seções ou figuras que aparecem tanto antes
 quanto depois da própria referência. Para isso funcionar, o trabalho de
@@ -303,7 +300,7 @@ alguma ferramenta para automatizar esse processo. As mais usadas são o
 \cmd{make}, que executa os passos (às vezes bastante complexos) definidos
 em um arquivo chamado \cmd{Makefile}, e o \cmd{latexmk}, que foi
 desenvolvido especificamente para uso com \LaTeX{} e, portanto, funciona
-com um arquivo de configuração simples (que é, inclusive, opcional).
+com um arquivo de configuração simples (que é, inclusive, opcional).\looseness=-1
 
 \section{Fórmulas Matemáticas}
 
@@ -343,8 +340,6 @@ definidos e documentados na package \pkg{amsmath}, e todos têm
 a variante com ``*''.
 
 \section{Referências Bibliográficas e Bibliografia}
-
-\enlargethispage{-.5\baselineskip}
 
 A geração de bibliografias no \LaTeX{} é feita através da package
 \pkg{biblatex}\index{biblatex} e do programa auxiliar
@@ -394,8 +389,6 @@ ele pode ser citado com o comando \ltxcmd{cite\{dissertjourney\}}:
         }
 \end{verbatim}
 
-\enlargethispage{-.5\baselineskip}
-
 Observe que existem dois formatos comumente usados para escrever títulos
 de artigos, livros etc:
 
@@ -424,7 +417,7 @@ o formato \emph{title case}. Se o estilo utiliza esse formato, o título
 usa \emph{sentence case}, o texto (exceto a primeira letra) é convertido
 para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
 basta colocá-los entre chaves (``Automated Application-Level Checkpointing
-of \{MPI\} Programs'').
+of \{MPI\} Programs'').\looseness=1
 
 Finalmente, os campos \textsf{author} e \textsf{publisher} podem incluir uma
 lista de nomes separados por \textsf{and}; biblatex reconhece que cada nome é
@@ -448,8 +441,6 @@ podem exportar para o formato .bib. Observe que \pkg{biblatex}
 referências e bibliografias. Se você precisar de alguma funcionalidade
 especial, consulte a documentação do pacote ou a Internet; é quase certeza
 que \pkg{biblatex} oferece uma solução.
-
-\enlargethispage{-.5\baselineskip}
 
 \section{Imagens, Ilustrações, Diagramas e Gráficos}
 \label{sec:graficos}
@@ -497,8 +488,6 @@ consistência visual entre o texto principal e o gráfico), e o programa
 \cmd{Asymptote} tem excelente integração com \LaTeX{}.
 
 \section{Formatação Manual}
-
-\enlargethispage{-.5\baselineskip}
 
 Às vezes é preciso inserir formatação de forma manual; os comandos mais
 importantes são:

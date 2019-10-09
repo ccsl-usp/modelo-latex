@@ -76,8 +76,9 @@ que apaga todos os arquivos auxiliares gerados, e em seguida rodar
 \textsf{latexmk} (ou \textsf{make}) novamente.
 
 \section{Instalação do \LaTeX{}}
+\label{sec:install}
 
-\enlargethispage{-1\baselineskip}
+\enlargethispage{-.5\baselineskip}
 
 \LaTeX{} é, na verdade, um conjunto de programas. Ao invés de procurar e
 baixar cada um deles, o mais comum é baixar um pacote com todos eles juntos.
@@ -101,56 +102,78 @@ a instalação é similar à de outros programas. No MacOS X e no Windows,
 \TeX{}Live. Observe que ele depende da linguagem \textsf{perl}, que precisa ser
 instalada à parte no Windows (\url{www.perl.org/get.html}).
 
-\section{Bibliografia}
+\section{Documentação sobre \LaTeX}
+\label{sec:docs}
 
-Sugerimos que você faça referências bibliográficas nos formatos ``alpha'' ou
-``plainnat''.  Se estiver usando natbib+bibtex\index{natbib}\index{bibtex},
-use os arquivos .bst ``alpha-ime.bst'' ou ``plainnat-ime.bst'', que são
-versões desses dois formatos traduzidas para o português. Se estiver usando
-biblatex\index{biblatex} (recomendado), escolha o estilo ``alphabetic''
-(que é um dos estilos padrão do biblatex) ou ``plainnat-ime''. O arquivo de
-exemplo inclui todas essas opções; basta des-comentar as linhas
-correspondentes e, se necessário, modificar o arquivo Makefile para chamar
-o bibtex\index{bibtex} ao invés do biber\index{biber} (este último é usado
-em conjunto com o biblatex).
+Existem diversos bons livros sobre \LaTeX{} (embora em geral um tanto
+antigos), dos quais destacamos dois:
 
-\section{Perguntas Frequentes sobre o Modelo}
+\begin{enumerate}
 
-\enlargethispage{-1\baselineskip}
+  \item A quarta edição de ``A Guide to \LaTeX'', de Helmut Kopka e
+        Patrick W. Daly (publicada em 2003), além de uma ótima
+        introdução, aborda vários tópicos relativamente avançados e
+        úteis\footnote{Um dos autores disponibiliza uma versão não-final
+        em \url{www2.mps.mpg.de/homes/daly/GTL/gtl_20030512.pdf}.}.
+  \item A segunda edição de ``The \LaTeX{} Companion'' (publicada em
+        2004) é um livro quase obrigatório, pois discute em detalhes
+        praticamente todos os recursos e \textit{packages} importantes
+        de \LaTeX{}, servindo tanto para o aprendizado quanto como
+        material de referência.
 
-\begin{itemize}
+\end{enumerate}
 
-\item \textbf{Posso usar pacotes \LaTeX{} adicionais aos sugeridos?}\\
-Com certeza! Você pode modificar o arquivo o quanto desejar, o modelo serve só como uma ajuda inicial para o seu trabalho. Observe, no entanto, que ele é baseado na classe \textsf{book} e deve funcionar, com alterações mínimas, com \textsf{article}; já as classes \textsf{KOMA-Script} ou a classe \textsf{memoir} podem ser mais difíceis de adaptar. Além disso, \textsf{pstricks} e \textit{packages} derivadas dependem da linguagem PostScript e, portanto, não funcionam facilmente com as versões modernas de \LaTeX{}.
+\enlargethispage{-.5\baselineskip}
 
-\item \textbf{As figuras podem ser colocadas no meio do texto ou devem ficar no final dos capítulos?}\\
-Em geral, as figuras devem ser apresentadas assim que forem referenciadas. Colocá-las no final dos capítulos dificultaria um pouco a leitura, mas isso depende do estilo do autor, orientador ou lugar de publicação. Converse com seu orientador!
+Além de livros, há muito material sobre \LaTeX{} na Internet, mas também há
+muita informação obsoleta. Em particular, você pode ignorar explicações sobre
+como converter arquivos no formato DVI gerados por \LaTeX{} em PDF: versões
+modernas de \LaTeX{} geram arquivos PDF diretamente. Quanto a imagens, os
+formatos de arquivo PS/EPS (PostScript e Encapsulated PostScript) não são mais
+aceitos; hoje em dia \LaTeX{} trabalha com arquivos de imagem nos formatos PDF,
+PNG e JPEG. Finalmente, recursos gráficos não usam mais \textit{packages} como
+\textsf{pstricks}, \textsf{eepic} ou outras tradicionalmente citadas; ao invés
+disso, \textsf{PGF/TikZ} é a ferramenta mais comum.
 
-\item \textbf{As figuras e tabelas são colocadas em lugares ruins.}\\
-Veja a discussão a respeito na Seção~\ref{sec:limitations}.
+Dentre o material online, o conteúdo em \url{overleaf.com/learn} é excelente,
+incluindo um rápido tutorial (de escopo similar ao Capítulo~\ref{chap:tutorial}
+deste modelo) e várias páginas sobre como utilizar recursos específicos.  Um
+tutorial bastante abrangente e detalhado está disponível em
+\url{tug.org/twg/mactex/tutorials/ltxprimer-1.0.pdf} (há outros, como
+\url{tug.org/tutorials/tugindia},
+\url{www.maths.tcd.ie/~dwilkins/LaTeXPrimer/GSWLaTeX.pdf} e
+\url{www.andy-roberts.net/writing/latex}). O sítio \url{tex.stackexchange.com} é
+um fórum de perguntas e respostas sobre \LaTeX{} muito útil, pois os
+principais desenvolvedores do sistema participam das discussões, e o sítio
+\url{texfaq.org} é bastante abrangente e atualizado.
 
-\item \textbf{Estou tendo problemas com caracteres acentuados!}\\
-Veja a discussão a respeito na Seção~\ref{sec:limitations}.
+Como dito anteriormente, \LaTeX{} é, na verdade, um conjunto de programas e,
+normalmente, instalamos pacotes pré-prontos com todos eles. Esses pacotes (em
+geral, \TeX{}Live e MiK\TeX{}) contém também a documentação das
+\textit{packages} incluídas: Basta digitar \textsf{texdoc nome-da-package}
+(\TeX{}Live) ou \textsf{mthelp nome-da-package} (MiK\TeX{}) para ter acesso à
+documentação correspondente.  \textsf{texdoc/mthelp} incluem também alguns
+tutoriais e textos introdutórios, como ``The Not So Short Introduction to
+\LaTeXe{}'' (\textsf{texdoc lshort-eng}; há uma versão em português, mas não
+está em dia com o original), ``Getting up and running with \AmS-\LaTeX{}''
+(\textsf{texdoc amshelp}) e ``A Simplified Introduction to \LaTeX{}''
+(\textsf{texdoc simplified-intro}). O sítio \url{texdoc.net} oferece acesso
+online a essa mesma documentação de maneira organizada e o sítio \url{ctan.org}
+é o repositório semi-oficial das \textit{packages} \LaTeX{} e sua documentação.
 
-\item \textbf{Existe algo específico para citações de páginas web?}\\
-Biblatex define o tipo ``online'', que deve ser usado para materiais com título, autor etc., como uma postagem ou comentário em um blog, um gráfico ou mesmo uma mensagem de email para uma lista de discussão. Bibtex\index{bibtex}, por padrão, não tem um tipo específico para isso; com ele, normalmente usa-se o campo ``howpublished'' para especificar que se trata de um recurso \textit{online}. Se o que você está citando não é algo determinado com título, autor etc. mas sim um sítio (como uma empresa ou um produto), pode ser mais adequado colocar a referência apenas como nota de rodapé e não na lista de referências; nesses casos, algumas pessoas acrescentam uma segunda lista de referências especificamente para recursos \textit{online} (biblatex\index{biblatex} permite criar múltiplas bibliografias). Já artigos disponíveis \textit{online} mas que fazem parte de uma publicação de formato tradicional (mesmo que apenas \textit{online}), como os anais de um congresso, devem ser citados por seu tipo verdadeiro e apenas incluir o campo ``url'' (não é nem necessário usar o comando \textsf{\textbackslash{}url\{\}}), aceito por todos os tipos de documento do bibtex/biblatex.
+A documentação de referência de \LaTeX{} pode ser acessada com \textsf{texdoc
+latex2e} e \textsf{texdoc source2e}; a documentação de referência das classes
+padrão (\textsf{article, book etc}), por sua vez, com \textsf{texdoc classes}.
+Você normalmente não vai usá-las, mas elas podem servir para esclarecer algum
+detalhe. \textsf{texdoc clsguide} é um guia para a criação de novas classes e
+\textit{packages}, e \textsf{texdoc fntguide} explica como funciona a gestão
+de fontes de \LaTeX{} (mas note que \LuaLaTeX{} e \XeLaTeX{} usam outro
+mecanismo). Você pode ver exemplos de fontes disponíveis para \LaTeX{} em
+\url{tug.org/FontCatalogue}.
 
-\item \textbf{A bibliografia está sendo impressa em inglês (usa ``and'' ao invés de ``e'' para separar os nomes dos autores).}\\
-Você deve estar usando um estilo de bibliografia bibtex diferente dos sugeridos. Uma simples solução é copiar o arquivo de estilo correspondente da sua instalação \LaTeX{} para o diretório onde seus arquivos estão e mudar ``and'' por ``e'' (ou ``\&'' se preferir) na função format.names. O mais recomendado, no entanto, é usar biblatex: ele é mais fácil de adaptar para diferentes estilos, tem pleno suporte a diferentes línguas e é possível personalizar as traduções (há um exemplo no modelo).
-
-\item \textbf{Aparece uma folha em branco entre os capítulos}\\
-Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Se quiser mudar esse comportamento, acrescente ``openany'' como opção da classe, i.e., \textsf{\textbackslash{}documentclass[openany,11pt,twoside,a4paper]\{book\}}.
-
-\item \textbf{É possível resumir o nome das seções/capítulos que aparece no topo das páginas e no sumário?}\\
-Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nos \textit{captions}\index{Legendas} das figuras e tabelas, que muitas vezes são demasiadamente longos para a lista de figuras/tabelas.
-
-\item \textbf{Existe algum programa para gerenciar referências em formato bibtex?}\\
-Sim, há vários. Uma opção bem comum é o JabRef; outra é usar Zotero\index{Zotero} ou Mendeley\index{Mendeley} e exportar os dados deles no formato .bib.
-
-\item \textbf{Como faço para usar o Makefile (comando make) no Windows?}\\
-Lembre-se que a ferramenta recomendada para compilação do documento é o \textsf{latexmk}, então você não precisa do \textsf{make}. Mas, se quiser usá-lo, você pode instalar o MSYS2 (\url{www.msys2.org}) ou o Windows Subsystem for Linux (procure as versões de Linux disponíveis na Microsoft Store). Se você pretende usar algum dos editores sugeridos, é possível deixar a compilação a cargo deles, também dispensando o \textsf{make}.
-
-\item \textbf{Como eu faço para...}\\
-Leia os comentários dos arquivos ``tese.tex'' e outros que compõem este modelo, além do tutorial (Capítulo \ref{chap:tutorial}) e dos exemplos do Capítulo \ref{chap:exemplos}; é provável que haja uma dica neles ou, pelo menos, a indicação da \textit{package} relacionada ao que você precisa.
-
-\end{itemize}
+Quando você se tornar um usuário avançado, pode se interessar em conhecer
+melhor a linguagem \TeX{}, que está na base do \LaTeX{}. ``The \TeX{} book'',
+de Donald Knuth, é amplamente recomendado, mas há três livros completos a
+respeito que são instalados com \LaTeX{}: ``A gentle introduction to \TeX{}''
+(\textsf{texdoc gentle}), ``\TeX{} for the impatient'' (\textsf{texdoc
+impatient}) e ``\TeX{} by topic'' (\textsf{texdoc texbytopic}).
