@@ -199,6 +199,9 @@ tabelas\index{Floats}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
 
   \hspace*{\fill}
   \begin{subtable}[b]{0.42\textwidth}
+    % \rowcolors é definida pela package xcolor;
+    % veja também os recursos da package colortbl
+    \rowcolors{2}{lightgray!70}{white}
     \centering
     \begin{tabular}{ccl}
       \toprule
@@ -211,7 +214,7 @@ tabelas\index{Floats}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
       \texttt{Y}  & Tyr          & Tirosina \\
       \bottomrule
     \end{tabular}
-    \caption{Uma tabela simples.}
+    \caption{Com linhas de cores alternadas.}
   \end{subtable}
   % Como mencionado mais acima, não deixe linhas em branco aqui
   \hspace*{\fill}\hspace*{\fill}\hspace*{\fill}
@@ -231,7 +234,7 @@ tabelas\index{Floats}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
   \end{subtable}
   \hspace*{\fill}
 
-  \caption{Códigos, abreviaturas e nomes dos aminoácidos.\label{tab:amino_acidos}}
+  \caption{Exemplos de tabelas (códigos, abreviaturas e nomes dos aminoácidos).\label{tab:amino_acidos}}
 \end{table}
 
 Se a tabela tem muitas linhas e, portanto, não cabe em uma única página, é
