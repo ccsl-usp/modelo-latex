@@ -74,7 +74,7 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 
 \section{Visão Geral}
 
-\enlargethispage{\baselineskip}
+\enlargethispage{-.5\baselineskip}
 
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
@@ -104,6 +104,46 @@ outra possibilidade são os editores \emph{online}, como overleaf
 (\url{www.overleaf.com}), authorea (\url{www.authorea.com}) e papeeria
 (\url{papeeria.com}).
 
+Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
+você coloca comandos de configuração para o documento, e o \emph{corpo}
+do documento em si, que contém o texto propriamente dito. O preâmbulo é
+onde você define as características do resultado tipográfico esperado
+para o documento como um todo: tipo e tamanho da fonte a usar, posição
+dos títulos e subtítulos na página etc. O corpo, por sua vez, consiste no
+texto e em alguns comandos indicativos da estrutura.
+
+Dado que configurar o preâmbulo é um tanto complexo e que mesmo no corpo
+do texto às vezes há comandos especiais (para a geração da bibliografia
+ou tabelas, por exemplo),
+usar algum documento existente como base para criar seu texto em geral é
+uma boa ideia; o IME/USP oferece um modelo adequado para teses e
+dissertações (\url{gitlab.com/ccsl-usp/modelo-latex}) que pode ser
+adaptado para outros usos e outras instituições. Há também um modelo
+(\url{www.abntex.net.br}) que procura seguir as normas da ABNT para
+documentos científicos.
+
+\section{Estrutura de um Documento \LaTeX{}}
+\label{sec:basico}
+
+\enlargethispage{-.5\baselineskip}
+
+O preâmbulo \LaTeX{} começa com a definição da \emph{classe} a ser utilizada,
+que determina boa parte da configuração do documento. As principais classes
+são \pkg{book}, \pkg{report} e \pkg{article}; você pode saber mais sobre elas
+(e outras) em qualquer texto introdutório sobre \LaTeX{} na Internet (veja a
+Seção~\ref{sec:docs}). \pkg{book} e \pkg{report} são as mais adequadas para a
+escrita de teses ou dissertações acadêmicas.
+A seguir, são carregadas várias \emph{packages} (``\emph{plugins}'') que
+acrescentam funcionalidades ou modificam as classes padrão. Qualquer documento
+\LaTeX{} utiliza várias delas e é comum que revistas científicas utilizem
+packages próprias que pré-definem a formatação esperada para os artigos.
+A classe é definida com o comando \ltxcmd{documentclass\{nome-da-classe\}};
+packages são carregadas com o comando \ltxcmd{usepackage\{nome-da-package\}}.
+Classes e packages podem receber opções adicionais entre colchetes
+(\ltxcmd{usepackage[opção1,opção2...]\{nome-da-package\}}); a documentação
+de cada package e classe (veja a Seção~\ref{sec:docs}) detalha as opções
+disponíveis.
+
 \LaTeX{} ignora quebras de linha e trata sequências de vários espaços como
 se fossem apenas um. Isso significa que você pode usar quebras de linha e
 espaços no texto que está digitando como ``dicas visuais'' da estrutura do
@@ -115,42 +155,6 @@ resultado final do documento. Comentários podem ser usados como lembrete sobre
 alguma decisão, para indicar um parágrafo que ainda precisa de revisão etc.
 Por conta desse significado especial, para inserir um caractere \% ``normal''
 no texto é preciso digitar ``\ltxcmd{\%}''.
-
-Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
-você coloca comandos de configuração para o documento, e o \emph{corpo} do
-documento em si, que contém o texto propriamente dito. O preâmbulo é onde
-você define as características do resultado tipográfico esperado: tipo e
-tamanho da fonte a usar, posição dos títulos e subtítulos na página etc.
-Como definir todas as configurações de impressão desejadas é bastante complexo,
-\LaTeX{} fornece algumas pré-definições padrão (``\emph{classes}'') em
-função do tipo de documento, que você escolhe com o comando
-\ltxcmd{documentclass\{nome-da-classe\}} no preâmbulo. As principais classes
-são \pkg{book}, \pkg{report} e \pkg{article}; você pode saber mais sobre elas
-(e outras) em qualquer texto introdutório sobre \LaTeX{} na Internet (veja a
-Seção~\ref{sec:docs}). \pkg{book} e \pkg{report} são as mais adequadas para
-a escrita de teses ou dissertações acadêmicas.
-
-\LaTeX{} também tem \emph{packages} (``\emph{plugins}'') que acrescentam
-funcionalidades ou modificam as classes padrão. Qualquer documento \LaTeX{}
-utiliza várias delas e é comum que revistas científicas utilizem packages
-próprias que pré-definem a formatação esperada para os artigos. As packages
-também são carregadas no preâmbulo, com o comando
-\ltxcmd{usepackage\{nome-da-package\}},e várias delas podem receber opções
-adicionais no formato \ltxcmd{usepackage[opção1,opção2...]\{nome-da-package\}};
-a documentação de cada package (veja a Seção~\ref{sec:docs}) detalha as opções
-disponíveis.
-
-Usar algum documento existente como base para criar seu texto em geral é
-uma boa ideia; o IME/USP oferece um modelo adequado para teses e
-dissertações (\url{gitlab.com/ccsl-usp/modelo-latex}) que pode ser
-adaptado para outros usos e outras instituições. Há também um modelo
-(\url{www.abntex.net.br}) que procura seguir as normas da ABNT para
-documentos científicos.
-
-\section{Comandos Básicos}
-\label{sec:basico}
-
-\enlargethispage{\baselineskip}
 
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
@@ -196,6 +200,49 @@ acima de \ltxcmd{chapter}). Usar o nome do comando seguido de um asterisco
 (\ltxcmd{chapter*} etc.) faz o capítulo/seção não ser numerado nem incluído
 no sumário (nem considerado na contagem de capítulos, seções etc.).
 
+\section{Executando \LaTeX{} e Comandos Auxiliares}
+
+\enlargethispage{-.5\baselineskip}
+
+Depois de escrever o arquivo \cmd{.tex}, é preciso \emph{compilá-lo}, ou
+seja, processá-lo para gerar o pdf desejado. Isso é feito com o comando
+\cmd{pdflatex nome-do-arquivo.tex} (veja a Seção~\ref{sec:versions}).
+No entanto, embora apenas executar \cmd{pdflatex} possa ser suficiente
+para documentos simples, em geral documentos mais complexos envolvem mais
+passos.
+
+\LaTeX{} numera capítulos, seções, figuras etc. automaticamente
+e pode fazer referências a seções ou figuras que aparecem tanto antes
+quanto depois da própria referência. Para isso funcionar, o trabalho de
+geração do arquivo final é dividido em duas partes: primeiro, a diagramação
+das páginas e numeração dos capítulos, seções, figuras etc.; segundo, a
+inserção o texto das referências (``página X'', ``Seção Y'' etc.).
+
+A princípio, isso poderia ser feito automaticamente, sem intervenção do
+usuário; \LaTeX{}, no entanto, não funciona assim. Ao invés disso, é
+preciso executar o comando \cmd{pdflatex} duas vezes seguidas: na
+primeira ele gera um PDF ``defeituoso'' (sem as referências corretas) e
+um arquivo auxiliar com as informações sobre a localização de cada
+referência e, na segunda, cria o PDF ``correto''.
+
+Essas múltiplas execuções são necessárias também para a geração automática
+da bibliografia e do índice remissivo e, na prática, costuma ser necessário
+rodar o comando no mínimo três vezes. Como a geração da bibliografia e do
+índice remissivo dependem também de programas auxiliares, a produção do
+documento final acaba envolvendo várias etapas e, por isso, é comum utilizar
+alguma ferramenta para automatizar esse processo. Existem diversas opções,
+mas a mais comum é o \cmd{latexmk}, que é capaz de identificar
+automaticamente os passos necessários para a geração do documento, executando
+\cmd{pdflatex} e demais programas na ordem correta quantas vezes forem
+necessárias\footnote{É possível personalizar o comportamento de \cmd{latexmk}
+com o arquivo de configuração \cmd{latexmkrc}.}. Assim, acostume-se a
+compilar o documento sempre com \cmd{latexmk nome-do-arquivo.tex} ao invés
+de \cmd{pdflatex nome-do-arquivo.tex}. Note que editores especializados em
+\LaTeX{} costumam ter uma opção de menu para a compilação do documento;
+muitas vezes essa opção simplesmente aciona \cmd{latexmk}.\looseness=-1
+
+\section{Mais sobre Estrutura}
+
 Para criar listas de itens, você pode fazer\footnote{Observe o uso de
 espaços no início das linhas com \ltxcmd{item} para deixar a
 estrutura visualmente mais clara durante a edição.}:
@@ -240,7 +287,7 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 \section{Referências Cruzadas e \emph{Floats}}
 \label{sec:refs}
 
-\enlargethispage{\baselineskip}
+\enlargethispage{-.5\baselineskip}
 
 É comum que um trecho do texto faça referência a outro trecho (``como
 discutimos no Capítulo~X\ldots''). Isso pode ser feito diretamente, mas
@@ -273,36 +320,8 @@ diferentes, ou seja, se você definiu a Figura~5, a Tabela~3 e a Figura~6,
 elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
 ``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
 
-\section{Múltiplas Execuções e Comandos Auxiliares}
-
-\enlargethispage{\baselineskip}
-
-\LaTeX{} numera capítulos, seções, figuras etc. automaticamente
-e pode fazer referências a seções ou figuras que aparecem tanto antes
-quanto depois da própria referência. Para isso funcionar, o trabalho de
-geração do arquivo final é dividido em duas partes: primeiro, a diagramação
-das páginas e numeração dos capítulos, seções, figuras etc.; segundo, a
-inserção o texto das referências (``página X'', ``Seção Y'' etc.).
-
-A princípio, isso poderia ser feito automaticamente, sem intervenção do
-usuário; \LaTeX{}, no entanto, não funciona assim. Ao invés disso, é
-preciso executar o comando \cmd{pdflatex} duas vezes seguidas: na
-primeira ele gera um PDF ``defeituoso'' (sem as referências corretas) e
-um arquivo auxiliar com as informações sobre a localização de cada
-referência e, na segunda, cria o PDF ``correto''.
-
-Essas múltiplas execuções são necessárias também para a geração automática
-da bibliografia e do índice remissivo e, na prática, costuma ser necessário
-rodar o comando no mínimo três vezes. Como a geração da bibliografia e do
-índice remissivo dependem também de programas auxiliares, a produção do
-documento final acaba envolvendo vários passos e, por isso, é comum utilizar
-alguma ferramenta para automatizar esse processo. As mais usadas são o
-\cmd{make}, que executa os passos (às vezes bastante complexos) definidos
-em um arquivo chamado \cmd{Makefile}, e o \cmd{latexmk}, que foi
-desenvolvido especificamente para uso com \LaTeX{} e, portanto, funciona
-com um arquivo de configuração simples (que é, inclusive, opcional).\looseness=-1
-
 \section{Fórmulas Matemáticas}
+
 
 A diagramação de fórmulas matemáticas tem regras específicas; assim, para
 criar fórmulas em \LaTeX{}, é preciso usar um comando para iniciar o modo
@@ -404,20 +423,20 @@ de artigos, livros etc:
   próprios'').
 \end{description}
 
+
 Cada estilo de bibliografia utiliza um desses formatos e, portanto, é
 desejável que o banco de dados funcione corretamente com ambos. No
 entanto, nem sempre é claro quais palavras devem ser iniciadas com letra
 maiúscula ao usar \emph{title case} e, por conta disso, não há um sistema
 automático em \LaTeX{} para adaptar títulos a ele. Sendo assim, como fazer
 um banco de dados bibliográfico capaz de funcionar com os dois formatos?
-
 A solução é sempre inserir os títulos dos itens no banco de dados seguindo
 o formato \emph{title case}. Se o estilo utiliza esse formato, o título
 é reproduzido na bibliografia como digitado no banco de dados. Se o estilo
 usa \emph{sentence case}, o texto (exceto a primeira letra) é convertido
 para letras minúsculas. Para evitar que isso afete siglas e nomes próprios,
 basta colocá-los entre chaves (``Automated Application-Level Checkpointing
-of \{MPI\} Programs'').\looseness=1
+of \{MPI\} Programs'').
 
 Finalmente, os campos \textsf{author} e \textsf{publisher} podem incluir uma
 lista de nomes separados por \textsf{and}; biblatex reconhece que cada nome é
@@ -448,9 +467,7 @@ que \pkg{biblatex} oferece uma solução.
 Podemos classificar imagens em quatro categorias:
 
 \begin{enumerate}
-    \item Imagens fotográficas ou escaneadas. Mesmo sendo possível criar
-    imagens desse tipo manualmente em programas de edição de imagens como
-    Gimp, Krita ou Adobe PhotoShop, elas sempre consistem em um conjunto
+    \item Imagens fotográficas ou escaneadas, que consistem em um conjunto
     de \emph{pixels} coloridos sem organização previsível.
 
     \item Ilustrações, que consistem em curvas e figuras geométricas
@@ -583,12 +600,14 @@ entende que o caractere espaço que se segue a esses comandos serve apenas
 como separador em relação ao que vem a seguir. Por conta disso, ele ignora
 esse espaço. Quando isso não é o que se deseja, a solução é usar as chaves:
 \ltxcmd{itshape\{\}}.
-
-Alguns comandos aceitam mais de um parâmetro, às vezes entre chaves, às
-vezes entre colchetes. Você pode descobrir a sintaxe correta para cada caso
-lendo a documentação de cada comando.
+Vale observar que alguns comandos aceitam mais de um parâmetro, às vezes
+entre chaves, às vezes entre colchetes. Você pode descobrir a sintaxe
+correta para cada caso lendo a documentação de cada comando.
 
 \section{Versões do \LaTeX{}}
+\label{sec:versions}
+
+\enlargethispage{-.5\baselineskip}
 
 Assim como há packages para o \LaTeX{}, o próprio \LaTeX{} é, na verdade, um
 conjunto de extensões para o programa \TeX{}. Assim, se você encontrar
@@ -631,6 +650,8 @@ alfabetos ou se gostaria de escolher fontes diferentes, use \LuaLaTeX{}.
 
 \section{Limitações do \LaTeX{} e Algumas Dicas}
 \label{sec:limitations}
+
+\enlargethispage{-.5\baselineskip}
 
 Como qualquer ferramenta, \LaTeX{} tem limitações e características
 indesejáveis:
@@ -721,8 +742,7 @@ indesejáveis:
     codificação usada no texto\footnote{Você pode consultar os comandos
     desse tipo mais comuns em \url{en.wikibooks.org/wiki/LaTeX/Special_Characters}.
     Observe que a dica sobre o pingo do i \emph{não} é mais
-    válida atualmente; basta usar \cmd{\sla\textquotesingle\{i\}} para
-    obter o acento correto.}.
+    válida atualmente; basta usar \cmd{\sla\textquotesingle\{i\}}.}.
 
     \item As classes padrão (\pkg{book}, \pkg{article} etc.) não foram criadas
     para serem facilmente modificadas, o que deu origem a inúmeras packages
