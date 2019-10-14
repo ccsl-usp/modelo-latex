@@ -352,10 +352,16 @@
 \newcommand*{\@textocapa}[1][port] {%
   \vspace{-\baselineskip}\singlespacing\setstretch{.9}%
   \iftoggle{@tcc} {%
+    \ifstrequal{port}{#1}{%
       Monografia Final\vspace{.5\baselineskip}\\
       \macQuatroNoveNove\space%
       --- Trabalho de\\
       Formatura Supervisionado%
+    }{%
+      Final Monograph\vspace{.5\baselineskip}\\
+      \macQuatroNoveNove\space%
+      --- Capstone Project%
+    }%
   }{}%
   \ifboolexpr{ togl {@mestrado} or togl {@doutorado} } {%
         \iftoggle{@qualificacao} {%
@@ -564,7 +570,7 @@
 }
 
 % Só para TCC
-\newcommand{\@quadroinstituicao}{
+\newcommand{\@quadroinstituicao}[1][port]{
 
     % A posição do quadro de título é fixa em relação à página;
     % a posição deste quadro é definida em função da posição do
@@ -597,9 +603,15 @@
 
         \singlespacing\unskip\centering\large
 
-        \textsc{Universidade de São Paulo\\
-        Instituto de Matemática e Estatística\\
-        Bacharelado em Ciência da Computação}
+        \ifstrequal{port}{#1}{%
+          \textsc{Universidade de São Paulo\\
+          Instituto de Matemática e Estatística\\
+          Bacharelado em Ciência da Computação}
+        }{%
+          \textsc{University of São Paulo\\
+          Institute of Mathematics and Statistics\\
+          Bachelor's in Computer Science}
+        }%
 
         \vspace{0pt plus 20mm}
       \end{minipage}
@@ -740,7 +752,7 @@
 
   \begin{hyphenrules}{nohyphenation}
 
-    \iftoggle{@tcc}{\@quadroinstituicao}
+    \iftoggle{@tcc}{\@quadroinstituicao[#1]}
 
     \@quadrotitulo[#1]
 
