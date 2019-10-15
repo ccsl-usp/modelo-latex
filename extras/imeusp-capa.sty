@@ -267,8 +267,25 @@
 \NewDocumentCommand{\mestrado}{O{masc} O{}}{\dissertacao[#1][#2]}
 
 \NewDocumentCommand{\tcc}{O{masc}}{
+  % Nomes possíveis para o TCC em inglês:
+  %
+  % * monograph/monography
+  %     usado para trabalho de alto nível de um autor "senior",
+  %     então não faz sentido para um trabalho de graduação.
+  %
+  % * undergraduate thesis / bachelor's thesis
+  %     parece plausível.
+  %
+  % * senior project / senior thesis / honor thesis
+  %     usado para "TCCs" de caráter fortemente acadêmico;
+  %     não é o caso aqui.
+  %
+  % * essay / report
+  %     acho razoável porque trata-se de um texto sobre o
+  %     projeto de TCC.
   \renewcommand*{\@nometrabalho}{Monografia}
-  \renewcommand*{\@nometrabalhoeng}{Undergraduate Thesis}
+  %\renewcommand*{\@nometrabalhoeng}{Undergraduate Thesis}
+  \renewcommand*{\@nometrabalhoeng}{Capstone Project Report}
   \renewcommand*{\@nometituloeng}{Bachelor}
   \renewcommand*{\@grau}{Bacharelado}
   \renewcommand*{\@graueng}{Bachelor}
@@ -358,7 +375,8 @@
       --- Trabalho de\\
       Formatura Supervisionado%
     }{%
-      Final Monograph\vspace{.5\baselineskip}\\
+      % Veja o comentário mais acima sobre a palavra "essay"
+      Final Essay\vspace{.5\baselineskip}\\
       \macQuatroNoveNove\space%
       --- Capstone Project%
     }%
@@ -610,7 +628,7 @@
         }{%
           \textsc{University of São Paulo\\
           Institute of Mathematics and Statistics\\
-          Bachelor's in Computer Science}
+          Bachelor of Computer Science}
         }%
 
         \vspace{0pt plus 20mm}
