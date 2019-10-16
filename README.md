@@ -44,7 +44,7 @@ tablefootnote, array, dcolumn, longtable, multirow, makecell, booktabs,
 tocbibind, imakeidx, verbatim, latexsym, amsmath, amssymb, mathtools,
 csquotes, hypcap, hyperxmp, url, listings, textcomp, multicol, metalogo,
 epigraph, imakeidx, todonotes, soul, soulutf8, translator, pgfgantt, titletoc,
-titlesec, framed. Many others are loaded indirectly by these.
+titlesec, titleps, framed. Many others are loaded indirectly by these.
 
 The default fonts depend on these packages: lmodern, fix-cm,
 inconsolata, libertine, newtxmath, biolinum.
@@ -74,13 +74,6 @@ lmodern, biber, and latexmk. Just run
  * Original version: Jesús P. Mena-Chalco
  * Revision: Fabio Kon and Paulo Feofiloff
  * Latest updates (utf8, biblatex etc.): Nelson Lago
-
-## TODO
-
- * The translated version of the natbib package included in the template
-   is old; we should update it.
-
- * Consider migrating from fancyhdr to titleps (it is easier to customize).
 
 ## License
 

@@ -1,7 +1,18 @@
 % Author: Nelson Lago
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{imeusp-headers}[2018/10/28 Running headers, IME/USP style]
+\ProvidesPackage{imeusp-headers}[2019/03/09 2.0 Running headers, IME/USP style]
+
+% Há duas packages para a configuração dos cabeçalhos/rodapés:
+% fancyhdr, a mais tradicional e mais usada, e titleps, que é
+% um pouco mais moderna. Esta classe tem dois códigos completos
+% para a implementação dos cabeçalhos que queremos, cada um
+% utilizando uma das packages. Por padrão, usamos fancyhdr,
+% mas o código com titleps está aqui caso haja alguma vantagem
+% em migrar para ele. Observe que, nesse caso, o valor de
+% headsep de geometry deve ser mudado de 11mm para 12.5mm.
+
+\iftrue % implementação com fancyhdr
 
 \RequirePackage{fancyhdr}
 
@@ -151,5 +162,121 @@
   \fancyhf{}
   \formataNumPaginas{}
 }
+
+\else % implementação desabilitada com titleps
+
+\RequirePackage{etoolbox}
+
+% Se você está usando a package titlesec, ela deve ser carregada
+% *antes* desta package e deve incluir a opção pagestyles.
+
+\@ifpackageloaded{titlesec}
+  {
+      \@ifpackagewith{titlesec}{pagestyles}
+        {} % all set!
+        {\input{ttlps.def}} % pagestyles option missing, let's simulate it
+  }
+  {\RequirePackage{titleps}} % no titlesec loaded, use titleps
+
+
+% Queremos colocar o número da página mais próximo da borda do papel (na
+% horizontal). Para isso, vamos aumentar a largura do cabeçalho, somando
+% "tamanho da margem direita -10mm" (o número vai ficar a 10mm da borda).
+%
+% Observe que a package geometry define \evensidemargin, mas seu valor não
+% necessariamente corresponde ao que queremos aqui (não sei bem como nem
+% por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+% manualmente.
+%
+% A distância entre a borda esquerda/interna do papel e o início do texto
+% é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+% é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+\dimdef{\IHstretch}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth -10mm}
+
+% WTF 9pt? Não sei, mas precisei acrescentar para acertar o alinhamento...
+\widenhead[\IHstretch + 9pt][0pt]{9pt}{\IHstretch}
+
+
+%%%%% Conteúdo dos cabeçalhos %%%%%
+
+% Números de páginas
+\newrobustcmd\IHpgnum{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+
+% Formata "X | título do capítulo" e "X.X | título da seção"
+\newrobustcmd\IHformat[2]{\MakeTextUppercase{#1\hskip 0.3em |\hskip 0.3em #2}}
+
+% Número e nome do capítulo
+\newrobustcmd\IHchap{\IHformat{\thechapter}{\chaptertitle}}
+
+% Número e nome da seção (ou do capítulo se não houver seção)
+\newrobustcmd\IHsec{%
+    \ifdefvoid{\thesection}
+      {\IHchap}
+      {\IHformat{\thesection}{\sectiontitle}}%
+}
+
+% "Apêndice X" / "Anexo X"
+\newrobustcmd\IHapp{\MakeTextUppercase{\@chapapp\ \thechapter}}
+
+% "Bibliografia", "Índice Remissivo"
+\newrobustcmd\IHbarechap{\MakeTextUppercase{\chaptertitle}}
+
+%%%%% Formato dos cabeçalhos %%%%%
+
+% Formato padrão:
+%
+% Números de página na borda externa,
+% número e nome do capítulo nas páginas pares,
+% número e nome da seção nas páginas ímpares
+\newpagestyle{mainmatter}[\scriptsize]{
+  \sethead
+      % even-left even-center even-right
+      [\IHpgnum][][\IHchap]
+      % odd-left odd-center odd-right
+      {\IHsec}{}{\IHpgnum}
+}
+
+% A página inicial de cada capítulo é automaticamente configurada para o estilo
+% "plain", então vamos definir esse estilo (colocando o número de página no
+% mesmo lugar das demais). As páginas iniciais também usam esse estilo.
+\renewpagestyle{plain}[\scriptsize]{
+  \sethead
+      % even-left even-center even-right
+      [\IHpgnum][][]
+      % odd-left odd-center odd-right
+      {}{}{\IHpgnum}
+}
+
+% Formato dos apêndices/anexos:
+%
+% "Apêndice X" / "Anexo X" nas páginas pares,
+% letra e nome do apêndice/anexo nas páginas ímpares
+\newpagestyle{appendix}[\scriptsize]{
+  \sethead
+      % even-left even-center even-right
+      [\IHpgnum][][\IHapp]
+      % odd-left odd-center odd-right
+      {\IHchap}{}{\IHpgnum}
+}
+
+% Formato da bibliografia e índice remissivo:
+%
+% Na frontmatter e backmatter, não há números de capítulos e (em geral)
+% não há subdivisões (capítulos/seções/subseções), apenas um nível.
+% O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
+% sem número) nas páginas pares ou ímpares.
+%
+% Normalmente, a bibliografia e o índice remissivo não definem os
+% cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
+% isso manualmente (em bibconfig.tex e index.tex).
+\newpagestyle{backmatter}[\scriptsize]{
+  \sethead
+      % even-left even-center even-right
+      [\IHpgnum][][\IHbarechap]
+      % odd-left odd-center odd-right
+      {\IHbarechap}{}{\IHpgnum}
+}
+
+\fi
 
 \endinput
