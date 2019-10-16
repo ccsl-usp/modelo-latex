@@ -121,17 +121,143 @@
 }
 \lstset{defaultdialect=[english]{pseudocode}}
 
-% No arquivo "floats.tex" definimos o tipo de float "program".
-
 % A package listings tem seu próprio mecanismo para a criação de
 % captions, lista de programas etc. Neste modelo não usamos esses
-% recursos mas, se necessário, lembre-se de traduzir o caption e
-% o título da lista de programas usados por ele:
-%\addto\extrasbrazil{%
-%  \gdef\lstlistlistingname{Lista de Programas}%
-%  \gdef\lstlistingname{Programa}%
-%}
-%\addto\extrasenglish{%
-%  \gdef\lstlistlistingname{List of Programs}%
-%  \gdef\lstlistingname{Program}%
-%}
+% recursos (veja mais abaixo), mas utilizamos estes nomes:
+\addto\extrasbrazil{%
+  \gdef\lstlistlistingname{Lista de Programas}%
+  \gdef\lstlistingname{Programa}%
+}
+\addto\extrasenglish{%
+  \gdef\lstlistlistingname{List of Programs}%
+  \gdef\lstlistingname{Program}%
+}
+
+% Novo tipo de float para programas, possível graças à package floatrow.
+% Observe que a lista de floats de cada tipo é criada automaticamente
+% pela package floatrow, mas precisamos:
+%  1. Definir o nome do comando ("\begin{program}")
+%  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
+%  3. Definir a extensão do arquivo temporário a ser usada. Pode ser
+%     qualquer coisa, desde que não haja repetições. Aqui, usamos "lop";
+%     lembre-se que LaTeX já usa várias outras, como "lof", "lot" etc.,
+%     então seja cuidadoso na escolha!
+%  4. Acrescentar os comandos correspondentes em folhas-de-rosto.tex
+
+\makeatletter
+\@ifpackageloaded{floatrow}
+  {
+    \ifcsdef{chapter}
+        % O novo ambiente se chama "program" ("\begin{program}") e a extensão
+        % temporária é "lop"
+        {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
+        {\DeclareNewFloatType{program}{placement=htbp,fileext=lop}}
+
+    % Ajusta ligeiramente o espaçamento do estilo "ruled".
+    \DeclareFloatVCode{customrule}{{\kern 0pt\hrule\kern 2.5pt\relax}}
+    \floatsetup[program]{style=ruled,precode=customrule}
+  }
+  {
+    % Não temos a package floatrow; vamos assumir que temos a package float.
+
+    % O estilo padrão do novo float a ser criado (veja mais sobre isso na
+    % documentação da package float). Para "program" usamos "ruled", mas
+    % para outros floats provavelmente é melhor usar o mesmo formato de
+    % Figuras e Tables (plain).
+    \floatstyle{ruled}
+
+    \ifcsdef{chapter}
+        % O novo ambiente se chama "program" ("\begin{program}") e a extensão
+        % temporária é "lop"
+        {\newfloat{program}{htbp}{lop}[chapter]}
+        {\newfloat{program}{htbp}{lop}}
+
+    % Retorna o estilo dos floats para o padrão
+    \floatstyle{plain}
+  }
+\makeatother
+
+\captionsetup[program]{style=ruled,position=top}
+
+% "Program X / Programa X" e "Lista de Programas / List of Programs"
+\floatname{program}{\lstlistingname}
+\gdef\programlistname{\lstlistlistingname}
+
+% Se um programa é maior que uma página, ele não pode ser inserido em
+% um float. Nesse caso, vamos criar o ambiente "programruledcaption",
+% que cria a mesma estrutura visual e os mesmos captions que os floats
+% do tipo "program", mas sem ser um float. Para isso, vamos usar recursos
+% da package framed (a package tcolorbox poderia ter sido usada também).
+%
+% Observe que "programruledcaption" funciona *apenas* para os floats do
+% tipo "program". Se quiser criar algo similar para outro tipo de float,
+% você vai precisar criar um novo comando ("myfloatruledcaption")
+% copiando os comandos abaixo e modificando-os conforme necessário.
+\newsavebox{\captiontextBox}
+\usepackage{framed}
+\newenvironment{programruledcaption}[2][]{
+  % All spacing measurements were adjusted to visually reproduce
+  % the float captions
+  \setlength\fboxsep{0pt}
+
+  % topsep means space before AND after
+  \setlength\topsep{.28\baselineskip plus .3\baselineskip minus 0pt}
+
+  \vspace{.3\baselineskip} % Some extra top space
+
+  % For whatever reason, the framed package actually calls "\captionof"
+  % multiple times, messing up the counter. We need to prevent this,
+  % so we put the caption in a box once and reuse the box.
+
+  \savebox{\captiontextBox}{%
+    \parbox[b]{\textwidth}{%
+      \ifstrempty{#1}
+        {\captionof{program}[#2]{#2}}%
+        {\captionof{program}[#1]{#2}}%
+    }
+  }
+
+  \def\fullcaption{
+    \vspace*{-.325\baselineskip}
+    \noindent\usebox{\captiontextBox}%
+    \vspace*{-.56\baselineskip}%
+    \kern 2pt\hrule\kern 2pt\relax
+  }
+
+  \def\FrameCommand{
+    \hspace{-.007\textwidth}%
+    \CustomFBox
+      {\fullcaption}
+      {\vspace{.13\baselineskip}}
+      {.8pt}{.4pt}{0pt}{0pt}
+  }
+
+  \def\FirstFrameCommand{
+    \hspace{-.007\textwidth}%
+    \CustomFBox
+      {\fullcaption}
+      {\hfill\textit{cont}\enspace$\longrightarrow$}
+      {.8pt}{0pt}{0pt}{0pt}
+  }
+
+  \def\MidFrameCommand{
+    \hspace{-.007\textwidth}%
+    \CustomFBox
+      {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+      {\hfill\textit{cont}\enspace$\longrightarrow$}
+      {0pt}{0pt}{0pt}{0pt}
+  }
+
+  \def\LastFrameCommand{
+    \hspace{-.007\textwidth}%
+    \CustomFBox
+      {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+      {\vspace{.13\baselineskip}}
+      {0pt}{.4pt}{0pt}{0pt}
+  }
+
+  \MakeFramed{\FrameRestore}
+
+}{
+  \endMakeFramed
+}

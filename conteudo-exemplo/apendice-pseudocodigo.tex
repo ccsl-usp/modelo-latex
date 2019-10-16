@@ -29,14 +29,14 @@ Trechos de código curtos (menores que uma página) podem ou não ser
 incluídos como \textit{floats}; trechos longos necessariamente incluem
 quebras de página e, portanto, não podem ser \textit{floats}. Com
 \textit{floats}, a legenda e as linhas separadoras são colocadas pelo
-comando \textsf{\textbackslash{}begin\{program\}}; sem eles, utilize
-o ambiente \textsf{ruledcaption} (atenção para a colocação do comando
-\textsf{\textbackslash{}label\{\}}, dentro da legenda), como no
-Programa~\ref{prog:mdc}\footnote{\textsf{listings} oferece alguns
+comando \textsf{\textbackslash{}begin\{program\}}; sem eles, utilize o
+ambiente \textsf{programruledcaption} (atenção para a colocação do
+comando \textsf{\textbackslash{}label\{\}}, dentro da legenda), como
+no Programa~\ref{prog:mdc}\footnote{\textsf{listings} oferece alguns
 recursos próprios para a definição de \textit{floats} e legendas, mas
 neste modelo não os utilizamos.}:
 
-\begin{ruledcaption}{Máximo divisor comum.\label{prog:mdc}}
+\begin{programruledcaption}{Máximo divisor comum.\label{prog:mdc}}
   \begin{lstlisting}[
     language=pseudocode,
     style=pseudocode,
@@ -54,7 +54,7 @@ neste modelo não os utilizamos.}:
           return b // The \textbf{g.c.d.} is b
       end
   \end{lstlisting}
-\end{ruledcaption}
+\end{programruledcaption}
 
 Além do suporte às várias linguagens incluídas em \textsf{listings},
 este modelo traz uma extensão para permitir o uso de pseudocódigo,

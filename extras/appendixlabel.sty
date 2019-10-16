@@ -47,20 +47,39 @@
 
   % Como comandos separados, é possível modificar a formatação
   % com "renewcommand"
-  \newcommand\setAppendixFormat{
-    \titlecontents{chapter}[45pt]
-      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
-      {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
-      {\hspace{-45pt}}
-      {\hfill\thecontentspage}
-  }
+  \ifcsdef{chapter}
+  {
+      \newcommand\setAppendixFormat{
+        \titlecontents{chapter}[45pt]
+          {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+          {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
+          {\hspace{-45pt}}
+          {\hfill\thecontentspage}
+      }
 
-  \newcommand\setAnnexFormat{
-    \titlecontents{chapter}[45pt]
-      {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
-      {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
-      {\hspace{-45pt}}
-      {\hfill\thecontentspage}
+      \newcommand\setAnnexFormat{
+        \titlecontents{chapter}[45pt]
+          {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+          {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
+          {\hspace{-45pt}}
+          {\hfill\thecontentspage}
+      }
+  }{
+      \newcommand\setAppendixFormat{
+        \titlecontents{section}[45pt]
+          {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+          {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
+          {\hspace{-45pt}}
+          {\hfill\thecontentspage}
+      }
+
+      \newcommand\setAnnexFormat{
+        \titlecontents{section}[45pt]
+          {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
+          {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
+          {\hspace{-45pt}}
+          {\hfill\thecontentspage}
+      }
   }
 
   \AtEndPreamble{

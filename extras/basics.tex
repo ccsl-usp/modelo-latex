@@ -206,6 +206,29 @@
 \hbadness=1000
 \vbadness=1000
 
+% Por padrão, o algoritmo LaTeX para textos não-justificados é (muito) ruim;
+% este pacote implementa um algoritmo bem melhor
+\usepackage[newcommands]{ragged2e}
+
+% Com ragged2e e a opção "newcommands", textos curtos não-justificados
+% podem gerar warnings sobre "underfull \hbox". Não há razão para pensar
+% muito nesses warnings, então melhor desabilitá-los.
+% https://tex.stackexchange.com/questions/17659/ragged2e-newcommands-option-produces-underfull-hbox-warnings
+\makeatletter
+\g@addto@macro{\centering}{\hbadness=\@M}
+\g@addto@macro{\Centering}{\hbadness=\@M}
+\g@addto@macro{\raggedright}{\hbadness=\@M}
+\g@addto@macro{\RaggedRight}{\hbadness=\@M}
+\g@addto@macro{\raggedleft}{\hbadness=\@M}
+\g@addto@macro{\RaggedLeft}{\hbadness=\@M}
+\g@addto@macro{\center}{\hbadness=\@M}
+\g@addto@macro{\Center}{\hbadness=\@M}
+\g@addto@macro{\flushleft}{\hbadness=\@M}
+\g@addto@macro{\FlushLeft}{\hbadness=\@M}
+\g@addto@macro{\flushright}{\hbadness=\@M}
+\g@addto@macro{\FlushRight}{\hbadness=\@M}
+\makeatother
+
 % LaTeX às vezes coloca notas de rodapé logo após o final do texto da
 % página ao invés de no final da página; este pacote evita isso.
 \usepackage[bottom]{footmisc}
@@ -239,6 +262,9 @@
 % Esta opção desabilita isso e, consequentemente, evita problemas com
 % "id est" (i.e.) e "exempli gratia" (e.g.)
 \frenchspacing
+
+% Trechos de texto "puro" (tabs, quebras de linha etc. não são modificados)
+\usepackage{verbatim}
 
 % LaTeX procura por arquivos adicionais no diretório atual e nos diretórios
 % padrão do sistema. Assim, é preciso usar caminhos relativos para incluir

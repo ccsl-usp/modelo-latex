@@ -9,10 +9,14 @@
 % melhor evitar.
 \usepackage{graphicx}
 
-% Esta é uma versão aprimorada da package "float". Ela permite definir novos
-% tipos de float, oferece mais opções para personalização e também acrescenta
-% a possibilidade de definir "H" como opção de posicionamento do float, que
-% significa "aqui, incondicionalmente".
+% A package float é amplamente utilizada; ela permite definir novos tipos
+% de float e também acrescenta a possibilidade de definir "H" como opção de
+% posicionamento do float, que significa "aqui, incondicionalmente". No
+% entanto, ela tem algumas fragilidades e não é atualizada desde 2001.
+% floatrow é uma versão aprimorada e com mais recursos da package "float",
+% mas também não é atualizada desde 2009. Aqui utilizamos alguns recursos
+% disponibilizados por ambas e é possível escolher qual delas utilizar.
+%\usepackage{float}
 \usepackage{floatrow}
 
 % Por padrão, LaTeX prefere colocar floats no topo da página que
@@ -120,118 +124,6 @@
 % Caixas de texto coloridas
 %\usepackage{tcolorbox}
 
-% Novo tipo de float para programas, possível graças à package floatrow.
-% Observe que a lista de floats de cada tipo é criada automaticamente
-% pela package floatrow, mas precisamos:
-%  1. Definir o nome do comando ("\begin{program}")
-%  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
-%  3. Definir a extensão do arquivo temporário a ser usada. Pode ser
-%     qualquer coisa, desde que não haja repetições. Aqui, usamos "lop";
-%     lembre-se que LaTeX já usa várias outras, como "lof", "lot" etc.,
-%     então seja cuidadoso na escolha!
-%  4. Acrescentar os comandos correspondentes em folhas-de-rosto.tex
-
-\ifcsdef{chapter}
-    % O novo ambiente se chama "program" ("\begin{program}") e a extensão
-    % temporária é "lop"
-    {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
-    {\DeclareNewFloatType{program}{placement=htbp,fileext=lop}}
-
-% Ajusta ligeiramente o espaçamento do estilo "ruled".
-\DeclareFloatVCode{customrule}{{\kern 0pt\hrule\kern 2.5pt\relax}}
-\floatsetup[program]{style=ruled,precode=customrule}
-\captionsetup[program]{style=ruled,position=top}
-
-% Comando "program", em pt, se refere a "Programa" e "Lista de Programas"
-\addto\extrasbrazil{%
-  \floatname{program}{Programa}%
-  \gdef\programlistname{Lista de Programas}%
-}
-
-% Comando "program", em en, se refere a "Program", e "List of Programs"
-\addto\extrasenglish{%
-  \floatname{program}{Program}%
-  \gdef\programlistname{List of Programs}%
-}
-
-% Se um programa é maior que uma página, ele não pode ser inserido em
-% um float. Nesse caso, vamos criar o ambiente "ruledcaption", que cria
-% a mesma estrutura visual e os mesmos captions que os floats do tipo
-% "program", mas sem ser um float. Para isso, vamos usar recursos da
-% package framed (a package tcolorbox poderia ter sido usada também).
-%
-% Observe que "ruledcaption" funciona *apenas* para os floats do tipo
-% "program". Se quiser criar algo similar para outro tipo de float,
-% você vai precisar criar um novo comando ("myfloatruledcaption")
-% copiando os comandos abaixo e modificando-os conforme necessário.
-\newsavebox{\captiontextBox}
-\usepackage{framed}
-\newenvironment{ruledcaption}[2][]{
-  % All spacing measurements were adjusted to visually reproduce
-  % the float captions
-  \setlength\fboxsep{0pt}
-
-  % topsep means space before AND after
-  \setlength\topsep{.28\baselineskip plus .3\baselineskip minus 0pt}
-
-  \vspace{.3\baselineskip} % Some extra top space
-
-  % For whatever reason, the framed package actually calls "\captionof"
-  % multiple times, messing up the counter. We need to prevent this,
-  % so we put the caption in a box once and reuse the box.
-
-  \savebox{\captiontextBox}{%
-    \parbox[b]{\textwidth}{%
-      \ifstrempty{#1}
-        {\captionof{program}[#2]{#2}}%
-        {\captionof{program}[#1]{#2}}%
-    }
-  }
-
-  \def\fullcaption{
-    \vspace*{-.325\baselineskip}
-    \noindent\usebox{\captiontextBox}%
-    \vspace*{-.56\baselineskip}%
-    \kern 2pt\hrule\kern 2pt\relax
-  }
-
-  \def\FrameCommand{
-    \hspace{-.007\textwidth}%
-    \CustomFBox
-      {\fullcaption}
-      {\vspace{.13\baselineskip}}
-      {.8pt}{.4pt}{0pt}{0pt}
-  }
-
-  \def\FirstFrameCommand{
-    \hspace{-.007\textwidth}%
-    \CustomFBox
-      {\fullcaption}
-      {\hfill\textit{cont}\enspace$\longrightarrow$}
-      {.8pt}{0pt}{0pt}{0pt}
-  }
-
-  \def\MidFrameCommand{
-    \hspace{-.007\textwidth}%
-    \CustomFBox
-      {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
-      {\hfill\textit{cont}\enspace$\longrightarrow$}
-      {0pt}{0pt}{0pt}{0pt}
-  }
-
-  \def\LastFrameCommand{
-    \hspace{-.007\textwidth}%
-    \CustomFBox
-      {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
-      {\vspace{.13\baselineskip}}
-      {0pt}{.4pt}{0pt}{0pt}
-  }
-
-  \MakeFramed{\FrameRestore}
-
-}{
-  \endMakeFramed
-}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TABELAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
