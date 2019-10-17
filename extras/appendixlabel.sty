@@ -47,7 +47,7 @@
 
   % Como comandos separados, é possível modificar a formatação
   % com "renewcommand"
-  \ifcsdef{chapter}
+  \ifltxcounter{chapter}
   {
       \newcommand\setAppendixFormat{
         \titlecontents{chapter}[45pt]

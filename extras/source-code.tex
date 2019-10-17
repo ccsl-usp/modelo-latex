@@ -147,7 +147,7 @@
 \makeatletter
 \@ifpackageloaded{floatrow}
   {
-    \ifcsdef{chapter}
+    \ifltxcounter{chapter}
         % O novo ambiente se chama "program" ("\begin{program}") e a extensão
         % temporária é "lop"
         {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
@@ -166,7 +166,7 @@
     % Figuras e Tables (plain).
     \floatstyle{ruled}
 
-    \ifcsdef{chapter}
+    \ifltxcounter{chapter}
         % O novo ambiente se chama "program" ("\begin{program}") e a extensão
         % temporária é "lop"
         {\newfloat{program}{htbp}{lop}[chapter]}

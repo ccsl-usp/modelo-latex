@@ -12,7 +12,7 @@
 % Copiado de \appendix em book.cls; define o comando \annex "simples"
 \newcommand\annex{\par
   \setcounter{section}{0}%
-  \ifcsdef{chapter}
+  \ifltxcounter{chapter}
     {%
         \setcounter{chapter}{0}%
         \gdef\@chapapp{\annexname}%

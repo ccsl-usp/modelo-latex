@@ -12,7 +12,7 @@
 % titlesec permite definir formatação personalizada de títulos, seções etc.
 % Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
-\ifcsdef{chapter}
+\ifltxcounter{chapter}
     {
         % Esta package utiliza titlesec e implementa a possibilidade de incluir
         % uma imagem no título dos capítulos com o comando \imgchapter (leia
@@ -24,11 +24,6 @@
         % carregar imagechapter. Ao invés disso, vamos usar titlesec apenas
         % para fazer títulos, seções etc. não serem justificados.
         \usepackage[raggedright]{titlesec}
-        % titlesec sempre define \chapter, mesmo que a classe atual não
-        % tenha capítulos. Mas testamos se \chapter existe ou não para
-        % detectar a classe em outros lugares, então vamos simplesmente
-        % apagar essa definição aqui.
-        \csundef{chapter}
     }
 
 % Permite saber o número total de páginas; útil para colocar no
