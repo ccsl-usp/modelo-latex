@@ -147,11 +147,11 @@
 \makeatletter
 \@ifpackageloaded{floatrow}
   {
-    \ifltxcounter{chapter}
+    \ltx@IfUndefined{chapter}
         % O novo ambiente se chama "program" ("\begin{program}") e a extensão
         % temporária é "lop"
-        {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
         {\DeclareNewFloatType{program}{placement=htbp,fileext=lop}}
+        {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
 
     % Ajusta ligeiramente o espaçamento do estilo "ruled".
     \DeclareFloatVCode{customrule}{{\kern 0pt\hrule\kern 2.5pt\relax}}
@@ -166,11 +166,11 @@
     % Figuras e Tables (plain).
     \floatstyle{ruled}
 
-    \ifltxcounter{chapter}
+    \ltx@IfUndefined{chapter}
         % O novo ambiente se chama "program" ("\begin{program}") e a extensão
         % temporária é "lop"
-        {\newfloat{program}{htbp}{lop}[chapter]}
         {\newfloat{program}{htbp}{lop}}
+        {\newfloat{program}{htbp}{lop}[chapter]}
 
     % Retorna o estilo dos floats para o padrão
     \floatstyle{plain}

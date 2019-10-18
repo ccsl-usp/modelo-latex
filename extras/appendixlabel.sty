@@ -1,7 +1,7 @@
 % Author: Nelson Lago
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{appendixlabel}[2018/10/28 Puts strings "Appendix" and "Annex" in TOC]
+\ProvidesPackage{appendixlabel}[2019/10/18 Puts strings "Appendix" and "Annex" in TOC]
 
 % No sumário, normalmente colocamos
 % 1 Introdução
@@ -40,6 +40,8 @@
 
 \ProcessOptions
 
+\RequirePackage{etoolbox}
+
 \if@inlineappendix
   % A primeira opção (como \annex só é definida mais à frente, pela
   % package annex, adiamos a execução com \AtEndPreamble).
@@ -47,10 +49,10 @@
 
   % Como comandos separados, é possível modificar a formatação
   % com "renewcommand"
-  \ifltxcounter{chapter}
+  \ltx@IfUndefined{chapter}
   {
       \newcommand\setAppendixFormat{
-        \titlecontents{chapter}[45pt]
+        \titlecontents{section}[45pt]
           {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
           {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
           {\hspace{-45pt}}
@@ -58,7 +60,7 @@
       }
 
       \newcommand\setAnnexFormat{
-        \titlecontents{chapter}[45pt]
+        \titlecontents{section}[45pt]
           {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
           {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
           {\hspace{-45pt}}
@@ -66,7 +68,7 @@
       }
   }{
       \newcommand\setAppendixFormat{
-        \titlecontents{section}[45pt]
+        \titlecontents{chapter}[45pt]
           {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
           {\makebox[0pt][r]{\appendixname{} \thecontentslabel{}\hspace{1.1em}}}
           {\hspace{-45pt}}
@@ -74,7 +76,7 @@
       }
 
       \newcommand\setAnnexFormat{
-        \titlecontents{section}[45pt]
+        \titlecontents{chapter}[45pt]
           {\addvspace{12pt}\bfseries\contentsmargin{-30pt}}
           {\makebox[0pt][r]{\annexname{} \thecontentslabel{}\hspace{1.1em}}}
           {\hspace{-45pt}}
