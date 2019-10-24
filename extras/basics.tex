@@ -36,21 +36,26 @@
 \usepackage{amsmath}
 \usepackage{mathtools}
 
+% "fontenc" é um parâmetro do NFSS (sistema de gestão de fontes do
+% LaTeX; consulte "texdoc fntguide" e "texdoc fontenc"). Mesmo
+% usando fontspec (alternativa a ele compatível apenas com lualatex
+% e xelatex), é aconselhável configurar fontenc corretamente. O
+% default é OT1, mas ele tem algumas limitações; a mais importante
+% é que, com ele, palavras acentuadas não podem ser hifenizadas.
+% Por conta disso, quase todos os documentos LaTeX utilizam o
+% fontenc T1. A escolha do fontenc tem consequências para as fontes
+% que podem ser usadas com NFSS; hoje em dia T1 tem mais opções
+% de qualidade, então não se perde nada em usá-lo.
+\usepackage[T1]{fontenc}
+
 \ifunicodeengine
-  % Não é preciso carregar fontenc e inputenc com LuaTeX e XeTeX!
+  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
+  % com eles utf8 é obrigatório.
   \usepackage{fontspec}
   \usepackage{unicode-math}
 \else
-  % "fontenc" é um parâmetro interno do LaTeX. Com pdfLaTeX, o fontenc
-  % default é OT1, mas ele tem algumas limitações; a mais importante é
-  % que, com ele, palavras acentuadas não podem ser hifenizadas. Por
-  % conta disso, quase todos os documentos LaTeX utilizam o fontenc T1.
-  % A escolha do fontenc tem consequências para as fontes que podem ser
-  % usadas no documento; hoje em dia T1 tem mais opções de qualidade,
-  % então não se perde nada.
-  \usepackage[T1]{fontenc}
+  % O texto está escrito em utf8.
   \usepackage[utf8]{inputenc}
-  \usepackage{fontaxes}
 \fi
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),

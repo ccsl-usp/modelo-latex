@@ -14,19 +14,25 @@
 %
 % A escolha de uma família de fontes para o documento normalmente é feita
 % carregando uma package específica que, em geral, seleciona as quatro fontes
-% de uma vez. Com LuaLaTeX/XeLaTeX, é possível usar os comandos da package
-% fontspec para controlar em detalhes as fontes do documento.
-
+% de uma vez.
+%
 % LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
 % precisaram ser re-criadas diversas vezes em formatos diferentes, então há
 % diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX), a
 % versão usada é a BlueSky Computer Modern, que é de boa qualidade, mas com
-% os problemas do OT1. Com fontenc T1 (padrão deste modelo quando usamos
-% pdfLaTeX e recomendado), o LaTeX usa o conjunto "cm-super". Com fontspec
-% (ou seja, com LuaLaTeX e XeLaTeX), LaTeX utiliza a versão "Latin Modern".
-% Ao longo do tempo, versões diferentes dessas fontes foram recomendadas
-% como "a melhor"; atualmente, a melhor opção para usar a família Computer
-% Modern é a versão "Latin Modern".
+% os problemas do OT1. Com fontenc T1 (padrão deste modelo e recomendado), o
+% LaTeX usa o conjunto "cm-super". Com fontspec (ou seja, com LuaLaTeX e
+% XeLaTeX), LaTeX utiliza a versão "Latin Modern". Ao longo do tempo, versões
+% diferentes dessas fontes foram recomendadas como "a melhor"; atualmente, a
+% melhor opção para usar a família Computer Modern é a versão "Latin Modern".
+%
+% Você normalmente não precisa lidar com isso, mas pode ser útil saber: O
+% mecanismo tradicionalmente usado por LaTeX para gerir fontes é o NFSS
+% (veja "texdoc fntguide"). Ele funciona com todas as versões de LaTeX,
+% mas só com fontes que foram adaptadas para funcionar com LaTeX. LuaLaTeX
+% e XeLaTeX podem usar NFSS mas também são capazes de utilizar um outro
+% mecanismo (através da package fontspec), que permite utilizar quaisquer
+% fontes instaladas no computador.
 
 \ifunicodeengine
     % Com LuaLaTex e XeLaTeX, Latin Modern é a fonte padrão. Existem
@@ -71,6 +77,9 @@
 
 \else
     % Usando pdfLaTeX
+
+    % Permite utilizar small caps + itálico (e outras pequenas melhorias)
+    \usepackage{fontaxes}
 
     % Ativa Latin Modern como a fonte padrão.
     \usepackage{lmodern}
@@ -120,8 +129,9 @@
 \fi
 
 % Algumas packages mais novas que tratam de fontes funcionam corretamente
-% tanto em LuaLaTeX/XeLaTeX quanto em pdfLaTeX, mas várias funcionam
-% apenas em pdfLaTeX. Nesse caso, em LuaLaTeX/XeLaTeX é preciso usar os
+% tanto com fontspec (LuaLaTeX/XeLaTeX) quanto com NFSS (qualquer versão
+% de LaTeX, mas menos poderoso que fontspec). No entanto, muitas funcionam
+% apenas com NFSS. Nesse caso, em LuaLaTeX/XeLaTeX é melhor usar os
 % comandos de fontspec, como exemplificado mais abaixo.
 
 % É possível mudar apenas uma das fontes. Em particular, a fonte
