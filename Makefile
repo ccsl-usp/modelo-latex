@@ -1,26 +1,77 @@
 # Authors: Nelson Lago and Jesus P. Mena-Chalco
 # This file is distributed under the MIT Licence
 
-THESIS_NAME := tese
-POSTER_NAME := poster
-PRESENTATION_NAME := apresentacao
-ARTICLE_NAME := artigo
-ALL_TARGETS := $(THESIS_NAME) $(POSTER_NAME) $(PRESENTATION_NAME) $(ARTICLE_NAME)
+# latexmk em geral eh distribuido junto com o LaTeX e eh o mecanismo
+# recomendado para compilar, mas se ele nao estiver disponivel este
+# script funciona sem ele. Com latexmk, as variaveis de configuracao
+# referentes a compilacao definidas abaixo (MAKEINDEX, LATEXOPTS etc)
+# poderiam ser eliminadas: latexmk le a configuracao do arquivo latexmkrc.
+#USE_LATEXMK := true
+USE_LATEXMK := false
 
-thesis: $(THESIS_NAME)
+# Mas por que usar um Makefile para chamar latexmk?
+#
+# 1. "make" eh mais curto para digitar :-p
+#
+# 2. Com make, a funcao autocompletar do bash funciona
+#
+# 3. Eh possivel usar "make all"
+#
+# 4. Se for necessario gerar outros arquivos automaticamente para
+#    inclusao no documento, eh possivel definir as dependencias e
+#    comandos para isso neste arquivo com MISCFILES (mas latexmk
+#    pode chamar "make" como parte do processo de compilacao tambem)
+#
+# 5. embora latexmk tenha as opcoes -c e -C, elas nao fazem
+#    exatamente o que eu gostaria; este arquivo define
+#    "make clean" e "make distclean"
 
-# Mesmo nome em portugues e ingles; nao precisa repetir
-#poster: $(POSTER_NAME)
+# Encontra todos os arquivos .tex. Com isto, a funcao autocompletar do
+# bash funciona e podemos fazer "make all"
+ALL_TARGETS := $(basename $(wildcard *.tex))
 
-presentation: $(PRESENTATION_NAME)
+# Por default, compila o primeiro arquivo .tex encontrado
+#DEFAULT_TARGET: $(word 1, $(ALL_TARGETS)).pdf
+DEFAULT_TARGET: tese.pdf
 
-article: $(ARTICLE_NAME)
+#SHOW_PDF_AFTER_COMPILATION := true
+SHOW_PDF_AFTER_COMPILATION := false
 
-all: $(ALL_TARGETS)
+all tudo: $(ALL_TARGETS)
 
-tudo: $(ALL_TARGETS)
 
-.PHONY: all clean tmpclean distclean tese thesis poster presentation apresentacao article artigo $(ALL_TARGETS)
+###############################################################################
+################################ Dependencias #################################
+###############################################################################
+
+OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo-exemplo/*) $(wildcard conteudo/*)
+BIBFILES      := $(wildcard *.bib)
+IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
+# Voce pode acrescentar outras dependencias e as suas regras de geracao aqui
+MISCFILES     :=
+
+
+###############################################################################
+##### Arquivos temporarios (apagados com "make clean" e "make distclean") #####
+###############################################################################
+
+# Extensoes temporarias comuns geradas por programas auxiliares
+# do LaTeX (bibtex/biber, makeindex etc.). Arquivos de nomes
+# "$(ALL_TARGETS).$(TMP_EXTENSIONS)" sao apagados por "make clean".
+TMP_EXTENSIONS := bbl blg ilg ind fls fdb_latexmk
+
+# Extensoes temporarias comuns geradas pelo proprio LaTeX. Arquivos
+# de nomes "$(ALL_TARGETS).*" citados nos arquivos .fls sao
+# apagados por make clean. No entanto, se algo falhar ou o arquivo
+# .fls nao for gerado, vamos apagar pelo menos os arquivos com as
+# extensoes mais "obvias", ou seja, $(ALL_TARGETS).$(FLS_TMP_EXTENSIONS),
+# embora isso em geral seja redundante.
+FLS_TMP_EXTENSIONS := log aux bcf idx lof lop lot out run.xml toc
+
+
+###############################################################################
+######################### Configuracoes de compilacao #########################
+###############################################################################
 
 LATEX := pdflatex
 #LATEX := lualatex
@@ -49,27 +100,36 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 #MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
 #MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
-OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo-exemplo/*) $(wildcard conteudo/*)
-BIBFILES      := $(wildcard *.bib)
-IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
-# Voce pode acrescentar outras dependencias aqui
-MISCFILES     :=
+# Voce provavelmente nao precisa mexer nisto
+LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S' -e '$$makeindex=q/$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S/' -e '$$bibtex=q/$(BIBTEX) %O %B/' -e '$$silent=1;$$silence_logfile_warnings=1;$$cleanup_includes_cusdep_generated=1;$$bibtex_use=2'
 
-# Arquivos de nomes "$(ALL_TARGETS).$(TMP_EXTENSIONS)" sao apagados
-# por "make clean" (juntamente com arquivos "$(ALL_TARGETS).*"
-# citados nos arquivos .fls).
-TMP_EXTENSIONS := bbl blg ilg ind fls fdb_latexmk
-
-# Arquivos de nomes "$(ALL_TARGETS).*" citados nos arquivos .fls sao
-# apagados por make clean.  No entanto, se algo falhar ou o arquivo
-# .fls nao for gerado, vamos apagar pelo menos os arquivos com as
-# extensoes mais "obvias", ou seja, $(ALL_TARGETS).$(FLS_TMP_EXTENSIONS),
-# embora isso em geral seja redundante.
-FLS_TMP_EXTENSIONS := log aux bcf idx lof lop lot out run.xml toc
 
 ###############################################################################
 ######## Nada que precise ser modificado pelo usuario daqui para baixo ########
 ###############################################################################
+
+# Quase tudo neste arquivo existe para gerir a compilacao sem latexmk:
+#
+# 1. Arquivos "-current" (CURRENT_TEX_TEMP_FILES)
+#
+# 2. Arquivos latex-out.log, bibtex-out.log, makeindex-out.log
+#
+# 2. Variaveis LATEX, BIBTEX, MAKEINDEX e a deteccao do ambiente windows
+#
+# 3. Macros que sao comandos (FILTER_MSGS, REFRESH_TEMP_FILES,
+#    CHECK_RERUN_MESSAGE, RUN_LATEX, SHOW_REPORT, SHOW_SUCCESS_MSG,
+#    SHOW_LOOP_ERROR, COMPILE_WITHOUT_LATEXMK)
+#
+# 4. As regras para os arquivos .ind, .idx, .bbl, .bcf.
+#
+# Se sempre exigissemos latexmk, este arquivo seria BEM mais simples.
+
+# Obtem a lista dos arquivos temporarios gerados pelo proprio
+# LaTeX (exceto .log e .pdf, que nao sao dependencias e sao
+# modificados toda vez, pois incluem a data de compilacao).
+FIND_TEX_TEMP_FILES = grep -E "^OUTPUT (.*/)?$*" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
+TEX_TEMP_FILES = $(shell $(FIND_TEX_TEMP_FILES))
+CURRENT_TEX_TEMP_FILES = $(addsuffix -current,$(TEX_TEMP_FILES))
 
 # Tres maneiras de detectar se estamos rodando em windows. Dependendo
 # do ambiente usado para executar make no windows, pode nao ser necessario
@@ -132,13 +192,6 @@ $(FIND_TEX_TEMP_FILES) | while read filename; do \
 done
 endef
 
-# Obtem a lista dos arquivos temporarios gerados pelo proprio
-# LaTeX (exceto .log e .pdf, que nao sao dependencias e sao
-# modificados toda vez, pois incluem a data de compilacao).
-FIND_TEX_TEMP_FILES = grep -E "^OUTPUT (.*/)?$*" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
-TEX_TEMP_FILES = $(shell $(FIND_TEX_TEMP_FILES))
-CURRENT_TEX_TEMP_FILES = $(addsuffix -current,$(TEX_TEMP_FILES))
-
 # LaTeX indica no arquivo de log se e preciso executa-lo novamente;
 # por seguranca, vamos checar isso tambem
 CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|Table widths have changed. Rerun LaTeX|Warning: [Rr]erun [Ll]a[Tt]e[Xx]' $*.log
@@ -147,33 +200,23 @@ CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|
 # acima podem acabar tendo o mesmo timestamp que o pdf. Para
 # resolver isso, usamos o "touch"
 define RUN_LATEX
-touch timestamp; \
-TEXFOT=; \
-if texfot --version >/dev/null 2>&1; then \
-        TEXFOT=texfot; \
-fi; \
-msgs="`$$TEXFOT $(LATEX) $(LATEXOPTS) $*`"; \
-stat=$$?; \
-echo "$$msgs"| $(FILTER_MSGS) > latex-out.log 2>&1; \
-if test $$stat -ne 0; then \
-	$(SHOW_REPORT); \
-	echo; \
-	echo "    **** Erro durante a execucao do LaTeX (processando $*) ****"; \
-	exit 1; \
-fi; \
-touch -r timestamp $*.pdf; \
-rm -f timestamp
+	@touch timestamp
+	@TEXFOT=; \
+	if texfot --version >/dev/null 2>&1; then \
+	        TEXFOT=texfot; \
+	fi; \
+	msgs="`$$TEXFOT $(LATEX) $(LATEXOPTS) $*`"; \
+	stat=$$?; \
+	echo "$$msgs"| $(FILTER_MSGS) > latex-out.log 2>&1; \
+	if test $$stat -ne 0; then \
+		$(SHOW_REPORT); \
+		$(SHOW_FAIL_MSG); \
+	fi; \
+	touch -r timestamp $*.pdf
+	@rm -f timestamp
 endef
 
-# "make target" -> "make target.pdf"
-$(ALL_TARGETS): % : %.pdf
-
-# O arquivo pdf final depende dos arquivos de bibliografia/indice, alem
-# dos demais arquivos que compoem o documento e dos arquivos temporarios
-# gerados pelo LaTeX na iteracao anterior que foram modificados
-.SECONDEXPANSION:
-
-$(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(CURRENT_TEX_TEMP_FILES) %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
+define COMPILE_WITHOUT_LATEXMK
 	@if test $(MAKELEVEL) -ge 8; then \
 		$(SHOW_REPORT); \
 		$(SHOW_LOOP_ERROR); \
@@ -191,9 +234,51 @@ $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(CURRENT_TEX_TEMP_FILES
 	elif [ $$result -eq 1 ]; then \
 		make -s $@; \
 	else \
-		echo "    **** Erro durante a execucao do LaTeX (processando $*) ****"; \
-		exit 1; \
+		$(SHOW_FAIL_MSG); \
 	fi
+endef
+
+define COMPILE_WITH_LATEXMK
+	@echo
+	@echo "      " Executando latexmk $*...
+	@echo
+	@latexmk $(LATEXMKOPTS) $*; \
+	result=$$?; \
+	if [ $$result -eq 0 ]; then \
+		$(SHOW_SUCCESS_MSG); \
+	else \
+		$(SHOW_FAIL_MSG); \
+        fi
+endef
+
+# "make target" -> "make target.pdf"
+$(ALL_TARGETS): % : %.pdf
+
+ifeq ($(USE_LATEXMK), true)
+
+# Nao precisamos declarar as dependencias "normais" aqui (arquivos
+# .tex, .bib, imagens etc.) porque latexmk cuida disso. Precisamos
+# declarar MISCFILES para que as regras necessarias para a geracao
+# dos arquivos adicionais sejam executadas e precisamos garantir
+# que esta regra seja executada sempre, por isso FORCE.
+%.pdf: $(MISCFILES) FORCE
+	$(COMPILE_WITH_LATEXMK)
+	@$(SHOW_PDF)
+
+else
+
+# O arquivo pdf final depende dos arquivos de bibliografia/indice, alem
+# dos demais arquivos que compoem o documento e dos arquivos temporarios
+# gerados pelo LaTeX na iteracao anterior que foram modificados
+.SECONDEXPANSION:
+
+$(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(CURRENT_TEX_TEMP_FILES) %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
+	$(COMPILE_WITHOUT_LATEXMK)
+	@if test $(MAKELEVEL) -eq 0; then \
+		$(SHOW_PDF); \
+	fi
+
+endif
 
 # bitex/biber e makeindex/xindy dependem de arquivos gerados pelo LaTeX
 # e, indiretamente, dos proprios arquivos que compoem o documento.
@@ -235,15 +320,15 @@ clean: tmpclean
 	echo '       Os arquivos PDF gerados *nao* foram apagados; para remove-los, use "make distclean"'; \
 	echo;
 
-tmpclean: $(addsuffix -tmpclean,$(ALL_TARGETS))
+tmpclean: $(addsuffix -clean,$(ALL_TARGETS))
 
-distclean: tmpclean $(addsuffix -distclean,$(ALL_TARGETS))
+distclean: $(addsuffix -distclean,$(ALL_TARGETS))
 
-%-distclean:
+%-distclean: %-clean
 	@echo '       removendo arquivos gerados ($*: pdf, ps, dvi, synctex.gz)'
 	-@rm -f $*.ps $*.pdf $*.dvi $*.synctex.gz
 
-%-tmpclean:
+%-clean:
 	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
 	-@rm -f timestamp missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
 		mkidxhead.ist mkidxhead.ist-current hyperxindy.xdy hyperxindy.xdy-current \
@@ -254,6 +339,24 @@ distclean: tmpclean $(addsuffix -distclean,$(ALL_TARGETS))
 		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)-current) \
 		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext)-current) \
 		$*.ps-current $*.pdf-current $*.dvi-current
+
+ifeq ($(SHOW_PDF_AFTER_COMPILATION), true)
+
+define SHOW_PDF
+	echo; \
+	echo "    Abrindo arquivo $*.pdf..."; \
+	echo; \
+	xdg-open $*.pdf
+endef
+
+else
+
+# Um jeito de dizer "nao faca nada" (melhor que ":")
+define SHOW_PDF
+	true
+endef
+
+endif
 
 define SHOW_REPORT
 	if test -f bibtex-out.log; then \
@@ -286,6 +389,12 @@ define SHOW_SUCCESS_MSG
 	echo
 endef
 
+define SHOW_FAIL_MSG
+	echo; \
+	echo "    **** Erro durante a execucao do LaTeX (processando $*) ****"; \
+	exit 1
+endef
+
 define SHOW_LOOP_ERROR
 	echo; \
 	echo "***********************************************************************" >&2; \
@@ -297,6 +406,8 @@ define SHOW_LOOP_ERROR
 	echo "***********************************************************************" >&2; \
 	echo
 endef
+
+.PHONY: all clean tmpclean distclean DEFAULT_TARGET FORCE $(ALL_TARGETS)
 
 # Contorna bug/limitacao #53 do bash-completion:
 # https://github.com/scop/bash-completion/issues/53
