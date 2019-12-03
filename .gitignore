@@ -17,6 +17,7 @@
 *.bcf
 *.fls
 *.run.xml
+*.synctex
 *.synctex.gz
 *.fdb_latexmk
 *.nav
