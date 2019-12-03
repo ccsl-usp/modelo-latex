@@ -265,15 +265,17 @@
 % MakeTextLowercase que resolvem isso.
 \usepackage{textcase}
 
-% Normalmente, LaTeX faz o final da página terminar sempre no mesmo lugar
-% (exceto no final dos capítulos). Esse padrão pode ser ativado explicitamente
-% com o comando "\flushbottom". Mas se, por alguma razão, o volume de texto na
-% página é "pequeno", essa página vai ter espaços verticais artificialmente
-% grandes. Uma solução para esse problema é modificar o padrão para
-% "\raggedbottom"; isso permite que as páginas terminem em lugares diferentes.
-% Outra opção é corrigir manualmente cada página problemática, por exemplo
-% com o comando "\enlargethispage".
+% Em documentos frente-e-verso, LaTeX faz o final da página terminar sempre
+% no mesmo lugar (exceto no final dos capítulos). Esse comportamento pode ser
+% ativado explicitamente com o comando "\flushbottom". Mas se, por alguma
+% razão, o volume de texto na página é "pequeno", essa página vai ter espaços
+% verticais artificialmente grandes. Uma solução para esse problema é utilizar
+% "\raggedbottom" (padrão em documentos que não são frente-e-verso): com essa
+% opção, as páginas podem terminar em alturas ligeiramente diferentes. Outra
+% opção é corrigir manualmente cada página problemática, por exemplo com o
+% comando "\enlargethispage".
 %\raggedbottom
+\flushbottom
 
 % Por padrão, LaTeX coloca uma espaço aumentado após sinais de pontuação;
 % Isso não é tão bom quanto alguns TeX-eiros defendem :) .
