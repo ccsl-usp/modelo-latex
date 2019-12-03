@@ -245,16 +245,17 @@
 \g@addto@macro{\FlushRight}{\hbadness=\@M}
 \makeatother
 
+% Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
+\usepackage{setspace}
+
 % LaTeX às vezes coloca notas de rodapé logo após o final do texto da
 % página ao invés de no final da página; este pacote evita isso e faz
 % notas de rodapé funcionarem corretamente em títulos de seções.
+% Esta package deve ser carregada depois de setspace.
 \usepackage[stable,bottom]{footmisc}
 
 % Se uma página está vazia, não imprime número de página ou cabeçalho
 \usepackage{emptypage}
-
-% Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
-\usepackage{setspace}
 
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
 \usepackage[hyperref,svgnames,x11names,table]{xcolor}
