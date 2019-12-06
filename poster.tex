@@ -54,9 +54,6 @@
 \setbeamertemplate{caption}[numbered]
 \setbeamertemplate{bibliography item}[triangle]
 
-% Os triângulos na lista de itens ficam melhores com esta fonte
-\usepackage{MnSymbol}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -116,9 +113,10 @@
   % entendi por quê (em apresentacao.tex isso funciona como
   % esperado).
   \addtobeamertemplate{bibliography item}{\hspace*{1.3em}}{}
-  % Num poster, a bibliografia pode ficar em tamanho menor
-  \footnotesize
 }
+
+% Numposter, a bibliografia pode ficar em tamanho menor
+\renewcommand*{\bibfont}{\footnotesize}
 
 % O arquivo com os dados bibliográficos; você pode usar este comando
 % mais de uma vez para acrescentar múltiplos arquivos

@@ -106,10 +106,8 @@
   maxbibnames=2,
 }
 
-\AtBeginBibliography{
-  % Numa apresentação, a bibliografia pode ficar em tamanho menor
-  \footnotesize
-}
+% Numa apresentação, a bibliografia pode ficar em tamanho menor
+\renewcommand*{\bibfont}{\footnotesize}
 
 % O arquivo com os dados bibliográficos; você pode usar este comando
 % mais de uma vez para acrescentar múltiplos arquivos
