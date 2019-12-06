@@ -5,7 +5,7 @@
 % LaTeX normalmente usa quatro tipos de fonte:
 %
 % * uma fonte serifada, para o corpo do texto;
-% * uma fonte com design similar à anterior para modo matemático;
+% * uma fonte com design similar à anterior, para modo matemático;
 % * uma fonte sem serifa, para títulos ou "entidades". Por exemplo, "a classe
 %   \textsf{TimeManager} é responsável..." ou "chamamos \textsf{primos} os
 %   números que...". Observe que em quase todos os casos desse tipo é mais
@@ -142,13 +142,15 @@
 % é comum adotar fontes que não são de espaçamento fixo para fazer caber
 % mais caracteres em uma linha de texto. Algumas opções de fontes para
 % esse fim:
-%\usepackage{newtxtt}
+%\usepackage{newtxtt} % Não funciona com fontspec (lualatex / xelatex)
 %\usepackage{DejaVuSansMono}
-\ifunicodeengine
-  \setmonofont{inconsolatan}
-\else
-  \usepackage[narrow]{inconsolata}
-\fi
+% inconsolata é uma boa fonte, mas não tem variante itálico
+%\ifunicodeengine
+%  \setmonofont{inconsolatan}
+%\else
+%  \usepackage[narrow]{inconsolata}
+%\fi
+\usepackage[scale=.85]{sourcecodepro}
 
 % Ao invés da família Computer Modern, é possível usar outras como padrão.
 % Uma ótima opção é a libertine, similar (mas não igual) à Times mas com
@@ -207,7 +209,33 @@
 \fi
 
 % Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
-%\usepackage{biolinum}
+%\IfFileExists{libertinus.sty}
+%  \usepackage[sans]{libertinus}
+%\else
+%  \usepackage{biolinum}
+%\fi
+
+% Também é possível usar a Times como padrão; nesse caso, a fonte
+% sem serifa usualmente é a Helvetica. Mas provavelmente libertine
+% é uma opção melhor.
+%\ifunicodeengine
+%  % Clone da fonte Times como fonte principal
+%  \setmainfont{TeX Gyre Termes}
+%  \setmathfont[Scale=MatchLowercase]{TeX Gyre Termes Math}
+%  % TeX Gyre Termes Math tem um bug e não define o caracter
+%  % \setminus; Vamos contornar esse problema usando apenas
+%  % esse caracter da fonte STIX Two Math
+%  \setmathfont[range=\setminus]{STIX Two Math}
+%  % Clone da fonte Helvetica como fonte sem serifa
+%  \setsansfont{TeX Gyre Heros}
+%  % Clone da Courier como fonte teletype, mas provavelmente
+%  % é melhor utilizar sourcecodepro
+%  %\setmonofont{TeX Gyre Cursor}
+%\else
+%  \usepackage[helvratio=0.95,largesc]{newtxtext}
+%  \usepackage{newtxtt} % Fonte teletype
+%  \usepackage{newtxmath}
+%\fi
 
 % Cochineal é outra opção de qualidade; ela define apenas a fonte
 % com serifa.
@@ -237,11 +265,6 @@
 %% o melhor a fazer é usar libertinus.
 %\setmathfont{Libertinus Math}
 %\setmathfontface\mathit{Cochineal-Italic.otf}
-
-% Também é possível usar a Times como padrão; nesse caso, a fonte sem serifa
-% é a Helvetica. Mas provavelmente libertine é uma opção melhor.
-%\usepackage[helvratio=0.95,largesc]{newtxtext}
-%\usepackage{newtxmath,newtxtt}
 
 % gentium inclui apenas uma fonte serifada, similar a Garamond, que busca
 % cobrir todos os caracteres unicode

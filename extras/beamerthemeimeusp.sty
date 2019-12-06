@@ -5,8 +5,8 @@
 
 % Caso LaTeX faça alguma substituição de fontes, vamos garantir que ele
 % use Latin Modern e não outra versão das fontes Computer Modern.
-\usepackage{lmodern}
-\usepackage{fix-cm}
+\RequirePackage{lmodern}
+\RequirePackage{fix-cm}
 
 \usetheme[sectionpage=progressbar,subsectionpage=none,numbering=fraction,progressbar=frametitle]{metropolis}
 
@@ -14,9 +14,9 @@
 
 % Estas packages precisam ser carregadas depois do tema metropolis
 \PassOptionsToPackage{mono=false}{libertine}
-\PassOptionsToPackage{scale=0.92}{inconsolata}
-\usepackage{inconsolata}
-\usepackage{libertine}
+\PassOptionsToPackage{scale=.85}{sourcecodepro}
+\RequirePackage{sourcecodepro}
+\RequirePackage{libertine}
 
 % As margens default são muito grandes
 \setbeamersize{
