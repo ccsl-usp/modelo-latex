@@ -51,9 +51,6 @@
 %Remove ícones de navegação
 \beamertemplatenavigationsymbolsempty
 
-\setbeamertemplate{caption}[numbered]
-\setbeamertemplate{bibliography item}[triangle]
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,16 +100,6 @@
 \ExecuteBibliographyOptions{
   backref=false,
   maxbibnames=2,
-}
-
-\AtBeginBibliography{
-  % A margem padrão faz os triângulos indicadores dos itens na
-  % bibliografia caírem fora do quadro; aqui, colocamos um espaço
-  % adicional para resolver isso. Este comando está também em
-  % extras/beamerthemeimeusp-poster.sty, mas sem efeito, não
-  % entendi por quê (em apresentacao.tex isso funciona como
-  % esperado).
-  \addtobeamertemplate{bibliography item}{\hspace*{1.3em}}{}
 }
 
 % Numposter, a bibliografia pode ficar em tamanho menor
