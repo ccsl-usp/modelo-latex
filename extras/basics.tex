@@ -8,6 +8,12 @@
 \usepackage{xstring}
 \usepackage{xparse}
 \usepackage{regexpatch}
+% Algumas packages dependem de xpatch e tentam carregá-la, causando conflitos
+% com regexpatch. Como regexpatch oferece todos os recursos de xpatch (ela
+% é uma versão estendida de xpatch, mas ainda considerada experimental), vamos
+% fazê-las acreditar que xpatch já foi carregada.
+\expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}
+
 \usepackage{calc}
 % Sempre que possível, é melhor usar os recursos de etoolbox ao invés de
 % ifthen; no entanto, várias packages dependem dela.
