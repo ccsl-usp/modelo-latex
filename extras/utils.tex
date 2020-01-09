@@ -12,19 +12,16 @@
 \dowithsubdir{extras/}{\usepackage{annex}}
 
 % Formatação personalizada das listas "itemize", "enumerate" e
-% "description", além de permitir criar novos tipos de listas
-%\usepackage{paralist}
-% Esta package tem a mesma finalidade, mas é mais "moderna" e tem mais
-% recursos:
-%  * É possível personalizar labels, espaçamento etc.
-%  * É possível definir novos tipos de lista, que podem ou não ser
-%    baseados nos tipos padrão
-%  * É possível "interromper" uma lista e retornar a ela depois sem
-%    perder a numeração
-%  * Com a opção "inline", a package define os ambientes "itemize*",
-%    "description*" e "enumerate*", que fazem os itens da lista como
-%    parte de um único parágrafo
-%\usepackage[inline]{enumitem}
+% "description", além de permitir criar novos tipos de listas.
+% Com a opção "inline", a package define os novos ambientes "itemize*",
+% "description*" e "enumerate*", que fazem os itens da lista como
+% parte de um único parágrafo. Como ela causa problemas com
+% beamer, apenas a carregamos se não estivermos usando beamer.
+\makeatletter
+\@ifclassloaded{beamer}
+  {}
+  {\usepackage[inline]{enumitem}}
+\makeatother
 
 % Sublinhado e outras formas de realce de texto
 \usepackage{soul}
