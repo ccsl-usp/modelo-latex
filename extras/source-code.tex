@@ -133,9 +133,10 @@
   \gdef\lstlistingname{Program}%
 }
 
-% Novo tipo de float para programas, possível graças à package floatrow.
+% Novo tipo de float para programas, possível graças à package float
+% ou floatrow.
 % Observe que a lista de floats de cada tipo é criada automaticamente
-% pela package floatrow, mas precisamos:
+% pela package float/floatrow, mas precisamos:
 %  1. Definir o nome do comando ("\begin{program}")
 %  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
 %  3. Definir a extensão do arquivo temporário a ser usada. Pode ser
@@ -193,7 +194,7 @@
 % tipo "program". Se quiser criar algo similar para outro tipo de float,
 % você vai precisar criar um novo comando ("myfloatruledcaption")
 % copiando os comandos abaixo e modificando-os conforme necessário.
-\newsavebox{\captiontextBox}
+\newsavebox{\programCaptionTextBox}
 \usepackage{framed}
 \newenvironment{programruledcaption}[2][]{
   % All spacing measurements were adjusted to visually reproduce
@@ -209,7 +210,7 @@
   % multiple times, messing up the counter. We need to prevent this,
   % so we put the caption in a box once and reuse the box.
 
-  \savebox{\captiontextBox}{%
+  \savebox{\programCaptionTextBox}{%
     \parbox[b]{\textwidth}{%
       \ifstrempty{#1}
         {\captionof{program}[#2]{#2}}%
@@ -219,7 +220,7 @@
 
   \def\fullcaption{
     \vspace*{-.325\baselineskip}
-    \noindent\usebox{\captiontextBox}%
+    \noindent\usebox{\programCaptionTextBox}%
     \vspace*{-.56\baselineskip}%
     \kern 2pt\hrule\kern 2pt\relax
   }

@@ -16,8 +16,40 @@
 % floatrow é uma versão aprimorada e com mais recursos da package "float",
 % mas também não é atualizada desde 2009. Aqui utilizamos alguns recursos
 % disponibilizados por ambas e é possível escolher qual delas utilizar.
+% Um dos principais recursos dessas packages é permitir a criação de novos
+% tipos de float; veja o arquivo source-code.tex para um exemplo.
 %\usepackage{float}
 \usepackage{floatrow}
+
+% Em documentos com duas colunas, floats normalmente são colocados como
+% parte de uma das colunas. No entanto, é possível usar "\begin{figure*}"
+% ou "\begin{table*}" para criar floats que ocupam as duas colunas. Floats
+% "duplos" desse tipo têm algumas limitações:
+%
+% 1. Mesmo que haja espaço disponível na página atual, eles são sempre
+%    inseridos na página seguinte ao lugar em que foram definidos (então
+%    é comum defini-los antes do lugar "certo" para compensar isso)
+%
+% 2. Eles só podem aparecer no topo da página ou em uma página de floats,
+%    ou seja, nunca "here" nem no pé da página.
+%
+% 3. Em alguns casos, eles podem aparecer fora da ordem em relação aos
+%    demais floats do mesmo tipo (o que não acontece com floats "normais")
+%
+% Esta package:
+%
+% 1. Soluciona parcialmente o primeiro problema: floats "duplos" podem
+%    aparecer na página em que são definidos se sua definição está contida
+%    no texto da coluna da esquerda;
+%
+% 2. Soluciona o segundo problema: floats "duplos" podem aparecer tanto no
+%    topo quanto no pé da página. Observe que eles *não* podem aparecer
+%    "here" porque isso não faz sentido: a figura interromperia o fluxo
+%    do texto da "outra" coluna.
+%
+% 3. Soluciona o terceiro problema.
+%
+\usepackage{stfloats}
 
 % Por padrão, LaTeX prefere colocar floats no topo da página que
 % onde eles foram definidos; vamos mudar isso. Este comando depende
