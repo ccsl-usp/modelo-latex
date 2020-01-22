@@ -28,33 +28,12 @@
 % padrão. Ela não se adequa ao padrão do IME, então não vamos usar \maketitle.
 % O IME também pede páginas de rosto com formato mais ou menos específico.
 % Então, vamos criar novos comandos: "\capaime" e "\pagrostoime", além dos
-% ambientes para a página de dedicatória e resumo.
+% ambientes para a página de resumo.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% RESUMO E DEDICATÓRIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RESUMO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% A dedicatória vai em uma página separada, sem numeração,
-% com o texto alinhado à direita e margens esquerda e
-% superior muito grandes. Vamos fazer isso com uma minipage.
-\newenvironment{dedicatoria} {
-  \if@openright\cleardoublepage\else\clearpage\fi
-
-  \thispagestyle{empty}
-  \vspace*{140mm plus 0mm minus 100mm}
-  \noindent
-  \begin{FlushRight}
-     \begin{minipage}[b][100mm][b]{100mm}
-       \begin{FlushRight}
-         \itshape
-} {
-       \end{FlushRight}
-     \end{minipage}\hspace*{3em}
-  \end{FlushRight}
-  \vspace*{50mm plus 0mm minus 10mm}
-  \if@openright\cleardoublepage\else\clearpage\fi
-}
 
 % A página de resumo deve existir em português e inglês
 \NewDocumentEnvironment{resumo}{m} {
@@ -89,50 +68,6 @@
   }
 
     \endlist
-}
-
-% O formato padrão do pacote epigraph é bem feinho...
-% Outra opção para epígrafes é o pacote quotchap
-\usepackage{epigraph}
-
-\setlength\epigraphwidth{.85\textwidth}
-
-% Sem linha entre o texto e o autor
-\setlength{\epigraphrule}{0pt}
-
-% Ambiente auxiliar para colocar margem à direita da epígrafe
-% (como sempre, o modo mais simples de mudar as margens de um
-% pagrágrafo é fazer de conta que é uma lista)
-\newenvironment{epShiftLeft}
-  {
-    \par\list{}
-      {
-        \leftmargin 0pt
-        \labelwidth 0pt
-        \labelsep 0pt
-        \itemsep 0pt
-        \topsep 0pt
-	\partopsep 0pt
-        \rightmargin 2em
-      }
-    \item[]\FlushRight
-  }
-  {
-    \endlist
-    % O espaço padrão que epigraph coloca entre a citação
-    % e o autor é muito pequeno; vamos aumentar um pouco
-    \vspace*{.3\baselineskip}
-  }
-
-\renewcommand\textflush{epShiftLeft}
-\renewcommand\sourceflush{epShiftLeft}
-
-\newcommand{\epigrafe}[2] {%
-  \ifthenelse{\equal{}{#2}}{
-    \epigraph{\itshape #1}{}
-  }{
-    \epigraph{\itshape #1}{--- #2}
-  }
 }
 
 
