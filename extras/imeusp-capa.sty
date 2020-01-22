@@ -94,12 +94,44 @@
 % O formato padrão do pacote epigraph é bem feinho...
 % Outra opção para epígrafes é o pacote quotchap
 \usepackage{epigraph}
+
+\setlength\epigraphwidth{.85\textwidth}
+
+% Sem linha entre o texto e o autor
+\setlength{\epigraphrule}{0pt}
+
+% Ambiente auxiliar para colocar margem à direita da epígrafe
+% (como sempre, o modo mais simples de mudar as margens de um
+% pagrágrafo é fazer de conta que é uma lista)
+\newenvironment{epShiftLeft}
+  {
+    \par\list{}
+      {
+        \leftmargin 0pt
+        \labelwidth 0pt
+        \labelsep 0pt
+        \itemsep 0pt
+        \topsep 0pt
+	\partopsep 0pt
+        \rightmargin 2em
+      }
+    \item[]\FlushRight
+  }
+  {
+    \endlist
+    % O espaço padrão que epigraph coloca entre a citação
+    % e o autor é muito pequeno; vamos aumentar um pouco
+    \vspace*{.3\baselineskip}
+  }
+
+\renewcommand\textflush{epShiftLeft}
+\renewcommand\sourceflush{epShiftLeft}
+
 \newcommand{\epigrafe}[2] {%
-  \setlength{\epigraphrule}{0pt}
   \ifthenelse{\equal{}{#2}}{
-    \epigraph{\itshape\RaggedLeft #1}{}
+    \epigraph{\itshape #1}{}
   }{
-    \epigraph{\itshape\RaggedLeft #1}{--- #2}
+    \epigraph{\itshape #1}{--- #2}
   }
 }
 
