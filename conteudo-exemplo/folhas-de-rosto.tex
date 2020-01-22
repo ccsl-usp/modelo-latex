@@ -6,20 +6,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS DA TESE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define o texto da capa e da referência que vai na página do resumo;
-% "masc" ou "fem" definem se serão usadas palavras no masculino ou feminino
-% (Mestre/Mestra, Doutor/Doutora, candidato/candidata). O segundo parâmetro
-% é opcional e determina que se trata de exame de qualificação.
-\mestrado[fem]
-%\mestrado[fem][quali]
-%\doutorado[masc]
-%\doutorado[masc][quali]
-%\tcc[masc]
+% O título (\title) e o autor (\author) do trabalho são definidos no arquivo
+% tese.tex, porque têm significado "especial" para o LaTeX; em particular,
+% eles são gravados nos metadados do arquivo pdf final.
 
-% Se "\title" está em inglês, você pode definir o título em português aqui
+% Se "\title" está em inglês, você pode definir o título em português aqui;
+% caso contrário, remova
 \tituloport{Título do trabalho}
 
-% Se "\title" está em português, você pode definir o título em inglês aqui
+% Se "\title" está em português, você pode definir o título em inglês aqui;
+% caso contrário, remova
 \tituloeng{Title of the document}
 
 % Se o trabalho não tiver subtítulo, basta remover isto.
@@ -38,6 +34,7 @@
 \coorientador[masc]{Prof. Dr. Ciclano}
 
 % Se isto não for definido, "\coorientador" é utilizado no lugar
+% (isto é útil quando se trata de "Profª. Drª.", por exemplo)
 %\coorientadoreng{Prof. Dr. Ciclano}
 
 \programa{Ciência da Computação}
@@ -65,18 +62,18 @@ financeiro da XXXX}
 
 \banca{
   \begin{itemize}
-    \item Profª. Drª. Nome Completo (orientadora) - IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo - IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo - IMPA [sem ponto final]
+    \item Profª. Drª. Nome Completo (orientadora) -- IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo -- IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo -- IMPA [sem ponto final]
   \end{itemize}
 }
 
 % Se isto não for definido, "\banca" é utilizado no lugar
 \bancaeng{
   \begin{itemize}
-    \item Prof. Dr. Nome Completo (advisor) - IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo - IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo - IMPA [sem ponto final]
+    \item Prof. Dr. Nome Completo (advisor) -- IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo -- IME-USP [sem ponto final]
+    \item Prof. Dr. Nome Completo -- IMPA [sem ponto final]
   \end{itemize}
 }
 
@@ -84,6 +81,18 @@ financeiro da XXXX}
 \palavraschave{Palavra-chave1. Palavra-chave2. Palavra-chave3.}
 
 \keywords{Keyword1. Keyword2. Keyword3.}
+
+% Define os textos padrão ("mestrado" X "doutorado", "tese" X
+% "dissertação" etc.) da capa e da referência que vai na página
+% do resumo; "masc" ou "fem" definem se serão usadas palavras
+% no masculino ou feminino (Mestre/Mestra, Doutor/Doutora,
+% candidato/candidata). O segundo parâmetro é opcional e
+% determina que se trata de exame de qualificação.
+\mestrado[fem]
+%\mestrado[fem][quali]
+%\doutorado[masc]
+%\doutorado[masc][quali]
+%\tcc[masc]
 
 % Se quiser estabelecer regras diferentes, converse com seu
 % orientador
