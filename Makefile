@@ -290,7 +290,7 @@ endif
 # a dependencia aqui nao causa erros, mas em alguns casos faz make
 # executar iteracoes desnecessarias.
 %.idx-current %.bcf-current:
-	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteracao auxiliar $(MAKELEVEL))..."
+	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteracao auxiliar)..."
 	@$(RUN_LATEX)
 	@$(REFRESH_TEMP_FILES)
 	@echo
