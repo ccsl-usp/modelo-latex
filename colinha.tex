@@ -1,0 +1,437 @@
+% Arquivo LaTeX de exemplo de artigo
+%
+% Criação: Jesús P. Mena-Chalco
+% Revisão: Fabio Kon e Paulo Feofiloff
+% Adaptação para UTF8, biblatex e outras melhorias: Nelson Lago
+%
+% Except where otherwise indicated, these files are distributed under
+% the MIT Licence. The example text, which includes the tutorial and
+% examples as well as the explanatory comments in the source, are
+% available under the Creative Commons Attribution International
+% Licence, v4.0 (CC-BY 4.0) - https://creativecommons.org/licenses/by/4.0/
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREÂMBULO LaTeX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Você pode adaptar este modelo mudando a classe para a de algum periódico
+% específico. Para isso, no entanto, você provavelmente vai ter que desabilitar
+% diversas coisas definidas aqui em prol do padrão do periódico, como o formato
+% da bibliografia, fontes, tamanho do papel e margens etc. Em geral, se o
+% periódico fornece um modelo, é melhor usá-lo.
+%
+% A opção frente-e-verso aqui significa, por exemplo, que as margens das páginas
+% ímpares e pares são diferentes ou que números de página aparecem à direita
+% ou à esquerda alternadamente. Nada impede que você crie um documento "só
+% frente" e, ao imprimir, faça a impressão frente-e-verso.
+%
+% Aqui também definimos a língua padrão do documento e línguas adicionais. A
+% classe em si não usa essa informação mas, passando as opções de língua aqui,
+% elas são repassadas para todas as packages, e diversas packages mudam
+% seu comportamento em função da língua (em especial, babel/polyglossia).
+% A última língua da lista é a língua padrão do documento.
+%\documentclass[12pt,twoside,brazil,english]{article}
+\documentclass[11pt,twoside,english,brazil]{article}
+
+% Com papel tamanho A4, queremos estas margens:
+%
+% topo: 32mm
+% pé: 28mm
+% esquerda/interna: 24mm
+% direita/externa: 34mm
+%
+% Para isso, definimos os tamanhos do texto, do cabeçalho e do rodapé,
+% e deixamos a package geometry calcular os demais valores. Assim,
+% obtemos o mesmo resultado impresso, mas com margens diferentes, se
+% o tamanho do papel for diferente.
+
+\usepackage[a4paper,landscape]{geometry}
+
+\geometry{
+  textheight=192mm,
+  textwidth=277mm,
+  vmarginratio=1:1,
+  hmarginratio=1:1,
+  % Com geometry, esta medida não é tão relevante; basta garantir que ela
+  % seja menor que "top" e que o texto do cabeçalho caiba nela.
+  headheight=25.4mm,
+  % distância entre o início do texto principal e a base do cabeçalho;
+  % ou seja, o cabeçalho "invade" a margem superior nessa medida. Essa
+  % é a medida que determina a posição do cabeçalho
+  headsep=11mm,
+  footskip=10mm,
+  marginpar=20mm,
+  marginparsep=5mm,
+}
+
+% Vários pacotes e opções de configuração genéricos; para personalizar o
+% resultado, modifique estes arquivos.
+\input{extras/basics}
+\input{extras/fonts}
+\input{extras/floats}
+\input{extras/thesis-formatting}
+\input{extras/index}
+\input{extras/hyperlinks}
+\input{extras/source-code}
+\input{extras/utils}
+
+% Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
+% completo em \includegraphics (e nem a extensão).
+\graphicspath{{figuras/},{logos/}}
+
+% Comandos rápidos para mudar de língua:
+% \en -> muda para o inglês
+% \br -> muda para o português
+% \texten{blah} -> o texto "blah" é em inglês
+% \textbr{blah} -> o texto "blah" é em português
+\babeltags{br = brazil, en = english}
+
+% Espaçamento simples
+\singlespacing
+
+\setlist[description]{itemsep=0pt,parsep=1pt,leftmargin=0pt}
+
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+\usepackage{titlesec}
+
+\titleformat{\section}[hang]
+  {\scshape\bfseries}
+  {\thesection}
+  {0.7em}
+  {}
+
+\titlespacing{\section}
+  {0pt}
+  {1.5\baselineskip plus 1.5\baselineskip minus 1\baselineskip}
+  {.5\baselineskip plus .5\baselineskip minus .2\baselineskip}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O estilo de citação e de lista de referências usado por biblatex
+\PassOptionsToPackage{
+  % Estilo similar a plainnat, uma variante de autor-data
+  style=extras/plainnat-ime,
+  % Estilo similar a alpha
+  %style=alphabetic,
+  % O estilo numérico é comum em artigos
+  %style=numeric,
+  % autor-data "padrão" do biblatex
+  %style=authoryear-comp,
+  % APA, uma variante de autor-data muito usada
+  %style=apa,
+  % Um estilo que busca ser compatível com a ABNT:
+  %style=abnt,
+  %style=bwl-FU,
+}{biblatex}
+
+% Para personalizar outros aspectos da bibliografia e citações ou
+% para utilizar bibtex, modifique este arquivo.
+\input{extras/bibconfig}
+
+% A configuração do arquivo acima foi definida para teses/dissertações;
+% para artigos, vamos mudar esta opção.
+\ExecuteBibliographyOptions{
+  backref=false,
+}
+
+% O arquivo com os dados bibliográficos; você pode usar este comando
+% mais de uma vez para acrescentar múltiplos arquivos
+\addbibresource{bibliografia.bib}
+
+% Este comando permite acrescentar itens à lista de referências sem incluir
+% uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
+%\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
+% Com este comando, todos os itens do arquivo .bib são incluídos na lista
+% de referências
+%\nocite{*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INÍCIO DO CONTEÚDO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{empty}
+
+\begin{document}
+
+{
+  \centering
+  \Large\bfseries
+
+  \rule[.6ex]{.2\textwidth}{1pt}
+  \quad\space Colinha essencial de \LaTeX \quad\space
+  \rule[.6ex]{.2\textwidth}{1pt}\par
+}
+
+\setlength{\columnsep}{30pt}
+\setlength{\columnseprule}{.2pt}
+\begin{multicols}{3}
+
+\section*{Capa/título}
+
+\textbackslash{}title\{O título\}
+
+\textbackslash{}author\{O autor\}
+
+\textbackslash{}maketitle (gera a página de título)
+
+
+\section*{Divisões}
+
+\textbackslash{}part\{nome\}
+
+\textbackslash{}chapter\{nome\}
+
+\textbackslash{}section\{nome\}
+
+\textbackslash{}subsection\{nome\}
+
+\textbackslash{}subsubsection\{nome\}
+
+\textbackslash{}paragraph\{nome\}
+
+\textbackslash{}subparagraph\{nome\}
+
+\textbackslash{}section*\{\},
+\textbackslash{}chapter*\{\} etc.
+(elimina numeração)
+
+
+\vspace{\baselineskip}
+
+
+\textbackslash{}footnote\{texto da nota\}
+
+
+\section*{Modo matemático}
+
+\begin{description}
+  \item[na mesma linha:] \$ E=mc\^{}2 \$
+  \item[como parágrafo:] \textbackslash[ E=mc\^{}2 \textbackslash]
+\end{description}
+
+
+\vspace{\baselineskip}
+
+
+\$ \textbackslash{}mathbb\{R\} \$\enspace $\rightarrow \mathbb{R}$
+
+\$ \textbackslash{}text\{texto normal\} \$\enspace $\rightarrow \text{texto normal}$
+
+\$ \textbackslash{}mathit\{nomes\_longos\} \$\enspace $\rightarrow \mathit{nomes\_longos}$
+
+
+\section*{Floats}
+
+\textbackslash{}begin\{figure\}
+
+\quad\quad\textbackslash{}centering
+
+\quad\quad\textbackslash{}includegraphics[width=\textbackslash{}textwidth]\{arquivo\}
+
+\quad\quad\textbackslash{}caption\{Legenda\textbackslash{}label\{nomesimpatico\}\}
+
+\textbackslash{}end\{figure\}
+
+
+\vspace{\baselineskip}
+
+
+\textbackslash{}begin\{table\} (veja \url{www.tablesgenerator.com})
+
+\quad\quad\textbackslash{}centering
+
+\quad\quad\textbackslash{}begin\{tabular\}
+
+\quad\quad\quad\ldots
+
+\quad\quad\textbackslash{}end\{tabular\}
+
+\quad\quad\textbackslash{}caption\{Legenda\textbackslash{}label\{nomesimpatico\}\}
+
+\textbackslash{}end\{table\}
+
+\columnbreak
+
+
+\section*{Estrutura}
+
+\textbackslash{}begin\{itemize\} (ou \textbackslash{}begin\{enumerate\})
+
+\quad\quad\textbackslash{}item Algum texto\ldots
+
+\textbackslash{}end\{itemize\} (ou \textbackslash{}end\{enumerate\})
+
+
+\vspace{\baselineskip}
+
+
+\textbackslash{}begin\{description\}
+
+\quad\quad\textbackslash{}item[termo] descrição ou discussão
+
+\textbackslash{}end\{description\}
+
+
+\vspace{\baselineskip}
+
+
+\textbackslash{}begin\{verse\} (ver também a \textit{package} \textsf{verse})
+
+\quad\quad verso\ldots\textbackslash\textbackslash
+
+\quad\quad verso\ldots\textbackslash\textbackslash
+
+\textbackslash{}end\{verse\}
+
+
+\vspace{\baselineskip}
+
+
+\textbackslash{}begin\{quotation\}
+
+\quad\quad citação\ldots
+
+\textbackslash{}end\{quotation\}
+
+
+\vspace{\baselineskip}
+
+
+\begin{description}
+  \item[URLs:] \textbackslash{}url\{endereço\}
+\end{description}
+
+\section*{Refs cruzadas/citações}
+
+\textbackslash{}label\{nomesimpatico\}
+
+\textbackslash{}ref\{nomesimpatico\},
+\textbackslash{}pageref\{nomesimpatico\}
+
+
+\vspace{\baselineskip}
+
+
+\begin{description}
+\item[citação simples:]~\vspace{2pt}\newline
+    \null\quad\quad\textbackslash{}cite[p.~25]\{fulano\} $\Rightarrow$ Fulano de Tal, 1987, p.~25\vspace{6pt}
+
+  \item[citação no texto:]~\vspace{2pt}\newline
+    \null\quad\quad\textbackslash{}cite\textbf{t}[p.~25]\{fulano\} $\Rightarrow$ Fulano de Tal (1987, p.~25)\vspace{6pt}
+
+  \item[citação entre parênteses:]~\vspace{2pt}\newline
+    \null\quad\quad\textbackslash{}cite\textbf{p}[p.~25]\{fulano\} $\Rightarrow$ (Fulano de Tal, 1987, p.~25)
+\end{description}
+
+\section*{Colunas}
+
+\textbackslash{}begin\{multicols\}\{2\} (\textit{package} \textsf{multicols})
+
+\quad\quad texto em colunas\dots
+
+\textbackslash{}end\{multicols\}
+
+\columnbreak
+
+\section*{Línguas}
+
+\textbackslash{}br, \textbackslash{}en
+
+\textbackslash{}textbr\{texto\}, \textbackslash{}texten\{texto\}
+
+(define línguas em \textsf{\textbackslash{}documentclass} e \textsf{\textbackslash{}babeltags})
+
+\section*{Caracteres especiais}
+
+\begin{description}
+  \item[elipse:] \textbackslash{}ldots
+  \item[espaço não-separável:] \textasciitilde{} (não quebra a linha)
+  \item[espaço aumentado:] \textbackslash{}enspace ou \textbackslash{}quad
+  \item[aspas:] \texttt{\`{}\`{}}texto\texttt{\textquotesingle\textquotesingle},
+                \texttt{\`{}}texto\texttt{\textquotesingle}
+  %\item[aspas:] \texttt{\textasciigrave\textasciigrave}texto\texttt{\textquotesingle\textquotesingle},
+  %              \texttt{\textasciigrave}texto\texttt{\textquotesingle}
+  \item[hífen, traço, travessão:] -\quad -\hspace{.7pt}-\quad -\hspace{.7pt}-\hspace{.7pt}-
+\end{description}
+
+
+\vspace{\baselineskip}
+
+
+\begin{description}
+  \item[não podem ser digitados diretamente:]~\vspace{2pt}\newline
+    \null\quad\quad\textbackslash{}\#
+    \quad\textbackslash{}\$
+    \quad\textbackslash{}\%
+    \quad\textbackslash{}\^{}\{\}
+    \quad\textbackslash{}\~{}\{\}
+    \vspace{2pt}\newline
+    \null\quad\quad\textbackslash{}\&
+    \quad\textbackslash{}\_
+    \quad\textbackslash{}\{
+    \quad\textbackslash{}\}
+    \quad\textbackslash{}textbackslash\{\}
+\end{description}
+
+
+\vspace{\baselineskip}
+
+
+\begin{description}
+  \item[lista de símbolos:] \textsf{texdoc symbols-a4}
+  \item[busca símbolos:] \url{detexify.kirelabs.org/classify.html}
+\end{description}
+
+\section*{Formatação manual}
+
+\textbackslash{}emph\{\emph{enfatizado}\} (em geral, \textit{itálico})
+
+\textbackslash{}textit\{\textit{itálico}\}
+
+\textbackslash{}textbf\{\textbf{negrito}\}
+
+\textbackslash{}textsc\{\textsc{Versalete}\}
+
+\textbackslash{}textsf\{\textsf{Fonte sem serifa}\}
+
+\textbackslash{}texttt\{\texttt{Fonte terminal}\}
+
+\textbackslash{}- (sugere hifenização)
+
+\textbackslash{}linebreak (sugere divisão)
+
+\textbackslash{}pagebreak (sugere divisão)
+
+\textbackslash{}newline ou \textbackslash\textbackslash{} (força quebra)
+
+\textbackslash{}newpage (força quebra)
+
+\textbackslash{}noindent (elimina indentação do parágrafo)
+
+\textbackslash{}begin\{center\}
+
+\quad\quad texto centralizado\dots
+
+\textbackslash{}end\{center\}
+
+\end{multicols}
+
+%%%%%%%%% Bibliografia com natbib (preterido): %%%%%%%%%
+%\bibliographystyle{extras/alpha-ime}% citação bibliográfica alpha
+%\bibliographystyle{extras/plainnat-ime} % citação bibliográfica textual
+%\bibliography{bibliografia}  % associado ao arquivo: 'bibliografia.bib'
+
+%%%%%%%% Bibliografia com biblatex (preferido): %%%%%%%%
+
+\printbibliography[
+  title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
+  %title=\bibname\label{bibliografia}, % "Bibliografia"
+]
+
+\end{document}
