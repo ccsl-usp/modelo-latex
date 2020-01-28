@@ -105,7 +105,7 @@
 % pagrágrafo é fazer de conta que é uma lista)
 \newenvironment{epShiftLeft}
   {
-    \par\list{}
+    \par\begin{list}{}
       {
         \leftmargin 0pt
         \labelwidth 0pt
@@ -115,10 +115,10 @@
 	\partopsep 0pt
         \rightmargin 2em
       }
-    \item[]\FlushRight
+    \item\FlushRight
   }
   {
-    \endlist
+    \end{list}
     % O espaço padrão que epigraph coloca entre a citação
     % e o autor é muito pequeno; vamos aumentar um pouco
     \vspace*{.3\baselineskip}
