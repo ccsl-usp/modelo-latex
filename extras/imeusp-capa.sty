@@ -39,35 +39,47 @@
 \NewDocumentEnvironment{resumo}{m} {
   \if@openright\cleardoublepage\else\clearpage\fi
   \thispagestyle{empty}
-  \vspace*{2em}
 
-  \ifstrequal{port}{#1}{
-    \begin{center}\Large\textbf{Resumo}\end{center}
-  }{
-    \begin{center}\Large\textbf{Abstract}\end{center}
-  }
+    \begin{center}
+      \Large\bfseries
+      \ifstrequal{port}{#1}{Resumo}{Abstract}
+    \end{center}
 
-  \vspace*{2em}
+  \vspace*{2em plus 1em minus 1em}
 
   \footnotesize
 
   % Esse é o jeito mais simples de mudar as margens de um parágrafo:
   % faz de conta que é uma lista
-  \list{}{\rightmargin 3em \leftmargin 3em}
-    \item[]
-      \@refdocumento[#1]
+  \begin{list}{}{\rightmargin 4em \leftmargin 4em}
+    \item\@refdocumento[#1]
+  \end{list}
 
-  \vspace*{3em plus 3em minus 1.5em}
+  \vspace*{1em plus 1em minus 0em}
 } {
-  \vspace*{2em plus 1em minus 0em}
+  % Impede uma quebra de página entre esta linha e a próxima, ou seja,
+  % entre a última linha do resumo/abstract e as palavras-chave.
+  \@afterheading
 
-  \ifstrequal{port}{#1}{%
-    \textbf{Palavras-chave:}\hspace{1em}\@palavraschave%
-  }{%
-    \textbf{Keywords:}\hspace{1em}\@keywords%
-  }
+  \vspace*{1em plus 1em minus .5em}
 
-    \endlist
+  \begingroup
+
+      \ifstrequal{port}{#1}
+        {\newcommand{\kwname}{Palavras-chave}}
+        {\newcommand{\kwname}{Keywords}}
+
+      \setlength{\leftmargini}{\widthof{\textbf{\kwname:}\quad}}
+      \setlength{\labelwidth}{\widthof{\textbf{\kwname:}}}
+      \setlength{\labelsep}{\widthof{\quad}}
+
+      \begin{description}
+          \item[\kwname:]\ifstrequal{port}{#1}
+                         {\@palavraschave}
+                         {\@keywords}
+      \end{description}
+
+  \endgroup
 }
 
 
