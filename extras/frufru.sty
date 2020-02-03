@@ -1,0 +1,96 @@
+% Author: Nelson Lago
+% This file is distributed under the MIT Licence
+
+\ProvidesPackage{frufru}[2020/02/03 1.1 Fancy separator]
+
+\RequirePackage{fourier-orns}
+
+% I bet some of these "nopagebreaks" are not needed :)
+
+% Paragraphs do not *end* with a \parskip after themselves, they
+% *begin* with a \parskip before themselves. This means that the
+% \parskip length is determined by the font size of the paragraph
+% that *follows* it, not the one that precedes it.
+%
+% We want a separator with the same space above and below it.
+% However, because of \footnotesize, \baselineskip for the
+% separator is smaller and, as a consequence, so is \parskip.
+% We correct this by:
+%
+% 1. Subtracting \parskip before and after the separator, taking
+%    into account the font size (this also means that the spacing
+%    does not change if we are using \doublespacing);
+%
+% 2. Subtracting the separator's \baselineskip before it and adding
+%    the \baselineskip from the surrounding text instead; this makes
+%    the separator line take the same vertical space as surrounding
+%    lines.
+%
+% 3. Adding the same amount of extra space before and after the
+%    separator.
+%
+% While the spacing between lines will be constant, the font size
+% of the separator is smaller. As a consequence, the top of the
+% characters in this line will appear more distant from the
+% preceding line than the rest. It is very hard to completely
+% address this difference, because different lines may have
+% different depths. An approximate correction using struts does
+% not differ much from what we have here, and this difference
+% is subtle enough to be ignored.
+%
+% We could also have used fontsize/selectfont to change the font
+% without changing \baselineskip.
+
+\newcommand{\frufru}{
+
+  % Leave horizontal mode.
+  \nopagebreak[4]\par
+
+  \nopagebreak[4]
+  \vskip 22pt plus 7pt minus 5pt
+
+  % We will ignore the "real" baselineskip of the next line
+  % and use this (the surrounding text's) instead.
+  \nopagebreak[4]
+  \vskip \baselineskip
+
+  {
+      \centering\footnotesize
+
+      % Probably unnecessary, but might prevent breaks
+      % when the new paragraph inserts indentation or
+      % some other spacing (active only for the separator
+      % paragraph itself).
+      \everypar{\nopagebreak[4]}
+
+      % Cancel the "real" baselineskip; we will use the
+      % value of the surrounding text instead, added above.
+      \nopagebreak[4]
+      \vskip -\baselineskip
+
+      % Cancel parskip before.
+      \nopagebreak[4]
+      \vskip -\parskip
+
+      \nopagebreak[4]
+
+      \raisebox{.7mm}{\rule{.1\textwidth}{0.5pt}}%
+      \enspace\,%
+      \decofourleft\decotwo\decofourright%
+      \enspace\,%
+      \raisebox{.7mm}{\rule{.1\textwidth}{0.5pt}}%
+      \par
+  }
+
+  % Cancel parskip after.
+  \nopagebreak[4]
+  \vskip -\parskip
+
+  \nopagebreak[4]
+  \vskip 22pt plus 7pt minus 5pt
+
+  % Breaking after the separator is acceptable as a last resort.
+  \nopagebreak[3]
+}
+
+\endinput
