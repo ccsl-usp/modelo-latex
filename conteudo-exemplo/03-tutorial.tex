@@ -74,8 +74,6 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 
 \section{Visão Geral}
 
-\enlargethispage{-.5\baselineskip}
-
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
 mas é comum usar a extensão ``.tex'' ao invés de ``.txt'') e processa esse
@@ -116,16 +114,15 @@ Dado que configurar o preâmbulo é um tanto complexo e que mesmo no corpo
 do texto às vezes há comandos especiais (para a geração da bibliografia
 ou tabelas, por exemplo),
 usar algum documento existente como base para criar seu texto em geral é
-uma boa ideia; o IME/USP oferece um modelo adequado para teses e
-dissertações (\url{gitlab.com/ccsl-usp/modelo-latex}) que pode ser
-adaptado para outros usos e outras instituições. Há também um modelo
-(\url{www.abntex.net.br}) que procura seguir as normas da ABNT para
-documentos científicos.
+uma boa ideia. O IME/USP oferece um conjunto de modelos adequados para
+teses/dissertações, artigos, apresentações e pôsteres (\url{gitlab.com/ccsl-usp/modelo-latex})
+que pode ser adaptado para outros usos e outras instituições. Há também uma
+família de modelos (\url{www.abntex.net.br}) que procura seguir as normas
+da ABNT para diversos tipos de documentos científicos, e algumas publicações
+científicas fornecem modelos de acordo com suas diretrizes.
 
 \section{Estrutura de um Documento \LaTeX{}}
 \label{sec:basico}
-
-\enlargethispage{-.5\baselineskip}
 
 O preâmbulo \LaTeX{} começa com a definição da \emph{classe} a ser utilizada,
 que determina boa parte da configuração do documento. As principais classes
@@ -205,41 +202,25 @@ no sumário (nem considerado na contagem de capítulos, seções etc.).
 \enlargethispage{-.5\baselineskip}
 
 Depois de escrever o arquivo \cmd{.tex}, é preciso \emph{compilá-lo}, ou
-seja, processá-lo para gerar o pdf desejado. Isso é feito com o comando
-\cmd{pdflatex nome-do-arquivo.tex} (veja a Seção~\ref{sec:versions}).
-No entanto, embora apenas executar \cmd{pdflatex} possa ser suficiente
-para documentos simples, em geral documentos mais complexos envolvem mais
-passos.
-
-\LaTeX{} numera capítulos, seções, figuras etc. automaticamente
-e pode fazer referências a seções ou figuras que aparecem tanto antes
-quanto depois da própria referência. Para isso funcionar, o trabalho de
-geração do arquivo final é dividido em duas partes: primeiro, a diagramação
-das páginas e numeração dos capítulos, seções, figuras etc.; segundo, a
-inserção o texto das referências (``página X'', ``Seção Y'' etc.).
-
-A princípio, isso poderia ser feito automaticamente, sem intervenção do
-usuário; \LaTeX{}, no entanto, não funciona assim. Ao invés disso, é
-preciso executar o comando \cmd{pdflatex} duas vezes seguidas: na
-primeira ele gera um PDF ``defeituoso'' (sem as referências corretas) e
-um arquivo auxiliar com as informações sobre a localização de cada
-referência e, na segunda, cria o PDF ``correto''.
-
-Essas múltiplas execuções são necessárias também para a geração automática
-da bibliografia e do índice remissivo e, na prática, costuma ser necessário
-rodar o comando no mínimo três vezes. Como a geração da bibliografia e do
-índice remissivo dependem também de programas auxiliares, a produção do
-documento final acaba envolvendo várias etapas e, por isso, é comum utilizar
-alguma ferramenta para automatizar esse processo. Existem diversas opções,
-mas a mais comum é o \cmd{latexmk}, que é capaz de identificar
-automaticamente os passos necessários para a geração do documento, executando
-\cmd{pdflatex} e demais programas na ordem correta quantas vezes forem
+seja, processá-lo para gerar o pdf desejado. Isso envolve executar,
+além do próprio \LaTeX{} (veja a Seção~\ref{sec:versions}), alguns
+programas auxiliares (em geral, \cmd{biber} ou \cmd{bibtex} e
+\cmd{makeindex}). Nesse processo, \LaTeX{} quase sempre precisa ser
+executado três ou mais vezes antes de gerar o pdf final\footnote{A cada
+vez, ele gera uma nova versão intermediária do arquivo pdf, mas essas
+versões têm defeitos, como citações e referências cruzadas incorretas
+ou sumário inexistente.}. Por conta dessa complexidade, é comum utilizar
+alguma ferramenta para automatizar o processamento. Existem diversas
+opções, mas a mais comum é o \cmd{latexmk}, que é capaz de identificar
+automaticamente os passos necessários para a geração do documento,
+executando os programas na ordem correta quantas vezes forem
 necessárias\footnote{É possível personalizar o comportamento de \cmd{latexmk}
-com o arquivo de configuração \cmd{latexmkrc}.}. Assim, acostume-se a
-compilar o documento sempre com \cmd{latexmk nome-do-arquivo.tex} ao invés
-de \cmd{pdflatex nome-do-arquivo.tex}. Note que editores especializados em
-\LaTeX{} costumam ter uma opção de menu para a compilação do documento;
-muitas vezes essa opção simplesmente aciona \cmd{latexmk}.\looseness=-1
+com o arquivo de configuração \cmd{latexmkrc}.}. Assim, embora seja possível
+gerar o pdf executando apenas \cmd{pdflatex nome-do-arquivo.tex}, acostume-se
+a compilar o documento sempre com \cmd{latexmk nome-do-arquivo.tex}. Note
+que editores especializados em \LaTeX{} costumam ter uma opção de menu para
+a compilação do documento; muitas vezes essa opção simplesmente aciona
+\cmd{latexmk}.
 
 \section{Mais sobre Estrutura}
 
@@ -667,6 +648,12 @@ indesejáveis:
     Elas funcionam muito bem para a geração de
     páginas web, mas \LaTeX{} oferece mais recursos e geralmente produz
     resultados impressos melhores.
+
+    \item \LaTeX{} gera muitas mensagens pouco importantes durante
+    o processamento do documento, o que dificulta a identificação
+    de problemas. Além disso, quando ocorrem erros durante esse
+    processamento, as mensagens explicativas de \LaTeX{} muitas vezes
+    são confusas ou, pior, não indicam o problema real que causou a falha.
 
     \item \LaTeX{} procura ser uma linguagem \emph{declarativa}, ou seja,
     os comandos buscam expressar o que se deseja e não como fazer algo

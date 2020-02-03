@@ -17,17 +17,17 @@ O preâmbulo \LaTeX{} deste modelo é muito longo; as partes que normalmente nã
 \item \textbf{As figuras e tabelas são colocadas em lugares ruins.}\\
 Veja a discussão a respeito na Seção~\ref{sec:limitations}.
 
-\item \textbf{Estou tendo problemas com caracteres acentuados!}\\
+\item \textbf{Estou tendo problemas com caracteres acentuados.}\\
 Veja a discussão a respeito na Seção~\ref{sec:limitations}.
 
 \item \textbf{Existe algo específico para citações de páginas web?}\\
 Biblatex define o tipo ``online'', que deve ser usado para materiais com título, autor etc., como uma postagem ou comentário em um blog, um gráfico ou mesmo uma mensagem de email para uma lista de discussão. Bibtex\index{bibtex}, por padrão, não tem um tipo específico para isso; com ele, normalmente usa-se o campo ``howpublished'' para especificar que se trata de um recurso \textit{online}. Se o que você está citando não é algo determinado com título, autor etc. mas sim um sítio (como uma empresa ou um produto), pode ser mais adequado colocar a referência apenas como nota de rodapé e não na lista de referências; nesses casos, algumas pessoas acrescentam uma segunda lista de referências especificamente para recursos \textit{online} (biblatex\index{biblatex} permite criar múltiplas bibliografias). Já artigos disponíveis \textit{online} mas que fazem parte de uma publicação de formato tradicional (mesmo que apenas \textit{online}), como os anais de um congresso, devem ser citados por seu tipo verdadeiro e apenas incluir o campo ``url'' (não é nem necessário usar o comando \textsf{\textbackslash{}url\{\}}), aceito por todos os tipos de documento do bibtex/biblatex.
 
-\item \textbf{Aparece uma folha em branco entre os capítulos}\\
+\item \textbf{Aparece uma folha em branco entre os capítulos.}\\
 Essa característica foi colocada propositalmente, dado que todo capítulo deve (ou deveria) começar em uma página de numeração ímpar (lado direito do documento). Se quiser mudar esse comportamento, acrescente ``openany'' como opção da classe, i.e., \textsf{\textbackslash{}documentclass[openany,\dots]\{book\}}.
 
 \item \textbf{É possível resumir o nome das seções/capítulos que aparece no topo das páginas e no sumário?}\\
-Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nas legendas (\textit{captions}\index{Legendas}) das figuras e tabelas, que muitas vezes são demasiadamente longos para a lista de figuras/tabelas.
+Sim, usando a sintaxe \textsf{\textbackslash{}section[mini-titulo]\{titulo enorme\}}. Isso é especialmente útil nas legendas (\textit{captions}\index{Legendas}) das figuras e tabelas, que muitas vezes são demasiadamente longas para a lista de figuras/tabelas.
 
 \item \textbf{Existe algum programa para gerenciar referências em formato bibtex?}\\
 Sim, há vários. Uma opção bem comum é o JabRef; outra é usar Zotero\index{Zotero} ou Mendeley\index{Mendeley} e exportar os dados deles no formato .bib.
