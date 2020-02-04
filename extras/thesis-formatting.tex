@@ -42,6 +42,50 @@
 % subseções ou subsubseções no sumário (nem nos cabeçalhos).
 \setcounter{tocdepth}{2}
 
+% Normalmente, o capítulo de introdução não deve ser numerado, mas
+% deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
+% para isso, então criamos aqui os comandos \unnumberedchapter,
+% \unnumberedsection e \unnumberedsubsection.
+\newcommand{\unnumberedchapter}[2][]{
+  \ifblank{#1}
+    {
+      \chapter*{#2}
+      \addcontentsline{toc}{chapter}{#2}
+      \chaptermark{#2}
+    }
+    {
+      \chapter*{#2}
+      \addcontentsline{toc}{chapter}{#1}
+      \chaptermark{#1}
+    }
+}
+
+\newcommand{\unnumberedsection}[2][]{
+  \ifblank{#1}
+    {
+      \section*{#2}
+      \addcontentsline{toc}{section}{#2}
+      \sectionmark{#2}
+    }
+    {
+      \section*{#2}
+      \addcontentsline{toc}{section}{#1}
+      \sectionmark{#1}
+    }
+}
+
+\newcommand{\unnumberedsubsection}[2][]{
+  \ifblank{#1}
+    {
+      \subsection*{#2}
+      \addcontentsline{toc}{subsection}{#2}
+    }
+    {
+      \subsection*{#2}
+      \addcontentsline{toc}{subsection}{#1}
+    }
+}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% ESPAÇAMENTO E ALINHAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%

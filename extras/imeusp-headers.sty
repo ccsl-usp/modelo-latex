@@ -1,7 +1,7 @@
 % Author: Nelson Lago
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{imeusp-headers}[2019/10/18 2.0 Running headers, IME/USP style]
+\ProvidesPackage{imeusp-headers}[2020/01/30 2.1 Running headers, IME/USP style]
 
 % Há duas packages para a configuração dos cabeçalhos/rodapés:
 % fancyhdr, a mais tradicional e mais usada, e titleps, que é
@@ -12,7 +12,18 @@
 % em migrar para ele. Observe que, nesse caso, o valor de
 % headsep de geometry deve ser mudado de 11mm para 12.5mm.
 
-\iftrue % implementação com fancyhdr
+\RequirePackage{etoolbox}
+
+\newbool{UseFancyhdr}
+\booltrue{UseFancyhdr}
+
+\DeclareOption{titleps}{
+    \boolfalse{UseFancyhdr}
+}
+
+\ProcessOptions
+
+\ifUseFancyhdr % implementação com fancyhdr
 
 \RequirePackage{fancyhdr}
 
@@ -122,6 +133,18 @@
   \formataCabecalhosDinamicos{}
 }
 
+% Formato para capítulos não-numerados mas que devem
+% aparecer no sumário (tipicamente, a introdução):
+\fancypagestyle{onlynames}{
+  % Só o nome do capítulo/seção, sem numeração
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markright{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
 \fancypagestyle{appendix}{
   \renewcommand{\chaptermark}[1]{%
     \markboth{%
@@ -165,16 +188,36 @@
 
 \else % implementação desabilitada com titleps
 
-\RequirePackage{etoolbox}
-
 % Se você está usando a package titlesec, ela deve ser carregada
 % *antes* desta package e deve incluir a opção pagestyles.
-
 \@ifpackageloaded{titlesec}
   {
       \@ifpackagewith{titlesec}{pagestyles}
-        {} % all set!
-        {\input{ttlps.def}} % pagestyles option missing, let's simulate it
+	  {} % all set!
+          { % pagestyles option missing
+
+            \PackageError{imeusp-headers}
+              {
+                \MessageBreak
+                \MessageBreak
+                \MessageBreak
+                Para usar esta package com a opcao\MessageBreak
+                titleps em conjunto com a package\MessageBreak
+                titlesec, titlesec deve ser carregada\MessageBreak
+                *antes* desta e deve incluir a opcao\MessageBreak
+                pagestyles\MessageBreak
+                \MessageBreak
+              }
+              {
+                \MessageBreak
+                Nao ha como continuar sem remover\MessageBreak
+                a opcao titleps desta package ou\MessageBreak
+                acrescentar a opcao pagestyles\MessageBreak
+                para titlesec\MessageBreak
+                \MessageBreak
+              }
+              \stop
+          }
   }
   {\RequirePackage{titleps}} % no titlesec loaded, use titleps
 
@@ -218,8 +261,10 @@
 % "Apêndice X" / "Anexo X"
 \newrobustcmd\IHapp{\MakeTextUppercase{\@chapapp\ \thechapter}}
 
-% "Bibliografia", "Índice Remissivo"
+% "Bibliografia", "Índice Remissivo" e
+% capítulos não-numerados (Introdução)
 \newrobustcmd\IHbarechap{\MakeTextUppercase{\chaptertitle}}
+\newrobustcmd\IHbaresect{\MakeTextUppercase{\sectiontitle}}
 
 %%%%% Formato dos cabeçalhos %%%%%
 
@@ -245,6 +290,17 @@
       [\IHpgnum][][]
       % odd-left odd-center odd-right
       {}{}{\IHpgnum}
+}
+
+% Formato para capítulos não-numerados mas que devem
+% aparecer no sumário (tipicamente, a introdução):
+% Só o nome do capítulo/seção, sem numeração.
+\newpagestyle{onlynames}[\scriptsize]{
+  \sethead
+      % even-left even-center even-right
+      [\IHpgnum][][\IHbarechap]
+      % odd-left odd-center odd-right
+      {\IHbaresect}{}{\IHpgnum}
 }
 
 % Formato dos apêndices/anexos:
