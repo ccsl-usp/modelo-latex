@@ -15,7 +15,7 @@ USE_LATEXMK := false
 #
 # 2. Com make, a funcao autocompletar do bash funciona
 #
-# 3. Eh possivel usar "make all"
+# 3. Eh possivel usar "make all" e "make -j all"
 #
 # 4. Se for necessario gerar outros arquivos automaticamente para
 #    inclusao no documento, eh possivel definir as dependencias e
@@ -100,7 +100,8 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 #MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
 #MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
-# Voce provavelmente nao precisa mexer nisto
+# Voce provavelmente nao precisa mexer nisto. Estas opcoes apenas
+# reproduzem o que colocamos no arquivo latexmkrc.
 LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S' -e '$$makeindex=q/$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S/' -e '$$bibtex=q/$(BIBTEX) %O %B/' -e '$$silent=1;$$silence_logfile_warnings=1;$$cleanup_includes_cusdep_generated=1;$$bibtex_use=2'
 
 
@@ -200,20 +201,20 @@ CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|
 # acima podem acabar tendo o mesmo timestamp que o pdf. Para
 # resolver isso, usamos o "touch"
 define RUN_LATEX
-	@touch timestamp
+	@touch $*-timestamp
 	@TEXFOT=; \
 	if texfot --version >/dev/null 2>&1; then \
 	        TEXFOT=texfot; \
 	fi; \
 	msgs="`$$TEXFOT $(LATEX) $(LATEXOPTS) $*`"; \
 	stat=$$?; \
-	echo "$$msgs"| $(FILTER_MSGS) > latex-out.log 2>&1; \
+	echo "$$msgs"| $(FILTER_MSGS) > $*-latex-out.log 2>&1; \
 	if test $$stat -ne 0; then \
 		$(SHOW_REPORT); \
 		$(SHOW_FAIL_MSG); \
 	fi; \
-	touch -r timestamp $*.pdf
-	@rm -f timestamp
+	touch -r $*-timestamp $*.pdf
+	@rm -f $*-timestamp
 endef
 
 define COMPILE_WITHOUT_LATEXMK
@@ -227,12 +228,12 @@ define COMPILE_WITHOUT_LATEXMK
 	@$(REFRESH_TEMP_FILES)
 	@echo
 	@if $(CHECK_RERUN_MESSAGE); then touch $*.aux-current; fi
-	@make -sq $@; result=$$?; \
+	@$(MAKE) -sq $@; result=$$?; \
 	if [ $$result -eq 0 ]; then \
 		$(SHOW_REPORT); \
 		$(SHOW_SUCCESS_MSG); \
 	elif [ $$result -eq 1 ]; then \
-		make -s $@; \
+		$(MAKE) -s $@; \
 	else \
 		$(SHOW_FAIL_MSG); \
 	fi
@@ -297,7 +298,7 @@ endif
 
 %.ind: %.idx-current
 	@echo "       Executando $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx..."
-	@if ! $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx > makeindex-out.log 2>&1; then \
+	@if ! $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx > $*-makeindex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
 		echo "    **** Erro durante a execucao do makeindex/xindy (processando $*) ****"; \
@@ -307,7 +308,7 @@ endif
 
 %.bbl: %.bcf-current $(BIBFILES)
 	@echo "       Executando $(BIBTEX) $*..."
-	@if ! $(BIBTEX) $* > bibtex-out.log 2>&1; then \
+	@if ! $(BIBTEX) $* > $*-bibtex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
 		echo "    **** Erro durante a execucao do bibtex/biber (processando $*) ****"; \
@@ -330,9 +331,9 @@ distclean: $(addsuffix -distclean,$(ALL_TARGETS))
 
 %-clean:
 	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
-	-@rm -f timestamp missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
+	-@rm -f $*-timestamp missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
 		mkidxhead.ist mkidxhead.ist-current hyperxindy.xdy hyperxindy.xdy-current \
-		latex-out.log makeindex-out.log bibtex-out.log \
+		$*-latex-out.log $*-makeindex-out.log $*-bibtex-out.log \
 		$(TEX_TEMP_FILES) $(CURRENT_TEX_TEMP_FILES) \
 		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)) \
 		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext)) \
@@ -359,26 +360,26 @@ endef
 endif
 
 define SHOW_REPORT
-	if test -f bibtex-out.log; then \
+	if test -f $*-bibtex-out.log; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por bibtex/biber (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat bibtex-out.log; \
+		cat $*-bibtex-out.log; \
 	fi; \
-	if test -f makeindex-out.log; then \
+	if test -f $*-makeindex-out.log; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por makeindex/xindy (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat makeindex-out.log; \
+		cat $*-makeindex-out.log; \
 	fi; \
-	if test -f latex-out.log; then \
+	if test -f $*-latex-out.log; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por LaTeX (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat latex-out.log; \
+		cat $*-latex-out.log; \
 	fi
 endef
 
