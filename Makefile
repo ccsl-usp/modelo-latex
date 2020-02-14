@@ -44,7 +44,7 @@ all tudo: $(ALL_TARGETS)
 ################################ Dependencias #################################
 ###############################################################################
 
-OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard extras/*) $(wildcard conteudo-exemplo/*) $(wildcard conteudo/*)
+OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard *.cls) $(wildcard extras/*) $(filter-out %.aux,$(wildcard conteudo-exemplo/*)) $(filter-out %.aux,$(wildcard conteudo/*))
 BIBFILES      := $(wildcard *.bib)
 IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
 # Voce pode acrescentar outras dependencias e as suas regras de geracao aqui
@@ -128,7 +128,7 @@ LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S'
 # Obtem a lista dos arquivos temporarios gerados pelo proprio
 # LaTeX (exceto .log e .pdf, que nao sao dependencias e sao
 # modificados toda vez, pois incluem a data de compilacao).
-FIND_TEX_TEMP_FILES = grep -E "^OUTPUT (.*/)?$*" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
+FIND_TEX_TEMP_FILES = grep -E "^OUTPUT (.*/)?" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
 TEX_TEMP_FILES = $(shell $(FIND_TEX_TEMP_FILES))
 CURRENT_TEX_TEMP_FILES = $(addsuffix -current,$(TEX_TEMP_FILES))
 

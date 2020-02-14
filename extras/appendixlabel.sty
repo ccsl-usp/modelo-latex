@@ -135,8 +135,18 @@
   % o sumário (como \annex só é definida mais à frente, pela package
   % annex, adiamos a execução com \AtEndPreamble):
   \AtEndPreamble{
-    \appto\appendix{\addtocontents{toc}{\protect\appendixTOCLine}}
-    \appto\annex{\addtocontents{toc}{\protect\annexTOCLine}}
+    \appto\appendix{\immediateaddtocontents{toc}{\protect\appendixTOCLine}}
+    \appto\annex{\immediateaddtocontents{toc}{\protect\annexTOCLine}}
+  }
+
+  % \addtocontents pode pregar peças se usamos \include; contornamos
+  % com \immediate: https://tex.stackexchange.com/a/13926/183146
+  \newcommand{\immediateaddtocontents}[2]{
+      \begingroup
+        \let\origwrite\write
+        \def\write{\immediate\origwrite}
+        \addtocontents{#1}{#2}
+      \endgroup
   }
 
 \fi
