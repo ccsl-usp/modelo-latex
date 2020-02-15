@@ -9,7 +9,7 @@ is included in the template). The template is expected to be useful
 for unexperienced LaTeX users. Feel free to customize to your needs
 and, if appropriate, send us improvements. :)
 
-The [generated PDF file](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false)
+The [generated PDF file](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo.pdf?inline=false)
 includes a FAQ, a short (but reasonably
 compreehensive) LaTeX tutorial, and some examples of LaTeX commands.
 There is also a simple and short [cheat sheet](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/colinha.pdf?inline=false)
@@ -30,12 +30,12 @@ works, but we recommend 2018 or newer), including biber and biblatex
 ## FAQ
 
 There is a FAQ in the example document and this repo includes a
-[compiled version of it in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false).
+[compiled version of it in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo.pdf?inline=false).
 
 ## Used packages and installation
 
 There are some instalation instructions in the [example document,
-included in this repo in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo-plainnat-ime.pdf?inline=false).
+included in this repo in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo.pdf?inline=false).
 The template uses makeindex, biber, and many LaTeX packages.
 
 These packages are directly used in the template: etoolbox, xstring, xparse,
