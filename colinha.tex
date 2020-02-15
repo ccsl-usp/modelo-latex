@@ -168,7 +168,7 @@
   \rule[.6ex]{.2\textwidth}{1pt}\par
 }
 
-\setlength{\columnsep}{30pt}
+\setlength{\columnsep}{20pt}
 \setlength{\columnseprule}{.2pt}
 \begin{multicols}{3}
 
@@ -230,11 +230,11 @@
 
 \textbackslash{}begin\{figure\}
 
-\quad\quad\textbackslash{}centering
+\quad\textbackslash{}centering
 
-\quad\quad\textbackslash{}includegraphics[width=\textbackslash{}textwidth]\{arquivo\}
+\quad\textbackslash{}includegraphics[width=0.8\textbackslash{}textwidth]\{arquivo\}
 
-\quad\quad\textbackslash{}caption\{Legenda\textbackslash{}label\{nomesimpatico\}\}
+\quad\textbackslash{}caption\{Legenda\textbackslash{}label\{nomesimpatico\}\}
 
 \textbackslash{}end\{figure\}
 
@@ -242,17 +242,17 @@
 \vspace{\baselineskip}
 
 
-\textbackslash{}begin\{table\} (veja \url{www.tablesgenerator.com})
+\textbackslash{}begin\{table\}\quad (veja \url{www.tablesgenerator.com})
 
-\quad\quad\textbackslash{}centering
+\quad\textbackslash{}centering
 
-\quad\quad\textbackslash{}begin\{tabular\}
+\quad\textbackslash{}begin\{tabular\}
 
-\quad\quad\quad\ldots
+\quad\quad\dots
 
-\quad\quad\textbackslash{}end\{tabular\}
+\quad\textbackslash{}end\{tabular\}
 
-\quad\quad\textbackslash{}caption\{Legenda\textbackslash{}label\{nomesimpatico\}\}
+\quad\textbackslash{}caption\{Legenda\textbackslash{}label\{nomesimpatico\}\}
 
 \textbackslash{}end\{table\}
 
@@ -261,11 +261,11 @@
 
 \section*{Estrutura}
 
-\textbackslash{}begin\{itemize\} (ou \textbackslash{}begin\{enumerate\})
+\textbackslash{}begin\{itemize\}\quad (\,ou \textbackslash{}begin\{enumerate\}\,)
 
-\quad\quad\textbackslash{}item Algum texto\ldots
+\quad\textbackslash{}item Algum texto\dots
 
-\textbackslash{}end\{itemize\} (ou \textbackslash{}end\{enumerate\})
+\textbackslash{}end\{itemize\}\quad (\,ou \textbackslash{}end\{enumerate\}\,)
 
 
 \vspace{\baselineskip}
@@ -273,7 +273,7 @@
 
 \textbackslash{}begin\{description\}
 
-\quad\quad\textbackslash{}item[termo] descrição ou discussão
+\quad\textbackslash{}item[termo] descrição ou discussão
 
 \textbackslash{}end\{description\}
 
@@ -281,11 +281,11 @@
 \vspace{\baselineskip}
 
 
-\textbackslash{}begin\{verse\} (ver também a \textit{package} \textsf{verse})
+\textbackslash{}begin\{verse\}\quad (ver também a \textit{package} \textsf{verse})
 
-\quad\quad verso\ldots\textbackslash\textbackslash
+\quad verso\dots\ \textbackslash\textbackslash
 
-\quad\quad verso\ldots\textbackslash\textbackslash
+\quad verso\dots\ \textbackslash\textbackslash
 
 \textbackslash{}end\{verse\}
 
@@ -295,7 +295,7 @@
 
 \textbackslash{}begin\{quotation\}
 
-\quad\quad citação\ldots
+\quad citação\dots
 
 \textbackslash{}end\{quotation\}
 
@@ -304,7 +304,7 @@
 
 
 \begin{description}
-  \item[URLs:] \textbackslash{}url\{endereço\}
+    \item[\textsc{url}s:] \textbackslash{}url\{endereço\}
 \end{description}
 
 \section*{Refs cruzadas/citações}
@@ -320,20 +320,20 @@
 
 \begin{description}
 \item[citação simples:]~\vspace{2pt}\newline
-    \null\quad\quad\textbackslash{}cite[p.~25]\{fulano\} $\Rightarrow$ Fulano de Tal, 1987, p.~25\vspace{6pt}
+    \null\quad\textbackslash{}cite[p.~25]\{fulano\} $\Rightarrow$ Fulano de Tal, 1987, p.~25\vspace{6pt}
 
   \item[citação no texto:]~\vspace{2pt}\newline
-    \null\quad\quad\textbackslash{}cite\textbf{t}[p.~25]\{fulano\} $\Rightarrow$ Fulano de Tal (1987, p.~25)\vspace{6pt}
+    \null\quad\textbackslash{}cite\textbf{t}[p.~25]\{fulano\} $\Rightarrow$ Fulano de Tal (1987, p.~25)\vspace{6pt}
 
   \item[citação entre parênteses:]~\vspace{2pt}\newline
-    \null\quad\quad\textbackslash{}cite\textbf{p}[p.~25]\{fulano\} $\Rightarrow$ (Fulano de Tal, 1987, p.~25)
+    \null\quad\textbackslash{}cite\textbf{p}[p.~25]\{fulano\} $\Rightarrow$ (Fulano de Tal, 1987, p.~25)
 \end{description}
 
 \section*{Colunas}
 
-\textbackslash{}begin\{multicols\}\{2\} (\textit{package} \textsf{multicols})
+\textbackslash{}begin\{multicols\}\{2\}\quad (\textit{package} \textsf{multicols})
 
-\quad\quad texto em colunas\dots
+\quad texto em colunas\dots
 
 \textbackslash{}end\{multicols\}
 
@@ -350,33 +350,33 @@
 \section*{Caracteres especiais}
 
 \begin{description}
-  \item[elipse:] \textbackslash{}ldots
+  \item[elipse:] \textbackslash{}dots
   \item[espaço não-separável:] \textasciitilde{} (não quebra a linha)
-  \item[espaço aumentado:] \textbackslash{}enspace ou \textbackslash{}quad
-  \item[aspas:] \texttt{\`{}\`{}}texto\texttt{\textquotesingle\textquotesingle},
-                \texttt{\`{}}texto\texttt{\textquotesingle}
-  %\item[aspas:] \texttt{\textasciigrave\textasciigrave}texto\texttt{\textquotesingle\textquotesingle},
-  %              \texttt{\textasciigrave}texto\texttt{\textquotesingle}
+  \item[espaço aumentado:] \textbackslash{}enspace\{\} ou \textbackslash{}quad\{\}
+  \item[aspas tipográficas:] \`{ }\,\`{ }texto\textquotesingle\,\textquotesingle,
+                \`{ }texto\textquotesingle
   \item[hífen, traço, travessão:] -\quad -\hspace{.7pt}-\quad -\hspace{.7pt}-\hspace{.7pt}-
 \end{description}
 
-
 \vspace{\baselineskip}
-
 
 \begin{description}
   \item[não podem ser digitados diretamente:]~\vspace{2pt}\newline
-    \null\quad\quad\textbackslash{}\#
+    \null\quad\textbackslash{}\#
     \quad\textbackslash{}\$
     \quad\textbackslash{}\%
-    \quad\textbackslash{}\^{}\{\}
-    \quad\textbackslash{}\~{}\{\}
+    \quad\textbackslash{}\&
+    \quad\textquotesingle{}\enspace (\,\textbackslash{}textquotesingle\{\}\,)
     \vspace{2pt}\newline
-    \null\quad\quad\textbackslash{}\&
-    \quad\textbackslash{}\_
+    \null\quad\textbackslash{}\^{ }\{ \}
+    \quad\textbackslash{}\~{ }\{ \}
+    \quad\textbackslash{}\`{ }\{ \}
+    \quad\textquotedbl{}\enspace (\,\textbackslash{}textquotedbl\{\}\,)
+    \vspace{2pt}\newline
+    \null\quad\textbackslash{}\_
     \quad\textbackslash{}\{
     \quad\textbackslash{}\}
-    \quad\textbackslash{}textbackslash\{\}
+    \quad\textbackslash{}\enspace (\,\textbackslash{}textbackslash\{\}\,)
 \end{description}
 
 
@@ -416,7 +416,7 @@
 
 \textbackslash{}begin\{center\}
 
-\quad\quad texto centralizado\dots
+\quad texto centralizado\dots
 
 \textbackslash{}end\{center\}
 
