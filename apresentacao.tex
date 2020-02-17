@@ -75,11 +75,16 @@
     \end{block}
 }
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% O estilo de citação e de lista de referências usado por biblatex
-\PassOptionsToPackage{
+\usepackage[
+  % "natbib=true" faz biblatex reconhecer comandos no estilo
+  % do pacote natbib (\citet, \citep)
+  natbib=true,
+  %
+  % Aqui definimos estilo de citação e de lista
+  % de referências usado por biblatex
+  %
   % Estilo similar a plainnat, uma variante de autor-data
   %style=extras/plainnat-ime,
   % Estilo similar a alpha
@@ -93,10 +98,14 @@
   % Um estilo que busca ser compatível com a ABNT:
   %style=abnt,
   style=bwl-FU,
-}{biblatex}
+]{biblatex}
 
-% Para personalizar outros aspectos da bibliografia e citações ou
-% para utilizar bibtex, modifique este arquivo.
+% O arquivo com os dados bibliográficos para biblatex; você pode usar
+% este comando mais de uma vez para acrescentar múltiplos arquivos
+\addbibresource{bibliografia.bib}
+
+% Para personalizar outros aspectos da bibliografia
+% e citações, modifique este arquivo.
 \input{extras/bibconfig}
 
 % A configuração do arquivo acima foi definida para teses/dissertações;
@@ -108,10 +117,6 @@
 
 % Numa apresentação, a bibliografia pode ficar em tamanho menor
 \renewcommand*{\bibfont}{\footnotesize}
-
-% O arquivo com os dados bibliográficos; você pode usar este comando
-% mais de uma vez para acrescentar múltiplos arquivos
-\addbibresource{bibliografia.bib}
 
 % Este comando permite acrescentar itens à lista de referências sem incluir
 % uma referência de fato no texto (pode ser usado em qualquer lugar do texto)

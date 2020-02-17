@@ -8,7 +8,7 @@
 % referências ao longo do texto e a formatação da bibliografia fica por conta
 % do programa bibtex. A configuração dessa formatação é feita através de um
 % arquivo auxiliar de "estilo", com extensão ".bst". Vários journals etc.
-% fornecem o aqruivo .bst que corresponde ao formato esperado da bibliografia.
+% fornecem o arquivo .bst que corresponde ao formato esperado da bibliografia.
 %
 % bibtex e natbib funcionam bem e, se você tiver alguma boa razão para usá-los,
 % obterá bons resultados. No entanto, bibtex tem dois problemas: não lida
@@ -34,101 +34,101 @@
 % bibliografias independentes por seções, há duas soluções: (1) desabilitar
 % o pacote titlesec; (2) indicar as seções manualmente.
 
-%%%%%%%%%%% Usando bibtex: %%%%%%%%%%%%
-%\usepackage[hyperpageref]{backref}
-%\renewcommand*{\backref}[1]{}
-%\renewcommand*{\backrefalt}[4]{%
-%  \scriptsize%
-%  \ifcase #1\relax%
-%  \or(Citado na pg. #2)%
-%  \else(Citado nas pgs. #2)%
-%  \fi%
-%}
-%\usepackagefromsubdir[square,sort,nonamebreak,comma]{extras/}{natbib-ime}  % citação bibliográfica alpha (alpha-ime.bst)
-%\usepackagefromsubdir[round,sort,nonamebreak]{extras/}{natbib-ime} % citação bibliográfica textual(plainnat-ime.bst)
+\makeatletter
+\@ifpackageloaded{biblatex}
+{
+  %%%%%%%%%%% Usando biblatex: %%%%%%%%%%%
+  % https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
+  % https://github.com/PaulStanley/biblatex-tutorial/releases
 
-%%%%%%%%%%% Usando biblatex: %%%%%%%%%%%
-% https://tex.stackexchange.com/questions/12806/guidelines-for-customizing-biblatex-styles
-% https://github.com/PaulStanley/biblatex-tutorial/releases
+  \ExecuteBibliographyOptions{
+    % Ativa o suporte ao pacote hyperref
+    hyperref=true,
+    % Se um item da bibliografia tem língua definida (com langid), permite
+    % hifenizar com base na língua selecionada.
+    autolang=hyphen,
+    % Inclui, em cada item da bibliografia, links para as páginas onde o
+    % item foi citado
+    backref=true,
+    % Com mais de 5 nomes, usa "et. al." na bibliografia
+    maxbibnames=5,
+    % Com mais de 2 nomes, usa "et. al." nas citações (só faz
+    % diferença nos estilos autor-data, como plainnat-ime)
+    maxcitenames=2,
+  }
 
-% "natbib=true" faz biblatex reconhecer comandos no estilo
-% do pacote natbib (\citet, \citep)
-\usepackage[natbib=true,]{biblatex}
+  % Sobrenomes nas citações e na bibliografia em Small Caps
+  \renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
 
-\ExecuteBibliographyOptions{
-  % Ativa o suporte ao pacote hyperref
-  hyperref=true,
-  % Se um item da bibliografia tem língua definida (com langid), permite
-  % hifenizar com base na língua selecionada.
-  autolang=hyphen,
-  % Inclui, em cada item da bibliografia, links para as páginas onde o
-  % item foi citado
-  backref=true,
-  % Com mais de 5 nomes, usa "et. al." na bibliografia
-  maxbibnames=5,
-  % Com mais de 2 nomes, usa "et. al." nas citações (só faz
-  % diferença nos estilos autor-data, como plainnat-ime)
-  maxcitenames=2,
+  % Autores no formato "nome sobrenome"
+  \DeclareNameAlias{sortname}{given-family}
+  \DeclareNameAlias{default}{given-family}
+
+  % Autores no formato "sobrenome, nome"
+  %\DeclareNameAlias{sortname}{family-given}
+  %\DeclareNameAlias{default}{family-given}
+
+  % Vamos deixar um pequeno espaço entre cada item da bibliografia
+  \setlength{\bibitemsep}{1em}
+
+  % A primeira linha de cada item da bibliografia pode ter margem menor
+  % que as demais; aqui definimos essa diferença:
+  \setlength{\bibhang}{2em}
+
+  % Para mudar o tamanho da fonte na bibliografia:
+  %\renewcommand*{\bibfont}{\footnotesize}
+
+  \DefineBibliographyStrings{brazilian}{
+    % Na bibliografia, criamos links para as páginas onde uma
+    % determinada obra foi citada. O texto padrão para indicar
+    % isso é "ver...", vamos trocar.
+    backrefpage  = {citado na pg\adddot},
+    backrefpages = {citado nas pgs\adddot},
+    page         = {pg\adddot},
+    pages        = {pgs\adddot},
+  }
+
+  % biblatex redefine os cabeçalhos das páginas na bibliografia;
+  % vamos deixar essa tarefa para fancyhdr.
+  % Sem incluir a bibliografia no sumário:
+  \defbibheading{bibliography}[\bibname]{%
+    % Testamos chaptermark e não chapter porque titlesec
+    % define chapter, mesmo na classe article. Este teste
+    % depende da package fancyhdr; no entanto, a razão de
+    % ser desta configuração é configurar fancyhdr, então
+    % isso não é um problema.
+    \ifcsdef{chaptermark}
+      {\chapter*{#1}\chaptermark{#1}}
+      {\section*{#1}\sectionmark{#1}}
+  }
+
+  % Incluindo a bibliografia no sumário:
+  \defbibheading{bibintoc}[\bibname]{%
+    \ifcsdef{chaptermark}
+      {\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\chaptermark{#1}}
+      {\section*{#1}\sectionmark{#1}}
+  }
+
+  % Por padrão, biblatex mantém a caixa alta/baixa dos títulos como
+  % digitados no arquivo bib, mas fornece a possibilidade de modificar
+  % esse comportamento em função da língua. Se a opção abaixo for
+  % ativada, plainnat-ime mantém maiúsculas/minúsculas como no arquivo
+  % .bib, exceto para artigos ou capítulos de livro (essa é uma convenção
+  % comum). Para mais opções, leia os comentários em plainnat-ime.bbx.
+  %
+  % Aqui, ativamos esse mecanismo para a língua portuguesa:
+  \DeclareCaseLangs{brazilian,brazil,portuges}
 }
-
-% Sobrenomes nas citações e na bibliografia em Small Caps
-\renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
-
-% Autores no formato "nome sobrenome"
-\DeclareNameAlias{sortname}{given-family}
-\DeclareNameAlias{default}{given-family}
-
-% Autores no formato "sobrenome, nome"
-%\DeclareNameAlias{sortname}{family-given}
-%\DeclareNameAlias{default}{family-given}
-
-% Vamos deixar um pequeno espaço entre cada item da bibliografia
-\setlength{\bibitemsep}{1em}
-
-% A primeira linha de cada item da bibliografia pode ter margem menor
-% que as demais; aqui definimos essa diferença:
-\setlength{\bibhang}{2em}
-
-% Para mudar o tamanho da fonte na bibliografia:
-%\renewcommand*{\bibfont}{\footnotesize}
-
-\DefineBibliographyStrings{brazilian}{
-  % Na bibliografia, criamos links para as páginas onde uma
-  % determinada obra foi citada. O texto padrão para indicar
-  % isso é "ver...", vamos trocar.
-  backrefpage  = {citado na pg\adddot},
-  backrefpages = {citado nas pgs\adddot},
-  page         = {pg\adddot},
-  pages        = {pgs\adddot},
+{
+  %%%%%%%%%%% Usando bibtex: %%%%%%%%%%%%
+  \usepackage[hyperpageref]{backref}
+  \renewcommand*{\backref}[1]{}
+  \renewcommand*{\backrefalt}[4]{%
+    \scriptsize%
+    \ifcase #1\relax%
+    \or(Citado na pg. #2)%
+    \else(Citado nas pgs. #2)%
+    \fi%
+  }
 }
-
-% biblatex redefine os cabeçalhos das páginas na bibliografia;
-% vamos deixar essa tarefa para fancyhdr.
-% Sem incluir a bibliografia no sumário:
-\defbibheading{bibliography}[\bibname]{%
-  % Testamos chaptermark e não chapter porque titlesec
-  % define chapter, mesmo na classe article. Este teste
-  % depende da package fancyhdr; no entanto, a razão de
-  % ser desta configuração é configurar fancyhdr, então
-  % isso não é um problema.
-  \ifcsdef{chaptermark}
-    {\chapter*{#1}\chaptermark{#1}}
-    {\section*{#1}\sectionmark{#1}}
-}
-
-% Incluindo a bibliografia no sumário:
-\defbibheading{bibintoc}[\bibname]{%
-  \ifcsdef{chaptermark}
-    {\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\chaptermark{#1}}
-    {\section*{#1}\sectionmark{#1}}
-}
-
-% Por padrão, biblatex mantém a caixa alta/baixa dos títulos como
-% digitados no arquivo bib, mas fornece a possibilidade de modificar
-% esse comportamento em função da língua. Se a opção abaixo for
-% ativada, plainnat-ime mantém maiúsculas/minúsculas como no arquivo
-% .bib, exceto para artigos ou capítulos de livro (essa é uma convenção
-% comum). Para mais opções, leia os comentários em plainnat-ime.bbx.
-%
-% Aqui, ativamos esse mecanismo para a língua portuguesa:
-\DeclareCaseLangs{brazilian,brazil,portuges}
+\makeatother

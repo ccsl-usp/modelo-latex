@@ -100,8 +100,27 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% O estilo de citação e de lista de referências usado por biblatex
-\PassOptionsToPackage{
+%%%%%%%%%%%% Usando bibtex (preterido): %%%%%%%%%%%%
+
+% citação bibliográfica alpha (alpha-ime.bst)
+%\dowithsubdir{extras/}{\usepackage[square,sort,nonamebreak,comma]{natbib-ime}}
+
+% citação bibliográfica textual(plainnat-ime.bst)
+%\dowithsubdir{extras/}{\usepackage[round,sort,nonamebreak]{natbib-ime}}
+
+%%%%%%%%%%%
+
+
+%%%%%%%%%%% Usando biblatex (preferido): %%%%%%%%%%%
+
+\usepackage[
+  % "natbib=true" faz biblatex reconhecer comandos no estilo
+  % do pacote natbib (\citet, \citep)
+  natbib=true,
+  %
+  % Aqui definimos estilo de citação e de lista
+  % de referências usado por biblatex
+  %
   % Estilo similar a plainnat, uma variante de autor-data
   style=extras/plainnat-ime,
   % Estilo similar a alpha
@@ -115,15 +134,18 @@
   % Um estilo que busca ser compatível com a ABNT:
   %style=abnt,
   %style=bwl-FU,
-}{biblatex}
+]{biblatex}
 
-% Para personalizar outros aspectos da bibliografia e citações ou
-% para utilizar bibtex, modifique este arquivo.
-\input{extras/bibconfig}
-
-% O arquivo com os dados bibliográficos; você pode usar este comando
-% mais de uma vez para acrescentar múltiplos arquivos
+% O arquivo com os dados bibliográficos para biblatex; você pode usar
+% este comando mais de uma vez para acrescentar múltiplos arquivos
 \addbibresource{bibliografia.bib}
+
+%%%%%%%%%%%
+
+
+% Para personalizar outros aspectos da bibliografia
+% e citações, modifique este arquivo.
+\input{extras/bibconfig}
 
 % Este comando permite acrescentar itens à lista de referências sem incluir
 % uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
@@ -280,7 +302,7 @@
 
 % A bibliografia é obrigatória
 
-%%%%%%%%% Bibliografia com natbib (preterido): %%%%%%%%%
+%%%%%%%%% Bibliografia com bibtex (preterido): %%%%%%%%%
 %\bibliographystyle{extras/alpha-ime}% citação bibliográfica alpha
 %\bibliographystyle{extras/plainnat-ime} % citação bibliográfica textual
 %\bibliography{bibliografia}  % associado ao arquivo: 'bibliografia.bib'
