@@ -38,6 +38,11 @@
 % Personalização de cabeçalhos e rodapés com o estilo deste modelo
 \dowithsubdir{extras/}{\usepackage{imeusp-headers}}
 
+% biblatex pode ser configurado para inserir a bibliografia no sumário;
+% bibtex não oferece essa possibilidade. Com esta package, resolvemos
+% esse problema.
+\usepackage[nottoc,notlot,notlof]{tocbibind}
+
 % Só olha até o nível 2 (seções), ou seja, não coloca nomes de
 % subseções ou subsubseções no sumário (nem nos cabeçalhos).
 \setcounter{tocdepth}{2}
