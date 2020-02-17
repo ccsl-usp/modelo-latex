@@ -50,11 +50,13 @@
   \ifblank{#1}
     {
       \chapter*{#2}
+      \phantomsection
       \addcontentsline{toc}{chapter}{#2}
       \chaptermark{#2}
     }
     {
       \chapter*{#2}
+      \phantomsection
       \addcontentsline{toc}{chapter}{#1}
       \chaptermark{#1}
     }
@@ -64,11 +66,13 @@
   \ifblank{#1}
     {
       \section*{#2}
+      \phantomsection
       \addcontentsline{toc}{section}{#2}
       \sectionmark{#2}
     }
     {
       \section*{#2}
+      \phantomsection
       \addcontentsline{toc}{section}{#1}
       \sectionmark{#1}
     }
@@ -78,10 +82,12 @@
   \ifblank{#1}
     {
       \subsection*{#2}
+      \phantomsection
       \addcontentsline{toc}{subsection}{#2}
     }
     {
       \subsection*{#2}
+      \phantomsection
       \addcontentsline{toc}{subsection}{#1}
     }
 }
