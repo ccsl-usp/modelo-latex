@@ -51,6 +51,14 @@
 %
 \usepackage{stfloats}
 
+% Às vezes é interessante utilizar uma imagem mais larga que o texto.
+% Por padrão, \centering *não* vai centralizar a imagem corretamente
+% nesse caso. Com esta package, podemos acrescentar a opção "center"
+% ao comando \includegraphics para resolver esse problema
+% (ou seja, \includegraphics[width=1.2\textwidth,center]{imagem}.
+% A package tem muitos outros recursos também
+\usepackage[export]{adjustbox}
+
 % Por padrão, LaTeX prefere colocar floats no topo da página que
 % onde eles foram definidos; vamos mudar isso. Este comando depende
 % do pacote "floatrow", carregado logo acima.
