@@ -57,8 +57,20 @@
 % Notação bra-ket
 %\usepackage{braket}
 
-%\num \SI and \SIrange. For example, \SI{10}{\hertz} \SIrange{10}{100}{\hertz}
-%\usepackage[binary-units]{siunitx}
+% Vários recursos para apresentação de números e grandezas (unidades, notação
+% científica, melhor apresentação de números longos etc.), além de permitir
+% alinhar números em tabelas pelo ponto decimal (como a package dcolumn)
+% através do tipo de coluna "S". Por exemplo, \SI{10}{\hertz} ou
+% \num[round-mode=places,round-precision=2]{3.1415926}.
+\usepackage[binary-units]{siunitx}
+\sisetup{
+  mode=text,
+  round-mode=places,
+}
+
+\providetranslation[to=Portuguese]{to (numerical range)}{a}
+\providetranslation[to=Portuguese]{and}{e}
+\addto\extrasbrazil{\sisetup{output-decimal-marker = {,}}}
 
 % Citações melhores; se você pretende fazer citações de textos
 % relativamente extensos, vale a pena ler a documentação. biblatex
