@@ -117,13 +117,13 @@ LATEXMKOPTS := -r latexmkrc-make -dvi- -ps- -pdf -silent
 
 # Quase tudo neste arquivo existe para gerir a compilacao sem latexmk:
 #
-# 1. Arquivos "-current" (CURRENT_TEX_TEMP_FILES)
+# 1. Arquivo *.checksums
 #
 # 2. Arquivos latex-out.log, bibtex-out.log, makeindex-out.log
 #
 # 2. Variaveis LATEX, MAKEINDEX e a deteccao do ambiente windows
 #
-# 3. Macros que sao comandos (FILTER_MSGS, REFRESH_TEMP_FILES,
+# 3. Macros que sao comandos (FILTER_MSGS, REFRESH_CHECKSUMS,
 #    CHECK_RERUN_MESSAGE, RUN_LATEX, SHOW_REPORT, SHOW_SUCCESS_MSG,
 #    SHOW_LOOP_ERROR, COMPILE_WITHOUT_LATEXMK)
 #
@@ -137,7 +137,6 @@ LATEXMKOPTS := -r latexmkrc-make -dvi- -ps- -pdf -silent
 # modificados toda vez, pois incluem a data de compilacao).
 FIND_TEX_TEMP_FILES = grep -E "^OUTPUT (.*/)?" $*.fls 2>/dev/null | tr -d '\r' | cut -f2 -d" " | grep -Ev '\.(log|pdf)$$'
 TEX_TEMP_FILES = $(shell $(FIND_TEX_TEMP_FILES))
-CURRENT_TEX_TEMP_FILES = $(addsuffix -current,$(TEX_TEMP_FILES))
 
 # Tres maneiras de detectar se estamos rodando em windows. Dependendo
 # do ambiente usado para executar make no windows, pode nao ser necessario
@@ -176,26 +175,28 @@ TEXFOT = $(shell if texfot --version >/dev/null 2>&1; then echo texfot --quiet; 
 #
 # 1. Utilizamos a opcao "-recorder" do LaTeX para gerar o arquivo .fls, que
 #    lista os arquivos gerados por ele durante a compilacao;
-# 2. Copiamos os arquivos relevantes (.aux, .toc etc.) a cada execucao para
-#    "*-current", mas apenas quando o arquivo gerado for efetivamente
-#    diferente; essas copias e que sao de fato utilizadas nas regras de
-#    dependencia do make;
+# 2. Gravamos o md5sum dos arquivos relevantes (.aux, .toc etc.) no arquivo
+#    .checksums e apenas modificamos esse arquivo quando algum md5sum é
+#    modificado. Os arquivos gerados pelo LaTeX nao fazem parte da lista
+#    de dependencias do make, apenas esse arquivo de checksums. Com isso,
+#    LaTeX so eh reexecutado quando de fato ha alguma mudanca no conteudo
+#    de um desses arquivos.
 # 3. Como make decide a sequencia dos comandos de compilacao no inicio
-#    da execucao, ele nao detecta mudancas nos arquivos intermediarios
-#    com os quais estamos lidando. Assim, o que fazemos e chamar o make
-#    recursivamente para verificar se houve modificacoes nos arquivos. Ou
-#    seja, executamos "make", atualizamos os arquivos "*-current"
-#    necessarios e executamos make novamente, ate que nao haja mais
-#    modificacoes nos arquivos gerados.
+#    da execucao, ele nao detecta mudancas nos arquivos alterados
+#    posteriormente, que eh exatamente o caso do arquivo .checksums.
+#    Assim, o que fazemos eh chamar o make recursivamente para verificar
+#    se houve modificacoes nos arquivos. Ou seja, executamos "make",
+#    atualizamos o arquivo .checksums e executamos make novamente, ate
+#    que nao haja mais modificacoes nos arquivos gerados.
 
-# Copia os arquivos gerados pelo LaTeX para "*-current", se for o caso,
-# para podermos usar esses arquivos como dependencias para o make. Usamos
-# touch aqui porque cp pode nao registrar corretamente o timestamp do
-# arquivo copiado.
-define REFRESH_TEMP_FILES
+# Usamos touch aqui porque cp pode nao registrar corretamente o timestamp
+# do arquivo copiado.
+define REFRESH_CHECKSUMS
 $(FIND_TEX_TEMP_FILES) | while read filename; do \
-  if ! test -f "$$filename"-current || ! diff -q "$$filename" "$$filename"-current > /dev/null; then \
-    cp -f "$$filename" "$$filename"-current 2>/dev/null; touch "$$filename-current"; \
+  currentsum="`md5sum "$$filename"`"; \
+  if ! grep -q "$$currentsum" "$*.checksums"; then \
+    sed -i -E -e "/^[0-9a-f]{32}  $$filename"'$$/d' "$*.checksums"; \
+    echo "$$currentsum" >> "$*.checksums"; \
   fi; \
 done
 endef
@@ -204,9 +205,9 @@ endef
 # por seguranca, vamos checar isso tambem
 CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|Table widths have changed. Rerun LaTeX|Warning: [Rr]erun [Ll]a[Tt]e[Xx]' $*.log
 
-# Se a compilacao eh rapida, os arquivos "-current" criados mais
-# acima podem acabar tendo o mesmo timestamp que o pdf. Para
-# resolver isso, usamos o "touch"
+# Se a compilacao eh rapida, o arquivo .checksums criado mais
+# acima pode acabar tendo o mesmo timestamp que o pdf. Para
+# resolver isso, usamos o "touch".
 define RUN_LATEX
 	@touch $*-timestamp
 	@$(LATEX) $(LATEXOPTS) $* >/dev/null 2>&1; \
@@ -228,9 +229,9 @@ define COMPILE_WITHOUT_LATEXMK
 	fi
 	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteracao $(MAKELEVEL))..."
 	@$(RUN_LATEX)
-	@$(REFRESH_TEMP_FILES)
+	@$(REFRESH_CHECKSUMS)
 	@echo
-	@if $(CHECK_RERUN_MESSAGE); then touch $*.aux-current; fi
+	@if $(CHECK_RERUN_MESSAGE); then touch $*.checksums; fi
 	@$(MAKE) -sq $@; result=$$?; \
 	if [ $$result -eq 0 ]; then \
 		$(SHOW_REPORT); \
@@ -292,7 +293,7 @@ else
 # gerados pelo LaTeX na iteracao anterior que foram modificados
 .SECONDEXPANSION:
 
-$(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(CURRENT_TEX_TEMP_FILES) %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
+$(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind %.checksums %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
 	@$(COMPILE_WITHOUT_LATEXMK)
 	@if test $(MAKELEVEL) -eq 0; then \
 		$(SHOW_PDF); \
@@ -304,40 +305,56 @@ endif
 # e, indiretamente, dos proprios arquivos que compoem o documento.
 # No entanto, nao vamos declarar essas dependencias aqui. Precisamos
 # declarar esta regra apenas para que make saiba como gerar os arquivos
-# {idx,bcf}-current no inicio da execucao, quando nenhum arquivo ainda
-# foi gerado. Nas iteracoes seguintes, esses arquivos ja existem e, se
+# {idx,bcf} no inicio da execucao, quando nenhum arquivo ainda foi
+# gerado. Nas iteracoes seguintes, esses arquivos ja existem e, se
 # for o caso, sao atualizados pela regra que gera o arquivo pdf. Colocar
 # a dependencia aqui nao causa erros, mas em alguns casos faz make
 # executar iteracoes desnecessarias.
-%.idx-current %.bcf-current:
+%.idx %.bcf %.checksums:
 	@echo "       Executando $(LATEX) $(LATEXOPTS) $* (iteracao auxiliar)..."
 	@$(RUN_LATEX)
-	@$(REFRESH_TEMP_FILES)
+	@touch "$*.checksums"
+	@$(REFRESH_CHECKSUMS)
 	@echo
 
-%.ind: %.idx-current
-	@echo "       Executando $(MAKEINDEX) -q $(MAKEINDEXOPTS) $*.idx..."
-	@if ! $(MAKEINDEX) -q $(MAKEINDEXOPTS) $*.idx > /dev/null 2>&1; then \
-		$(SHOW_REPORT); \
+# Os arquivos .idx e .bcf sao gerados novamente a cada iteracao de
+# LaTeX; assim, as regras para bibtex/biber e makeindex/xindy serao
+# chamadas a cada vez. Vamos permitir isso mas, dentro da regra,
+# verificar se eh ou nao o caso de executar o comando.
+%.ind: %.idx
+	@currentsum="`md5sum "$*.idx"`"; \
+	if ! test -f "$*.ind" || ! grep -q "$$currentsum" "$*.checksums"; then \
+		sed -i -E -e "/^[0-9a-f]{32}  $*.idx"'$$/d' "$*.checksums"; \
+		echo "       Executando $(MAKEINDEX) -q $(MAKEINDEXOPTS) $*.idx..."; \
+		if ! $(MAKEINDEX) -q $(MAKEINDEXOPTS) "$*.idx" > /dev/null 2>&1; then \
+			$(SHOW_REPORT); \
+			echo; \
+			echo "    **** Erro durante a execucao do makeindex/xindy (processando $*) ****"; \
+			exit 1; \
+		fi; \
+		echo "$$currentsum" >> "$*.checksums"; \
 		echo; \
-		echo "    **** Erro durante a execucao do makeindex/xindy (processando $*) ****"; \
-		exit 1; \
 	fi
-	@echo
 
-%.bbl: %.bcf-current $(BIBFILES)
+%.bbl: %.bcf $(BIBFILES)
 	@BIBTEX="bibtex -terse $(BIBTEXOPTS)"; \
+	currentsum="USING BIBTEX"; \
 	if test -f $*.bcf; then \
 		BIBTEX="biber --onlylog $(BIBEROPTS)"; \
+		currentsum="`md5sum "$*.bcf"`"; \
 	fi; \
-	echo "       Executando $$BIBTEX $*..."; \
-	if ! $$BIBTEX $* > /dev/null 2>&1; then \
-		$(SHOW_REPORT); \
+	if ! test -f "$*.bbl" || ! grep -q "$$currentsum" "$*.checksums"; then \
+		sed -i -E -e "/^[0-9a-f]{32}  $*.bcf"'$$/d' "$*.checksums"; \
+		echo "       Executando $$BIBTEX $*..."; \
+		if ! $$BIBTEX "$*" > /dev/null 2>&1; then \
+			$(SHOW_REPORT); \
+			echo; \
+			echo "    **** Erro durante a execucao do bibtex/biber (processando $*) ****"; \
+			exit 1; \
+		fi; \
+		echo "$$currentsum" >> "$*.checksums"; \
 		echo; \
-		echo "    **** Erro durante a execucao do bibtex/biber (processando $*) ****"; \
-		exit 1; \
 	fi
-	@echo
 
 clean: tmpclean
 	@echo; \
@@ -355,14 +372,11 @@ distclean: $(addsuffix -distclean,$(ALL_TARGETS))
 %-clean:
 	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
 	-@rm -f $*-timestamp latexmkrc-make missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
-		mkidxhead.ist mkidxhead.ist-current hyperxindy.xdy hyperxindy.xdy-current \
+		mkidxhead.ist hyperxindy.xdy $*.checksums \
 		$*-latex-out.log $*-makeindex-out.log $*-bibtex-out.log \
-		$(TEX_TEMP_FILES) $(CURRENT_TEX_TEMP_FILES) \
+		$(TEX_TEMP_FILES) \
 		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)) \
-		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext)) \
-		$(foreach ext,$(TMP_EXTENSIONS),$*.$(ext)-current) \
-		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext)-current) \
-		$*.ps-current $*.pdf-current $*.dvi-current
+		$(foreach ext,$(FLS_TMP_EXTENSIONS),$*.$(ext))
 
 ifeq ($(SHOW_PDF_AFTER_COMPILATION), true)
 
