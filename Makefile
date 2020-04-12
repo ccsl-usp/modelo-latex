@@ -3,11 +3,11 @@
 
 # latexmk em geral eh distribuido junto com o LaTeX e eh o mecanismo
 # recomendado para compilar, mas se ele nao estiver disponivel este
-# script funciona sem ele. Com latexmk, as variaveis de configuracao
-# referentes a compilacao definidas abaixo (MAKEINDEX, LATEXOPTS etc)
-# poderiam ser eliminadas: latexmk le a configuracao do arquivo latexmkrc.
-#USE_LATEXMK := true
-USE_LATEXMK := false
+# script funciona sem ele.
+
+USE_LATEXMK = $(shell if latexmk --version >/dev/null 2>&1; then echo true; else echo false; fi)
+#USE_LATEXMK = true
+#USE_LATEXMK = false
 
 # Mas por que usar um Makefile para chamar latexmk?
 #
@@ -22,7 +22,7 @@ USE_LATEXMK := false
 #    comandos para isso neste arquivo com MISCFILES (mas latexmk
 #    pode chamar "make" como parte do processo de compilacao tambem)
 #
-# 5. embora latexmk tenha as opcoes -c e -C, elas nao fazem
+# 5. Embora latexmk tenha as opcoes -c e -C, elas nao fazem
 #    exatamente o que eu gostaria; este arquivo define
 #    "make clean" e "make distclean"
 
@@ -75,9 +75,11 @@ FLS_TMP_EXTENSIONS := log aux bcf idx lof lop lot out run.xml toc
 ######################### Configuracoes de compilacao #########################
 ###############################################################################
 
+ifndef LATEX
 LATEX := pdflatex
 #LATEX := lualatex
 #LATEX := xelatex
+endif
 
 MAKEINDEX := makeindex
 #MAKEINDEX := texindy
@@ -99,9 +101,9 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 #MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
 #MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
-# Voce provavelmente nao precisa mexer nisto. Estas opcoes apenas
-# reproduzem o que colocamos no arquivo latexmkrc.
-LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S' -e '$$makeindex=q/$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S/' -e '$$silent=1;$$silence_logfile_warnings=1;$$cleanup_includes_cusdep_generated=1;$$bibtex_use=2'
+# latexmk tambem le o arquivo de configuracao latexmkrc,
+# que eh criado mais abaixo se nao existir
+LATEXMKOPTS := -dvi- -ps- -pdf -recorder -silent -logfilewarninglist-
 
 
 ###############################################################################
@@ -160,6 +162,9 @@ endif
 # comecam com "(" e terminam com uma destas extensoes seguida de ")".
 FILTER_MSGS := grep -Eav '(^$$)|(^ *\(.*(sty|ldf|def|cfg|dfu|fd|bbx|cbx|lbx|tex)\)*$$)'
 
+# Usamos texfot (script que filtra a saida de LaTeX) se estiver disponivel
+TEXFOT = $(shell if texfot --version >/dev/null 2>&1; then echo texfot; fi)
+
 # LaTeX nao se adequa ao modelo de compilacao esperado pelo make, pois ele
 # recria os arquivos intermediarios toda vez, impedindo a definicao de regras
 # de dependencia simples. Vamos resolver isso em tres etapas:
@@ -190,6 +195,7 @@ $(FIND_TEX_TEMP_FILES) | while read filename; do \
 done
 endef
 
+
 # LaTeX indica no arquivo de log se e preciso executa-lo novamente;
 # por seguranca, vamos checar isso tambem
 CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|Table widths have changed. Rerun LaTeX|Warning: [Rr]erun [Ll]a[Tt]e[Xx]' $*.log
@@ -199,11 +205,7 @@ CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|
 # resolver isso, usamos o "touch"
 define RUN_LATEX
 	@touch $*-timestamp
-	@TEXFOT=; \
-	if texfot --version >/dev/null 2>&1; then \
-	        TEXFOT=texfot; \
-	fi; \
-	msgs="`$$TEXFOT $(LATEX) $(LATEXOPTS) $*`"; \
+	@msgs="`$(TEXFOT) $(LATEX) $(LATEXOPTS) $*`"; \
 	stat=$$?; \
 	echo "$$msgs"| $(FILTER_MSGS) > $*-latex-out.log 2>&1; \
 	if test $$stat -ne 0; then \
@@ -238,7 +240,7 @@ endef
 
 define COMPILE_WITH_LATEXMK
 	@echo
-	@echo "      " Executando latexmk $*...
+	@echo "      " Executando latexmk $(LATEXMKOPTS) $*...
 	@echo
 	@latexmk $(LATEXMKOPTS) $*; \
 	result=$$?; \
@@ -254,12 +256,21 @@ $(ALL_TARGETS): % : %.pdf
 
 ifeq ($(USE_LATEXMK), true)
 
+# Se nao existe arquivo latexmkrc, criamos
+latexmkrc:
+	@echo '$$pdflatex =' "'$(TEXFOT) $(LATEX) $(LATEXOPTS) %O %S';" > latexmkrc
+	@echo '$$makeindex =' "'$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S';" >> latexmkrc
+	@echo '$$cleanup_includes_generated = 1;' >> latexmkrc
+	@echo '$$cleanup_includes_cusdep_generated = 1;' >> latexmkrc
+	@echo '$$bibtex_use = 2;' >> latexmkrc
+
 # Nao precisamos declarar as dependencias "normais" aqui (arquivos
-# .tex, .bib, imagens etc.) porque latexmk cuida disso. Precisamos
+# .tex, .bib, imagens etc.) porque latexmk cuida disso. Vamos apenas
+# usar FORCE para que latexmk seja sempre executado e verifique
+# se eh ou nao necessario fazer alguma coisa. Precisamos tambem
 # declarar MISCFILES para que as regras necessarias para a geracao
-# dos arquivos adicionais sejam executadas e precisamos garantir
-# que esta regra seja executada sempre, por isso FORCE.
-%.pdf: $(MISCFILES) FORCE
+# dos arquivos adicionais sejam executadas antes de chamar latexmk.
+%.pdf: $(MISCFILES) latexmkrc FORCE
 	$(COMPILE_WITH_LATEXMK)
 	@$(SHOW_PDF)
 
