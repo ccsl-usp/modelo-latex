@@ -79,9 +79,6 @@ LATEX := pdflatex
 #LATEX := lualatex
 #LATEX := xelatex
 
-BIBTEX := biber
-#BIBTEX := bibtex
-
 MAKEINDEX := makeindex
 #MAKEINDEX := texindy
 
@@ -104,7 +101,7 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 
 # Voce provavelmente nao precisa mexer nisto. Estas opcoes apenas
 # reproduzem o que colocamos no arquivo latexmkrc.
-LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S' -e '$$makeindex=q/$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S/' -e '$$bibtex=q/$(BIBTEX) %O %B/' -e '$$silent=1;$$silence_logfile_warnings=1;$$cleanup_includes_cusdep_generated=1;$$bibtex_use=2'
+LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S' -e '$$makeindex=q/$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S/' -e '$$silent=1;$$silence_logfile_warnings=1;$$cleanup_includes_cusdep_generated=1;$$bibtex_use=2'
 
 
 ###############################################################################
@@ -117,7 +114,7 @@ LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S'
 #
 # 2. Arquivos latex-out.log, bibtex-out.log, makeindex-out.log
 #
-# 2. Variaveis LATEX, BIBTEX, MAKEINDEX e a deteccao do ambiente windows
+# 2. Variaveis LATEX, MAKEINDEX e a deteccao do ambiente windows
 #
 # 3. Macros que sao comandos (FILTER_MSGS, REFRESH_TEMP_FILES,
 #    CHECK_RERUN_MESSAGE, RUN_LATEX, SHOW_REPORT, SHOW_SUCCESS_MSG,
@@ -140,17 +137,14 @@ CURRENT_TEX_TEMP_FILES = $(addsuffix -current,$(TEX_TEMP_FILES))
 # acrescentar a extensao.
 ifdef COMSPEC
   LATEX := $(addsuffix .exe,$(LATEX))
-  BIBTEX := $(addsuffix .exe,$(BIBTEX))
   MAKEINDEX := $(addsuffix .exe,$(MAKEINDEX))
 else
   ifdef SystemRoot
     LATEX := $(addsuffix .exe,$(LATEX))
-    BIBTEX := $(addsuffix .exe,$(BIBTEX))
     MAKEINDEX := $(addsuffix .exe,$(MAKEINDEX))
   else
     ifdef SYSTEMROOT
       LATEX := $(addsuffix .exe,$(LATEX))
-      BIBTEX := $(addsuffix .exe,$(BIBTEX))
       MAKEINDEX := $(addsuffix .exe,$(MAKEINDEX))
     endif
   endif
@@ -310,8 +304,12 @@ endif
 	@echo
 
 %.bbl: %.bcf-current $(BIBFILES)
-	@echo "       Executando $(BIBTEX) $*..."
-	@if ! $(BIBTEX) $* > $*-bibtex-out.log 2>&1; then \
+	@BIBTEX=bibtex; \
+	if test -f $*.bcf; then \
+		BIBTEX=biber; \
+	fi; \
+	echo "       Executando $$BIBTEX $*..."; \
+	if ! $$BIBTEX $* > $*-bibtex-out.log 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
 		echo "    **** Erro durante a execucao do bibtex/biber (processando $*) ****"; \
