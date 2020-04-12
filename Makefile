@@ -44,6 +44,8 @@ all tudo: $(ALL_TARGETS)
 ################################ Dependencias #################################
 ###############################################################################
 
+# Eh preciso excluir os arquivos *.aux dos subdiretorios para
+# compatibilidade com o comando \include de LaTeX.
 OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard *.cls) $(wildcard extras/*) $(filter-out %.aux,$(wildcard conteudo-exemplo/*)) $(filter-out %.aux,$(wildcard conteudo/*))
 BIBFILES      := $(wildcard *.bib)
 IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
@@ -123,7 +125,8 @@ LATEXMKOPTS := -dvi- -ps- -pdf -recorder -pdflatex='$(LATEX) $(LATEXOPTS) %O %S'
 #
 # 4. As regras para os arquivos .ind, .idx, .bbl, .bcf.
 #
-# Se sempre exigissemos latexmk, este arquivo seria BEM mais simples.
+# Se sempre exigissemos latexmk, este arquivo seria BEM mais simples
+# (na verdade, ele seria desnecessario).
 
 # Obtem a lista dos arquivos temporarios gerados pelo proprio
 # LaTeX (exceto .log e .pdf, que nao sao dependencias e sao
