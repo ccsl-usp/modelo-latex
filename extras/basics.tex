@@ -236,19 +236,25 @@
 % este pacote implementa um algoritmo bem melhor
 \usepackage[newcommands]{ragged2e}
 
+% ragged2e funciona porque permite que LaTeX hifenize palavras em textos
+% não-justificados quando necessário. No caso de textos centralizados,
+% no entanto, isso em geral não é desejável. Assim, newcommands não é
+% interessante para \centering e \begin{center}. newcommands também
+% causa problemas com legendas se o float correspondente usa \centering
+% (o que é muito comum). Assim, vamos voltar \centering e \begin{center}
+% à definição padrão.
+\let\centering\LaTeXcentering
+\let\center\LaTeXcenter
+
 % Com ragged2e e a opção "newcommands", textos curtos não-justificados
 % podem gerar warnings sobre "underfull \hbox". Não há razão para pensar
 % muito nesses warnings, então melhor desabilitá-los.
 % https://tex.stackexchange.com/questions/17659/ragged2e-newcommands-option-produces-underfull-hbox-warnings
 \makeatletter
-\g@addto@macro{\centering}{\hbadness=\@M}
-\g@addto@macro{\Centering}{\hbadness=\@M}
 \g@addto@macro{\raggedright}{\hbadness=\@M}
 \g@addto@macro{\RaggedRight}{\hbadness=\@M}
 \g@addto@macro{\raggedleft}{\hbadness=\@M}
 \g@addto@macro{\RaggedLeft}{\hbadness=\@M}
-\g@addto@macro{\center}{\hbadness=\@M}
-\g@addto@macro{\Center}{\hbadness=\@M}
 \g@addto@macro{\flushleft}{\hbadness=\@M}
 \g@addto@macro{\FlushLeft}{\hbadness=\@M}
 \g@addto@macro{\flushright}{\hbadness=\@M}
