@@ -1,6 +1,6 @@
 @default_files = ('tese');
 
-$custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction nonstopmode ';
+$custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction batchmode ';
 
 # With older versions of latexmk, this is the recommended
 # method for choosing which latex engine to use:

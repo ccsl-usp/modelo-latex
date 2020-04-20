@@ -5,9 +5,11 @@
 # recomendado para compilar, mas se ele nao estiver disponivel este
 # script funciona sem ele.
 
+ifndef USE_LATEXMK
 USE_LATEXMK = $(shell if latexmk --version >/dev/null 2>&1; then echo true; else echo false; fi)
 #USE_LATEXMK = true
 #USE_LATEXMK = false
+endif
 
 # Mas por que usar um Makefile para chamar latexmk?
 #
@@ -88,7 +90,7 @@ MAKEINDEX := makeindex
 # mais abaixo. Ela nao esta habilitada por padrao porque pode acarretar
 # problemas de seguranca
 #LATEXOPTS := --shell-escape
-LATEXOPTS := -synctex=1 -halt-on-error -file-line-error -interaction nonstopmode -recorder
+LATEXOPTS := -synctex=1 -halt-on-error -file-line-error -interaction batchmode -recorder
 
 # Opcoes para makeindex
 MAKEINDEXOPTS := -s mkidxhead.ist -l -c
@@ -101,9 +103,12 @@ MAKEINDEXOPTS := -s mkidxhead.ist -l -c
 #MAKEINDEXOPTS := -C utf8 -M hyperxindy.xdy
 #MAKEINDEXOPTS := -M lang/latin/utf8.xdy -M hyperxindy.xdy
 
-# latexmk tambem le o arquivo de configuracao latexmkrc,
-# que eh criado mais abaixo se nao existir
-LATEXMKOPTS := -dvi- -ps- -pdf -recorder -silent -logfilewarninglist-
+# Opcoes para bibtex/biber
+BIBTEXOPTS :=
+BIBEROPTS :=
+
+# O arquivo de configuracao latexmkrc-make eh criado mais abaixo
+LATEXMKOPTS := -r latexmkrc-make -dvi- -ps- -pdf -silent
 
 
 ###############################################################################
@@ -163,7 +168,7 @@ endif
 FILTER_MSGS := grep -Eav '(^$$)|(^ *\(.*(sty|ldf|def|cfg|dfu|fd|bbx|cbx|lbx|tex)\)*$$)'
 
 # Usamos texfot (script que filtra a saida de LaTeX) se estiver disponivel
-TEXFOT = $(shell if texfot --version >/dev/null 2>&1; then echo texfot; fi)
+TEXFOT = $(shell if texfot --version >/dev/null 2>&1; then echo texfot --quiet; fi)
 
 # LaTeX nao se adequa ao modelo de compilacao esperado pelo make, pois ele
 # recria os arquivos intermediarios toda vez, impedindo a definicao de regras
@@ -195,7 +200,6 @@ $(FIND_TEX_TEMP_FILES) | while read filename; do \
 done
 endef
 
-
 # LaTeX indica no arquivo de log se e preciso executa-lo novamente;
 # por seguranca, vamos checar isso tambem
 CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|Table widths have changed. Rerun LaTeX|Warning: [Rr]erun [Ll]a[Tt]e[Xx]' $*.log
@@ -205,15 +209,15 @@ CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|
 # resolver isso, usamos o "touch"
 define RUN_LATEX
 	@touch $*-timestamp
-	@msgs="`$(TEXFOT) $(LATEX) $(LATEXOPTS) $*`"; \
+	@$(LATEX) $(LATEXOPTS) $* >/dev/null 2>&1; \
 	stat=$$?; \
-	echo "$$msgs"| $(FILTER_MSGS) > $*-latex-out.log 2>&1; \
 	if test $$stat -ne 0; then \
 		$(SHOW_REPORT); \
 		$(SHOW_FAIL_MSG); \
 	fi; \
-	touch -r $*-timestamp $*.pdf
-	@rm -f $*-timestamp
+	touch -r $*-timestamp $*.pdf; \
+	rm -f $*-timestamp; \
+	exit $$stat
 endef
 
 define COMPILE_WITHOUT_LATEXMK
@@ -235,6 +239,7 @@ define COMPILE_WITHOUT_LATEXMK
 		$(MAKE) -s $@; \
 	else \
 		$(SHOW_FAIL_MSG); \
+		exit $$result; \
 	fi
 endef
 
@@ -244,11 +249,13 @@ define COMPILE_WITH_LATEXMK
 	@echo
 	@latexmk $(LATEXMKOPTS) $*; \
 	result=$$?; \
+	$(SHOW_REPORT); \
 	if [ $$result -eq 0 ]; then \
 		$(SHOW_SUCCESS_MSG); \
 	else \
 		$(SHOW_FAIL_MSG); \
-        fi
+	fi; \
+	exit $$result
 endef
 
 # "make target" -> "make target.pdf"
@@ -256,13 +263,17 @@ $(ALL_TARGETS): % : %.pdf
 
 ifeq ($(USE_LATEXMK), true)
 
-# Se nao existe arquivo latexmkrc, criamos
-latexmkrc:
-	@echo '$$pdflatex =' "'$(TEXFOT) $(LATEX) $(LATEXOPTS) %O %S';" > latexmkrc
-	@echo '$$makeindex =' "'$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S';" >> latexmkrc
-	@echo '$$cleanup_includes_generated = 1;' >> latexmkrc
-	@echo '$$cleanup_includes_cusdep_generated = 1;' >> latexmkrc
-	@echo '$$bibtex_use = 2;' >> latexmkrc
+# Cria arquivo latexmkrc com as opcoes definidas no Makefile
+latexmkrc-make: FORCE
+	@rm -f latexmkrc-make; \
+	echo '$$pdflatex =' "'$(LATEX) $(LATEXOPTS) %O %S';" > latexmkrc-make; \
+	echo '$$makeindex =' "'$(MAKEINDEX) $(MAKEINDEXOPTS) %O -o %D %S';" >> latexmkrc-make; \
+	echo '$$biber =' "'biber $(BIBEROPTS) %O %S';" >> latexmkrc-make; \
+	echo '$$bibtex =' "'bibtex $(BIBTEXOPTS) %O %S';" >> latexmkrc-make; \
+	echo '$$recorder = 1;' >> latexmkrc-make; \
+	echo '$$cleanup_includes_generated = 1;' >> latexmkrc-make; \
+	echo '$$cleanup_includes_cusdep_generated = 1;' >> latexmkrc-make; \
+	echo '$$bibtex_use = 2;' >> latexmkrc-make
 
 # Nao precisamos declarar as dependencias "normais" aqui (arquivos
 # .tex, .bib, imagens etc.) porque latexmk cuida disso. Vamos apenas
@@ -270,8 +281,8 @@ latexmkrc:
 # se eh ou nao necessario fazer alguma coisa. Precisamos tambem
 # declarar MISCFILES para que as regras necessarias para a geracao
 # dos arquivos adicionais sejam executadas antes de chamar latexmk.
-%.pdf: $(MISCFILES) latexmkrc FORCE
-	$(COMPILE_WITH_LATEXMK)
+%.pdf: $(MISCFILES) latexmkrc-make FORCE
+	@$(COMPILE_WITH_LATEXMK)
 	@$(SHOW_PDF)
 
 else
@@ -282,7 +293,7 @@ else
 .SECONDEXPANSION:
 
 $(addsuffix .pdf,$(ALL_TARGETS)) : %.pdf : %.bbl %.ind $$(CURRENT_TEX_TEMP_FILES) %.tex $(BIBFILES) $(IMGFILES) $(OTHERTEXFILES) $(MISCFILES)
-	$(COMPILE_WITHOUT_LATEXMK)
+	@$(COMPILE_WITHOUT_LATEXMK)
 	@if test $(MAKELEVEL) -eq 0; then \
 		$(SHOW_PDF); \
 	fi
@@ -305,8 +316,8 @@ endif
 	@echo
 
 %.ind: %.idx-current
-	@echo "       Executando $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx..."
-	@if ! $(MAKEINDEX) $(MAKEINDEXOPTS) $*.idx > $*-makeindex-out.log 2>&1; then \
+	@echo "       Executando $(MAKEINDEX) -q $(MAKEINDEXOPTS) $*.idx..."
+	@if ! $(MAKEINDEX) -q $(MAKEINDEXOPTS) $*.idx > /dev/null 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
 		echo "    **** Erro durante a execucao do makeindex/xindy (processando $*) ****"; \
@@ -315,12 +326,12 @@ endif
 	@echo
 
 %.bbl: %.bcf-current $(BIBFILES)
-	@BIBTEX=bibtex; \
+	@BIBTEX="bibtex -terse $(BIBTEXOPTS)"; \
 	if test -f $*.bcf; then \
-		BIBTEX=biber; \
+		BIBTEX="biber --onlylog $(BIBEROPTS)"; \
 	fi; \
 	echo "       Executando $$BIBTEX $*..."; \
-	if ! $$BIBTEX $* > $*-bibtex-out.log 2>&1; then \
+	if ! $$BIBTEX $* > /dev/null 2>&1; then \
 		$(SHOW_REPORT); \
 		echo; \
 		echo "    **** Erro durante a execucao do bibtex/biber (processando $*) ****"; \
@@ -343,7 +354,7 @@ distclean: $(addsuffix -distclean,$(ALL_TARGETS))
 
 %-clean:
 	@ echo '       removendo arquivos temporarios ($*: aux, bbl, idx...)'
-	-@rm -f $*-timestamp missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
+	-@rm -f $*-timestamp latexmkrc-make missfont.log '$*.synctex(busy)' '$*.synctex.gz(busy)' \
 		mkidxhead.ist mkidxhead.ist-current hyperxindy.xdy hyperxindy.xdy-current \
 		$*-latex-out.log $*-makeindex-out.log $*-bibtex-out.log \
 		$(TEX_TEMP_FILES) $(CURRENT_TEX_TEMP_FILES) \
@@ -372,26 +383,26 @@ endef
 endif
 
 define SHOW_REPORT
-	if test -f $*-bibtex-out.log; then \
+	if test -s $*.blg; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por bibtex/biber (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat $*-bibtex-out.log; \
+		cat $*.blg | sed -e '/You.ve used/,$$d'; \
 	fi; \
-	if test -f $*-makeindex-out.log; then \
+	if test -s $*.ilg; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por makeindex/xindy (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat $*-makeindex-out.log; \
+		cat $*.ilg; \
 	fi; \
-	if test -f $*-latex-out.log; then \
+	if test -s $*.log; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por LaTeX (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat $*-latex-out.log; \
+		$(TEXFOT) cat $*.log | $(FILTER_MSGS); \
 	fi
 endef
 
