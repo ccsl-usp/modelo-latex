@@ -43,9 +43,16 @@
 % esse problema.
 \usepackage[nottoc,notlot,notlof]{tocbibind}
 
-% Só olha até o nível 2 (seções), ou seja, não coloca nomes de
-% subseções ou subsubseções no sumário (nem nos cabeçalhos).
+% Só olha até o nível 2 (subseções) para gerar o sumário e os
+% cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
+% no sumário nem nos cabeçalhos.
 \setcounter{tocdepth}{2}
+
+% Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
+% sub-subseções (como 2.3.1.1). Veja que isso afeta referências
+% cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
+% numerada, a referência vai apontar para a seção um nível acima.
+\setcounter{secnumdepth}{2}
 
 % Normalmente, o capítulo de introdução não deve ser numerado, mas
 % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
