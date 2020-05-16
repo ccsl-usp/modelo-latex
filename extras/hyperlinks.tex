@@ -36,6 +36,39 @@
 %\labelformat{subsection}{Seção~#1}
 %\labelformat{subsubsection}{Seção~#1}
 
+% XMP (eXtensible Metadata Platform) is a mechanism proposed by Adobe for
+% embedding document metadata within the document itself. The package
+% integrates seamlessly with hyperref and requires virtually no modifications
+% to documents that already exploit hyperref's mechanisms for specifying PDF
+% metadata. It should be loaded before hyperref.
+\usepackage{hyperxmp}
+
+% HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
+% https://github.com/ho-tex/atenddvi/issues/1 . Aparentemente, ele não
+% afeta xelatex (cf https://github.com/latex3/latex2e/issues/94 ), então
+% só precisamos nos preocupar com pdflatex e lualatex. Com pdflatex,
+% hyperxmp não deveria utilizar atenddvi, mas às vezes usa. Com lualatex,
+% me parece que atenddvi também não é necessária, pois hyperxmp não usa
+% \special ou \write com lualatex. Então, vamos deixar hyperxmp carregar
+% atenddvi mas (1) vamos impedi-la de funcionar e (2) vamos garantir que
+% hyperxmp sempre use AtEndDocument com pdflatex e lualatex. Há ainda um
+% outro truque para contornar esse problema na configuração da bibliografia,
+% mas não podemos ter certeza que apenas a bibliografia pode ser afetada
+% por este bug.
+
+% TODO: remover isto quando o bug for corrigido
+\makeatletter
+\ifpdf
+  \ifxetex
+    \relax
+  \else
+    \let\AtEndDvi@AtBeginShipout\relax
+    \let\AtEndDvi@CheckImpl\relax
+    \let\hyxmp@at@end\AtEndDocument
+  \fi
+\fi
+\makeatother
+
 % Usamos "PassOptions" aqui porque outras packages definem opções para
 % hyperref também e chamar a package com opções diretamente gera conflitos.
 \PassOptionsToPackage{
@@ -100,13 +133,6 @@
   test {\ifcsdef{table}} and
   test {\ifcsdef{table*}}
 }{\usepackage[all]{hypcap}}{}
-
-% XMP (eXtensible Metadata Platform) is a mechanism proposed by Adobe for
-% embedding document metadata within the document itself. The package
-% integrates seamlessly with hyperref and requires virtually no modifications
-% to documents that already exploit hyperref's mechanisms for specifying PDF
-% metadata.
-\usepackage{hyperxmp}
 
 % hyperref detecta url's definidas com \url que começam com "http" e
 % "www" e cria links adequados. No entanto, quando a url não começa
