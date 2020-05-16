@@ -181,8 +181,23 @@
 % tabelas do LaTeX e alguns comandos pré-prontos que podem facilitar um pouco
 % seu uso.
 
-% LaTeX por padrão não permite notas de rodapé dentro de tabelas;
-% este pacote acrescenta essa funcionalidade.
+% LaTeX por padrão não permite notas de rodapé dentro de tabelas. De maneira
+% geral, notas de rodapé em tabelas são consideradas "ruins" em termos de
+% tipografia, mas às vezes são necessárias. Se esse é o caso, o recomendado
+% é que as notas de rodapé apareçam no "rodapé" da tabela, com numeração
+% própria, e não no rodapé da página. Você pode fazer isso com esta package:
+\usepackage{threeparttable}
+% Formatação personalizada das notas de threeparttable:
+\appto{\TPTnoteSettings}{\footnotesize\itshape}
+\def\TPTtagStyle{\textit}
+
+% Se você realmente quer notas de rodapé em tabelas que aparecem como as
+% demais notas de rodapé (no final da página e mantendo a sequência numérica),
+% você pode usar a package abaixo. No entanto, ela não funciona com floats
+% duplos (floats que ocupam toda a largura da página em um documento de duas
+% colunas) e, em alguns casos, a nota pode desaparecer ou aparecer em uma
+% página diferente da tabela (mova o lugar do texto em que ela é definida
+% para resolver esse problema).
 \usepackage{tablefootnote}
 
 % Por padrão, cada coluna de uma tabela tem a largura do maior texto contido
