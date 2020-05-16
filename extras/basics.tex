@@ -47,26 +47,51 @@
 \usepackage{mathtools}
 
 % "fontenc" é um parâmetro do NFSS (sistema de gestão de fontes do
-% LaTeX; consulte "texdoc fntguide" e "texdoc fontenc"). Mesmo
-% usando fontspec (alternativa a ele compatível apenas com lualatex
-% e xelatex), é aconselhável configurar fontenc corretamente. O
-% default é OT1, mas ele tem algumas limitações; a mais importante
-% é que, com ele, palavras acentuadas não podem ser hifenizadas.
-% Por conta disso, quase todos os documentos LaTeX utilizam o
-% fontenc T1. A escolha do fontenc tem consequências para as fontes
-% que podem ser usadas com NFSS; hoje em dia T1 tem mais opções
-% de qualidade, então não se perde nada em usá-lo.
+% LaTeX; consulte "texdoc fntguide" e "texdoc fontenc"). O default
+% é OT1, mas ele tem algumas limitações; a mais importante é que,
+% com ele, palavras acentuadas não podem ser hifenizadas. Por
+% conta disso, quase todos os documentos LaTeX utilizam o fontenc
+% T1. A escolha do fontenc tem consequências para as fontes que
+% podem ser usadas com NFSS; hoje em dia T1 tem mais opções de
+% qualidade, então não se perde nada em usá-lo. A package fontspec
+% (para gestão de fontes usando outro mecanismo, compatível apenas
+% com lualatex e xelatex) carrega fontenc automaticamente, mas
+% usando outra codificação ("TU" e não "T1"). Ainda assim, é útil
+% carregar o fontenc T1 (antes de carregar fontspec!) para o caso
+% de alguma fonte "antiga" ser utilizada no documento (embora isso
+% não seja recomendado: lualatex e xelatex só são capazes de
+% hifenizar palavras acentuadas com o fontenc TU).
 \usepackage[T1]{fontenc}
 
 \ifunicodeengine
   % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
   % com eles utf8 é obrigatório.
   \usepackage{fontspec}
+
+  % Ao invés de usar o sistema tradicional de LaTeX para gerir
+  % as fontes matemáticas, utiliza as extensões matemáticas do
+  % formato otf definidas pela microsoft. Ao ativar esta package
+  % o mecanismo tradicional não funciona mais! Há poucas fontes
+  % com suporte a unicode-math.
   \usepackage{unicode-math}
 \else
   % O texto está escrito em utf8.
   \usepackage[utf8]{inputenc}
+
+  % Permitem utilizar small caps + itálico (e outras pequenas
+  % melhorias). Em geral, desnecessário com fontenc, a menos
+  % que alguma package utilize especificamente. Algumas raras
+  % packages de fontes podem causar conflitos com fontaxes, em
+  % geral por utilizarem a package "concorrente" nfssext-cfr.
+  \usepackage{fontaxes}
+  \usepackage{mweights}
 \fi
+
+% Acesso a símbolos adicionais, como \textrightarrow, \texteuro
+% etc., disponíveis na maioria das fontes através do fontenc TS1
+% ou mudando momentaneamente para computer modern/latin modern.
+% Raramente útil com lualatex/xelatex, mas não causa problemas.
+\usepackage{textcomp}
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
