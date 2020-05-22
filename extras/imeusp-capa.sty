@@ -10,14 +10,6 @@
 % vindos do projeto LaTeX3.
 \RequirePackage{xparse}
 
-% os diversos testes de etoolbox não expandem os argumentos; como precisamos
-% que eles sejam expandidos, definimos aqui um comando auxiliar para isso.
-\NewDocumentCommand\@if@expand@empty{+m +m +m}{%
-  % Força expansão; se #1 for indefinido, csuse expande para a string vazia
-  \edef\tmp{\csuse{#1}}%
-  \ifcsvoid{tmp}{#2}{#3}%
-}
-
 % Parágrafos não-justificados melhores
 \RequirePackage[newcommands]{ragged2e}
 
@@ -90,54 +82,67 @@
 % Define os campos que vão ser usados na capa
 
 % Às vezes é necessário forçar quebras de linha no título para a capa, mas
-% essas quebras não devem aparecer em outros lugares. Vamos definir duas
-% variáveis para o título, uma para a capa e outra "sanitizada", sem quebras
-% de linha. "Sanitizar" desta forma em LaTeX de maneira que não haja
-% surpresas, por incrível que pareça, é *muito* complicado, mas o código
-% abaixo deve ser suficiente para este caso. Se tiver curiosidade:
-% http://www.matijs.net/blog/2006/07/20/how-to-trim-spaces-in-tex
+% essas quebras não devem aparecer em outros lugares. Esta macro "apaga"
+% esses comandos do título e do subtítulo; basta usá-la em um grupo para
+% que a mudança não seja permanente.
 
-\NewDocumentCommand\disablelinebreak{s o}{\unskip{} \ignorespaces}
-
-\newcommand*{\titulopt}[1]{
-    \gdef\@tituloptcapa{#1}
-    \gdef\@titulopt{%
-        \let \\ \disablelinebreak%
-        \let \newline \disablelinebreak%
-        \let \break \disablelinebreak%
-        #1%
-    }
+\newcommand{\removeTitleLineBreaks}{%
+  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
+  %
+  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
+  %
+  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
+  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
 }
 
-\newcommand*{\tituloeng}[1]{
-    \gdef\@tituloengcapa{#1}
-    \gdef\@tituloeng{%
-        \let \\ \disablelinebreak%
-        \let \newline \disablelinebreak%
-        \let \break \disablelinebreak%
-        #1%
-    }
-}
-
-\newcommand*{\subtitulo}[1]{
-    \gdef\@subtitulocapa{#1}
-    \gdef\@subtitulo{%
-        \let \\ \disablelinebreak%
-        \let \newline \disablelinebreak%
-        \let \break \disablelinebreak%
-        #1%
-    }
-}
-
-\newcommand*{\subtituloeng}[1]{
-    \gdef\@subtituloengcapa{#1}
-    \gdef\@subtituloeng{%
-        \let \\ \disablelinebreak%
-        \let \newline \disablelinebreak%
-        \let \break \disablelinebreak%
-        #1%
-    }
-}
+\newcommand*{\titulopt}[1]{\gdef\@titulopt{#1}}
+\newcommand*{\tituloeng}[1]{\gdef\@tituloeng{#1}}
+\newcommand*{\subtitulo}[1]{\gdef\@subtitulo{#1}}
+\newcommand*{\subtituloeng}[1]{\gdef\@subtituloeng{#1}}
 
 % Caso alguém se confunda e use o comando errado
 \let\tituloport\titulopt
@@ -281,12 +286,8 @@
 
 \titulopt{\@title}
 \tituloeng{\@title}
-
-% Default é vazio; não vamos usar "\subtitulo{}" porque, com isso,
-% \@subtitulo deixa de ser vazio (embora nada seja impresso, ele
-% inclui os comandos para desabilitar quebras de linha)
-\gdef\@subtitulocapa{}
-\gdef\@subtitulo{}
+\subtitulo{}
+\subtituloeng{}
 
 \orientador{Orientador não definido!}
 \programa{Programa não definido!}
@@ -303,8 +304,6 @@
 
 % Se estes não forem definidos, usamos a variável correspondente
 % em português.
-\newcommand*{\@subtituloeng}{\@subtitulo}
-\newcommand*{\@subtituloengcapa}{\@subtitulocapa}
 \newcommand*{\@orientadoreng}{\@orientador}
 \newcommand*{\@coorientadoreng}{\@coorientador}
 \newcommand*{\@programaeng}{\@programa}
@@ -402,11 +401,11 @@
     \ifstrequal{port}{#1}{%
       \iftoggle{@tcc}{}{Programa: & \@programa \tabularnewline}
       \@labelorientador: & \@orientador \tabularnewline
-      \@if@expand@empty{@coorientador}{}{\@labelcoorientador: & \@coorientador \tabularnewline}%
+      \ifcsvoid{@coorientador}{}{\@labelcoorientador: & \@coorientador \tabularnewline}%
     }{%
       Program: & \@programaeng \tabularnewline
       Advisor: & \@orientadoreng \tabularnewline
-      \@if@expand@empty{@coorientador}{}{Coadvisor: & \@coorientadoreng \tabularnewline}%
+      \ifcsvoid{@coorientador}{}{Coadvisor: & \@coorientadoreng \tabularnewline}%
   }
   \end{tabular}
 }
@@ -463,19 +462,23 @@
 }
 
 \newcommand{\@refdocumento}[1][port] {%
+  \bgroup
+  \removeTitleLineBreaks
+
   \@author.
   \ifstrequal{port}{#1}{%
-    \textbf{\@titulopt\@if@expand@empty{@subtitulo}{}{: \textit{\@subtitulo}}}.
+    \textbf{\@titulopt\ifcsvoid{@subtitulo}{}{: \textit{\@subtitulo}}}.
     \@nometrabalho{} (\@grau).
     Instituto de Matemática e Estatística,
     Universidade de São Paulo,%
   }{%
-    \textbf{\@tituloeng\@if@expand@empty{@subtituloeng}{}{: \textit{\@subtituloeng}}}.
+    \textbf{\@tituloeng\ifcsvoid{@subtituloeng}{}{: \textit{\@subtituloeng}}}.
     \@nometrabalhoeng{} (\@graueng).
     Institute of Mathematics and Statistics,
     University of São Paulo,%
   }
   São Paulo, \@ano.%
+  \egroup
 }
 
 
@@ -550,7 +553,7 @@
     \item
       \@direitos
 
-      \@if@expand@empty{@fichacatalografica} {} {
+      \ifcsvoid{@fichacatalografica} {} {
         \vspace*{3cm plus 3cm minus 1cm}
 	\setlength{\fboxsep}{20pt}
 	\begin{center}
@@ -675,17 +678,17 @@
           \singlespacing\unskip\centering\large
 
           \ifstrequal{port}{#1} {%
-            \textbf{\@tituloptcapa}
+            \textbf{\@titulopt}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\textit{\@subtitulocapa}}%
+            \textbf{\textit{\@subtitulo}}%
           }{%
-            \textbf{\@tituloengcapa}
+            \textbf{\@tituloeng}
 
             \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\textit{\@subtituloengcapa}}%
+            \textbf{\textit{\@subtituloeng}}%
           }
 
           \vspace{1cm plus 1cm minus 0.6cm}
