@@ -87,11 +87,14 @@
   \usepackage{mweights}
 \fi
 
-% Acesso a símbolos adicionais, como \textrightarrow, \texteuro
-% etc., disponíveis na maioria das fontes através do fontenc TS1
-% ou mudando momentaneamente para computer modern/latin modern.
-% Raramente útil com lualatex/xelatex, mas não causa problemas.
-\usepackage{textcomp}
+% Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
+% disponíveis na maioria das fontes através do fontenc TS1 ou mudando
+% momentaneamente para computer modern/latin modern. Raramente útil
+% com lualatex/xelatex, mas não causa problemas. Várias packages de
+% fontes carregam textcomp, às vezes com opções específicas; assim,
+% para evitar problemas, vamos carregá-la no final do preâmbulo para
+% o caso de ela não ter sido carregada antes.
+\AtBeginDocument{\usepackage{textcomp}}
 
 % Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
 % hifenização e outras convenções tipográficas. babel deve ser um dos
