@@ -114,7 +114,6 @@ import matplotlib.pyplot as plt
 
 # figsize in inches
 plt.figure(figsize=(1.5,2.5))
-plt.margins(0)
 plt.xticks(range(1,4), (u"SP", u"RJ", u"MG"))
 plt.bar([1,2,3],[2,6,4])
 plt.xlabel(u"\\textit{Estado}")

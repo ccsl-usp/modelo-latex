@@ -47,18 +47,121 @@ set terminal cairolatex pdf input size 3.8in,2.5in header "\\footnotesize"
 # Com cairolatex, isso vai gerar também o arquivo figuras/gnuplot.pdf
 set output "figuras/gnuplot.tkz"
 
-set xlabel '$\mathit{ordenadas}$'
-set ylabel '$\mathit{abscissas}$'
+set xlabel '$x$'
+set ylabel '$f(x)$'
 
-plot "-" title "linear" with linespoints, "-" title "exponencial" with linespoints
-1 2
-2 3
-3 4
-4 5
+plot "-" title "linear ($10x-10$)" with lines, "-" title "quadrático ($x^2-1$)" with lines, "-" title "logarítmico ($25\log_2(x)$)" with lines
+0
+3
+6
+9
+12
+15
+18
+21
+24
+27
+30
+33
+36
+39
+42
+45
+48
+51
+54
+57
+60
+63
+66
+69
+72
+75
+78
+81
+84
+87
+90
+93
+96
+99
+102
+105
+108
 e
-1 2
-2 4
-3 8
-4 16
+0
+0.69
+1.56
+2.61
+3.84
+5.25
+6.84
+8.61
+10.56
+12.69
+15
+17.49
+20.16
+23.01
+26.04
+29.25
+32.64
+36.21
+39.96
+43.89
+48
+52.29
+56.76
+61.41
+66.24
+71.25
+76.44
+81.81
+87.36
+93.09
+99
+105.1
+111.4
+117.8
+124.4
+131.3
+138.2
 e
+0
+9.463
+16.95
+23.15
+28.44
+33.05
+37.14
+40.81
+44.14
+47.19
+50
+52.61
+55.04
+57.32
+59.46
+61.49
+63.4
+65.22
+66.95
+68.6
+70.18
+71.7
+73.15
+74.55
+75.89
+77.19
+78.44
+79.65
+80.82
+81.95
+83.05
+84.11
+85.15
+86.16
+87.14
+88.09
+89.02
 unset output
