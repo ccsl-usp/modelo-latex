@@ -69,14 +69,17 @@
 % pertencem. Por padrão, se a seção começa no meio da página, LaTeX pode
 % colocar a figura no topo dessa página
 \usepackage{flafter}
+
 % Às vezes um float pode ser adiado por muitas páginas; é possível forçar
-% LaTeX a imprimir todos os floats pendentes com o comando \clearpage.
-% Esta package acrescenta o comando \FloatBarrier, que garante que floats
-% definidos anteriormente sejam impressos e garante que floats subsequentes
-% não apareçam antes desse ponto. A opção "section" faz o comando ser
-% aplicado automaticamente a cada nova seção. "above" e "below" desabilitam
-% a barreira quando os floats estão na mesma página.
-\usepackage[section,above,below]{placeins}
+% LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
+% para isso, o usuário deve identificar os casos problemáticos e inserir
+% \clearpage manualmente. Esta package acrescenta o comando \FloatBarrier,
+% que executa \clearpage automaticamente se necessário no local em que é
+% chamado. A opção "section" faz o comando ser aplicado automaticamente
+% a cada nova seção. "above" e "below" desabilitam a barreira quando os
+% floats estão na mesma página. A desvantagem de placeins é que, para
+% funcionar, ela gera quebras de página que muitas vezes são inesperadas.
+%\usepackage[section,above,below]{placeins}
 
 % LaTeX escolhe automaticamente o "melhor" lugar para colocar cada float.
 % Por padrão, ele tenta colocá-los no topo da página e depois no pé da
