@@ -52,3 +52,11 @@ heading_suffix "}\\nopagebreak\n"
   % Estas opções são usadas por makeindex
   options=-s mkidxhead.ist -l -c,
 ]
+
+\PassOptionsToPackage{
+  % hyperref não gera hyperlinks corretos em índices remissivos criados
+  % com xindy; assim, é possível desabilitar essa função aqui e gerar os
+  % os hyperlinks através da configuração de xindy definida anteriormente.
+  % Com makeindex (o default), quem precisa criar os hyperlinks é hyperref.
+  %hyperindex=false,
+}{hyperref}

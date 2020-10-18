@@ -7,14 +7,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % A língua padrão é a última citada
-\documentclass[xcolor={hyperref,svgnames,x11names,table},brazil,english]{beamer}
+\documentclass[
+  xcolor={hyperref,svgnames,x11names,table},
+  hyperref={pdfencoding=unicode,plainpages=false,pdfpagelabels=true,breaklinks=true},
+  brazil,english,
+]{beamer}
 
 % Vários pacotes e opções de configuração genéricos
 \input{extras/basics}
 \input{extras/fonts}
 \input{extras/floats}
 \input{extras/index}
-%\input{extras/hyperlinks} % não é necessário aqui
+\input{extras/hyperlinks}
+\hypersetup{colorlinks=false,pdfborder={0 0 0},pdfborderstyle=} % desabilita visualização dos links
 \input{extras/source-code}
 \input{extras/utils}
 

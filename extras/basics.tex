@@ -305,6 +305,20 @@
 % Se uma página está vazia, não imprime número de página ou cabeçalho
 \usepackage{emptypage}
 
+% hyperref deve preferencialmente ser carregada próximo ao final
+% do preâmbulo mas, para o caso de alguma package forçar a sua
+% carga antes de executarmos \usepackage explicitamente, vamos
+% garantir que estas opções estejam ativas.
+\PassOptionsToPackage{
+  unicode=true,
+  pdfencoding=unicode,
+  plainpages=false,
+  pdfpagelabels,
+  bookmarksopen=true,
+  breaklinks=true,
+  %hyperfootnotes=false, % polui desnecessariamente com bordercolor
+}{hyperref}
+
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
 \usepackage[hyperref,svgnames,x11names,table]{xcolor}
 

@@ -36,48 +36,11 @@
 %\labelformat{subsection}{Seção~#1}
 %\labelformat{subsubsection}{Seção~#1}
 
-% XMP (eXtensible Metadata Platform) é um mecanismo proposto pela Adobe
-% para a inclusão de metadados de um documento no próprio documento.
-% Esta package se integra com hyperref e não depende de praticamente
-% nenhuma modificação em documentos que já utilizam os mecanismos de
-% hyperref para a definição de metadados PDF. Ela deve ser carregada
-% antes das opções relacionadas a metadados de hyperref serem ativadas
-% (ou antes de carregar hyperref).
-\usepackage{hyperxmp}
+% Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
+\usepackage{hyperref}
 
-% HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
-% https://github.com/ho-tex/atenddvi/issues/1 . Aparentemente, ele não
-% afeta xelatex (cf https://github.com/latex3/latex2e/issues/94 ), então
-% só precisamos nos preocupar com pdflatex e lualatex. Com pdflatex,
-% hyperxmp não deveria utilizar atenddvi, mas às vezes usa. Com lualatex,
-% me parece que atenddvi também não é necessária, pois hyperxmp não usa
-% \special ou \write com lualatex. Então, vamos deixar hyperxmp carregar
-% atenddvi mas (1) vamos impedi-la de funcionar e (2) vamos garantir que
-% hyperxmp sempre use AtEndDocument com pdflatex e lualatex. Há ainda um
-% outro truque para contornar esse problema na configuração da bibliografia,
-% mas não podemos ter certeza que apenas a bibliografia pode ser afetada
-% por este bug.
-
-% TODO: remover isto quando o bug for corrigido
-\makeatletter
-\ifpdf
-  \ifxetex
-    \relax
-  \else
-    \let\AtEndDvi@AtBeginShipout\relax
-    \let\AtEndDvi@CheckImpl\relax
-    \let\hyxmp@at@end\AtEndDocument
-  \fi
-\fi
-\makeatother
-
-% Usamos "PassOptions" aqui porque outras packages definem opções
-% para hyperref também e chamar a package com opções diretamente
-% pode gerar conflitos.
-\PassOptionsToPackage{
-  unicode=true,
-  plainpages=false,
-  pdfpagelabels,
+% TODO: check border colors
+\hypersetup{
   colorlinks=true,
   %citecolor=black,
   %linkcolor=black,
@@ -87,16 +50,13 @@
   linkcolor=NavyBlue,
   urlcolor=DarkRed,
   filecolor=green,
-  bookmarksopen=true,
-  % hyperref não gera hyperlinks corretos em índices remissivos criados com
-  % xindy; assim, é possível desabilitar essa função aqui e gerar os
-  % hyperlinks através da configuração de xindy definida anteriormente. Com
-  % makeindex (o default), quem precisa criar os hyperlinks é hyperref.
-  %hyperindex=false,
-}{hyperref}
-
-% Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
-\usepackage{hyperref}
+  %pdfborder={0 0 .6},
+  %pdfborderstyle={/S/U/W .6},
+  %urlbordercolor=red!30!white,
+  %citebordercolor=green!30!white,
+  %linkbordercolor=blue!30!white,
+  %filebordercolor=green!30!white,
+}
 
 %\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
 %% cleveref não tem tradução para o português
@@ -143,3 +103,38 @@
 % se trata de um link para um arquivo local. Isto força todas as
 % \url's que não tem esquema definido a serem do tipo http.
 \hyperbaseurl{http://}
+
+% XMP (eXtensible Metadata Platform) é um mecanismo proposto pela Adobe
+% para a inclusão dos metadados de um documento no próprio documento.
+% Esta package se integra com hyperref e não depende de praticamente
+% nenhuma modificação em documentos que já utilizam os mecanismos de
+% hyperref para a definição de metadados PDF. Ela deve ser carregada
+% depois de hyperref mas antes de as opções relacionadas a metadados
+% de hyperref serem definidas.
+\usepackage{hyperxmp}
+
+% HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
+% https://github.com/ho-tex/atenddvi/issues/1 . Aparentemente, ele não
+% afeta xelatex (cf https://github.com/latex3/latex2e/issues/94 ), então
+% só precisamos nos preocupar com pdflatex e lualatex. Com pdflatex,
+% hyperxmp não deveria utilizar atenddvi, mas às vezes usa. Com lualatex,
+% atenddvi parece também não ser necessária, pois hyperxmp não usa
+% \special ou \write com lualatex. Então, vamos deixar hyperxmp carregar
+% atenddvi mas (1) vamos impedi-la de funcionar e (2) vamos garantir que
+% hyperxmp sempre use AtEndDocument com pdflatex e lualatex. Há ainda um
+% outro truque para contornar esse problema na configuração da bibliografia,
+% mas não podemos ter certeza de que apenas a bibliografia pode ser afetada
+% por este bug.
+
+% TODO: remover isto quando o bug for corrigido
+\makeatletter
+\ifpdf
+  \ifxetex
+    \relax
+  \else
+    \let\AtEndDvi@AtBeginShipout\relax
+    \let\AtEndDvi@CheckImpl\relax
+    \let\hyxmp@at@end\AtEndDocument
+  \fi
+\fi
+\makeatother

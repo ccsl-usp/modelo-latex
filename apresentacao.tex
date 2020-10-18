@@ -8,7 +8,11 @@
 % aspectratio default é 4:3;
 % as mais úteis são 169 (16:9), 1610 (16:10) e 149 (14:9)
 % A língua padrão é a última citada
-\documentclass[xcolor={hyperref,svgnames,x11names,table},brazil,english,12pt,aspectratio=149]{beamer}
+\documentclass[
+  xcolor={hyperref,svgnames,x11names,table},
+  hyperref={pdfencoding=unicode,plainpages=false,pdfpagelabels=true,breaklinks=true},
+  brazil,english,12pt,aspectratio=149,
+]{beamer}
 
 % Vários pacotes e opções de configuração genéricos
 \input{extras/basics}
@@ -19,6 +23,7 @@
 % passos de compilação que a tese
 \input{extras/index}
 \input{extras/hyperlinks}
+\hypersetup{colorlinks=false,pdfborder={0 0 0},pdfborderstyle=} % desabilita visualização dos links
 \input{extras/source-code}
 \input{extras/utils}
 
