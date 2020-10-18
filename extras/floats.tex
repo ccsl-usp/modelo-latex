@@ -65,9 +65,15 @@
 \floatplacement{table}{htbp}
 \floatplacement{figure}{htbp}
 
-% Garante que floats (tabelas e figuras) só apareçam após as seções a que
-% pertencem. Por padrão, se a seção começa no meio da página, LaTeX pode
-% colocar a figura no topo dessa página
+
+% Em alguns casos, um float pode aparecer antes do local do texto em que
+% foi definido (ou seja, no topo da página ao invés do meio da página).
+% Esta package garante que floats (tabelas e figuras) só apareçam após
+% o local no texto em que foram definidos; veja os detalhes em
+% https://tex.stackexchange.com/a/297580 . Note que, se o float tem a
+% opção "h", normalmente LaTeX *não* coloca o float no topo da página
+% atual: se o float não pode ser colocado "here", ele é delegado para
+% a página seguinte.
 \usepackage{flafter}
 
 % Às vezes um float pode ser adiado por muitas páginas; é possível forçar
@@ -86,16 +92,18 @@
 % página; se não tiver sucesso, vai para a página seguinte e recomeça.
 % Se esse algoritmo não tiver sucesso "logo", LaTeX cria uma página só
 % com floats. É possível modificar esse comportamento com as opções de
-% posicionamento: "tp", por exemplo, instrui LaTeX a não colocar floats
-% no pé da página, e "htbp" o instrui para tentar "aqui" como a primeira
-% opção. O pacote "floatrow" acrescenta a opção "H", que significa "aqui,
-% incondicionalmente".
+% posicionamento: "tp", por exemplo, instrui LaTeX a considerar apenas
+% o topo da página ou uma página só de floats (ignorando o pé da página),
+% e "htbp" o instrui para tentar "aqui" como a primeira opção. A ordem
+% dessas opções não é relevante: dentre as opções disponíveis, LaTeX
+% sempre tenta "aqui, topo, pé, página". Os pacotes "float" e "floatrow"
+% acrescentam a opção "H", que significa "aqui, incondicionalmente".
 %
 % A escolha do "melhor" lugar leva em conta os parâmetros abaixo, mas é
 % possível ignorá-los com a opção de posicionamento "!". Dado que os
 % valores default não são muito bons para floats "grandes" ou documentos
 % com muitos floats, é muito comum usar "!" ou "H". No entanto, modificando
-% esses parâmetros o algoritmo automático tende a funcionar melhor. Ainda
+% estes parâmetros o algoritmo automático tende a funcionar melhor. Ainda
 % assim, vale ler a discussão a respeito na seção "Limitações do LaTeX"
 % deste modelo.
 

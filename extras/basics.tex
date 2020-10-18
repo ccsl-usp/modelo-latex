@@ -14,7 +14,10 @@
 % fazê-las acreditar que xpatch já foi carregada.
 \expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}
 
+% Arithmetic expressions in \set{length,counter} & \addto{length,counter};
+% commands \widthof, \heightof, \depthof, \totalheightof, \settototalheight
 \usepackage{calc}
+
 % Sempre que possível, é melhor usar os recursos de etoolbox ao invés de
 % ifthen; no entanto, várias packages dependem dela.
 %\usepackage{ifthen}
@@ -79,7 +82,7 @@
   \usepackage[utf8]{inputenc}
 
   % Permitem utilizar small caps + itálico (e outras pequenas
-  % melhorias). Em geral, desnecessário com fontenc, a menos
+  % melhorias). Em geral, desnecessário com fontspec, a menos
   % que alguma package utilize especificamente. Algumas raras
   % packages de fontes podem causar conflitos com fontaxes, em
   % geral por utilizarem a package "concorrente" nfssext-cfr.
@@ -252,8 +255,8 @@
 \hyphenpenalty=100 % Default 50; se o texto é em 2 colunas, 50 é melhor
 \setlength{\emergencystretch}{1.5em}
 
-% Não gera warnings para Overfull menor que 0.5pt
-\hfuzz=.5pt
+% Não gera warnings para Overfull menor que 1pt
+\hfuzz=1pt
 \vfuzz\hfuzz
 
 % Não gera warnings para Underfull com badness < 1000

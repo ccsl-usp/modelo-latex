@@ -36,11 +36,13 @@
 %\labelformat{subsection}{Seção~#1}
 %\labelformat{subsubsection}{Seção~#1}
 
-% XMP (eXtensible Metadata Platform) is a mechanism proposed by Adobe for
-% embedding document metadata within the document itself. The package
-% integrates seamlessly with hyperref and requires virtually no modifications
-% to documents that already exploit hyperref's mechanisms for specifying PDF
-% metadata. It should be loaded before hyperref.
+% XMP (eXtensible Metadata Platform) é um mecanismo proposto pela Adobe
+% para a inclusão de metadados de um documento no próprio documento.
+% Esta package se integra com hyperref e não depende de praticamente
+% nenhuma modificação em documentos que já utilizam os mecanismos de
+% hyperref para a definição de metadados PDF. Ela deve ser carregada
+% antes das opções relacionadas a metadados de hyperref serem ativadas
+% (ou antes de carregar hyperref).
 \usepackage{hyperxmp}
 
 % HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
@@ -69,8 +71,9 @@
 \fi
 \makeatother
 
-% Usamos "PassOptions" aqui porque outras packages definem opções para
-% hyperref também e chamar a package com opções diretamente gera conflitos.
+% Usamos "PassOptions" aqui porque outras packages definem opções
+% para hyperref também e chamar a package com opções diretamente
+% pode gerar conflitos.
 \PassOptionsToPackage{
   unicode=true,
   plainpages=false,
