@@ -88,27 +88,6 @@
     pages        = {pgs\adddot},
   }
 
-  % biblatex redefine os cabeçalhos das páginas na bibliografia;
-  % vamos deixar essa tarefa para fancyhdr.
-  % Sem incluir a bibliografia no sumário:
-  \defbibheading{bibliography}[\bibname]{%
-    % Testamos chaptermark e não chapter porque titlesec
-    % define chapter, mesmo na classe article. Este teste
-    % depende da package fancyhdr; no entanto, a razão de
-    % ser desta configuração é configurar fancyhdr, então
-    % isso não é um problema.
-    \ifcsdef{chaptermark}
-      {\chapter*{#1}\chaptermark{#1}}
-      {\section*{#1}\sectionmark{#1}}
-  }
-
-  % Incluindo a bibliografia no sumário:
-  \defbibheading{bibintoc}[\bibname]{%
-    \ifcsdef{chaptermark}
-      {\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\chaptermark{#1}}
-      {\section*{#1}\sectionmark{#1}}
-  }
-
   % Por padrão, biblatex mantém a caixa alta/baixa dos títulos como
   % digitados no arquivo bib, mas fornece a possibilidade de modificar
   % esse comportamento em função da língua. Se a opção abaixo for
