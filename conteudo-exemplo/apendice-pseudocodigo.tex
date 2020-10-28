@@ -36,23 +36,23 @@ no Programa~\ref{prog:mdc}\footnote{\textsf{listings} oferece alguns
 recursos próprios para a definição de \textit{floats} e legendas, mas
 neste modelo não os utilizamos.}:
 
-\begin{programruledcaption}{Máximo divisor comum.\label{prog:mdc}}
+\begin{programruledcaption}{Máximo divisor comum (em português).\label{prog:mdc}}
   \begin{lstlisting}[
-    language=pseudocode,
+    language={[brazilian]pseudocode},
     style=pseudocode,
     style=wider,
     functions={},
     specialidentifiers={},
   ]
-      function euclid(a, b) // The \textbf{g.c.d.} of a and b
+      funcao euclides(a, b) // O máximo divisor comum de \textbf{a} e \textbf{b}
           r := a $\bmod$ b
-          while r != 0 // We have the answer if r is 0
+	  enquanto r != 0 // Atingimos a resposta se \textbf{r} é zero
               a := b
               b := r
               r := a $\bmod$ b
-          end
-          return b // The \textbf{g.c.d.} is b
-      end
+          fim
+	  devolva b // O máximo divisor comum é \textbf{b}
+      fim
   \end{lstlisting}
 \end{programruledcaption}
 

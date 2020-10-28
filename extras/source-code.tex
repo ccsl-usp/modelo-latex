@@ -22,7 +22,7 @@
 \appto{\lstaspectfiles}{,lstpseudocode.sty}
 \appto{\lstlanguagefiles}{,lstpseudocode.sty}
 \dowithsubdir{extras/}{\lstloadaspects{simulatex,invisibledelims,pseudocode}}
-\dowithsubdir{extras/}{\lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazil]pseudocode}}
+\dowithsubdir{extras/}{\lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}}
 
 % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
 % usados em português é possível contornar o problema com a tabela abaixo.
@@ -125,6 +125,10 @@
 % captions, lista de programas etc. Neste modelo não usamos esses
 % recursos (veja mais abaixo), mas utilizamos estes nomes:
 \addto\extrasbrazil{%
+  \gdef\lstlistlistingname{Lista de Programas}%
+  \gdef\lstlistingname{Programa}%
+}
+\addto\extrasbrazilian{%
   \gdef\lstlistlistingname{Lista de Programas}%
   \gdef\lstlistingname{Programa}%
 }
