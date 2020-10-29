@@ -7,6 +7,7 @@
 \usepackage{etoolbox}
 \usepackage{xstring}
 \usepackage{xparse}
+\usepackage{letltxmacro}
 \usepackage{regexpatch}
 % Algumas packages dependem de xpatch e tentam carregá-la, causando conflitos
 % com regexpatch. Como regexpatch oferece todos os recursos de xpatch (ela
@@ -21,9 +22,10 @@
 % Sempre que possível, é melhor usar os recursos de etoolbox ao invés de
 % ifthen; no entanto, várias packages dependem dela.
 %\usepackage{ifthen}
-% Estas não estão em uso mas podem ser úteis.
+
+% Esta não está em uso mas pode ser útil.
 %\usepackage{ltxcmds}
-%\usepackage{letltxmacro}
+
 %\usepackage{xfp} % Floating-point calculations
 
 % Esta package permite detectar XeTeX, LuaTeX e pdfTeX, mas pode não estar

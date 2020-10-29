@@ -111,7 +111,22 @@
 % hyperref para a definição de metadados PDF. Ela deve ser carregada
 % depois de hyperref mas antes de as opções relacionadas a metadados
 % de hyperref serem definidas.
+
+% HACK ALERT! hyperxmp pode "confundir" latexmk, fazendo a compilação
+% do documento entrar em um laço infinito. Talvez versões futuras da
+% package eliminem esse problema; até lá, desabilitamos o recurso
+% relacionado (o registro nos metadados de "byteCount", ou seja, o
+% tamanho aproximado do documento).
+\ifunicodeengine
+\else
+  \LetLtxMacro\HACKoldpdffilesize\pdffilesize
+  \renewcommand\pdffilesize[1]{}
+\fi
 \usepackage{hyperxmp}
+\ifunicodeengine
+\else
+  \LetLtxMacro\pdffilesize\HACKoldpdffilesize
+\fi
 
 % HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
 % https://github.com/ho-tex/atenddvi/issues/1 . Aparentemente, ele não
