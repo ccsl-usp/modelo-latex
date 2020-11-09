@@ -112,11 +112,13 @@
 % depois de hyperref mas antes de as opções relacionadas a metadados
 % de hyperref serem definidas.
 
-% HACK ALERT! hyperxmp pode "confundir" latexmk, fazendo a compilação
-% do documento entrar em um laço infinito. Talvez versões futuras da
-% package eliminem esse problema; até lá, desabilitamos o recurso
-% relacionado (o registro nos metadados de "byteCount", ou seja, o
-% tamanho aproximado do documento).
+% HACK ALERT! As versões 5.5 e 5.6 de hyperxmp podem "confundir" latexmk,
+% fazendo a compilação do documento entrar em um laço infinito. Essas
+% versões, assim como a 5.7 que corrige o problema, foram incluídas no
+% TeXLive durante o ano de 2020, ou seja, nem a primeira versão nem a
+% última atualização de TeXLive 2020 são afetadas. Ainda assim, aqui
+% contornamos o problema desabilitando o recurso relacionado (o cálculo
+% automático de "byteCount", ou seja, do tamanho aproximado do documento).
 \ifunicodeengine
 \else
   \LetLtxMacro\HACKoldpdffilesize\pdffilesize
