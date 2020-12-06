@@ -2,141 +2,6 @@
 %("dica" para o editor de texto: este arquivo é parte de um documento maior)
 % para saber mais: https://tex.stackexchange.com/q/78101/183146
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS DA TESE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% O título (\title) e o autor (\author) do trabalho são definidos no arquivo
-% tese.tex, porque têm significado "especial" para o LaTeX; em particular,
-% eles são gravados nos metadados do arquivo pdf final.
-
-% Se "\title" está em inglês, você pode definir o título em português aqui;
-% caso contrário, remova
-\tituloport{Título do trabalho}
-
-% Se "\title" está em português, você pode definir o título em inglês aqui;
-% caso contrário, remova
-\tituloeng{Title of the document}
-
-% Se o trabalho não tiver subtítulo, basta remover isto.
-\subtitulo{um subtítulo}
-
-% Se isto não for definido, "\subtitulo" é utilizado no lugar
-\subtituloeng{a subtitle}
-
-% Para TCCs, este comando define o supervisor
-\orientador[fem]{Profª. Drª. Fulana de Tal}
-
-% Se isto não for definido, "\orientador" é utilizado no lugar
-\orientadoreng{Prof. Dr. Fulana de Tal}
-
-% Se não houver, remova
-\coorientador[masc]{Prof. Dr. Ciclano}
-
-% Se isto não for definido, "\coorientador" é utilizado no lugar
-% (isto é útil quando se trata de "Profª. Drª.", por exemplo)
-%\coorientadoreng{Prof. Dr. Ciclano}
-
-\programa{Ciência da Computação}
-
-% Se isto não for definido, "\programa" é utilizado no lugar
-\programaeng{Computer Science}
-
-% Se não houver, remova
-\apoio{Durante o desenvolvimento deste trabalho o autor recebeu auxílio
-financeiro da XXXX}
-
-% Se isto não for definido, "\apoio" é utilizado no lugar
-\apoioeng{During this work, the author was supported by XXX}
-
-\localdefesa{São Paulo}
-
-\datadefesa{10 de agosto de 2017}
-
-% Se isto não for definido, "\datadefesa" é utilizado no lugar
-\datadefesaeng{August 10th, 2017}
-
-% Necessário para criar a referência do documento que aparece
-% na página do resumo
-\ano{2017}
-
-\banca{
-  \begin{itemize}
-    \item Profª. Drª. Nome Completo (orientadora) -- IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo -- IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo -- IMPA [sem ponto final]
-  \end{itemize}
-}
-
-% Se isto não for definido, "\banca" é utilizado no lugar
-\bancaeng{
-  \begin{itemize}
-    \item Prof. Dr. Nome Completo (advisor) -- IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo -- IME-USP [sem ponto final]
-    \item Prof. Dr. Nome Completo -- IMPA [sem ponto final]
-  \end{itemize}
-}
-
-% Palavras-chave separadas por ponto e finalizadas também com ponto.
-\palavraschave{Palavra-chave1. Palavra-chave2. Palavra-chave3.}
-
-\keywords{Keyword1. Keyword2. Keyword3.}
-
-% Define os textos padrão ("mestrado" X "doutorado", "tese" X
-% "dissertação" etc.) da capa e da referência que vai na página
-% do resumo; "masc" ou "fem" definem se serão usadas palavras
-% no masculino ou feminino (Mestre/Mestra, Doutor/Doutora,
-% candidato/candidata). O segundo parâmetro é opcional e
-% determina que se trata de exame de qualificação.
-\mestrado[fem]
-%\mestrado[fem][quali]
-%\doutorado[masc]
-%\doutorado[masc][quali]
-%\tcc[masc]
-
-% Se quiser estabelecer regras diferentes, converse com seu
-% orientador
-\direitos{Autorizo a reprodução e divulgação total ou parcial
-deste trabalho, por qualquer meio convencional ou
-eletrônico, para fins de estudo e pesquisa, desde que
-citada a fonte.}
-
-% Isto deve ser preparado em conjunto com o bibliotecário
-%\fichacatalografica{
-% nome do autor, título, etc.
-%}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Embora as páginas iniciais *pareçam* não ter numeração, a numeração existe,
-% só não é impressa. O comando \mainmatter (mais abaixo) reinicia a contagem
-% de páginas e elas passam a ser impressas. Isso significa que existem duas
-% páginas com o número "1": a capa e a página do primeiro capítulo. O pacote
-% hyperref não lida bem com essa situação. Assim, vamos desabilitar hyperlinks
-% para números de páginas no início do documento e reabilitar mais adiante.
-\hypersetup{pageanchor=false}
-
-% A capa; o parâmetro pode ser "port" ou "eng" para definir a língua
-\capaime[port]
-%\capaime[eng]
-
-% Se você não quiser usar a capa padrão, você pode criar uma outra
-% capa manualmente ou em um programa diferente. No segundo caso, é só
-% importar a capa como uma página adicional usando o pacote pdfpages.
-%\includepdf{./arquivo_da_capa.pdf}
-
-% A página de rosto da versão para depósito (ou seja, a versão final
-% antes da defesa) deve ser diferente da página de rosto da versão
-% definitiva (ou seja, a versão final após a incorporação das sugestões
-% da banca). Os parâmetros podem ser "port/eng" para a língua e
-% "provisoria/definitiva" para o tipo de página de rosto.
-% Observe que TCCs não têm página de rosto; nesse caso, desabilite
-% todas as opções.
-%\pagrostoime[port]{definitiva}
-\pagrostoime[port]{provisoria}
-%\pagrostoime[eng]{definitiva}
-%\pagrostoime[eng]{provisoria}
-
 %%%%%%%%%%%%%%%%%%%% DEDICATÓRIA, RESUMO, AGRADECIMENTOS %%%%%%%%%%%%%%%%%%%%%%%
 
 % A definição deste ambiente está no pacote imeusp-capa.sty; se você não
@@ -146,13 +11,9 @@ Esta seção é opcional e fica numa página separada; ela pode ser usada para
 uma dedicatória ou epígrafe.
 \end{dedicatoria}
 
-% Após a capa e as páginas de rosto, começamos a numerar as páginas; com isso,
-% podemos também reabilitar links para números de páginas no pacote hyperref.
-% Isso porque, embora contagem de páginas aqui começe em 1 e no primeiro
-% capítulo também, o fato de uma numeração usar algarismos romanos e a outra
-% algarismos arábicos é suficiente para evitar problemas.
+% Reinicia o contador de páginas (a próxima página recebe o número "i") para
+% que a página da dedicatória não seja contada.
 \pagenumbering{roman}
-\hypersetup{pageanchor=true}
 
 % Agradecimentos:
 % Se o candidato não quer fazer agradecimentos, deve simplesmente eliminar
@@ -167,8 +28,10 @@ texto texto texto texto texto texto texto texto texto texto texto texto texto
 texto texto texto texto texto texto texto texto texto texto texto texto texto
 texto texto texto texto. Texto opcional.
 
-%\input{conteudo-exemplo/resumo-abstract}
-\input{conteudo/resumo-abstract}
+% Resumo e abstract são definidos no arquivo "metadados.tex". Este
+% comando também gera automaticamente a referência para o próprio
+% documento, conforme as normas sugeridas da USP.
+\printResumoAbstract
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% LISTAS DE FIGURAS ETC. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%

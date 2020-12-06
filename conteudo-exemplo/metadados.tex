@@ -1,0 +1,102 @@
+%!TeX root=../tese.tex
+%("dica" para o editor de texto: este arquivo é parte de um documento maior)
+% para saber mais: https://tex.stackexchange.com/q/78101/183146
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS DA TESE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Estes comandos definem o título e autoria do trabalho e devem sempre ser
+% definidos, pois além de serem utilizados para criar a capa, também são
+% armazenados nos metadados do PDF.
+\title{
+    % Obrigatório nas duas línguas
+    titlept={Título do trabalho},
+    titleen={Title of the document},
+    % Opcional, mas se houver deve existir nas duas línguas
+    subtitlept={um subtítulo},
+    subtitleen={a subtitle},
+    % Opcional, para o cabeçalho das páginas
+    shorttitle={Título curto},
+}
+
+\author[fem]{Nome Completo}
+
+% Para TCCs, este comando define o supervisor
+\orientador[fem]{Profª. Drª. Fulana de Tal}
+
+% Se não houver, remova; se houver mais de um, basta
+% repetir o comando quantas vezes forem necessárias
+\coorientador{Prof. Dr. Ciclano de Tal}
+\coorientador[fem]{Profª. Drª. Beltrana de Tal}
+
+% A página de rosto da versão para depósito (ou seja, a versão final
+% antes da defesa) deve ser diferente da página de rosto da versão
+% definitiva (ou seja, a versão final após a incorporação das sugestões
+% da banca).
+\defesa{
+  nivel=mestrado, % mestrado, doutorado ou tcc
+  % É a versão para defesa ou a versão definitiva?
+  %definitiva,
+  % É qualificação?
+  %quali,
+  programa={Ciência da Computação},
+  membrobanca={Profª. Drª. Fulana de Tal (orientadora) -- IME-USP [sem ponto final]},
+  % Em inglês, não há o "ª"
+  %membrobanca{Prof. Dr. Fulana de Tal (advisor) -- IME-USP [sem ponto final]},
+  membrobanca={Prof. Dr. Ciclano de Tal -- IME-USP [sem ponto final]},
+  membrobanca={Profª. Drª. Convidada de Tal -- IMPA [sem ponto final]},
+  % Se não houver, remova
+  apoio={Durante o desenvolvimento deste trabalho o autor
+         recebeu auxílio financeiro da XXXX},
+  local={São Paulo},
+  data=2017-08-10, % YYYY-MM-DD
+  % Se quiser estabelecer regras diferentes, converse com seu
+  % orientador
+  direitos={Autorizo a reprodução e divulgação total ou parcial
+            deste trabalho, por qualquer meio convencional ou
+            eletrônico, para fins de estudo e pesquisa, desde que
+            citada a fonte.},
+  % Isto deve ser preparado em conjunto com o bibliotecário
+  %fichacatalografica={nome do autor, título, etc.},
+}
+
+% As palavras-chave, separadas por ponto e finalizadas também com ponto,
+% são obrigatórias, em português e em inglês.
+\palavraschave{Palavra-chave1. Palavra-chave2. Palavra-chave3.}
+
+\keywords{Keyword1. Keyword2. Keyword3.}
+
+% O resumo é obrigatório, em português e inglês.
+\resumo{
+Elemento obrigatório, constituído de uma sequência de frases concisas e
+objetivas, em forma de texto.  Deve apresentar os objetivos, métodos empregados,
+resultados e conclusões.  O resumo deve ser redigido em parágrafo único, conter
+no máximo 500 palavras e ser seguido dos termos representativos do conteúdo do
+trabalho (palavras-chave). Deve ser precedido da referência do documento.
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto.
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto.
+}
+
+\abstract{
+Elemento obrigatório, elaborado com as mesmas características do resumo em
+língua portuguesa. De acordo com o Regimento da Pós-Graduação da USP (Artigo
+99), deve ser redigido em inglês para fins de divulgação. É uma boa ideia usar
+o sítio \url{www.grammarly.com} na preparação de textos em inglês.
+Text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text.
+}

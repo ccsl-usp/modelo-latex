@@ -1,4 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% CAPA, FOLHA DE ROSTO, PGS PRELIMINARES %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\dowithsubdir{extras/}{\usepackage{imeusp-capa}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO, CABEÇALHOS, SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -135,6 +142,8 @@
 % superior muito grandes. Vamos fazer isso com uma minipage.
 \makeatletter
 \newenvironment{dedicatoria} {
+  \hypersetup{pageanchor=false} % Veja comentário em \maketitle
+
   \if@openright\cleardoublepage\else\clearpage\fi
 
   \thispagestyle{empty}
@@ -150,6 +159,8 @@
   \end{FlushRight}
   \vspace*{50mm plus 0mm minus 10mm}
   \if@openright\cleardoublepage\else\clearpage\fi
+
+  \hypersetup{pageanchor=true}
 }
 \makeatother
 

@@ -94,9 +94,6 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
 
-% Espaçamento simples
-\singlespacing
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -154,28 +151,6 @@
 % de referências
 %\nocite{*}
 
-
-%%%%%%%%%%%%%%%%%%%%%%% METADADOS (TÍTULO, AUTOR ETC.) %%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Estes comandos definem o título e autoria do trabalho e devem sempre ser
-% definidos, pois além de serem utilizados para criar a capa (tanto no estilo
-% do IME quanto com o comando padrão \maketitle), também são armazenados nos
-% metadados do PDF.
-\title{Título do trabalho}
-\author{Nome Completo}
-
-% O pacote hyperref armazena alguns metadados no PDF gerado (em particular,
-% o conteúdo de "\title" e "\author"). Também é possível armazenar outros
-% dados, como uma lista de palavras-chave.
-\hypersetup{
-  pdfkeywords={LaTeX, tese, dissertação, IME/USP},
-}
-
-% Este pacote define o formato sugerido da capa, páginas de rosto,
-% dedicatória e resumo. Se você pretende criar essas páginas manualmente,
-% não precisa carregar este pacote nem carregar o arquivo folhas-de-rosto.
-\dowithsubdir{extras/}{\usepackage{imeusp-capa}}
-
 % É possível definir como determinadas palavras podem (ou não) ser
 % hifenizadas; no entanto, a hifelização automática geralmente funciona bem
 \hyphenation{documentclass latexmk Fu-la-no}
@@ -185,9 +160,12 @@
 %%%%%%%%%%%%%%%%%%%%%%% AQUI COMEÇA O CONTEÚDO DE FATO %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%\input{conteudo-exemplo/metadados}
+\input{conteudo/metadados}
+
 \begin{document}
 
-% Aqui vai o conteúdo inicial que aparece antes do capítulo 1, ou seja,
+% Aqui começa o conteúdo inicial que aparece antes do capítulo 1, ou seja,
 % página de rosto, resumo, sumário etc. O comando frontmatter faz números
 % de página aparecem em algarismos romanos ao invés de arábicos e
 % desabilita a contagem de capítulos.
@@ -196,16 +174,13 @@
 % Este formato está (re)definido na package imeusp-headers
 \pagestyle{plain}
 
+\onehalfspacing % Espaçamento 1,5 na capa e páginas iniciais
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E FOLHAS DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E PÁGINAS INICIAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Para gerar o título sem seguir o formato deste modelo, você pode usar o
-% comando padrão do LaTeX "\maketitle".
-%\maketitle
+\maketitle % capa e folha de rosto
 
-% Capa e folhas de rosto no formato sugerido para teses/dissertações do IME/USP.
-% Se for gerar a capa etc. manualmente, remova.
-\onehalfspacing % Espaçamento 1,5 nas páginas iniciais
+% Páginas iniciais no formato definido para teses/dissertações do IME/USP.
 %\input{conteudo-exemplo/folhas-de-rosto}
 \input{conteudo/folhas-de-rosto}
 
@@ -257,6 +232,7 @@
 % de cada um deles.
 
 %%%% Apêndices %%%%
+
 \makeatletter
 \if@openright\cleardoublepage\else\clearpage\fi
 \makeatother
@@ -271,6 +247,7 @@
 \par
 
 %%%% Anexos %%%%
+
 \makeatletter
 \if@openright\cleardoublepage\else\clearpage\fi
 \makeatother

@@ -1,41 +1,517 @@
 % Authors: Nelson Lago and Jesus P. Mena-Chalco
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{imeusp-capa}[2019/10/18 IME/USP initial thesis pages]
+\ProvidesPackage{imeusp-capa}[2020/12/10 v2.0 IME/USP initial thesis pages]
 
 % Várias funções úteis
 \RequirePackage{etoolbox}
 
-% Comandos NewDocumentCommand, NewDocumentEnvironment etc.
-% vindos do projeto LaTeX3.
+% Extensões do projeto LaTeX3.
+\RequirePackage{expl3}
 \RequirePackage{xparse}
 
+\RequirePackage{trimspaces}
+
 % Parágrafos não-justificados melhores
-\RequirePackage[newcommands]{ragged2e}
+\RequirePackage{ragged2e}
 
-% Múltiplos parâmetros opcionais do tipo "key=val"
-\RequirePackage{keyval}
+\RequirePackage{setspace}
 
-% LaTeX oferece o comando "\maketitle" para criar uma capa / página de rosto
-% padrão. Ela não se adequa ao padrão do IME, então não vamos usar \maketitle.
-% O IME também pede páginas de rosto com formato mais ou menos específico.
-% Então, vamos criar novos comandos: "\capaime" e "\pagrostoime", além dos
-% ambientes para a página de resumo.
+% Formatação de datas de acordo com a língua
+\RequirePackage[useregional]{datetime2}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% TEXTOS PADRÃO EM PT E EN %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \extrasLANGUAGE vs \captionsLANGUAGE: https://tex.stackexchange.com/a/354197/217608
+
+% Palavras fixas a serem traduzidas
+\providecommand\keywordsname{} % Keywords / Palavras-chave
+\providecommand\programname{} % Program / Programa
+\providecommand\committeename{} % Examining committee / Comissão julgadora
+\providecommand\advisorname{} % Advisor / Orientador(a)
+\providecommand\coadvisorname{} % Co-advisor / Coorientador(a)
+\providecommand\workname{} % Report, Thesis / Tese, Dissertação, Monografia
+\providecommand\degreename{} % Masters, Doctorate, Bachelor / Mestrado, Doutorado, Bacharelado
+\providecommand\titlename{} % Master, Doctor, Bachelor / Mestre(a), Doutor(a), Bacharel
+
+% Textos longos a serem traduzidos
+\providecommand\@coverTCCText{}
+\providecommand\@coverQualiText{}
+\providecommand\@coverThesisText{}
+\providecommand\@institutionBlockText{} % Só para TCC
+\providecommand\@provisionalFrontmatterText{}
+\providecommand\@finalFrontmatterText{}
+\providecommand\@institution{}
+
+% Este não precisa ser traduzido, o texto em inglês não utiliza
+\providecommand\@bywhom{%
+  \ifdefstring{\@authorGender}{masc}
+    {pelo candidato \@author}
+    {pela candidata \@author}%
+}
+
+% TODO: do not use the lang name, do as SBC
+
+%%%%%%%%%% PORTUGUÊS %%%%%%%%%%
+\addto\captionsbrazilian{%
+  \let\@title\@titlept
+  \let\@subtitle\@subtitlept
+  \let\@keywords\@keywordspt
+  \renewcommand\keywordsname{Palavras-chave}%
+  \renewcommand\programname{Programa}%
+  \renewcommand\committeename{Comissão julgadora}%
+  \renewcommand\advisorname{%
+    \iftoggle{@tcc}{%
+      \ifdefstring{\@advisorGender}{masc}
+        {Supervisor}
+        {Supervisora}%
+    }{%
+      \ifdefstring{\@advisorGender}{masc}
+        {Orientador}
+        {Orientadora}%
+    }%
+  }%
+  \renewcommand\coadvisorname[1]{%
+    \iftoggle{@tcc}{%
+      \ifcsstring{@coadvisor#1Gender}{masc}
+        {Cossupervisor}
+        {Cossupervisora}%
+    }{%
+      \ifcsstring{@coadvisor#1Gender}{masc}
+        {Coorientador}
+        {Coorientadora}%
+    }%
+  }%
+  \renewcommand\workname{%
+    \iftoggle{@tcc}
+      {Monografia}
+      {\iftoggle{@qualificacao}
+        {Exame de Qualificação}
+        {\iftoggle{@doutorado}
+          {Tese}
+          {Dissertação}%
+        }%
+      }%
+  }%
+  \renewcommand\degreename{%
+    \iftoggle{@doutorado}
+      {Doutorado}
+      {\iftoggle{@mestrado}
+        {Mestrado}
+        {\iftoggle{@tcc}
+          {Bacharelado}
+          {Nível não definido!}%
+        }%
+      }%
+  }%
+  \renewcommand\titlename{%
+    \iftoggle{@doutorado}
+      {\ifdefstring{\@authorGender}{masc}{Doutor}{Doutora}}
+      {\iftoggle{@mestrado}
+        {\ifdefstring{\@authorGender}{masc}{Mestre}{Mestra}}
+        {\iftoggle{@tcc}
+          {Bacharel}{Nível não definido!}%
+        }%
+      }%
+  }%
+  %
+  %
+  \renewcommand\@coverTCCText{%
+    Monografia Final\vspace{.5\baselineskip}\\
+    \@macCDXCIX --- Trabalho de\\
+    Formatura Supervisionado%
+  }%
+  \renewcommand\@coverQualiText{%
+    Relatório apresentado ao\\
+    Instituto de Matemática e Estatística\\
+    da Universidade de São Paulo\\
+    para exame de qualificação de\\
+    \degreename{} em Ciências%
+  }%
+  \renewcommand\@coverThesisText{%
+    \workname{} apresentada ao\\
+    Instituto de Matemática e Estatística\\
+    da Universidade de São Paulo\\
+    para obtenção do título de\\
+    \titlename{} em Ciências%
+  }%
+  \renewcommand\@institutionBlockText{%
+    Universidade de São Paulo\\
+    Instituto de Matemática e Estatística\\
+    Bacharelado em Ciência da Computação%
+  }%
+  \renewcommand\@provisionalFrontmatterText{%
+    \iftoggle{@qualificacao}{%
+      Esta é a versão original do texto de qualificação elaborado
+      \@bywhom{}, tal como submetido à Comissão Julgadora.%
+    }{%
+      Esta é a versão original da \MakeLowercase{\workname} elaborada
+      \@bywhom{}, tal como submetida à Comissão Julgadora.%
+    }%
+  }%
+  \renewcommand\@finalFrontmatterText{%
+    Esta versão da \MakeLowercase{\workname} contém as correções e alterações
+    sugeridas pela Comissão Julgadora durante a defesa da versão
+    original do trabalho, realizada em \DTMusedate{@defensedate}.\\[1\baselineskip]
+    Uma cópia da versão original está disponível no Instituto de
+    Matemática e Estatística da Universidade de São Paulo.%
+  }%
+  \renewcommand\@institution{%
+    Instituto de Matemática e Estatística,
+    Universidade de São Paulo%
+  }%
+}
+
+
+%%%%%%%%%% INGLÊS %%%%%%%%%%
+\addto\captionsenglish{%
+  \let\@title\@titleen
+  \let\@subtitle\@subtitleen
+  \let\@keywords\@keywordsen
+  \renewcommand\keywordsname{Keywords}%
+  \renewcommand\programname{Program}%
+  \renewcommand\committeename{Examining Committee}
+  \renewcommand\advisorname{%
+    \iftoggle{@tcc}{Supervisor}{Advisor}%
+  }%
+  \renewcommand\coadvisorname[1]{%
+    \iftoggle{@tcc}{Co-supervisor}{Coadvisor}%
+  }%
+  % "Tese" e "dissertação" têm sentido contrário em língua inglesa:
+  % http://guides.lib.berkeley.edu/dissertations_theses
+  % https://www.grad.ubc.ca/handbook-graduate-supervision/graduate-thesis
+  % Como "Thesis" é o nome genérico, vamos usar para mestrado e doutorado
+  %
+  %%%%%
+  %
+  % Nomes possíveis para o TCC em inglês:
+  %
+  % * monograph/monography
+  %     usado para trabalho de alto nível de um autor "senior",
+  %     então não faz sentido para um trabalho de graduação.
+  %
+  % * undergraduate thesis / bachelor's thesis
+  %     plausível, mas no nosso caso report parece melhor.
+  %
+  % * senior project / senior thesis / honor thesis
+  %     usado para "TCCs" de caráter fortemente acadêmico;
+  %     não é o caso aqui.
+  %
+  % * essay / report
+  %     razoável, porque trata-se de um texto/relato
+  %     sobre o projeto de TCC.
+  \renewcommand\workname{%
+    \iftoggle{@tcc}
+      {Capstone Project Report}
+      {\iftoggle{@qualificacao}
+        {Qualifying Exam}
+        {Thesis}%
+      }%
+  }%
+  \renewcommand\degreename{%
+    \iftoggle{@doutorado}
+      {Doctorate}
+      {\iftoggle{@mestrado}
+        {Masters}
+        {\iftoggle{@tcc}
+          {Bachelor}
+          {Nível não definido!}%
+        }%
+      }%
+  }%
+  \renewcommand\titlename{%
+    \iftoggle{@doutorado}
+      {Doctor}
+      {\iftoggle{@mestrado}
+        {Master}
+        {\iftoggle{@tcc}
+          {Bachelor}%
+          {Nível não definido!}%
+        }%
+      }%
+  }%
+  %
+  %
+  \renewcommand\@coverTCCText{%
+    Final Essay\vspace{.5\baselineskip}\\
+    \@macCDXCIX --- Capstone Project%
+  }%
+  \renewcommand\@coverQualiText{%
+    Report presented to the\\
+    Institute of Mathematics and Statistics\\
+    of the University of São Paulo\\
+    for the \titlename{} of Science\\
+    qualifying examination\\%
+  }%
+  \renewcommand\@coverThesisText{%
+    \workname{} presented to the\\
+    Institute of Mathematics and Statistics\\
+    of the University of São Paulo\\
+    in partial fulfillment\\
+    of the requirements\\
+    for the degree of\\
+    \titlename{} of Science%
+  }%
+  \renewcommand\@institutionBlockText{%
+    University of São Paulo\\
+    Institute of Mathematics and Statistics\\
+    Bachelor of Computer Science%
+  }%
+  \renewcommand\@provisionalFrontmatterText{%
+    \iftoggle{@qualificacao}{%
+      This is the original version of the qualifying text prepared
+      by candidate \@author, as submitted to the Examining Committee.%
+    }{%
+      This is the original version of the \MakeLowercase{\workname} prepared
+      by candidate \@author, as submitted to the Examining Committee.%
+    }%
+  }%
+  \renewcommand\@finalFrontmatterText{%
+    This version of the \MakeLowercase{\workname} includes the corrections
+    and modifications suggested by the Examining Committee during
+    the defense of the original version of the work, which took
+    place on \DTMusedate{@defensedate}.\\[1\baselineskip]
+    A copy of the original version is available at the Institute of
+    Mathematics and Statistics of the University of São Paulo.%
+  }%
+  \renewcommand\@institution{%
+    Institute of Mathematics and Statistics,
+    University of São Paulo%
+  }%
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% COLETA E DEFINIÇÃO DE METADADOS %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand\author[2][masc]{
+  \gdef\@author{#2}
+  \gdef\@authorGender{#1}
+}
+
+\NewDocumentCommand{\orientador}{O{masc} m}{
+  \gdef\@advisor{#2}
+  \gdef\@advisorGender{#1}
+}
+
+% Mais de um coorientador é raro, mas acontece
+\ExplSyntaxOn
+\newcounter{numberOfCoadvisors}
+\NewDocumentCommand\coorientador{O{masc} m}{
+    \stepcounter{numberOfCoadvisors}
+    \tl_gclear_new:c {@coadvisor\Roman{numberOfCoadvisors}}
+    \tl_gclear_new:c {@coadvisor\Roman{numberOfCoadvisors}Gender}
+
+    \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}} {#2}
+    \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}Gender} {#1}
+}
+
+\seq_gclear_new:N \@committeeMembers
+
+\newtoggle{@mestrado}
+\newtoggle{@doutorado}
+\newtoggle{@tcc}
+\newtoggle{@qualificacao}
+\newtoggle{@finalversion}
+
+% Opções usando LaTeX3 (veja texdoc l3keys).
+\keys_define:nn { IME / defense }
+  {
+    % Chaves à esquerda definem as variáveis à direita
+    data .code:n= {\DTMsavedate{@defensedate}{#1}},
+    data .value_required:n = true,
+    nivel .choice:,
+    nivel / mestrado .code:n = {\@mestrado},
+    nivel / masters .code:n = {\@mestrado},
+    nivel / dissertacao .code:n = {\@mestrado},
+    nivel / doutorado .code:n = {\@doutorado},
+    nivel / phd .code:n = {\@doutorado},
+    nivel / tese .code:n = {\@doutorado},
+    nivel / graduacao .code:n = {\@tcc},
+    nivel / bachelor .code:n = {\@tcc},
+    nivel / tcc .code:n = {\@tcc},
+    nivel .value_required:n = true,
+    quali .code:n = {\ifstrequal{#1}{true}{\toggletrue{@qualificacao}}{\togglefalse{@qualificacao}}},
+    quali .default:n = {true},
+    definitiva .code:n = {\ifstrequal{#1}{true}{\toggletrue{@finalversion}}{\togglefalse{@finalversion}}},
+    definitiva .default:n = {true},
+    provisoria .code:n = {\ifstrequal{#1}{true}{\togglefalse{@finalversion}}{\toggletrue{@finalversion}}},
+    provisoria .default:n = {true},
+    programa .tl_gset:N = \@program,
+    program .value_required:n = true,
+    apoio .tl_gset:N = \@financing,
+    apoio .value_required:n = true,
+    local .tl_gset:N = \@defenselocation,
+    local .value_required:n = true,
+    direitos .tl_gset:N = \@license,
+    direitos .value_required:n = true,
+    fichacatalografica .tl_gset:N = \@catalogindata,
+    fichacatalografica .value_required:n = true,
+    membrobanca .code:n = {\seq_gput_right:Nn \@committeeMembers {#1}},
+    membrobanca .value_required:n = true,
+  }
+
+\NewDocumentCommand\defesa{m}{\keys_set:nn {IME/defense}{#1}}
+
+\ExplSyntaxOff
+
+\NewDocumentCommand{\@doutorado}{}{
+  \toggletrue{@doutorado}
+  \togglefalse{@mestrado}
+  \togglefalse{@tcc}
+}
+
+\NewDocumentCommand{\@mestrado}{}{
+  \togglefalse{@doutorado}
+  \toggletrue{@mestrado}
+  \togglefalse{@tcc}
+}
+
+\NewDocumentCommand{\@tcc}{}{
+  \togglefalse{@mestrado}
+  \togglefalse{@doutorado}
+  \toggletrue{@tcc}
+}
+
+\newcommand*{\palavraschave}[1]{\gdef\@keywordspt{\trim@spaces@noexp{#1}}}
+\newcommand*{\keywords}[1]{\gdef\@keywordsen{\trim@spaces@noexp{#1}}}
+
+% Defaults quando o usuário não define alguma dessas variáveis
+
+\author{Autor não definido!}
+\orientador{Orientador não definido!}
+\palavraschave{Palavras-chave não definidas!}
+\keywords{Keywords não definidas!}
+\DTMsavedate{@defensedate}{1970-01-01}
+\providecommand\@program{Programa não definido!}
+\providecommand\@financing{}
+\providecommand\@defenselocation{Local não definido!}
+\providecommand\@license{Direitos não definidos!}
+\providecommand\@title{Título não definido!}
+\providecommand\@titlept{Título em português não definido!}
+\providecommand\@titleen{Título em inglês não definido!}
+\providecommand\@shorttitle{título curto não definido!}
+\providecommand\@resumo{Resumo não definido!}
+\providecommand\@abstract{Abstract não definido!}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TÍTULO E SUBTÍTULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExplSyntaxOn
+
+% Opções usando LaTeX3 (veja texdoc l3keys).
+\keys_define:nn { IME / title }
+  {
+    % Chaves à esquerda definem as variáveis à direita
+    shorttitle .tl_gset:N = \@shorttitle,
+    shorttitle .value_required:n = true,
+    titlept .tl_gset:N = \@titlept,
+    titlept .value_required:n = true,
+    titleen .tl_gset:N = \@titleen,
+    titleen .value_required:n = true,
+    subtitlept .tl_gset:N = \@subtitlept,
+    subtitlept .value_required:n = true,
+    subtitleen .tl_gset:N = \@subtitleen,
+    subtitleen .value_required:n = true,
+  }
+
+\RenewDocumentCommand\title{m}{
+  \keys_set:nn {IME/title}{#1}
+
+  % Ambos devem existir. Este é o default, mas o valor de fato é definido
+  % por \captionsLANGUAGE.
+  \ifdefvoid{\@titlept}
+    {\let\@title\@titleen}
+    {\let\@title\@titlept}
+
+  % Estes talvez não existam, mas se um existe o outro deve existir também.
+  % Este é o default, mas o valor de fato é definido por \captionsLANGUAGE.
+  \ifdefvoid{\@subtitlept}
+    {\let\@subtitle\@subtitleen}
+    {\let\@subtitle\@subtitlept}
+
+  \tl_if_blank:VT \@shorttitle
+    {
+      \let\@shorttitle\@title
+      \@IMEremoveLinebreaksAndFootnotes{\@shorttitle}
+    }
+}
+
+% Às vezes é necessário forçar quebras de linha no título para a capa, mas
+% essas quebras não devem aparecer em outros lugares. Estas macros "apagam"
+% esses comandos do título e do subtítulo; basta usá-las em um grupo para
+% que a mudança não seja permanente.
+
+% First, let's define the regex we will need. What we are
+% doing here is "(regex1)|(regex2)|(regex3)|(regex4)"
+\regex_const:Nn \@IMEbreakRegex
+  {
+    ( \c{break} ) % Matches "\break"
+    |
+    ( \c{newline} ) % Matches "\newline"
+    |
+      % This matches:
+      % 1. The control sequence "\linebreak" -> "\c{linebreak}"
+      % 2. Optionally followed by "[NUMBER]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
+    ( \c{linebreak} (\s*\x{5B}\s*\d\s*\x{5D})? )
+    |
+      % This matches:
+      % 1. The control sequence "\\" (forced line break) -> "\c{\\}"
+      % 2. Optionally followed by "[...]" -> "( \s*\x{5B}\s*...\s*\x{5D} )?"
+      % 3. Where "..." is any valid TeX dimension
+      %    (see regex example in texdoc interface3)
+    ( \c{\\}
+      ( \s*\x{5B}\s*
+          [\+\-]?(\d+|\d*\.\d+)\s*((?i)pt|in|[cem]m|ex|[bs]p|[dn]d|[pcn]c)
+        \s*\x{5D}
+      )?
+    )
+  }
+
+\newcommand{\@IMEremoveLinebreaksAndFootnotes}[1]{
+    % First replace all line breaks with spaces
+    \regex_replace_all:NnN \@IMEbreakRegex {\ } #1
+
+    % Then kill footnotes, if any
+    \regex_replace_all:nnN {\s*\c{footnote}} {\c{@gobble}} #1
+
+    % Then remove consecutive white spaces
+    \regex_replace_all:nnN {\s+} {\ } #1
+}
+
+\ExplSyntaxOff
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% RESUMO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% A página de resumo deve existir em português e inglês
-\NewDocumentEnvironment{resumo}{m} {
+% A página de resumo deve existir em português e inglês; ambas as versões
+% utilizam o mesmo environment.
+
+\NewDocumentCommand{\resumo}{+m}{\long\gdef\@resumo{#1}}
+\NewDocumentCommand{\abstract}{+m}{\long\gdef\@abstract{#1}}
+
+% TODO: não usar o nome da língua, fazer como no SBC
+\newcommand\printResumoAbstract{
+  \begin{otherlanguage}{brazilian}
+    \begin{IMEabstract}\@resumo\end{IMEabstract}
+  \end{otherlanguage}
+  \begin{otherlanguage}{english}
+    \begin{IMEabstract}\@abstract\end{IMEabstract}
+  \end{otherlanguage}
+}
+
+
+\NewDocumentEnvironment{IMEabstract}{} {
   \if@openright\cleardoublepage\else\clearpage\fi
   \thispagestyle{empty}
 
-    \begin{center}
-      \Large\bfseries
-      \ifstrequal{port}{#1}{Resumo}{Abstract}
-    \end{center}
+    \begin{Center}\Large\bfseries\abstractname\end{Center}
 
   \vspace*{2em plus 1em minus 1em}
 
@@ -44,7 +520,7 @@
   % Esse é o jeito mais simples de mudar as margens de um parágrafo:
   % faz de conta que é uma lista
   \begin{list}{}{\rightmargin 4em \leftmargin 4em}
-    \item\@refdocumento[#1]
+    \item\@selfReference
   \end{list}
 
   \vspace*{1em plus 1em minus 0em}
@@ -57,433 +533,100 @@
 
   \begingroup
 
-      \ifstrequal{port}{#1}
-        {\newcommand{\kwname}{Palavras-chave}}
-        {\newcommand{\kwname}{Keywords}}
-
-      \setlength{\leftmargini}{\widthof{\textbf{\kwname:}\quad}}
-      \setlength{\labelwidth}{\widthof{\textbf{\kwname:}}}
+      \setlength{\leftmargini}{\widthof{\textbf{\keywordsname:}\quad}}
+      \setlength{\labelwidth}{\widthof{\textbf{\keywordsname:}}}
       \setlength{\labelsep}{\widthof{\quad}}
 
-      \begin{description}
-          \item[\kwname:]\ifstrequal{port}{#1}
-                         {\@palavraschave}
-                         {\@keywords}
-      \end{description}
+      \begin{description}\item[\keywordsname:]\@keywords\end{description}
 
   \endgroup
 }
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%% DEFINIÇÃO DE VARIÁVEIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% IMPRIME A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Define os campos que vão ser usados na capa
-
-% Às vezes é necessário forçar quebras de linha no título para a capa, mas
-% essas quebras não devem aparecer em outros lugares. Esta macro "apaga"
-% esses comandos do título e do subtítulo; basta usá-la em um grupo para
-% que a mudança não seja permanente.
-
-\newcommand{\removeTitleLineBreaks}{%
-  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\\}{\unskip\space\ignorespaces}{}{}%
-  %
-  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\break}{\unskip\space\ignorespaces}{}{}%
-  %
-  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@titulopt}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtitulo}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@tituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-  \patchcmd{\@subtituloeng}{\newline}{\unskip\space\ignorespaces}{}{}%
-}
-
-\newcommand*{\titulopt}[1]{\gdef\@titulopt{#1}}
-\newcommand*{\tituloeng}[1]{\gdef\@tituloeng{#1}}
-\newcommand*{\subtitulo}[1]{\gdef\@subtitulo{#1}}
-\newcommand*{\subtituloeng}[1]{\gdef\@subtituloeng{#1}}
-
-% Caso alguém se confunda e use o comando errado
-\let\tituloport\titulopt
-\let\subtituloport\subtitulo
-\let\subtitulopt\subtitulo
-
-\NewDocumentCommand{\orientador}{O{masc} m}{
-  \iftoggle{@tcc}{
-  \ifstrequal{#1}{masc}
-      {\gdef\@labelorientador{Supervisor}}
-      {\gdef\@labelorientador{Supervisora}}
-  }{
-    \ifstrequal{#1}{masc}
-      {\gdef\@labelorientador{Orientador}}
-      {\gdef\@labelorientador{Orientadora}}
-  }
-  \gdef\@orientador{#2}
-}
-
-\NewDocumentCommand{\coorientador}{O{masc} m}{
-  \iftoggle{@tcc}{
-    \ifstrequal{#1}{masc}
-      {\gdef\@labelcoorientador{Cossupervisor}}
-      {\gdef\@labelcoorientador{Cossupervisora}}
-  }{
-    \ifstrequal{#1}{masc}
-      {\gdef\@labelcoorientador{Coorientador}}
-      {\gdef\@labelcoorientador{Coorientadora}}
-  }
-  \gdef\@coorientador{#2}
-}
-
-\newcommand*{\orientadoreng}[1]{\gdef\@orientadoreng{#1}}
-\newcommand*{\coorientadoreng}[1]{\gdef\@coorientadoreng{#1}}
-\newcommand*{\programa}[1]{\gdef\@programa{#1}}
-\newcommand*{\programaeng}[1]{\gdef\@programaeng{#1}}
-\newcommand*{\apoio}[1]{\gdef\@apoio{#1}}
-\newcommand*{\apoioeng}[1]{\gdef\@apoioeng{#1}}
-\newcommand*{\ano}[1]{\gdef\@ano{#1}}
-\newcommand*{\datadefesa}[1]{\gdef\@datadefesa{#1}}
-\newcommand*{\datadefesaeng}[1]{\gdef\@datadefesaeng{#1}}
-\newcommand*{\localdefesa}[1]{\gdef\@localdefesa{#1}}
-\newcommand{\banca}[1]{\gdef\@banca{#1}}
-\newcommand{\bancaeng}[1]{\gdef\@bancaeng{#1}}
-\newcommand*{\palavraschave}[1]{\gdef\@palavraschave{#1}}
-\newcommand*{\keywords}[1]{\gdef\@keywords{#1}}
-\newcommand*{\direitos}[1]{\gdef\@direitos{#1}}
-\newcommand{\fichacatalografica}[1]{\gdef\@fichacatalografica{#1}}
-
-\newtoggle{@mestrado}
-\newtoggle{@doutorado}
-\newtoggle{@tcc}
-\newtoggle{@qualificacao}
-
-\NewDocumentCommand{\tese}{O{masc} O{}}{
-  % "Tese" e "dissertação" têm sentido contrário em língua inglesa:
-  % http://guides.lib.berkeley.edu/dissertations_theses
-  % https://www.grad.ubc.ca/handbook-graduate-supervision/graduate-thesis
-  % Como "Thesis" é o nome genérico, vamos usar para mestrado e doutorado
-  \renewcommand*{\@nometrabalho}{Tese}
-  \renewcommand*{\@nometrabalhoeng}{Thesis}
-  \renewcommand*{\@nometituloeng}{Doctor}
-  \renewcommand*{\@grau}{Doutorado}
-  \renewcommand*{\@graueng}{Doctorate}
-  \toggletrue{@doutorado}
-  \togglefalse{@mestrado}
-  \togglefalse{@tcc}
-  \ifstrequal{#1}{masc}{
-    \renewcommand*{\@nometitulo}{Doutor}
-    \RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
-  }{
-    \renewcommand*{\@nometitulo}{Doutora}
-    \RenewDocumentCommand{\@porquem}{m}{pela candidata \@author}
-  }
-  \ifstrequal{#2}{quali}{
-    \toggletrue{@qualificacao}
-    \renewcommand\@nometrabalho{Exame de Qualificação}
-    \renewcommand\@nometrabalhoeng{Qualifying Exam}
-  }{}
-}
-\NewDocumentCommand{\doutorado}{O{masc} O{}}{\tese[#1][#2]}
-
-\NewDocumentCommand{\dissertacao}{O{masc} O{}}{
-  % Veja observação acima
-  \renewcommand*{\@nometrabalho}{Dissertação}
-  \renewcommand*{\@nometrabalhoeng}{Thesis}
-  \renewcommand*{\@nometituloeng}{Master}
-  \renewcommand*{\@grau}{Mestrado}
-  \renewcommand*{\@graueng}{Masters}
-  \toggletrue{@mestrado}
-  \togglefalse{@doutorado}
-  \togglefalse{@tcc}
-  \ifstrequal{#1}{masc}{
-    \renewcommand*{\@nometitulo}{Mestre}
-    \RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
-  }{
-    \renewcommand*{\@nometitulo}{Mestra}
-    \RenewDocumentCommand{\@porquem}{m}{pela candidata \@author}
-  }
-  \ifstrequal{#2}{quali}{
-    \toggletrue{@qualificacao}
-    \renewcommand\@nometrabalho{Exame de Qualificação}
-    \renewcommand\@nometrabalhoeng{Qualifying Exam}
-  }{}
-}
-\NewDocumentCommand{\mestrado}{O{masc} O{}}{\dissertacao[#1][#2]}
-
-\NewDocumentCommand{\tcc}{O{masc}}{
-  % Nomes possíveis para o TCC em inglês:
-  %
-  % * monograph/monography
-  %     usado para trabalho de alto nível de um autor "senior",
-  %     então não faz sentido para um trabalho de graduação.
-  %
-  % * undergraduate thesis / bachelor's thesis
-  %     parece plausível.
-  %
-  % * senior project / senior thesis / honor thesis
-  %     usado para "TCCs" de caráter fortemente acadêmico;
-  %     não é o caso aqui.
-  %
-  % * essay / report
-  %     acho razoável porque trata-se de um texto sobre o
-  %     projeto de TCC.
-  \renewcommand*{\@nometrabalho}{Monografia}
-  %\renewcommand*{\@nometrabalhoeng}{Undergraduate Thesis}
-  \renewcommand*{\@nometrabalhoeng}{Capstone Project Report}
-  \renewcommand*{\@nometituloeng}{Bachelor}
-  \renewcommand*{\@grau}{Bacharelado}
-  \renewcommand*{\@graueng}{Bachelor}
-  \renewcommand*{\@nometitulo}{Bacharel}
-  \togglefalse{@mestrado}
-  \togglefalse{@doutorado}
-  \toggletrue{@tcc}
-  \ifstrequal{#1}{masc}
-    {\RenewDocumentCommand{\@porquem}{m}{pelo candidato \@author}}
-    {\RenewDocumentCommand{\@porquem}{m}{pela candidata \@author}}
-}
-
-% Defaults quando o usuário não define alguma dessas variáveis
-
-\titulopt{\@title}
-\tituloeng{\@title}
-\subtitulo{}
-\subtituloeng{}
-
-\orientador{Orientador não definido!}
-\programa{Programa não definido!}
-\apoio{}
-\ano{Ano não definido!}
-\datadefesa{Data não definida!}
-\localdefesa{Local não definido!}
-\banca{Banca não definida!}
-\palavraschave{Palavras-chave não definidas!}
-\keywords{Keywords não definidas!}
-\direitos{}
-\NewDocumentCommand{\@porquem}{m}{pelo candidato \@author}
-\fichacatalografica{}
-
-% Se estes não forem definidos, usamos a variável correspondente
-% em português.
-\newcommand*{\@orientadoreng}{\@orientador}
-\newcommand*{\@coorientadoreng}{\@coorientador}
-\newcommand*{\@programaeng}{\@programa}
-\newcommand*{\@apoioeng}{\@apoio}
-\newcommand*{\@datadefesaeng}{\@datadefesa}
-\newcommand*{\@bancaeng}{\@banca}
-
-\newcommand*{\@nometrabalho}{Dissertação}
-\newcommand*{\@nometrabalhoeng}{Thesis}
-\newcommand*{\@nometitulo}{Mestre}
-\newcommand*{\@nometituloeng}{Master}
-\newcommand*{\@grau}{Mestrado}
-\newcommand*{\@graueng}{Masters}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% TEXTOS PADRÃO EM PT E ENG %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Com fontspec (ou seja, lualatex/xelatex), o comando \oldstylenums funciona
-% com qualquer fonte que tenha suporte a números old-style. Já com pdflatex,
-% o comando para escolher números old style depende da fonte em uso. Nesse
-% caso, se não soubermos qual a fonte atual (ou seja, não é nem libertine
-% nem libertinus), vamos usar latin modern e torcer para o resultado não ser
-% muito discrepante do restante do texto.
-
-\@ifpackageloaded{fontspec}
-  {\providecommand{\macQuatroNoveNove}{mac~\oldstylenums{499}}}
-  {
-    \providecommand{\macQuatroNoveNove}{{\fontfamily{lmr}\selectfont mac~\oldstylenums{499}}}
-
-    \@ifpackageloaded{libertinus}
-      {\renewcommand{\macQuatroNoveNove}{\LibertinusSerifOsF mac~499}}
-      {}
-
-    \@ifpackageloaded{libertine}
-      {\renewcommand{\macQuatroNoveNove}{\libertineOsF mac~499}}
-      {}
-  }
-
-\newcommand*{\@textocapa}[1][port] {%
-  \vspace{-\baselineskip}\singlespacing\setstretch{.9}%
-  \iftoggle{@tcc} {%
-    \ifstrequal{port}{#1}{%
-      Monografia Final\vspace{.5\baselineskip}\\
-      \macQuatroNoveNove\space%
-      --- Trabalho de\\
-      Formatura Supervisionado%
-    }{%
-      % Veja o comentário mais acima sobre "essay/report"
-      %Final Report\vspace{.5\baselineskip}\\
-      Final Essay\vspace{.5\baselineskip}\\
-      \macQuatroNoveNove\space%
-      --- Capstone Project%
-    }%
-  }{}%
-  \ifboolexpr{ togl {@mestrado} or togl {@doutorado} } {%
-        \iftoggle{@qualificacao} {%
-            \ifstrequal{port}{#1}{%
-                Relatório apresentado ao\\
-                Instituto de Matemática e Estatística\\
-                da Universidade de São Paulo\\
-                para exame de qualificação de\\
-                \@grau{} em Ciências%
-            }{%
-                Report presented to the\\
-                Institute of Mathematics and Statistics\\
-                of the University of São Paulo\\
-                for the \iftoggle{@mestrado}{\@nometituloeng}{\@graueng} of Science\\
-                qualifying examination\\%
-            }%
-        }{% Não é qualificação
-            \ifstrequal{port}{#1}{%
-                \@nometrabalho{} apresentada ao\\
-                Instituto de Matemática e Estatística\\
-                da Universidade de São Paulo\\
-                para obtenção do título de\\
-                \@nometitulo{} em Ciências%
-            }{%
-                \@nometrabalhoeng{} presented to the\\
-                Institute of Mathematics and Statistics\\
-                of the University of São Paulo\\
-                in partial fulfillment\\
-                of the requirements\\
-                for the degree of\\
-                \@nometituloeng{} of Science%
-            }%
-        }
-   }{}%
-  \par%
-}
-
-\newcommand*{\@pessoascapa}[1][port] {%
-  \begin{tabular}{rl}
-    \ifstrequal{port}{#1}{%
-      \iftoggle{@tcc}{}{Programa: & \@programa \tabularnewline}
-      \@labelorientador: & \@orientador \tabularnewline
-      \ifcsvoid{@coorientador}{}{\@labelcoorientador: & \@coorientador \tabularnewline}%
-    }{%
-      Program: & \@programaeng \tabularnewline
-      Advisor: & \@orientadoreng \tabularnewline
-      \ifcsvoid{@coorientador}{}{Coadvisor: & \@coorientadoreng \tabularnewline}%
-  }
-  \end{tabular}
-}
-
-\newcommand*{\@textorostoprovisoria}[1][port] {%
-  \iftoggle{@qualificacao}{%
-    \ifstrequal{port}{#1}{%
-      Esta é a versão original do texto de qualificação elaborado
-      \@porquem{}, tal como submetido à Comissão Julgadora.%
-    }{%
-      This is the original version of the qualifying text prepared
-      by the candidate \@author, as submitted to the Examining Committee.%
-    }%
-  }{%
-    \ifstrequal{port}{#1}{%
-      Esta é a versão original da \MakeLowercase{\@nometrabalho} elaborada
-      \@porquem{}, tal como submetida à Comissão Julgadora.%
-    }{%
-      This is the original version of the \MakeLowercase{\@nometrabalhoeng} prepared
-      by the candidate \@author, as submitted to the Examining Committee.%
-    }%
-  }%
-}
-
-\newcommand*{\@textorostodefinitiva}[1][port] {%
-  \ifstrequal{port}{#1}{%
-    Esta versão da \MakeLowercase{\@nometrabalho} contém as correções e alterações
-    sugeridas pela Comissão Julgadora durante a defesa da versão
-    original do trabalho, realizada em \@datadefesa.\\
-    ~\\
-    Uma cópia da versão original está disponível no Instituto de
-    Matemática e Estatística da Universidade de São Paulo.%
-  }{%
-    This version of the \MakeLowercase{\@nometrabalhoeng} includes the corrections
-    and modifications suggested by the Examining Committee during
-    the defense of the original version of the work, which took
-    place on \@datadefesaeng.\\
-    ~\\
-    A copy of the original version is available at the Institute of
-    Mathematics and Statistics of the University of São Paulo.%
-  }%
-}
-
-\newcommand{\@textobanca}[1][port] {%
-  \ifstrequal{port}{#1}{%
-    \noindent Comissão Julgadora:
-
-    \@banca%
-  }{%
-    \noindent Examining Committee:
-
-    \@bancaeng%
-  }
-}
-
-\newcommand{\@refdocumento}[1][port] {%
+\RenewDocumentCommand\maketitle{}{
+  % Embora as páginas iniciais *pareçam* não ter numeração, a numeração
+  % existe, só não é impressa. Os comandos \frontmatter, \mainmatter,
+  % \pagenumbering etc. reiniciam a contagem de páginas quando os números
+  % passam a ser impressos. Isso significa que há mais de uma página com
+  % o número "1". O pacote hyperref não lida bem com essa situação, então
+  % vamos desabilitar hyperlinks para números de páginas aqui.
+  \hypersetup{pageanchor=false}
   \bgroup
-  \removeTitleLineBreaks
-
-  \@author.
-  \ifstrequal{port}{#1}{%
-    \textbf{\@titulopt\ifcsvoid{@subtitulo}{}{: \textit{\@subtitulo}}}.
-    \@nometrabalho{} (\@grau).
-    Instituto de Matemática e Estatística,
-    Universidade de São Paulo,%
-  }{%
-    \textbf{\@tituloeng\ifcsvoid{@subtituloeng}{}{: \textit{\@subtituloeng}}}.
-    \@nometrabalhoeng{} (\@graueng).
-    Institute of Mathematics and Statistics,
-    University of São Paulo,%
-  }
-  São Paulo, \@ano.%
+  \onehalfspacing
+  \@IMEcover
+  \iftoggle{@tcc}{}{\@IMEtitlePage}
   \egroup
+  \hypersetup{pageanchor=true}
+}
+
+% Layout da capa
+\NewDocumentCommand{\@IMEcover}{} {
+  \@calculateCoverMargins
+
+  \cleardoublepage
+
+  \thispagestyle{empty}
+
+  \begin{hyphenrules}{nohyphenation}
+
+    \iftoggle{@tcc}{\@institutionBlock}
+
+    \@titleBlock
+
+    \vfill
+
+    \@detailsBlock
+
+  \end{hyphenrules}
+
+  \if@openright\cleardoublepage\else\clearpage\fi
+}
+
+% Layout para a página de rosto (duas versões, de acordo
+% com a Resolução CoPGr 6018 de 13/10/2011)
+\NewDocumentCommand{\@IMEtitlePage}{} {
+  \@calculateCoverMargins
+
+  \cleardoublepage
+
+  \thispagestyle{empty}
+
+  \begin{hyphenrules}{nohyphenation}
+
+    \@titleBlock
+
+    \vspace*{2cm plus 2cm minus 1cm}
+
+    \@versionInfoBlock
+
+    \vspace*{3.5cm plus 3cm minus 3.5cm}
+
+    \iftoggle{@finalversion}{\@committeeBlock}{}
+
+    \vspace*{2cm plus 2cm minus 2cm}
+
+  \end{hyphenrules}
+
+  \clearpage
+
+  \thispagestyle{empty}
+
+  \vspace*{4cm plus 4cm minus 2cm}
+
+  \@versoPageBlock
+
+  \vspace*{8cm plus 5cm minus 6cm}
+
+  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%% POSIÇÃO DOS ELEMENTOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% POSIÇÃO DOS ELEMENTOS NA CAPA %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % O IME usa uma capa padrão de cartolina para todas as teses/dissertações.
@@ -511,7 +654,7 @@
 % topo da página, a margem esquerda da janela com título e autor e a margem
 % esquerda para os demais elementos centralizados da página.
 
-\newcommand*{\@margenscapa}{
+\newcommand*{\@calculateCoverMargins}{
   % Calcula o valor das margens; chamando este comando explicitamente
   % quando necessário ao invés de calcular os valores durante a
   % inicialização garante que vamos calcular após o pacote geometry
@@ -520,7 +663,7 @@
   % A distância entre o topo da página e o início do texto (fora o cabeçalho)
   % é dada por (1in + \voffset + \headsep + \topmargin + \headheight).
   % Queremos colocar a caixa com o título 49mm abaixo do topo, então:
-  \dimgdef\@margemquadrotitulotopo{49mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
+  \dimgdef\@topTitleBlockMargin{49mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
 
   % Quando \vspace é usado no início da página, ele não tem efeito; como
   % não é isso que queremos, vamos usar \vspace*. No entanto, \vspace*
@@ -533,60 +676,119 @@
   % Aqui, vamos compensar essa diferença. Note que, se a primeira linha
   % da página tivesse um tamanho de fonte especial, seria necessário
   % usar o valor de \baselineskip correspondente a essa fonte.
-  \dimgdef\@margemquadrotitulotopo{\@margemquadrotitulotopo - \baselineskip - \parskip}
+  \dimgdef\@topTitleBlockMargin{\@topTitleBlockMargin - \baselineskip - \parskip}
 
   % Queremos colocar a caixa com o título centralizada na página. "\center"
   % centraliza em função da área de texto, não da página inteira, então
   % não podemos usá-lo, pois as margens esquerda e direita podem ser
   % diferentes. A distância entre a borda esquerda/interna do papel e o
   % início do texto é dada por (1in + \hoffset + \oddsidemargin), então:
-  \dimgdef\@margemquadrotituloesq{(\paperwidth - 96mm)/2 - (1in + \hoffset + \oddsidemargin)}
-  \dimgdef\@margemcapaesq{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
+  \dimgdef\@leftTitleBlockMargin{(\paperwidth - 96mm)/2 - (1in + \hoffset + \oddsidemargin)}
+  \dimgdef\@coverLeftMargin{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
 }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%% OS ELEMENTOS QUE COMPÕEM A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\NewDocumentCommand{\@versorosto}{} {
+% Com fontspec (ou seja, lualatex/xelatex), o comando \oldstylenums funciona
+% com qualquer fonte que tenha suporte a números old-style. Já com pdflatex,
+% o comando para escolher números old style depende da fonte em uso. Nesse
+% caso, se não soubermos qual a fonte atual (ou seja, não é nem libertine
+% nem libertinus), vamos usar latin modern e torcer para o resultado não ser
+% muito discrepante do restante do texto.
+
+% 499 = CDXCIX
+\@ifpackageloaded{fontspec}
+  {\providecommand{\@macCDXCIX}{mac~\oldstylenums{499}}}
+  {
+    \providecommand{\@macCDXCIX}{{\fontfamily{lmr}\selectfont mac~\oldstylenums{499}}}
+
+    \@ifpackageloaded{libertinus}
+      {\renewcommand{\@macCDXCIX}{\LibertinusSerifOsF mac~499}}
+      {}
+
+    \@ifpackageloaded{libertine}
+      {\renewcommand{\@macCDXCIX}{\libertineOsF mac~499}}
+      {}
+  }
+
+\newcommand{\@coverText}{%
+  \vspace{-\baselineskip}\singlespacing\setstretch{.9}%
+  \iftoggle{@tcc}
+    {\@coverTCCText}
+    {\iftoggle{@qualificacao}{\@coverQualiText}{\@coverThesisText}}%
+  \par
+}
+
+\ExplSyntaxOn
+\newcounter{@IMEtmpcnt}
+\newcommand*{\@coverPeople} {%
+  \begin{tabular}{rl}
+    \iftoggle{@tcc}{}{\programname : & \@program \tabularnewline}
+    \advisorname : & \@advisor \tabularnewline
+    \setcounter{@IMEtmpcnt}{0}%
+    \int_while_do:nNnn {\value{@IMEtmpcnt}} < {\value{numberOfCoadvisors}} {%
+      \stepcounter{@IMEtmpcnt}%
+      \coadvisorname{\Roman{@IMEtmpcnt}}: & \csuse{@coadvisor\Roman{@IMEtmpcnt}} \tabularnewline
+    }%
+  \end{tabular}
+}
+\ExplSyntaxOff
+
+\newcommand{\@selfReference} {%
+  \bgroup
+  \@IMEremoveLinebreaksAndFootnotes{\@title}%
+  \@IMEremoveLinebreaksAndFootnotes{\@subtitle}%
+  \@IMEremoveLinebreaksAndFootnotes{\@author}%
+  \@author.
+  \textbf{\@title\ifdefvoid{\@subtitle}{}{: \textit{\@subtitle}}}.
+  \workname{} (\degreename).
+  \@institution,
+  São Paulo, \DTMfetchyear{@defensedate}.%
+  \egroup
+}
+
+\NewDocumentCommand{\@versoPageBlock}{} {
   \begin{list}{}{\rightmargin 3em \leftmargin 3em}
     \item
-      \@direitos
+      \@license
 
-      \ifcsvoid{@fichacatalografica} {} {
+      \ifcsvoid{@catalogingData} {} {
         \vspace*{3cm plus 3cm minus 1cm}
-	\setlength{\fboxsep}{20pt}
-	\begin{center}
+        \setlength{\fboxsep}{20pt}
+        \begin{Center}
         \fbox{
-	  \begin{minipage}[t]{120mm}
+          \begin{minipage}[t]{120mm}
             \setlength\parskip{1em}
 
-            \@fichacatalografica
+            \@catalogingData
 
           \end{minipage}
         }
-	\end{center}
+        \end{Center}
       }
   \end{list}
 }
 
 % Só para TCC
-\newcommand{\@quadroinstituicao}[1][port]{
+\newcommand{\@institutionBlock}{
 
     % A posição do quadro de título é fixa em relação à página;
     % a posição deste quadro é definida em função da posição do
     % quadro de título. Assim, primeiro vamos encontrar onde
     % deve começar o quadro do título. Veja os comentários em
-    % \@quadrotitulo para entender o mecanismo.
+    % \@titleBlock para entender o mecanismo.
 
-    \vspace*{\@margemquadrotitulotopo}
+    \vspace*{\@topTitleBlockMargin}
 
     \ifdeflength{\@normalstrutheight}
       {}
-      {
-        \newlength{\@normalstrutheight}
-      }
+      {\newlength{\@normalstrutheight}}
+
     \settoheight{\@normalstrutheight}{\strut}
+
     \vspace{-\@normalstrutheight}
 
     % Estamos alinhados com o quadro do título do trabalho,
@@ -597,22 +799,14 @@
     \vspace{-15mm} % Espaço entre este quadro e o quadro de título
 
     \noindent\strut%
-    \hspace*{\@margemcapaesq}%
+    \hspace*{\@coverLeftMargin}%
 %    \fbox{%
       \begin{minipage}[t][20mm][s]{160mm}
         \vspace{0pt plus 20mm}
 
-        \singlespacing\unskip\centering\large
+        \singlespacing\unskip\Centering\large
 
-        \ifstrequal{port}{#1}{%
-          \textsc{Universidade de São Paulo\\
-          Instituto de Matemática e Estatística\\
-          Bacharelado em Ciência da Computação}
-        }{%
-          \textsc{University of São Paulo\\
-          Institute of Mathematics and Statistics\\
-          Bachelor of Computer Science}
-        }%
+        \textsc{\@institutionBlockText}
 
         \vspace{0pt plus 20mm}
       \end{minipage}
@@ -636,16 +830,16 @@
 
     % Agora estamos no início do quadro de título, então
     % podemos recuar exatamente o tamanho da margem superior.
-    \vspace{-\@margemquadrotitulotopo}
+    \vspace{-\@topTitleBlockMargin}
 }
 
 % O quadro com o título e o autor que deve ser visível
 % através da janela na capa.
-\NewDocumentCommand{\@quadrotitulo}{O{port}} {
+\NewDocumentCommand{\@titleBlock}{} {
 
     % Este espaço coloca o topo da próxima linha
     % na posição que queremos:
-    \vspace*{\@margemquadrotitulotopo}
+    \vspace*{\@topTitleBlockMargin}
 
     % No entanto, a próxima linha contém apenas
     % uma minipage, e definir o topo de uma linha
@@ -662,34 +856,25 @@
 
     \ifdeflength{\@normalstrutheight}
       {}
-      {
-        \newlength{\@normalstrutheight}
-      }
+      {\newlength{\@normalstrutheight}}
+
     \settoheight{\@normalstrutheight}{\strut}
 
     \vspace{-\@normalstrutheight}
 
     \noindent\strut%
-    \hspace*{\@margemquadrotituloesq}%
+    \hspace*{\@leftTitleBlockMargin}%
 %    \fbox{%
       \begin{minipage}[t][56mm][s]{96mm}
           \vspace*{2cm plus 1.5cm minus 1.8cm}
 
-          \singlespacing\unskip\centering\large
+          \singlespacing\unskip\Centering\large
 
-          \ifstrequal{port}{#1} {%
-            \textbf{\@titulopt}
+          \textbf{\@title}
 
-            \vspace{0.3cm plus 0.2cm minus 0.1cm}
+          \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-            \textbf{\textit{\@subtitulo}}%
-          }{%
-            \textbf{\@tituloeng}
-
-            \vspace{0.3cm plus 0.2cm minus 0.1cm}
-
-            \textbf{\textit{\@subtituloeng}}%
-          }
+          \textbf{\textit{\@subtitle}}
 
           \vspace{1cm plus 1cm minus 0.6cm}
 
@@ -702,84 +887,58 @@
 }
 
 % As demais informações da capa
-\NewDocumentCommand{\@detalhescapa}{O{port}} {
-  \ifstrequal{port}{#1} {
-    \newcommand*{\@apoiocapa}{\@apoio}
-    \newcommand*{\@datacapa}{\@datadefesa}
-  }{
-    \newcommand*{\@apoiocapa}{\@apoioeng}
-    \newcommand*{\@datacapa}{\@datadefesaeng}
-  }
+\NewDocumentCommand{\@detailsBlock}{} {
 
   \noindent%
-  \hspace*{\@margemcapaesq}%
+  \hspace*{\@coverLeftMargin}%
 %  \fbox{%
     \begin{minipage}[t][130mm][s]{160mm}
-      \begin{center}
+      \begin{Center}
         \Large
 
         \vspace*{0.5cm plus 0.5cm minus 0.3cm}
 
-        \textsc{\@textocapa[#1]}
+        \textsc{\@coverText}
 
         \vspace*{1.5cm plus 0.5cm minus 0.5cm}
 
-        \large\@pessoascapa[#1]
+        \large\@coverPeople
 
         \vspace*{2.5cm plus 1cm minus 1cm}
 
         \normalsize
 
-        \@apoiocapa
+        \@financing
 
         \vspace*{1cm plus 1cm minus 0.3cm}
 
-        \@localdefesa
+        \@defenselocation
 
-        \@datacapa
+        \DTMusedate{@defensedate}
 
-      \end{center}
+      \end{Center}
     \end{minipage}%
 %  }% fbox
   \par
 }
 
-% Layout da capa
-\NewDocumentCommand{\capaime}{O{port}} {
-  \@margenscapa
-
-  \cleardoublepage
-  \thispagestyle{empty}
-
-  \begin{hyphenrules}{nohyphenation}
-
-    \iftoggle{@tcc}{\@quadroinstituicao[#1]}
-
-    \@quadrotitulo[#1]
-
-    \vfill
-
-    \@detalhescapa[#1]
-  \end{hyphenrules}
-
-  \if@openright\cleardoublepage\else\clearpage\fi
-}
-
 % As informações da banca que vão apenas na versão definitiva
 % da página de rosto
-\NewDocumentCommand{\@quadrobanca}{O{port} +m} {%
-  \ifstrequal{definitiva}{#2}{%
+\ExplSyntaxOn
+\NewDocumentCommand{\@committeeBlock}{} {
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
-      \normalsize\@textobanca[#1]
+        \normalsize\noindent\committeename :\par\vspace{.5\baselineskip}
+        \begin{itemize}
+          \item[] \seq_use:Nn \@committeeMembers {\item[]}
+        \end{itemize}
       \end{quote}
-    \end{minipage}%
-  }%
-  {}
+    \end{minipage}
 }
+\ExplSyntaxOff
 
 % A informação sobre a versão provisória ou definitiva
-\NewDocumentCommand{\@descricaoversao}{O{port} +m} {%
+\NewDocumentCommand{\@versionInfoBlock}{} {%
   % As diretrizes dizem que "A natureza do trabalho, o grau pretendido, o
   % nome da instituição a que é submetido e a área de concentração devem
   % ser alinhados a partir do meio da parte impressa da página para a
@@ -797,52 +956,16 @@
       \begin{minipage}[t][50mm][s]{80mm}
         \begin{FlushRight}
           \normalsize
-          \ifstrequal{definitiva}{#2}{%
-            \@textorostodefinitiva[#1]%
+          \iftoggle{@finalversion}{%
+            \@finalFrontmatterText%
           } {%
-            \@textorostoprovisoria[#1]%
+            \@provisionalFrontmatterText%
           }%
         \end{FlushRight}
       \end{minipage}
       \par
     %} % fbox
   \end{FlushRight}
-}
-
-% Layout para a página de rosto (duas versões, de acordo
-% com a Resolução CoPGr 6018 de 13/10/2011)
-\NewDocumentCommand{\pagrostoime}{O{port} +m} {
-  \@margenscapa
-
-  \cleardoublepage
-
-  \thispagestyle{empty}
-
-  \begin{hyphenrules}{nohyphenation}
-    \@quadrotitulo[#1]
-
-    \vspace*{2cm plus 2cm minus 1cm}
-
-    \@descricaoversao[#1]{#2}
-
-    \vspace*{3.5cm plus 3cm minus 3.5cm}
-
-    \@quadrobanca[#1]{#2}
-  \end{hyphenrules}
-
-  \vspace*{2cm plus 2cm minus 2cm}
-
-  \clearpage
-
-  \thispagestyle{empty}
-
-  \vspace*{4cm plus 4cm minus 2cm}
-
-  \@versorosto
-
-  \vspace*{8cm plus 5cm minus 6cm}
-
-  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 \endinput
