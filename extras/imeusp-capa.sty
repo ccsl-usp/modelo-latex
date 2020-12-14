@@ -52,10 +52,8 @@
     {pela candidata \@author}%
 }
 
-% TODO: do not use the lang name, do as SBC
-
 %%%%%%%%%% PORTUGUÊS %%%%%%%%%%
-\addto\captionsbrazilian{%
+\expandafter\addto\csname captions\@IMEpt\endcsname{%
   \let\@title\@titlept
   \let\@subtitle\@subtitlept
   \let\@keywords\@keywordspt
@@ -166,7 +164,7 @@
 
 
 %%%%%%%%%% INGLÊS %%%%%%%%%%
-\addto\captionsenglish{%
+\expandafter\addto\csname captions\@IMEen\endcsname{%
   \let\@title\@titleen
   \let\@subtitle\@subtitleen
   \let\@keywords\@keywordsen
@@ -496,14 +494,13 @@
 \NewDocumentCommand{\resumo}{+m}{\long\gdef\@resumo{#1}}
 \NewDocumentCommand{\abstract}{+m}{\long\gdef\@abstract{#1}}
 
-% TODO: não usar o nome da língua, fazer como no SBC
 \newcommand\printResumoAbstract{
-  \begin{otherlanguage}{brazilian}
-    \begin{IMEabstract}\@resumo\end{IMEabstract}
-  \end{otherlanguage}
-  \begin{otherlanguage}{english}
-    \begin{IMEabstract}\@abstract\end{IMEabstract}
-  \end{otherlanguage}
+  \bgroup
+  \expandafter\selectlanguage\expandafter{\@IMEpt}
+  \begin{IMEabstract}\@resumo\end{IMEabstract}
+  \expandafter\selectlanguage\expandafter{\@IMEen}
+  \begin{IMEabstract}\@abstract\end{IMEabstract}
+  \egroup
 }
 
 
