@@ -157,3 +157,58 @@
     \epigraph{\itshape #1}{--- #2}
   }
 }
+
+% Formato personalizado para as notas de rodapé. Copiado quase
+% literalmente do exemplo na documentação das classes-padrão de
+% LaTeX2e (texdoc classes). Seria possível fazer algo similar
+% usando list{} com um único item usando \@thefnmark como label.
+
+% \footnotesep não é um espaço adicional, mas sim um strut que
+% existe no começo de cada nota. É por isso que o valor é "grande"
+% (\baselineskip) mas a separação de fato é pequena.
+\makeatletter
+\renewcommand\@makefntext[1]{%
+    \setlength{\footnotesep}{1\baselineskip}%
+    \@setpar{%
+        \@@par
+        \@tempdima = \hsize
+        \advance\@tempdima-4pt\relax
+        \parshape \@ne 4pt \@tempdima
+    }%
+    \par
+    \parindent 1em\noindent
+    \hbox to \z@{\hss\@makefnmark\,}#1%
+}
+\makeatother
+
+% \maketitle redefine as notas de rodapé (\thanks) para usar símbolos
+% ao invés de números, mas essa não é a única mudança. \maketitle
+% também muda \@makefnmark para que a indicação de nota de rodapé
+% não ocupe espaço horizontal (isso é feito com \rlap). Isso é feito
+% porque a lista de autores em geral é similar a
+% \author{Fulano\thanks{instituição 1}, Ciclano\thanks{instituição 2}}.
+% Com essa mudança, a nota aparece acima da vírgula entre os autores.
+% Mas isso significa que\maketitle precisa também modificar \@makefntext
+% para que esse efeito aconteça apenas na lista de autores e não na
+% nota em si. Assim, como criamos um novo formato para as notas de
+% rodapé, precisamos mudar o formato em \maketitle também.
+\makeatletter
+\newcommand\@maketitlemakefntext[1]{%
+    \setlength{\footnotesep}{1\baselineskip}%
+    \@setpar{%
+        \@@par
+        \@tempdima = \hsize
+        \advance\@tempdima-4pt\relax
+        \parshape \@ne 4pt \@tempdima
+    }%
+    \par
+    \parindent 1em\noindent
+    \hbox to \z@{\hss\@textsuperscript{\normalfont\@thefnmark}\,}#1%
+}
+
+\patchcmd\maketitle
+  {\long\def\@makefntext}
+  {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
+  {}{}
+
+\makeatother
