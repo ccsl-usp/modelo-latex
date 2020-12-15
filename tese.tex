@@ -81,6 +81,7 @@
 \dowithsubdir{extras/}{\usepackage{imeusp-capa}}
 \input{extras/imeusp-formatting}
 \input{extras/index}
+\input{extras/bibconfig}
 \input{extras/hyperlinks}
 \input{extras/source-code}
 \input{extras/utils}
@@ -96,74 +97,28 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%% Usando bibtex (preterido): %%%%%%%%%%%%
-
-% citação bibliográfica alpha (alpha-ime.bst)
-%\dowithsubdir{extras/}{\usepackage[square,sort,nonamebreak,comma]{natbib-ime}}
-
-% citação bibliográfica textual(plainnat-ime.bst)
-%\dowithsubdir{extras/}{\usepackage[round,sort,nonamebreak]{natbib-ime}}
-
-%%%%%%%%%%%
-
-
-%%%%%%%%%%% Usando biblatex (preferido): %%%%%%%%%%%
-
+% Bibliografia
 \usepackage[
-  % "natbib=true" faz biblatex reconhecer comandos no estilo
-  % do pacote natbib (\citet, \citep)
-  natbib=true,
-  %
-  % Aqui definimos estilo de citação e de lista
-  % de referências usado por biblatex
-  %
-  % Estilo similar a plainnat, uma variante de autor-data
-  style=extras/plainnat-ime,
-  % Estilo similar a alpha
-  %style=alphabetic,
-  % O estilo numérico é comum em artigos
-  %style=numeric,
-  % autor-data "padrão" do biblatex
-  %style=authoryear-comp,
-  % APA, uma variante de autor-data muito usada
-  %style=apa,
-  % Um estilo que busca ser compatível com a ABNT:
+  style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
+  %style=alphabetic, % similar a alpha
+  %style=numeric, % comum em artigos
+  %style=authoryear-comp, % autor-data "padrão" do biblatex
+  %style=apa, % variante de autor-data, muito usado
   %style=abnt,
-  %style=bwl-FU,
 ]{biblatex}
 
-% O arquivo com os dados bibliográficos para biblatex; você pode usar
-% este comando mais de uma vez para acrescentar múltiplos arquivos
-\addbibresource{bibliografia.bib}
 
-%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-% Para personalizar outros aspectos da bibliografia
-% e citações, modifique este arquivo.
-\input{extras/bibconfig}
-
-% Este comando permite acrescentar itens à lista de referências sem incluir
-% uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
-%\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
-% Com este comando, todos os itens do arquivo .bib são incluídos na lista
-% de referências
-%\nocite{*}
-
-% É possível definir como determinadas palavras podem (ou não) ser
-% hifenizadas; no entanto, a hifelização automática geralmente funciona bem
-\hyphenation{documentclass latexmk Fu-la-no}
+%\input{conteudo-exemplo/metadados} % título, autor etc.
+\input{conteudo/metadados}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% AQUI COMEÇA O CONTEÚDO DE FATO %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\input{conteudo-exemplo/metadados}
-\input{conteudo/metadados}
 
 \begin{document}
 
@@ -280,13 +235,6 @@
 \addtocontents{toc}{\vspace{2\baselineskip plus .5\baselineskip minus .5\baselineskip}}
 
 % A bibliografia é obrigatória
-
-%%%%%%%%% Bibliografia com bibtex (preterido): %%%%%%%%%
-%\bibliographystyle{extras/alpha-ime}% citação bibliográfica alpha
-%\bibliographystyle{extras/plainnat-ime} % citação bibliográfica textual
-%\bibliography{bibliografia}  % associado ao arquivo: 'bibliografia.bib'
-
-%%%%%%%% Bibliografia com biblatex (preferido): %%%%%%%%
 
 \printbibliography[
   title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT

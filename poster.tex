@@ -19,6 +19,7 @@
 \input{extras/fonts}
 \input{extras/floats}
 \input{extras/index}
+\input{extras/bibconfig}
 \input{extras/hyperlinks}
 \hypersetup{colorlinks=false,pdfborder={0 0 0},pdfborderstyle=} % desabilita visualização dos links
 \input{extras/source-code}
@@ -78,48 +79,27 @@
     \end{block}
 }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+% Bibliografia
 \usepackage[
-  % "natbib=true" faz biblatex reconhecer comandos no estilo
-  % do pacote natbib (\citet, \citep)
-  natbib=true,
-  %
-  % Aqui definimos estilo de citação e de lista
-  % de referências usado por biblatex
-  %
-  % Estilo similar a plainnat, uma variante de autor-data
-  %style=extras/plainnat-ime,
-  % Estilo similar a alpha
-  %style=alphabetic,
-  % O estilo numérico é comum em artigos
-  %style=numeric,
-  % autor-data "padrão" do biblatex
-  %style=authoryear-comp,
-  % APA, uma variante de autor-data muito usada
-  %style=apa,
-  % Um estilo que busca ser compatível com a ABNT:
+  %style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
+  %style=alphabetic, % similar a alpha
+  style=numeric, % comum em artigos
+  %style=authoryear-comp, % autor-data "padrão" do biblatex
+  %style=apa, % variante de autor-data, muito usado
   %style=abnt,
-  style=bwl-FU,
 ]{biblatex}
+
+% Num poster, a bibliografia pode ficar em tamanho menor
+\renewcommand*{\bibfont}{\footnotesize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % O arquivo com os dados bibliográficos para biblatex; você pode usar
 % este comando mais de uma vez para acrescentar múltiplos arquivos
 \addbibresource{bibliografia.bib}
-
-% Para personalizar outros aspectos da bibliografia
-% e citações, modifique este arquivo.
-\input{extras/bibconfig}
-
-% A configuração do arquivo acima foi definida para teses/dissertações;
-% vamos mudar algumas opções
-\ExecuteBibliographyOptions{
-  backref=false,
-  maxbibnames=2,
-}
-
-% Num poster, a bibliografia pode ficar em tamanho menor
-\renewcommand*{\bibfont}{\footnotesize}
 
 % Este comando permite acrescentar itens à lista de referências sem incluir
 % uma referência de fato no texto (pode ser usado em qualquer lugar do texto)

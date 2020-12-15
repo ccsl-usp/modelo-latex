@@ -12,6 +12,8 @@
 %
 % Small customizations by Nelson Lago
 
+\RequirePackage{etoolbox}
+
 \RequirePackage{tikz}
 \newcommand{\footimage}[1]{\def\footim@ge{#1}}
 \usefonttheme[onlymath]{serif}
@@ -39,9 +41,11 @@
 \setbeamertemplate{caption}[numbered]
 
 \setbeamertemplate{bibliography item}[triangle]
-% Com as margens menores definidas anteriormente, os itens da bibliografia
-% caem fora do quadro; isto é um truque sujo para resolver esse problema
-\addtobeamertemplate{bibliography item}{\hspace*{1.3em}}{}
+\AtEndPreamble{
+  \@ifpackageloaded{biblatex}
+    {\setlength{\biblabelsep}{0pt}}
+    {}
+}
 
 \setbeamertemplate{block begin}{
   \vskip.75ex

@@ -8,6 +8,8 @@
 \RequirePackage{lmodern}
 \RequirePackage{fix-cm}
 
+\RequirePackage{etoolbox}
+
 \RequirePackage{calc}
 
 \usetheme[sectionpage=progressbar,subsectionpage=none,numbering=fraction,progressbar=frametitle]{metropolis}
@@ -52,9 +54,11 @@
 % inner theme "circles"; vamos definir manualmente.
 %\setbeamertemplate{bibliography item}[triangle]
 \setbeamertemplate{bibliography item}{{\normalsize\raisebox{.4\totalheight}{\scalebox{.25}{\resizebox*{!}{\totalheightof{\strut}}{\ensuremath{\blacktriangleright}}}}}}
-% Com as margens menores definidas anteriormente, os itens da bibliografia
-% caem fora da tela; isto é um truque sujo para resolver esse problema
-\addtobeamertemplate{bibliography item}{\hspace{1.3em}}{}
+\AtEndPreamble{
+  \@ifpackageloaded{biblatex}
+    {\setlength{\biblabelsep}{0pt}}
+    {}
+}
 
 % Remove ícones de navegação
 \beamertemplatenavigationsymbolsempty
