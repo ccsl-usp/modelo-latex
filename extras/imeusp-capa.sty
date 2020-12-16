@@ -354,6 +354,19 @@
 
 \NewDocumentCommand\defesa{m}{\keys_set:nn {IME/defense}{#1}}
 
+\seq_gclear_new:N \@seqkeywordspt
+\seq_gclear_new:N \@seqkeywordsen
+\newcommand*{\palavrachave}[1]{\seq_gput_right:Nn \@seqkeywordspt {#1}}
+\newcommand*{\keyword}[1]{\seq_gput_right:Nn \@seqkeywordsen {#1}}
+
+% Na impressão, as palavras-chave são separadas por pontos
+\newcommand*{\@keywordspt}{\seq_use:Nn \@seqkeywordspt {.\space}.}
+\newcommand*{\@keywordsen}{\seq_use:Nn \@seqkeywordsen {.\space}.}
+
+% Para inclusão nos metadados com hyperxmp, são separadas por vírgulas
+\newcommand*{\@commakeywordspt}{\seq_use:Nn \@seqkeywordspt {,}}
+\newcommand*{\@commakeywordsen}{\seq_use:Nn \@seqkeywordsen {,}}
+
 \ExplSyntaxOff
 
 \NewDocumentCommand{\@doutorado}{}{
@@ -374,15 +387,10 @@
   \toggletrue{@tcc}
 }
 
-\newcommand*{\palavraschave}[1]{\gdef\@keywordspt{\trim@spaces@noexp{#1}}}
-\newcommand*{\keywords}[1]{\gdef\@keywordsen{\trim@spaces@noexp{#1}}}
-
 % Defaults quando o usuário não define alguma dessas variáveis
 
 \author{Autor não definido!}
 \orientador{Orientador não definido!}
-\palavraschave{Palavras-chave não definidas!}
-\keywords{Keywords não definidas!}
 \DTMsavedate{@defensedate}{1970-01-01}
 \providecommand\@program{Programa não definido!}
 \providecommand\@financing{}
@@ -435,50 +443,8 @@
   \tl_if_blank:VT \@shorttitle
     {
       \let\@shorttitle\@title
-      \@IMEremoveLinebreaksAndFootnotes{\@shorttitle}
+      \@IMEremoveLinebreaksEtc{\@shorttitle}
     }
-}
-
-% Às vezes é necessário forçar quebras de linha no título para a capa, mas
-% essas quebras não devem aparecer em outros lugares. Estas macros "apagam"
-% esses comandos do título e do subtítulo; basta usá-las em um grupo para
-% que a mudança não seja permanente.
-
-% First, let's define the regex we will need. What we are
-% doing here is "(regex1)|(regex2)|(regex3)|(regex4)"
-\regex_const:Nn \@IMEbreakRegex
-  {
-    ( \c{break} ) % Matches "\break"
-    |
-    ( \c{newline} ) % Matches "\newline"
-    |
-      % This matches:
-      % 1. The control sequence "\linebreak" -> "\c{linebreak}"
-      % 2. Optionally followed by "[NUMBER]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
-    ( \c{linebreak} (\s*\x{5B}\s*\d\s*\x{5D})? )
-    |
-      % This matches:
-      % 1. The control sequence "\\" (forced line break) -> "\c{\\}"
-      % 2. Optionally followed by "[...]" -> "( \s*\x{5B}\s*...\s*\x{5D} )?"
-      % 3. Where "..." is any valid TeX dimension
-      %    (see regex example in texdoc interface3)
-    ( \c{\\}
-      ( \s*\x{5B}\s*
-          [\+\-]?(\d+|\d*\.\d+)\s*((?i)pt|in|[cem]m|ex|[bs]p|[dn]d|[pcn]c)
-        \s*\x{5D}
-      )?
-    )
-  }
-
-\newcommand{\@IMEremoveLinebreaksAndFootnotes}[1]{
-    % First replace all line breaks with spaces
-    \regex_replace_all:NnN \@IMEbreakRegex {\ } #1
-
-    % Then kill footnotes, if any
-    \regex_replace_all:nnN {\s*\c{footnote}} {\c{@gobble}} #1
-
-    % Then remove consecutive white spaces
-    \regex_replace_all:nnN {\s+} {\ } #1
 }
 
 \ExplSyntaxOff
@@ -736,9 +702,9 @@
 
 \newcommand{\@selfReference} {%
   \bgroup
-  \@IMEremoveLinebreaksAndFootnotes{\@title}%
-  \@IMEremoveLinebreaksAndFootnotes{\@subtitle}%
-  \@IMEremoveLinebreaksAndFootnotes{\@author}%
+  \@IMEremoveLinebreaksEtc{\@title}%
+  \@IMEremoveLinebreaksEtc{\@subtitle}%
+  \@IMEremoveLinebreaksEtc{\@author}%
   \@author.
   \textbf{\@title\ifdefvoid{\@subtitle}{}{: \textit{\@subtitle}}}.
   \workname{} (\degreename).

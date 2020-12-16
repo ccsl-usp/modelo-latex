@@ -155,3 +155,35 @@
   \fi
 \fi
 \makeatother
+
+% Agora inserimos de fato os metadados XMP no arquivo PDF
+\makeatletter
+
+% Se o documento é uma tese/dissertação no formato do IME, a definição dos
+% metadados é mais complexa e já foi preparada em thesis-formatting.tex;
+% Se não é tese/dissertação, colocamos apenas os dados essenciais.
+\def\@IMEsimpleXMP{
+  % Remove quebras de linha etc.
+  \let\@cleantitle\@title
+  \@IMEremoveLinebreaksEtc{\@cleantitle}
+
+  \hypersetup{
+    pdfauthor={\@author},
+    pdftitle={\@cleantitle},
+  }
+
+  \ifdefvoid{\@abstract}
+    {}
+    {
+      \let\@cleanabstract\@abstract
+      \@IMEremoveLinebreaksEtc{\@cleanabstract}
+      \hypersetup{pdfsubject={\@cleanabstract}}
+    }
+}
+
+\AtEndPreamble{
+  \ifdefvoid{\@IMEthesisXMP}
+    {\@IMEsimpleXMP}
+    {\@IMEthesisXMP}
+}
+\makeatother

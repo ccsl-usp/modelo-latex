@@ -2,8 +2,71 @@
 %%%%%%%%%%%%%%%%%%% CAPA, FOLHA DE ROSTO, PGS PRELIMINARES %%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\dowithsubdir{extras/}{\usepackage{imeusp-capa}}
+\ifdefvoid{\abstract}
+  {\dowithsubdir{extras/}{\usepackage{imeusp-capa}}}
+  {}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Aqui, só definimos a macro que vai ser de fato chamada em hyperlinks.tex
+\makeatletter
+\def\@IMEthesisXMP{
+
+  % Insere os metadados XMP no arquivo PDF final.
+
+  % Remove quebras de linha, notas de rodapé etc.
+  \let\@cleantitleen\@titleen
+  \let\@cleansubtitleen\@subtitleen
+  \let\@cleantitlept\@titlept
+  \let\@cleansubtitlept\@subtitlept
+  \let\@cleanabstract\@abstract
+  \let\@cleanresumo\@resumo
+
+  \@IMEremoveLinebreaksEtc{\@cleantitleen}
+  \@IMEremoveLinebreaksEtc{\@cleansubtitleen}
+  \@IMEremoveLinebreaksEtc{\@cleantitlept}
+  \@IMEremoveLinebreaksEtc{\@cleansubtitlept}
+  \@IMEremoveLinebreaksEtc{\@cleanabstract}
+  \@IMEremoveLinebreaksEtc{\@cleanresumo}
+
+  \hypersetup{
+    pdfauthor={\@author},
+    % TODO: Seria ótimo apontar para uma licença, mas qual?
+    %pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/},
+  }
+
+  % TODO: Com versões recentes de hyperxmp (final de 2020), não é
+  %       recomendado definir pdflang; no futuro, isto deve ser mudado.
+  \IfLanguagePatterns{brazilian}
+    {
+      \hypersetup{
+        pdflang={pt},
+        pdfmetalang={pt},
+	pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}},
+        pdfsubject={\@cleanresumo},
+        pdfkeywords={\@commakeywordspt},
+      }
+      \XMPLangAlt{en}{pdfsubject={\@cleanabstract}}
+      \XMPLangAlt{en}{pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}}}
+      % o item "keywords" não pode ser traduzido
+    }
+    {
+      \hypersetup{
+        pdflang={en},
+        pdfmetalang={en},
+        pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}},
+        pdfsubject={\@cleanabstract},
+        pdfkeywords={\@commakeywordsen},
+      }
+      \XMPLangAlt{pt}{pdfsubject={\@cleanresumo}}
+      \XMPLangAlt{pt}{pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}}}
+      % o item "keywords" não pode ser traduzido
+    }
+}
+\makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO, CABEÇALHOS, SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
