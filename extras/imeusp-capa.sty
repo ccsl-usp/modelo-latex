@@ -923,10 +923,15 @@
 \NewDocumentCommand{\@committeeBlock}{} {
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
-        \normalsize\noindent\committeename :\par\vspace{.5\baselineskip}
-        \begin{itemize}
+        \normalsize\noindent\committeename :\par
+        \begin{list}{}
+        {
+          \setlength{\leftmargin}{0pt}
+          \setlength{\itemsep}{.1\baselineskip}
+          \setlength{\topsep}{\baselineskip}
+        }
           \item[] \seq_use:Nn \@committeeMembers {\item[]}
-        \end{itemize}
+        \end{list}
       \end{quote}
     \end{minipage}
 }
