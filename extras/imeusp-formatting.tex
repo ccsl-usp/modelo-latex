@@ -1,102 +1,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%% CAPA, FOLHA DE ROSTO, PGS PRELIMINARES %%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\ifdefvoid{\abstract}
-  {\dowithsubdir{extras/}{\usepackage{imeusp-capa}}}
-  {}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Aqui, só definimos a macro que vai ser de fato chamada em hyperlinks.tex
-\makeatletter
-\def\@IMEthesisXMP{
-
-  % Insere os metadados XMP no arquivo PDF final.
-
-  % Remove quebras de linha, notas de rodapé etc.
-  \let\@cleantitleen\@titleen
-  \let\@cleansubtitleen\@subtitleen
-  \let\@cleantitlept\@titlept
-  \let\@cleansubtitlept\@subtitlept
-  \let\@cleanabstract\@abstract
-  \let\@cleanresumo\@resumo
-
-  \@IMEremoveLinebreaksEtc{\@cleantitleen}
-  \@IMEremoveLinebreaksEtc{\@cleansubtitleen}
-  \@IMEremoveLinebreaksEtc{\@cleantitlept}
-  \@IMEremoveLinebreaksEtc{\@cleansubtitlept}
-  \@IMEremoveLinebreaksEtc{\@cleanabstract}
-  \@IMEremoveLinebreaksEtc{\@cleanresumo}
-
-  \hypersetup{
-    pdfauthor={\@author},
-    % TODO: Seria ótimo apontar para uma licença, mas qual?
-    %pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/},
-  }
-
-  % TODO: Com versões recentes de hyperxmp (final de 2020), não é
-  %       recomendado definir pdflang; no futuro, isto deve ser mudado.
-  \IfLanguagePatterns{brazilian}
-    {
-      \hypersetup{
-        pdflang={pt},
-        pdfmetalang={pt},
-	pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}},
-        pdfsubject={\@cleanresumo},
-        pdfkeywords={\@commakeywordspt},
-      }
-      \XMPLangAlt{en}{pdfsubject={\@cleanabstract}}
-      \XMPLangAlt{en}{pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}}}
-      % o item "keywords" não pode ser traduzido
-    }
-    {
-      \hypersetup{
-        pdflang={en},
-        pdfmetalang={en},
-        pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}},
-        pdfsubject={\@cleanabstract},
-        pdfkeywords={\@commakeywordsen},
-      }
-      \XMPLangAlt{pt}{pdfsubject={\@cleanresumo}}
-      \XMPLangAlt{pt}{pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}}}
-      % o item "keywords" não pode ser traduzido
-    }
-}
-\makeatother
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO, CABEÇALHOS, SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Formatação personalizada do sumário, lista de tabelas/figuras etc.
 %\usepackage{titletoc}
 
-% Coloca as linhas "Apêndices" e "Anexos" no sumário. Com a opção "inline",
-% cada apêndice/anexo aparece como "Apêndice X" ao invés de apenas "X".
-\dowithsubdir{extras/}{\usepackage{appendixlabel}}
-
 % titlesec permite definir formatação personalizada de títulos, seções etc.
 % Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex!
-\makeatletter
-\ltx@IfUndefined{chapter}
-    {
-        % A classe atual não define "chapter" e, portanto, não faz sentido
-        % carregar imagechapter. Ao invés disso, vamos usar titlesec apenas
-        % para fazer títulos, seções etc. não serem justificados.
-        \usepackage[raggedright]{titlesec}
-    }
-    {
-        % Esta package utiliza titlesec e implementa a possibilidade de incluir
-        % uma imagem no título dos capítulos com o comando \imgchapter (leia
-        % os comentários no arquivo da package).
-        \dowithsubdir{extras/}{\usepackage{imagechapter}}
-    }
-\makeatother
+% Vamos usar titlesec apenas
+% para fazer títulos, seções etc. não serem justificados.
+\usepackage[raggedright]{titlesec}
 
 % Permite saber o número total de páginas; útil para colocar no
 % rodapé algo como "página 3 de 10" com "\thepage de \pageref{LastPage}"
@@ -197,35 +111,8 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% DEDICATÓRIA E EPÍGRAFE %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% EPÍGRAFE E NOTAS DE RODAPÉ %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% A dedicatória vai em uma página separada, sem numeração,
-% com o texto alinhado à direita e margens esquerda e
-% superior muito grandes. Vamos fazer isso com uma minipage.
-\makeatletter
-\newenvironment{dedicatoria} {
-  \hypersetup{pageanchor=false} % Veja comentário em \maketitle
-
-  \if@openright\cleardoublepage\else\clearpage\fi
-
-  \thispagestyle{empty}
-  \vspace*{140mm plus 0mm minus 100mm}
-  \noindent
-  \begin{FlushRight}
-     \begin{minipage}[b][100mm][b]{100mm}
-       \begin{FlushRight}
-         \itshape
-} {
-       \end{FlushRight}
-     \end{minipage}\hspace*{3em}
-  \end{FlushRight}
-  \vspace*{50mm plus 0mm minus 10mm}
-  \if@openright\cleardoublepage\else\clearpage\fi
-
-  \hypersetup{pageanchor=true}
-}
-\makeatother
 
 % O formato padrão do pacote epigraph é bem feinho...
 % Outra opção para epígrafes é o pacote quotchap

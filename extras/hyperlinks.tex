@@ -104,6 +104,11 @@
 % \url's que não tem esquema definido a serem do tipo http.
 \hyperbaseurl{http://}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % XMP (eXtensible Metadata Platform) é um mecanismo proposto pela Adobe
 % para a inclusão dos metadados de um documento no próprio documento.
 % Esta package se integra com hyperref e não depende de praticamente
@@ -154,6 +159,57 @@
     \let\hyxmp@at@end\AtEndDocument
   \fi
 \fi
+\makeatother
+
+% Às vezes é necessário forçar quebras de linha no título para a capa, mas
+% essas quebras não devem aparecer em outros lugares (especialmente nos
+% metadados XMP). Estas macros "apagam" esses comandos; basta usá-las em
+% um grupo para que a mudança não seja permanente.
+
+\makeatletter
+\ExplSyntaxOn
+
+% Primeiro definimos a regex que vamos usar. O que estamos fazendo aqui é
+% "(regex1)|(regex2)|(regex3)|(regex4)"
+\regex_const:Nn \@IMEbreakRegex
+  {
+    ( \c{break} ) % Encontra "\break"
+    |
+    ( \c{newline} ) % Encontra "\newline"
+    |
+      % Isto encontra:
+      % 1. A control sequence "\linebreak" -> "\c{linebreak}"
+      % 2. Opcionalmente seguida de "[NÚMERO]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
+    ( \c{linebreak} (\s*\x{5B}\s*\d\s*\x{5D})? )
+    |
+      % Isto encontra:
+      % 1. A control sequence "\\" (quebra de linha) -> "\c{\\}"
+      % 2. Optionalmente seguida de "[...]" -> "( \s*\x{5B}\s*...\s*\x{5D} )?"
+      % 3. Onde "..." é qualquer dimensão TeX válida
+      %    (veja o exemplo de regex em texdoc interface3)
+    ( \c{\\}
+      ( \s*\x{5B}\s*
+          [\+\-]?(\d+|\d*\.\d+)\s*((?i)pt|in|[cem]m|ex|[bs]p|[dn]d|[pcn]c)
+        \s*\x{5D}
+      )?
+    )
+  }
+
+\newcommand{\@IMEremoveLinebreaksEtc}[1]{
+    % Primeiro, substitui todas as quebras de linha por espaços
+    \regex_replace_all:NnN \@IMEbreakRegex {\ } #1
+
+    % Depois elimina eventuais notas de rodapé
+    \regex_replace_all:nnN {\s*\c{footnote}} {\c{@gobble}} #1
+
+    % Depois transforma URLs em texto simples
+    \regex_replace_all:nnN {\c{url}} {\c{@firstofone}} #1
+
+    % Depois elimina espaços repetidos
+    \regex_replace_all:nnN {\s+} {\ } #1
+}
+
+\ExplSyntaxOff
 \makeatother
 
 % Agora inserimos de fato os metadados XMP no arquivo PDF

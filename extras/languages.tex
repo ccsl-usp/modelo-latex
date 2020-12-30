@@ -1,0 +1,135 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\ExplSyntaxOn
+
+% We need to have at least some variant of Portuguese and of English
+% loaded to generate the abstract/resumo, palavras-chave/keywords etc.
+% We will make sure that both languages are present in the class options
+% list by adding them if needed. With this, these options become global
+% and therefore are seen by all packages (among them, babel).
+%
+% babel traditionally uses "portuguese", "brazilian", "portuges", or
+% "brazil" to support the Portuguese language, using .ldf files. babel
+% is also in the process of implementing a new scheme, using .ini
+% files, based on the concept of "locales" instead of "languages". This
+% mechanism uses the names "portuguese-portugal", "portuguese-brazil",
+% "portuguese-pt", "portuguese-br", "portuguese", "brazilian", "pt",
+% "pt-PT", and "pt-BR" (i.e., neither "portuges" nor "brazil"). To avoid
+% compatibility problems, let's stick with "brazilian" or "portuguese"
+% by substituting portuges and brazil if necessary.
+
+\NewDocumentCommand\@IMEportugueseAndEnglish{m}{
+
+  % Make sure any instances of "portuges" and "brazil" are replaced
+  % by "portuguese" e "brazilian"; other options are unchanged.
+  \seq_gclear_new:N \l_tmpa_seq
+  \seq_gclear_new:N \l_tmpb_seq
+  \seq_gset_from_clist:Nc \l_tmpa_seq {#1}
+
+  \seq_map_inline:Nn \l_tmpa_seq{
+    \def\@tempa{##1}
+    \ifstrequal{portuges}{##1}
+      {
+        \GenericInfo{sbc2019}{}{Substituting~language~portuges~->~portuguese}
+        \def\@tempa{portuguese}
+      }
+      {}
+    \ifstrequal{brazil}{##1}
+      {
+        \GenericInfo{}{Substituting~language~brazil~->~brazilian}
+        \def\@tempa{brazilian}
+      }
+      {}
+    \seq_gput_right:NV \l_tmpb_seq {\@tempa}
+  }
+
+  % Remove the leftmost duplicates (default is to remove the rightmost ones).
+  % Necessary in case the user did "portuges,portuguese", "brazil,brazilian"
+  % or some variation: When we substitute the language, we end up with the
+  % exact same language twice, which may mess up the main language selection.
+  \seq_greverse:N \l_tmpb_seq
+  \seq_gremove_duplicates:N \l_tmpb_seq
+  \seq_greverse:N \l_tmpb_seq
+
+  % If the user failed to select some variation of English and Portuguese,
+  % we add them here. We also remember which ones of portuguese/brazilian,
+  % english/american/british etc. were selected.
+  \exp_args:Nnx \regex_extract_all:nnNTF
+    {\b(portuguese|brazilian)\b}
+    {\seq_use:Nn \l_tmpb_seq {,}}
+    \l_tmpa_tl
+    {
+      \tl_reverse:N \l_tmpa_tl
+      \xdef\@IMEpt{\tl_head:N \l_tmpa_tl}
+    }
+    {
+      \seq_gput_left:Nn \l_tmpb_seq {brazilian}
+      \gdef\@IMEpt{brazilian}
+    }
+
+  \exp_args:Nnx \regex_extract_all:nnNTF
+    {\b(english|american|USenglish|canadian|british|UKenglish|australian|newzealand)\b}
+    {\seq_use:Nn \l_tmpb_seq {,}}
+    \l_tmpa_tl
+    {
+      \tl_reverse:N \l_tmpa_tl
+      \xdef\@IMEen{\tl_head:N \l_tmpa_tl}
+    }
+    {
+      \seq_gput_left:Nn \l_tmpb_seq {english}
+      \gdef\@IMEen{english}
+    }
+
+  \exp_args:Nc \xdef {#1} {\seq_use:Nn \l_tmpb_seq {,}}
+}
+
+
+% https://tex.stackexchange.com/a/43541/217608
+% This message is part of a larger thread that discusses some
+% limitations of this method, but it is enough for us here.
+\def\@getcl@ss#1.cls#2\relax{\def\@currentclass{#1}}
+\def\@getclass{\expandafter\@getcl@ss\@filelist\relax}
+\@getclass
+
+% The three class option lists we need to update: \@unusedoptionlist,
+% \@classoptionslist and one of \opt@book.cls, \opt@article.cls etc.
+% according to the current class. Note that beamer.cls (and maybe
+% others) does not use \@unusedoptionlist; with it, we incorrectly
+% add "english,brazilian" to \@unusedoptionlist, but that does not
+% cause problems.
+\@IMEportugueseAndEnglish{@unusedoptionlist}
+\@IMEportugueseAndEnglish{@classoptionslist}
+\@IMEportugueseAndEnglish{opt@\@currentclass .cls}
+
+\ExplSyntaxOff
+\makeatother
+
+% Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
+% hifenização e outras convenções tipográficas. babel deve ser um dos
+% primeiros pacotes carregados. É possível passar a língua do documento
+% como parâmetro aqui, mas já fizemos isso ao carregar a classe, no início
+% do documento.
+\usepackage{babel}
+\usepackage{iflang}
+
+% É possível personalizar as palavras-chave que babel utiliza, por exemplo:
+%\addto\extrasbrazilian{\renewcommand{\chaptername}{Chap.}}
+% Com BibTeX, isso vale também para a bibliografia; com BibLaTeX, é melhor
+% usar o comando "DefineBibliographyStrings".
+
+% Para línguas baseadas no alfabeto latino, como o inglês e o português,
+% o pacote babel funciona muito bem, mas com outros alfabetos ele às vezes
+% falha. Por conta disso, o pacote polyglossia foi criado para substituí-lo.
+% polyglossia só funciona com LuaTeX e XeTeX; como babel também funciona com
+% esses sistemas, provavelmente não há razão para usar polyglossia, mas é
+% possível que no futuro esse pacote se torne o padrão.
+%\usepackage{polyglossia}
+%\setdefaultlanguage{brazilian}
+%\setotherlanguage{english}
+
+% Alguns pacotes (espeficicamente, tikz) usam, além de babel, este pacote
+% como auxiliar para a tradução de palavras-chave, como os meses do ano.
+\usepackage{translator}
