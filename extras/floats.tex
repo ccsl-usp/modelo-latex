@@ -76,12 +76,11 @@
 % LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
 % para isso, o usuário deve identificar os casos problemáticos e inserir
 % \clearpage manualmente. Esta package acrescenta o comando \FloatBarrier,
-% que executa \clearpage automaticamente se necessário no local em que é
-% chamado. A opção "section" faz o comando ser aplicado automaticamente
-% a cada nova seção. "above" e "below" desabilitam a barreira quando os
-% floats estão na mesma página. A desvantagem de placeins é que, para
-% funcionar, ela gera quebras de página que muitas vezes são inesperadas.
-%\usepackage[above,below]{placeins}
+% que executa \clearpage apenas se necessário no local em que é chamado.
+% "above" e "below" desabilitam a barreira quando os floats estão na mesma
+% página. A desvantagem de placeins é que, para funcionar, ela gera quebras
+% de página que muitas vezes são inesperadas.
+\usepackage[above,below]{placeins}
 
 % Em documentos com duas colunas, floats normalmente são colocados como
 % parte de uma das colunas. No entanto, é possível usar "\begin{figure*}"
