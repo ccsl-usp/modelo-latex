@@ -15,37 +15,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREÂMBULO LaTeX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Você pode adaptar este modelo mudando a classe para a de algum periódico
-% específico. Para isso, no entanto, você provavelmente vai ter que desabilitar
-% diversas coisas definidas aqui em prol do padrão do periódico, como o formato
-% da bibliografia, fontes, tamanho do papel e margens etc. Em geral, se o
-% periódico fornece um modelo, é melhor usá-lo.
+% A opção twoside (frente-e-verso) significa que a aparência das páginas pares
+% e ímpares pode ser diferente. Por exemplo, as margens podem ser diferentes ou
+% os números de página podem aparecer à direita ou à esquerda alternadamente.
+% Mas nada impede que você crie um documento "só frente" e, ao imprimir, faça
+% a impressão frente-e-verso.
 %
-% A opção frente-e-verso aqui significa, por exemplo, que as margens das páginas
-% ímpares e pares são diferentes ou que números de página aparecem à direita
-% ou à esquerda alternadamente. Nada impede que você crie um documento "só
-% frente" e, ao imprimir, faça a impressão frente-e-verso.
-%
-% Aqui também definimos a língua padrão do documento e línguas adicionais. A
-% classe em si não usa essa informação mas, passando as opções de língua aqui,
-% elas são repassadas para todas as packages, e diversas packages mudam
-% seu comportamento em função da língua (em especial, babel/polyglossia).
-% A última língua da lista é a língua padrão do documento.
+% Aqui também definimos a língua padrão do documento
+% (a última da lista) e línguas adicionais.
 %\documentclass[12pt,twoside,brazilian,english]{article}
 \documentclass[11pt,twoside,english,brazilian]{article}
 
-% Com papel tamanho A4, queremos estas margens:
-%
-% topo: 32mm
-% pé: 28mm
-% esquerda/interna: 24mm
-% direita/externa: 34mm
-%
-% Para isso, definimos os tamanhos do texto, do cabeçalho e do rodapé,
-% e deixamos a package geometry calcular os demais valores. Assim,
-% obtemos o mesmo resultado impresso, mas com margens diferentes, se
-% o tamanho do papel for diferente.
-
+% Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
+% texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
+% o tamanho das margens em função do tamanho do papel. Assim, obtemos o
+% mesmo resultado impresso, mas com margens diferentes, se o tamanho do
+% papel for diferente.
 \usepackage[a4paper,landscape]{geometry}
 
 \geometry{
@@ -137,11 +122,6 @@
 % Com este comando, todos os itens do arquivo .bib são incluídos na lista
 % de referências
 %\nocite{*}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INÍCIO DO CONTEÚDO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \pagestyle{empty}
 
