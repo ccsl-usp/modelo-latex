@@ -163,8 +163,9 @@
 
 % Às vezes é necessário forçar quebras de linha no título para a capa, mas
 % essas quebras não devem aparecer em outros lugares (especialmente nos
-% metadados XMP). Estas macros "apagam" esses comandos; basta usá-las em
-% um grupo para que a mudança não seja permanente.
+% metadados XMP). hyperref e hyperxmp removem essas quebras automaticamente,
+% mas isso pode fazer duas palavras ficarem grudadas. Estas macros "apagam"
+% esses comandos de maneira mais cuidadosa.
 
 \makeatletter
 \ExplSyntaxOn
@@ -201,6 +202,7 @@
 
     % Depois elimina eventuais notas de rodapé
     \regex_replace_all:nnN {\s*\c{footnote}} {\c{@gobble}} #1
+    \regex_replace_all:nnN {\s*\c{thanks}} {\c{@gobble}} #1
 
     % Depois transforma URLs em texto simples
     \regex_replace_all:nnN {\c{url}} {\c{@firstofone}} #1
@@ -221,10 +223,12 @@
 \def\@IMEsimpleXMP{
   % Remove quebras de linha etc.
   \let\@cleantitle\@title
+  \let\@cleanauthor\@author
   \@IMEremoveLinebreaksEtc{\@cleantitle}
+  \@IMEremoveLinebreaksEtc{\@cleanauthor} % pode incluir \thanks
 
   \hypersetup{
-    pdfauthor={\@author},
+    pdfauthor={\@cleanauthor},
     pdftitle={\@cleantitle},
   }
 

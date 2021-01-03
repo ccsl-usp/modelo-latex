@@ -2,46 +2,8 @@
 %("dica" para o editor de texto: este arquivo é parte de um documento maior)
 % para saber mais: https://tex.stackexchange.com/q/78101/183146
 
-%%%%%%%%%%%%%%%%%%%%%%% METADADOS (TÍTULO, AUTOR ETC.) %%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Estes comandos definem o título e autoria do trabalho e devem sempre ser
-% definidos, pois além de serem utilizados para criar a capa (com o comando
-% \maketitle), também são armazenados nos metadados do PDF. O estilo padrão
-% de diversos periódicos exige também outros dados, como email, filiação etc.
-\title{Título do artigo}
-\author{Primeiro Autor\thanks{Filiação do primeiro autor}, Segundo Autor\thanks{Filiação do segundo autor}}
-
-% O pacote hyperref armazena alguns metadados no PDF gerado (em particular,
-% o conteúdo de "\title" e "\author"). Também é possível armazenar outros
-% dados, como uma lista de palavras-chave.
-\hypersetup{
-  % Usando "\thanks" no comando \author, hyperref gera uma mensagem
-  % de erro. Para contornar isso, repetimos os autores aqui.
-  pdfauthor={Primeiro Autor, Segundo Autor},
-  pdfkeywords={LaTeX, artigo},
-}
-
-% É possível definir como determinadas palavras podem (ou não) ser
-% hifenizadas; no entanto, a hifelização automática geralmente funciona bem
-\hyphenation{documentclass latexmk Fu-la-no}
-
-% Por padrão, article inclui a data atual; com este comando, você pode
-% definir uma data específica, inserir algum outro texto ou, deixando o
-% conteúdo em branco, removê-la.
-\date{}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%% AQUI COMEÇA O CONTEÚDO DE FATO %%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Gera a "capa" do artigo (geralmente, título, autor etc. sem que haja uma
-% quebra de página para o restante do conteúdo)
-\maketitle
-
 \begin{abstract}
-  Uma variante do arquivo \texttt{tese.tex} usando a classe
-  \textsf{article}.
+  Uma variante do arquivo \texttt{tese.tex} usando a classe \textsf{article}.
 \end{abstract}
 
 \section{Introdução}
