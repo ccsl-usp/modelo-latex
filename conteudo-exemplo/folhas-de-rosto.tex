@@ -57,9 +57,9 @@ texto texto texto texto. Texto opcional.
 \newcommand\disablenewpage[1]{{\let\clearpage\par\let\cleardoublepage\par #1}}
 
 % Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
-% a opção correspondente e as listas dentro de um par de chaves para ativar
+% a opção correspondente e as listas dentro de um grupo para ativar
 % raggedbottom apenas temporariamente.
-{
+\bgroup
 \raggedbottom
 
 %%%%% Listas criadas manualmente
@@ -109,7 +109,7 @@ texto texto texto texto. Texto opcional.
 % Sumário (obrigatório)
 \tableofcontents
 
-} % Final de "raggedbottom"
+\egroup % Final de "raggedbottom"
 
 % Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
 % pois o índice é opcional). É comum colocar esses itens no final do documento,
