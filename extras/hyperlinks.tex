@@ -39,23 +39,41 @@
 % Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
 \usepackage{hyperref}
 
-% TODO: check border colors
-\hypersetup{
-  colorlinks=true,
-  %citecolor=black,
-  %linkcolor=black,
-  %urlcolor=black,
-  %filecolor=black,
-  citecolor=DarkGreen,
-  linkcolor=NavyBlue,
-  urlcolor=DarkRed,
-  filecolor=green,
-  %pdfborder={0 0 .6},
-  %pdfborderstyle={/S/U/W .6},
-  %urlbordercolor=red!30!white,
-  %citebordercolor=green!30!white,
-  %linkbordercolor=blue!30!white,
-  %filebordercolor=green!30!white,
+\providetoggle{IMEcolorlinks}
+\providetoggle{IMEhidelinks}
+\newcommand\hidelinks{\toggletrue{IMEhidelinks}}
+\newcommand\colorlinks{\toggletrue{IMEcolorlinks}}
+\newcommand\nocolorlinks{\togglefalse{IMEcolorlinks}}
+\colorlinks
+\AtEndPreamble{
+  \iftoggle{IMEhidelinks}
+    {\hypersetup{hidelinks}}
+    {
+      \iftoggle{IMEcolorlinks}{
+        \hypersetup{
+          colorlinks=true, % também desabilita pdfborderstyle
+          %citecolor=black,
+          %linkcolor=black,
+          %urlcolor=black,
+          %filecolor=black,
+          citecolor=DarkGreen,
+          linkcolor=NavyBlue,
+          urlcolor=DarkRed,
+          filecolor=green,
+          anchorcolor=black,
+        }
+      }{
+        \hypersetup{
+          colorlinks=false,
+          pdfborder={0 0 .6},
+          pdfborderstyle={/S/U/W .6},
+          urlbordercolor=DodgerBlue,
+          citebordercolor=green!30!white,
+          linkbordercolor=blue!30!white,
+          filebordercolor=green!30!white,
+        }
+      }
+    }
 }
 
 %\usepackage[nameinlink,noabbrev,capitalise]{cleveref}
