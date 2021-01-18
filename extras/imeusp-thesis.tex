@@ -1,25 +1,13 @@
-% Authors: Nelson Lago and Jesus P. Mena-Chalco
-% This file is distributed under the MIT Licence
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% CAPA E PÁGINAS PRELIMINARES (TESE/DISSERTAÇÃO)  %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ProvidesPackage{imeusp-capa}[2020/12/10 v2.0 IME/USP initial thesis pages]
-
-% Várias funções úteis
-\RequirePackage{etoolbox}
-
-% Extensões do projeto LaTeX3.
-\RequirePackage{expl3}
-\RequirePackage{xparse}
-
-\RequirePackage{trimspaces}
-
-% Parágrafos não-justificados melhores
-\RequirePackage{ragged2e}
-
-\RequirePackage{setspace}
+\usepackage{trimspaces}
 
 % Formatação de datas de acordo com a língua
-\RequirePackage[useregional]{datetime2}
+\usepackage[useregional]{datetime2}
 
+\makeatletter
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%% TEXTOS PADRÃO EM PT E EN PARA A CAPA %%%%%%%%%%%%%%%%%%%%%
@@ -1046,4 +1034,4 @@
 % os comentários no arquivo da package).
 \dowithsubdir{extras/}{\usepackage{imagechapter}}
 
-\endinput
+\makeatother
