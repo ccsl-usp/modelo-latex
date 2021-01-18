@@ -973,10 +973,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Aqui, só definimos a macro que vai ser de fato chamada em hyperlinks.tex
-\def\@IMEthesisXMP{
-
-  % Insere os metadados XMP no arquivo PDF final.
+% Insere os metadados XMP no arquivo PDF final. Alguns desses valores são
+% definidos normalmente por hyperref/hyperxmp ou em hyperlinks.tex, mas
+% para teses/dissertações vamos sobrescrevê-los aqui com AtEndPreamble.
+% \@IMEremoveLinebreaksEtc está definida em hyperlinks.tex.
+\AtEndPreamble{
 
   % Remove quebras de linha, notas de rodapé etc.
   \let\@cleantitleen\@titleen

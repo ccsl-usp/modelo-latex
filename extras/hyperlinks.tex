@@ -183,7 +183,8 @@
 % essas quebras não devem aparecer em outros lugares (especialmente nos
 % metadados XMP). hyperref e hyperxmp removem essas quebras automaticamente,
 % mas isso pode fazer duas palavras ficarem grudadas. Estas macros "apagam"
-% esses comandos de maneira mais cuidadosa.
+% esses comandos de maneira mais cuidadosa. Elas são utilizadas aqui e em
+% imeusp-capa.
 
 \makeatletter
 \ExplSyntaxOn
@@ -232,36 +233,19 @@
 \ExplSyntaxOff
 \makeatother
 
-% Agora inserimos de fato os metadados XMP no arquivo PDF
+% Agora inserimos de fato os metadados essenciais XMP no arquivo PDF. Se
+% o documento é uma tese/dissertação no formato do IME, outros metadados
+% são definidos em imeusp-capa e sobrescrevem o que está definido aqui.
 \makeatletter
 
-% Se o documento é uma tese/dissertação no formato do IME, a definição dos
-% metadados é mais complexa e já foi preparada em thesis-formatting.tex;
-% Se não é tese/dissertação, colocamos apenas os dados essenciais.
-\def\@IMEsimpleXMP{
-  % Remove quebras de linha etc.
-  \let\@cleantitle\@title
-  \let\@cleanauthor\@author
-  \@IMEremoveLinebreaksEtc{\@cleantitle}
-  \@IMEremoveLinebreaksEtc{\@cleanauthor} % pode incluir \thanks
+\let\@cleantitle\@title
+\let\@cleanauthor\@author
+\@IMEremoveLinebreaksEtc{\@cleantitle}
+\@IMEremoveLinebreaksEtc{\@cleanauthor} % pode incluir \thanks
 
-  \hypersetup{
-    pdfauthor={\@cleanauthor},
-    pdftitle={\@cleantitle},
-  }
-
-  \ifdefvoid{\@abstract}
-    {}
-    {
-      \let\@cleanabstract\@abstract
-      \@IMEremoveLinebreaksEtc{\@cleanabstract}
-      \hypersetup{pdfsubject={\@cleanabstract}}
-    }
+\hypersetup{
+  pdfauthor={\@cleanauthor},
+  pdftitle={\@cleantitle},
 }
 
-\AtEndPreamble{
-  \ifdefvoid{\@IMEthesisXMP}
-    {\@IMEsimpleXMP}
-    {\@IMEthesisXMP}
-}
 \makeatother
