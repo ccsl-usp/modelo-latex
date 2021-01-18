@@ -1,0 +1,171 @@
+%%
+%% This is file `froufrou.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% froufrou.dtx  (with options: `package')
+%% Copyright 2020 Nelson Lago <lago@ime.usp.br>
+%% 
+%% This work may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License, either version 1.3 of this license or (at
+%% your option) any later version. The latest version of this license can be
+%% found at http://www.latex-project.org/lppl.txt and version 1.3 or later
+%% is part of all distributions of LaTeX version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Nelson Lago <lago@ime.usp.br>.
+%% 
+\NeedsTeXFormat{LaTeX2e}[2015/01/01]
+\ProvidesPackage{froufrou}[2020/12/22 1.2 Visual section separator]
+
+\RequirePackage{etoolbox}
+\RequirePackage{expl3}
+
+\RequirePackage{fourier-orns}
+\newcommand\@froufrouFleuron{%
+    \bgroup
+    \footnotesize
+    \rule[.7mm]{.1\textwidth}{0.5pt}%
+    \enspace\,%
+    \decofourleft\decotwo\decofourright
+    \enspace\,%
+    \rule[.7mm]{.1\textwidth}{0.5pt}%
+    \egroup
+}
+
+\newcommand\@froufrouSimpleFleuron{%
+    \bgroup
+    \footnotesize
+    \decofourleft\decotwo\decofourright
+    \egroup
+}
+
+\newcommand{\@froufrouTightAsterism}{%
+  \bgroup
+  \smash{%
+    \raisebox{-.5ex}{%
+      \setlength{\tabcolsep}{-.5pt}%
+      \begin{tabular}{@{}cc@{}}%
+        \multicolumn2c*\\[-2ex]*&*%
+      \end{tabular}%
+    }%
+  }%
+  \egroup
+}
+
+\newcommand{\@froufrouAsterism}{%
+  \bgroup
+  \smash{%
+    \raisebox{-.5ex}{%
+      \setlength{\tabcolsep}{0pt}%
+      \begin{tabular}{@{}cc@{}}%
+        \multicolumn2c*\\[-1.8ex]*&*%
+      \end{tabular}%
+    }%
+  }%
+  \egroup
+}
+
+\newcommand\@froufrouTrueAsterism{⁂}
+
+\newcommand{\@froufrouDinkus}{\relax*\quad*\quad*}
+
+\ExplSyntaxOn
+\newcommand\setfroufrou[1]{%
+  \str_case:nnF{#1}{
+      {}{\relax}
+      {fleuron}{\def\@froufrouOrnament{\@froufrouFleuron}}
+      {simplefleuron}{\def\@froufrouOrnament{\@froufrouSimpleFleuron}}
+      {asterism}{\def\@froufrouOrnament{\@froufrouAsterism}}
+      {tightasterism}{\def\@froufrouOrnament{\@froufrouTightAsterism}}
+      {trueasterism}{\def\@froufrouOrnament{\@froufrouTrueAsterism}}
+      {dinkus}{\def\@froufrouOrnament{\@froufrouDinkus}}%
+  }{\def\@froufrouOrnament{#1}}%
+}
+\ExplSyntaxOff
+
+\def\@froufrouspacebefore{\vskip 22pt plus 7pt minus 5pt}
+\def\@froufrouspaceafter{\@froufrouspacebefore}
+
+\newcommand{\froufrou}{%
+  \@ifstar{\@afterindenttrue\@realfroufrou}{\@afterindentfalse\@realfroufrou}%
+}
+
+\newcommand\frufru{\froufrou}
+
+\newcommand{\@realfroufrou}[1][]{%
+  % Make sure we left horizontal mode.
+  \nopagebreak[4]\par
+
+  \nopagebreak[4]\@froufrouspacebefore\nopagebreak[4]
+
+  % Start a new group to (1) reset \doublespacing, \parskip, and
+  % \baselineskip, so spacing is independent from the previous text
+  % settings and (2) so that using #1 to change the ornament only
+  % affects the current call. Then, start yet another group only
+  % for the ornament because font size changes in it should not
+  % affect spacing either.
+  \bgroup
+    \setfroufrou{#1}%
+    \normalsize
+    \ifdefvoid{\setstretch}{}{\setstretch{\setspace@singlespace}}% normally 1
+    \setlength{\parskip}{0pt}
+    \noindent\centering\bgroup\@froufrouOrnament\egroup\par
+  \egroup
+
+  \nopagebreak[4]\@froufrouspaceafter\nopagebreak[4]
+
+  % Next paragraph's \doublespacing, \baselineskip, and \parskip
+  % should not affect spacing.
+  \@froufrouFixSpacingAfter
+
+  % Breaking after the separator is acceptable as a last resort. Since
+  % we use a lot of vertical space before/after it, not allowing this
+  % break might lead to poor results in some cases.
+  \nopagebreak[3]
+
+  % Emulate the behavior of \section, \subsection etc: prevent
+  % the first line of the next paragraph from being indented
+  % and absolutely forbid a club line in the next paragraph.
+  \@afterheading
+}
+
+\newcommand\@froufrouFixSpacingAfter{
+  % The next \par will add \parskip and \baselineskip. We want to
+  % (1) eliminate \parskip so that spacing does not change if it
+  % is nonzero and (2) add the "normal" \baselineskip, even if the
+  % text is set using \doublespacing. These adjustments may be off
+  % if font size, \parskip or \baselineskip are changed before the
+  % next paragraph.
+
+  \nopagebreak[4]\vskip -\parskip
+
+  \ifdefvoid{\setstretch}
+    {}
+    {
+      \bgroup
+        % \singlespacing may add an extra \baselineskip; let's
+        % avoid surprises and use \setstrech instead.
+        \setstretch {\setspace@singlespace}%  normally 1
+        \nopagebreak[4]\vskip \baselineskip
+      \egroup
+
+      \nopagebreak[4]\vskip -\baselineskip
+    }
+}
+
+\DeclareOption{fleuron}{\setfroufrou{fleuron}}
+\DeclareOption{simplefleuron}{\setfroufrou{simplefleuron}}
+\DeclareOption{asterism}{\setfroufrou{asterism}}
+\DeclareOption{tightasterism}{\setfroufrou{tightasterism}}
+\DeclareOption{trueasterism}{\setfroufrou{trueasterism}}
+\DeclareOption{dinkus}{\setfroufrou{dinkus}}
+\DeclareOption*{\PackageWarning{froufrou}{Unknown option `\CurrentOption'}}
+\ExecuteOptions{fleuron}
+\ProcessOptions\relax
+
+\endinput
+%%
+%% End of file `froufrou.sty'.
