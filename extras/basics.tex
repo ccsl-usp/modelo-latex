@@ -363,9 +363,4 @@
 % desempenho, mas no nosso caso (em que adicionamos apenas um diretório
 % com poucos arquivos e com máquinas modernas) isso não é um problema. Veja
 % https://tex.stackexchange.com/questions/241828/define-path-for-packages-in-the-latex-file-analog-of-inputpath-or-graphicspa#comment705011_241832
-\newcommand\dowithsubdir[2]{
-    \csletcs{@oldinput@path}{input@path}
-    \csappto{input@path}{{#1}}
-    #2
-    \csletcs{input@path}{@oldinput@path}
-}
+\csappto{input@path}{{extras/}}

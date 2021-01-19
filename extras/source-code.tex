@@ -21,8 +21,9 @@
 % Carrega a "linguagem" pseudocode para listings
 \appto{\lstaspectfiles}{,lstpseudocode.sty}
 \appto{\lstlanguagefiles}{,lstpseudocode.sty}
-\dowithsubdir{extras/}{\lstloadaspects{simulatex,invisibledelims,pseudocode}}
-\dowithsubdir{extras/}{\lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}}
+% Estes dois são carregados do diretório extras (veja basics.tex)
+\lstloadaspects{simulatex,invisibledelims,pseudocode}
+\lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}
 
 % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
 % usados em português é possível contornar o problema com a tabela abaixo.

@@ -1024,7 +1024,7 @@
 
 % Coloca as linhas "Apêndices" e "Anexos" no sumário. Com a opção "inline",
 % cada apêndice/anexo aparece como "Apêndice X" ao invés de apenas "X".
-\dowithsubdir{extras/}{\usepackage{appendixlabel}}
+\usepackage{appendixlabel} % carregado do diretório extras (veja basics.tex)
 
 % titlesec permite definir formatação personalizada de títulos, seções etc.
 % Observe que titlesec é incompatível com os comandos refsection
@@ -1032,6 +1032,6 @@
 % Esta package utiliza titlesec e implementa a possibilidade de incluir
 % uma imagem no título dos capítulos com o comando \imgchapter (leia
 % os comentários no arquivo da package).
-\dowithsubdir{extras/}{\usepackage{imagechapter}}
+\usepackage{imagechapter} % carregado do diretório extras (veja basics.tex)
 
 \makeatother
