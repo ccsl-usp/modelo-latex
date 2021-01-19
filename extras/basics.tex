@@ -324,31 +324,45 @@
 % Trechos de texto "puro" (tabs, quebras de linha etc. não são modificados)
 \usepackage{verbatim}
 
-% LaTeX procura por arquivos adicionais no diretório atual e nos diretórios
-% padrão do sistema. Assim, é preciso usar caminhos relativos para incluir
-% arquivos de subdiretórios: "\input{diretorio/arquivo}". No entanto, há
-% duas limitações:
+% Durante o processamento, LaTeX procura por arquivos adicionais necessários
+% (tanto componentes do próprio LaTeX, como packages e fontes, quanto partes
+% do conteúdo em si, como imagens carregadas com \includegraphics ou arquivos
+% solicitados com \input ou \include) no diretório de instalação e também
+% no diretório atual (ou seja, o diretório do projeto). Assim, normalmente
+% é preciso usar caminhos relativos para incluir arquivos de subdiretórios:
+% "\input{diretorio/arquivo}". No entanto, há duas limitações:
 %
-% 1. É necessário dizer "\input{diretorio/arquivo} mesmo quando o arquivo
+% 1. É necessário dizer "\input{diretorio/arquivo}" mesmo quando o arquivo
 %    que contém esse comando já está dentro do subdiretório.
 %
 % 2. Isso não deve ser usado para packages ("\usepackage{diretorio/package}"),
 %    embora na prática funcione.
 %
-% O modo recomendado de resolver esses problemas é modificando o arquivo
-% texmf.cnf ou a variável de ambiente TEXINPUTS ou colocando os arquivos
-% compartilhados na árvore TEXMF (geralmente, no diretório texmf dentro do
-% diretório do usuário), o que é um tanto complicado para usuários menos
-% experientes.
+% Há três maneiras recomendadas de resolver esses problemas:
 %
-% O primeiro problema pode ser solucionado também com a package import,
-% mas não há muita vantagem pois é preciso usar outro comando no lugar de
-% "\input". O segundo problema é mais importante, pois torna muito difícil
-% colocar packages adicionais em um diretório separado. Para contorná-lo,
-% vamos usar um truque que é suficiente para nossa necessidade, embora
-% *não* seja normalmente recomendado.
+% 1. Acrescentando os diretórios desejados ao arquivo texmf.cnf
+%
+% 2. Acrescentando os diretórios desejados às variáveis de ambiente
+%    TEXINPUTS e BSTINPUTS
+%
+% 3. Colocando os arquivos adicionais na árvore TEXMF (geralmente, no
+%    diretório texmf dentro do diretório do usuário).
+%
+% Essas soluções, no entanto, não podem ser automatizadas por este modelo
+% e são um tanto complicadas para usuários menos experientes. Veja mais a
+% respeito na seção 5 de "texdoc kpathsea" e em
+% https://www.overleaf.com/learn/latex/Articles/An_introduction_to_Kpathsea_and_how_TeX_engines_search_for_files .
+%
+% A package import pode solucionar o primeiro problema, mas exige o uso
+% de outro comando no lugar de \input, então não a usamos aqui.
 %\usepackage{import}
-
+%
+% Uma solução mais simples é acrescentar os diretórios desejados à macro
+% \input@path, originalmente criada para resolver um problema relacionado
+% à portabilidade. Seu uso não é normalmente recomendado por razões de
+% desempenho, mas no nosso caso (em que adicionamos apenas um diretório
+% com poucos arquivos e com máquinas modernas) isso não é um problema. Veja
+% https://tex.stackexchange.com/questions/241828/define-path-for-packages-in-the-latex-file-analog-of-inputpath-or-graphicspa#comment705011_241832
 \newcommand\dowithsubdir[2]{
     \csletcs{@oldinput@path}{input@path}
     \csappto{input@path}{{#1}}

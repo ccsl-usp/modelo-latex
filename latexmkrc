@@ -2,6 +2,15 @@
 
 $custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction batchmode ';
 
+# Nao eh necessario neste modelo, mas pode ser util.
+# Veja a secao 5 de "textoc kpathsea" e
+# https://www.overleaf.com/learn/latex/Articles/An_introduction_to_Kpathsea_and_how_TeX_engines_search_for_files
+#ensure_path('TEXINPUTS', 'conteudo//');
+#ensure_path('TEXINPUTS', 'extras//');
+#ensure_path('TEXINPUTS', '.');
+#ensure_path('BSTINPUTS', 'extras//');
+#ensure_path('BSTINPUTS', '.');
+
 # With older versions of latexmk, this is the recommended
 # method for choosing which latex engine to use:
 $pdflatex = 'pdflatex' . $custom_latex_opts . '%O %S';

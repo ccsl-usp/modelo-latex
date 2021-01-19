@@ -110,6 +110,12 @@ BIBEROPTS :=
 # O arquivo de configuracao latexmkrc-make eh criado mais abaixo
 LATEXMKOPTS := -r latexmkrc-make -dvi- -ps- -pdf -silent
 
+# Nao eh necessario neste modelo, mas pode ser util.
+# Veja a secao 5 de "textoc kpathsea" e
+# https://www.overleaf.com/learn/latex/Articles/An_introduction_to_Kpathsea_and_how_TeX_engines_search_for_files
+#export TEXINPUTS := .;extras//;conteudo//;
+#export BSTINPUTS := .;extras//;
+
 
 ###############################################################################
 ######## Nada que precise ser modificado pelo usuario daqui para baixo ########
