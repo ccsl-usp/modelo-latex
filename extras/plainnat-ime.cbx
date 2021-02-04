@@ -3,10 +3,24 @@
 % and, therefore, is distributed under the LPPL
 
 \ProvidesFile{plainnat-ime.cbx}
-[\abx@cbxid]
+[2021/02/04 v1.1 plainnat-like citations by IME/USP]
 
 \RequireCitationStyle{authoryear}
 \RequirePackage{regexpatch}
+
+% Sobrenomes nas citações (e na bibliografia) em Small Caps
+\renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
+
+% Autores no formato "nome sobrenome"
+\DeclareNameAlias{sortname}{given-family}
+\DeclareNameAlias{default}{given-family}
+
+% Autores no formato "sobrenome, nome"
+%\DeclareNameAlias{sortname}{family-given}
+%\DeclareNameAlias{default}{family-given}
+
+% Com mais de 2 nomes, usa "et al." nas citações
+\ExecuteBibliographyOptions{maxcitenames=2}
 
 % Usando o pacote hyperref, o estilo de citação authoryear transforma
 % apenas o ano da citação em um link para a bibliografia; aqui fazemos
@@ -20,10 +34,7 @@
   {\bibhyperref{\printnames{labelname}}}
   {}{}
 
-% letbibmacro não está disponível em versões de biblatex anteriores a
-% nov/2017; vamos fazer a alteração manualmente.
-%\letbibmacro{imedefaultcite}{cite}
-\csletcs{abx@macro@imedefaultcite}{abx@macro@cite}
+\letbibmacro{imedefaultcite}{cite}
 
 \renewbibmacro{cite}{%
     \printtext[bibhyperref]{\usebibmacro{imedefaultcite}}%

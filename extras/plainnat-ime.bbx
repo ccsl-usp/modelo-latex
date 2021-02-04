@@ -3,7 +3,7 @@
 % and, therefore, is distributed under the LPPL
 
 \ProvidesFile{plainnat-ime.bbx}
-[\abx@bbxid]
+[2021/02/04 v1.1 plainnat-like bibliographies by IME/USP]
 
 % Vamos usar um formato similar a alphabetic, mas mudamos o label; ao
 % invés de alpha, inserimos o \cite de authoryear.cbx como label.
@@ -17,16 +17,50 @@
 % alphabetic usa anyt
 \ExecuteBibliographyOptions{sorting=nyt}
 
+% Com mais de 5 nomes, usa "et al."
+\ExecuteBibliographyOptions{maxbibnames=5}
+
+% Vamos deixar um pequeno espaço entre cada item da bibliografia
+\setlength{\bibitemsep}{1em}
+
+% Para mudar o tamanho da fonte na bibliografia:
+%\renewcommand*{\bibfont}{\footnotesize}
+
 % Se quisermos fazer o "citado na pg. X" em fonte menor, modificamos
 % o comando definido em biblatex.def
 %\xpretobibmacro{pageref}{\scriptsize}{}{}
 %\xpretobibmacro{setpageref}{\scriptsize}{}{}
+
+% Sobrenomes na bibliografia (e nas citações) em Small Caps
+\renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
+
+% Autores no formato "nome sobrenome"
+\DeclareNameAlias{sortname}{given-family}
+\DeclareNameAlias{default}{given-family}
+
+% Autores no formato "sobrenome, nome"
+%\DeclareNameAlias{sortname}{family-given}
+%\DeclareNameAlias{default}{family-given}
+
+\DefineBibliographyStrings{brazilian}{
+  % Na bibliografia, criamos links para as páginas onde uma
+  % determinada obra foi citada. O texto padrão para indicar
+  % isso é "ver...", vamos trocar.
+  backrefpage  = {citado na pg\adddot},
+  backrefpages = {citado nas pgs\adddot},
+  page         = {pg\adddot},
+  pages        = {pgs\adddot},
+}
 
 % Por padrão, os labels na bibliografia não têm nada de
 % especial (além do que for definido, por exemplo, com
 % \mkbibnamefamily). O usuário pode redefinir este comando
 % para fazer, por exemplo, negrito.
 \providecommand*{\labelhighlight}[1]{#1}
+
+% A primeira linha de cada item da bibliografia pode ter margem menor
+% que as demais; aqui definimos essa diferença:
+\setlength{\bibhang}{2em}
 
 % No estilo alfabético, biblatex coloca o "label" de cada item
 % alinhado à esquerda; com os labels longos que estamos usando,
@@ -94,7 +128,7 @@
 % a uma das línguas para as quais esse comportamento é desejado. biblatex
 % ativa a macro para a língua inglesa; para ativar esse mecanismo para a
 % língua portuguesa:
-%\DeclareCaseLangs{brazilian,brazil,portuges,portuguese}
+\DeclareCaseLangs*{brazilian,brazil,portuges,portuguese}
 
 % Mais abaixo, definimos uma outra macro, \NoChangeOrSentenceCase, que
 % mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos

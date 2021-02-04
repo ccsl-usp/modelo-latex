@@ -47,58 +47,13 @@
   % Inclui, em cada item da bibliografia, links para as páginas onde o
   % item foi citado
   backref=true,
-  maxbibnames=5, % Com mais de 5 nomes, usa "et. al." na bibliografia
-  % Com mais de 2 nomes, usa "et. al." nas citações (só faz
-  % diferença nos estilos autor-data, como plainnat-ime)
-  maxcitenames=2,
 }{biblatex}
 
 % Este arquivo é executado antes de carregarmos biblatex, então precisamos
-% adiar a execução destes comandos. Não carregamos neste arquivo porque o
-% usuário pode querer modificar o estilo, que é definido por um parâmetro
-% na hora da carga da package.
+% adiar a execução deste comando. Não carregamos biblatex neste arquivo
+% porque o usuário pode querer modificar o estilo bibliográfico, que é
+% definido por um parâmetro na hora da carga da package.
 \AtEndPreamble{
-  % Sobrenomes nas citações e na bibliografia em Small Caps
-  \renewcommand{\mkbibnamefamily}[1]{\textsc{#1}}
-
-  % Autores no formato "nome sobrenome"
-  \DeclareNameAlias{sortname}{given-family}
-  \DeclareNameAlias{default}{given-family}
-
-  % Autores no formato "sobrenome, nome"
-  %\DeclareNameAlias{sortname}{family-given}
-  %\DeclareNameAlias{default}{family-given}
-
-  % Vamos deixar um pequeno espaço entre cada item da bibliografia
-  \setlength{\bibitemsep}{1em}
-
-  % A primeira linha de cada item da bibliografia pode ter margem menor
-  % que as demais; aqui definimos essa diferença:
-  \setlength{\bibhang}{2em}
-
-  % Para mudar o tamanho da fonte na bibliografia:
-  %\renewcommand*{\bibfont}{\footnotesize}
-
-  \DefineBibliographyStrings{brazilian}{
-    % Na bibliografia, criamos links para as páginas onde uma
-    % determinada obra foi citada. O texto padrão para indicar
-    % isso é "ver...", vamos trocar.
-    backrefpage  = {citado na pg\adddot},
-    backrefpages = {citado nas pgs\adddot},
-    page         = {pg\adddot},
-    pages        = {pgs\adddot},
-  }
-
-  % Por padrão, biblatex mantém a caixa alta/baixa dos títulos como
-  % digitados no arquivo bib, mas fornece a possibilidade de modificar
-  % esse comportamento em função da língua. Se a opção abaixo for
-  % ativada, plainnat-ime mantém maiúsculas/minúsculas como no arquivo
-  % .bib, exceto para artigos ou capítulos de livro (essa é uma convenção
-  % comum). Para mais opções, leia os comentários em plainnat-ime.bbx.
-  %
-  % Aqui, ativamos esse mecanismo para a língua portuguesa:
-  \DeclareCaseLangs{brazilian,brazil,portuges,portuguese}
-
   % Impede que um item da bibliografia seja dividido em duas páginas.
   % À parte a estética, isso contorna este bug, que afeta links na
   % úlima página do trabalho, ou seja, pode afetar a bibliografia
@@ -107,16 +62,16 @@
   \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
 }
 
-% backrefs só fazem sentido com documentos grandes; em apresentações
-% e posters, a bibliografia deve ser o mais compacta possível.
 \makeatletter
 \AtEndPreamble{
+  % backrefs só fazem sentido com documentos grandes
   \ifboolexpr{test {\@ifclassloaded{book}} or test {\@ifclassloaded{report}}}
     {}
     {\ExecuteBibliographyOptions{backref=false,}}
 
+  % em apresentações e posters, a bibliografia deve ser o mais compacta possível
   \@ifclassloaded{beamer}
-    {\ExecuteBibliographyOptions{maxbibnames=2,}}
+    {\ExecuteBibliographyOptions{maxbibnames=2,maxcitenames=2}}
     {}
 }
 \makeatother
