@@ -127,8 +127,13 @@
 % macro, no entanto, apenas modifica o título se a língua atual corresponder
 % a uma das línguas para as quais esse comportamento é desejado. biblatex
 % ativa a macro para a língua inglesa; para ativar esse mecanismo para a
-% língua portuguesa:
-\DeclareCaseLangs*{brazilian,brazil,portuges,portuguese}
+% língua portuguesa. AtBeginBibliography serve para contornar este bug:
+% https://github.com/plk/biblatex/issues/1090
+% TODO: o bug acima foi corrigido em jan/2021, portanto podemos remover
+% AtBeginBibliography daqui em 2023 ou 2024.
+\AtBeginBibliography{
+  \DeclareCaseLangs*{brazilian,brazil,portuges,portuguese}
+}
 
 % Mais abaixo, definimos uma outra macro, \NoChangeOrSentenceCase, que
 % mantém maiúsculas/minúsculas como no arquivo .bib, exceto para artigos

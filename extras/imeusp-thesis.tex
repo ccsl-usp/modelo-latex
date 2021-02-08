@@ -995,12 +995,17 @@
       \hypersetup{
         pdflang={pt},
         pdfmetalang={pt},
-	pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}},
+        pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}},
         pdfsubject={\@cleanresumo},
         pdfkeywords={\@commakeywordspt},
       }
+      % XMPLangAlt redefines "\do"; this may cause
+      % problems with biblatex, so let's use a group.
+      % https://github.com/plk/biblatex/issues/1105
+      \bgroup
       \XMPLangAlt{en}{pdfsubject={\@cleanabstract}}
       \XMPLangAlt{en}{pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}}}
+      \egroup
       % o item "keywords" não pode ser traduzido
     }
     {
@@ -1011,8 +1016,13 @@
         pdfsubject={\@cleanabstract},
         pdfkeywords={\@commakeywordsen},
       }
+      % XMPLangAlt redefines "\do"; this may cause
+      % problems with biblatex, so let's use a group.
+      % https://github.com/plk/biblatex/issues/1105
+      \bgroup
       \XMPLangAlt{pt}{pdfsubject={\@cleanresumo}}
       \XMPLangAlt{pt}{pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}}}
+      \egroup
       % o item "keywords" não pode ser traduzido
     }
 }
