@@ -23,19 +23,61 @@
 \ExecuteBibliographyOptions{maxcitenames=2}
 
 % Usando o pacote hyperref, o estilo de citação authoryear transforma
-% apenas o ano da citação em um link para a bibliografia; aqui fazemos
-% toda a citação ser um link, modificando as macros definidas em
-% authoryear.cbx.
-% TODO: os parênteses de textcite não fazem parte do link; isso
-% não é trivial de consertar.
+% apenas o ano da citação em um link para a bibliografia, porque isso
+% funciona adequadamente para qualquer estilo. Os autores de biblatex
+% não vão implementar mudanças nisso, mas é possível fazer o nome do
+% autor + o ano serem um link. Existem diversas soluções, mas aqui
+% implementamos esta: https://tex.stackexchange.com/a/537666/217608 ,
+% criada por um dos desenvolvedores de biblatex.
 
-\xpatchbibmacro*{textcite}
-  {\printnames{labelname}}
-  {\bibhyperref{\printnames{labelname}}}
-  {}{}
+\renewbibmacro*{cite}{%
+  \printtext[bibhyperref]{%
+    \iffieldundef{shorthand}
+      {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
+         {\usebibmacro{cite:label}%
+          \setunit{\printdelim{nonameyeardelim}}}
+         {\printnames{labelname}%
+          \setunit{\printdelim{nameyeardelim}}}%
+       \usebibmacro{cite:labeldate+extradate}}
+      {\usebibmacro{cite:shorthand}}}}
 
-\letbibmacro{imedefaultcite}{cite}
+\renewbibmacro*{citeyear}{%
+  \printtext[bibhyperref]{%
+    \iffieldundef{shorthand}
+      {\iffieldundef{labelyear}
+         {\usebibmacro{cite:label}}
+         {\usebibmacro{cite:labeldate+extradate}}}
+      {\usebibmacro{cite:shorthand}}}}
 
-\renewbibmacro{cite}{%
-    \printtext[bibhyperref]{\usebibmacro{imedefaultcite}}%
-}
+\renewbibmacro*{textcite}{%
+  \ifnameundef{labelname}
+    {\iffieldundef{shorthand}
+       {\printtext[bibhyperref]{%
+          \usebibmacro{cite:label}}%
+        \setunit{%
+          \global\booltrue{cbx:parens}%
+          \printdelim{nonameyeardelim}\bibopenparen}%
+        \ifnumequal{\value{citecount}}{1}
+          {\usebibmacro{prenote}}
+          {}%
+        \printtext[bibhyperref]{\usebibmacro{cite:labeldate+extradate}}}
+       {\printtext[bibhyperref]{\usebibmacro{cite:shorthand}}}}
+    {\printtext[bibhyperref]{\printnames{labelname}}%
+     \setunit{%
+       \global\booltrue{cbx:parens}%
+       \printdelim{nameyeardelim}\bibopenparen}%
+     \ifnumequal{\value{citecount}}{1}
+       {\usebibmacro{prenote}}
+       {}%
+     \usebibmacro{citeyear}}}
+
+\renewbibmacro*{cite:shorthand}{%
+  \printfield{shorthand}}
+
+\renewbibmacro*{cite:label}{%
+  \iffieldundef{label}
+    {\printfield[citetitle]{labeltitle}}
+    {\printfield{label}}}
+
+\renewbibmacro*{cite:labeldate+extradate}{%
+  \printlabeldateextra}
