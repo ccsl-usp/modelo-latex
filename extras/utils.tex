@@ -202,6 +202,17 @@
 % recurso em LaTeX.
 %\usepackage{attachfile}
 
+% Notas de rodapé "órfãs", ou seja, textos que aparecem junto
+% das notas de rodapé mas que não têm referência em nenhum lugar.
+% "0" desabilita o marcador porque não existe o 0-ésimo símbolo.
+\newcommand\detachedfootnote[1]{%
+    \bgroup
+    \renewcommand\thefootnote{\fnsymbol{footnote}}%
+    \renewcommand\thempfootnote{\fnsymbol{mpfootnote}}%
+    \footnotetext[0]{#1}%
+    \egroup
+}
+
 % Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta os
 % comandos \XeLaTeX e \LuaLaTeX. Você provavelmente não precisa desse recurso
 % e, portanto, pode removê-la.
