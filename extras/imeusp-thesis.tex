@@ -658,8 +658,13 @@
   %
   % Aqui, vamos compensar essa diferença. Note que, se a primeira linha
   % da página tivesse um tamanho de fonte especial, seria necessário
-  % usar o valor de \baselineskip correspondente a essa fonte.
+  % usar o valor de \baselineskip correspondente a essa fonte. Além
+  % disso, definimos espaçamento simples porque o \vspace* mencionado
+  % acima é executado com espaçamento simples.
+  \bgroup
+  \setstretch {\setspace@singlespace}% \singlespacing adds \baselineskip
   \dimgdef\@topTitleBlockMargin{\@topTitleBlockMargin - \baselineskip - \parskip}
+  \egroup
 
   % Queremos colocar a caixa com o título centralizada na página. "\center"
   % centraliza em função da área de texto, não da página inteira, então
@@ -697,12 +702,15 @@
       {}
   }
 
-\newcommand{\@coverText}{%
-  \vspace{-\baselineskip}\singlespacing\setstretch{.9}%
+\newcommand{\@coverText}{
+  \bgroup
+  \setstretch{.9}
+
   \iftoggle{@tcc}
     {\@coverTCCText}
-    {\iftoggle{@qualificacao}{\@coverQualiText}{\@coverThesisText}}%
+    {\iftoggle{@qualificacao}{\@coverQualiText}{\@coverThesisText}}
   \par
+  \egroup
 }
 
 \ExplSyntaxOn
@@ -734,6 +742,8 @@
 }
 
 \NewDocumentCommand{\@versoPageBlock}{} {
+  \bgroup
+  \onehalfspacing
   \begin{list}{}{\rightmargin 3em \leftmargin 3em}
     \item
       \@license
@@ -753,6 +763,7 @@
         \end{Center}
       }
   \end{list}
+  \egroup
 }
 
 % Só para TCC
@@ -763,15 +774,14 @@
     % quadro de título. Assim, primeiro vamos encontrar onde
     % deve começar o quadro do título. Veja os comentários em
     % \@titleBlock para entender o mecanismo.
+    \bgroup
+    \setstretch {\setspace@singlespace}% \singlespacing adds \baselineskip
 
     \vspace*{\@topTitleBlockMargin}
-
     \ifdeflength{\@normalstrutheight}
       {}
       {\newlength{\@normalstrutheight}}
-
     \settoheight{\@normalstrutheight}{\strut}
-
     \vspace{-\@normalstrutheight}
 
     % Estamos alinhados com o quadro do título do trabalho,
@@ -787,7 +797,7 @@
       \begin{minipage}[t][20mm][s]{160mm}
         \vspace{0pt plus 20mm}
 
-        \singlespacing\unskip\Centering\large
+        \Centering\large
 
         \textsc{\@institutionBlockText}
 
@@ -806,6 +816,7 @@
 
     % compensa o espaço inserido por \par logo acima
     \vspace{-\parskip}
+    \egroup
 
     % A altura da minipage já compensou o \vspace{-20mm} acima;
     % ainda precisamos compensar o \vspace{-15mm}
@@ -819,6 +830,9 @@
 % O quadro com o título e o autor que deve ser visível
 % através da janela na capa.
 \NewDocumentCommand{\@titleBlock}{} {
+
+    \bgroup
+    \setstretch {\setspace@singlespace}% \singlespacing adds \baselineskip
 
     % Este espaço coloca o topo da próxima linha
     % na posição que queremos:
@@ -840,18 +854,16 @@
     \ifdeflength{\@normalstrutheight}
       {}
       {\newlength{\@normalstrutheight}}
-
     \settoheight{\@normalstrutheight}{\strut}
-
     \vspace{-\@normalstrutheight}
 
-    \noindent\strut%
+    \noindent\strut
     \hspace*{\@leftTitleBlockMargin}%
 %    \fbox{%
       \begin{minipage}[t][56mm][s]{96mm}
           \vspace*{2cm plus 1.5cm minus 1.8cm}
 
-          \singlespacing\unskip\Centering\large
+          \Centering\large
 
           \textbf{\@title}
 
@@ -867,19 +879,22 @@
       \end{minipage}%
 %    }% fbox
     \par
+    \egroup
 }
 
 % As demais informações da capa
 \NewDocumentCommand{\@detailsBlock}{} {
 
-  \noindent%
+  \bgroup
+  \onehalfspacing
+  \noindent
   \hspace*{\@coverLeftMargin}%
 %  \fbox{%
     \begin{minipage}[t][130mm][s]{160mm}
       \begin{Center}
         \Large
 
-        \vspace*{0.5cm plus 0.5cm minus 0.3cm}
+        \vspace*{0.3cm plus 0.5cm minus 0.3cm}
 
         \textsc{\@coverText}
 
@@ -903,12 +918,15 @@
     \end{minipage}%
 %  }% fbox
   \par
+  \egroup
 }
 
 % As informações da banca que vão apenas na versão definitiva
 % da página de rosto
 \ExplSyntaxOn
 \NewDocumentCommand{\@committeeBlock}{} {
+    \bgroup
+    \onehalfspacing
     \begin{minipage}[t][][t]{\textwidth}
       \begin{quote}
         \normalsize\noindent\committeename :\par
@@ -922,6 +940,8 @@
         \end{list}
       \end{quote}
     \end{minipage}
+    \par
+    \egroup
 }
 \ExplSyntaxOff
 
@@ -937,6 +957,8 @@
   % e inserir uma minipage. Dentro dela, definimos o texto
   % também alinhado à direita.
 
+  \bgroup
+  \onehalfspacing
   \begin{FlushRight}
     %\fbox{
       % Margem direita + 80mm de largura significa que a minipage
@@ -954,6 +976,7 @@
       \par
     %} % fbox
   \end{FlushRight}
+  \egroup
 }
 
 
