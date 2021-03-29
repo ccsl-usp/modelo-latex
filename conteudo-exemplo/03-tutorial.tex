@@ -162,11 +162,10 @@ textos com \LaTeX{}: procure definir a estrutura, não a aparência.
 Um exemplo de documento \LaTeX{} simples:
 
 \begin{verbatim}
+
         % O documento começa com o preâmbulo
         % Vamos usar a classe "book" com fonte no tamanho 11pt
         \documentclass[11pt]{book}
-        % Vamos usar caracteres acentuados
-        \usepackage[utf8]{inputenc}
         % Vamos escrever em português do Brasil
         \usepackage[brazilian]{babel}
         % Estas linhas não imprimem nada, apenas definem
@@ -182,6 +181,7 @@ Um exemplo de documento \LaTeX{} simples:
         Oi, Galera!
         % É preciso sinalizar o final do documento
         \end{document}
+
 \end{verbatim}
 
 Esse exemplo mostra como definir o nome de um capítulo. Existem também os
@@ -192,8 +192,6 @@ acima de \ltxcmd{chapter}). Usar o nome do comando seguido de um asterisco
 no sumário (nem considerado na contagem de capítulos, seções etc.).
 
 \section{Executando \LaTeX{} e Comandos Auxiliares}
-
-\enlargethispage{-.5\baselineskip}
 
 Depois de escrever o arquivo \cmd{.tex}, é preciso \emph{compilá-lo}, ou
 seja, processá-lo para gerar o pdf desejado. Isso envolve executar,
@@ -261,8 +259,6 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 
 \section{Referências Cruzadas e \emph{Floats}}
 \label{sec:refs}
-
-\enlargethispage{-.5\baselineskip}
 
 É comum que um trecho do texto faça referência a outro trecho (``como
 discutimos no Capítulo~X\ldots''). Isso pode ser feito diretamente, mas
@@ -706,10 +702,9 @@ indesejáveis:
     um padrão para a codificação de caracteres acentuados (através da
     configuração da package \pkg{inputenc}). Alguns anos atrás,
     o mais comum era o ISO-8859-1, também conhecido como latin1 (esse é o
-    nome usado no \LaTeX{}) ou Windows-1252; atualmente, o mais comum é o
-    UTF-8. No entanto, usuários que escrevem apenas em língua inglesa às
-    vezes não configuram seus sistemas para usar qualquer tipo de caracter
-    acentuado. De maneira geral, é simples reconhecer e resolver os problemas
+    nome usado no \LaTeX) ou Windows-1252; atualmente, o mais comum é o
+    UTF-8 (default em versões recentes de \LaTeX). De maneira geral, é
+    simples reconhecer e resolver os problemas
     causados por inconsistências na codificação (seja trocando a opção
     de \pkg{inputenc}, seja recodificando o arquivo), mas arquivos ``.bib''
     são um caso especial: biblatex (usado neste modelo) funciona normalmente
