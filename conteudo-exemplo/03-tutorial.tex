@@ -77,7 +77,7 @@ oferecem o mesmo nível de qualidade dessas ferramentas.
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
 mas é comum usar a extensão ``.tex'' ao invés de ``.txt'') e processa esse
-arquivo com o comando ``pdflatex'' (``compila'' o documento) para obter o
+arquivo com o comando ``latexmk'' (``compila'' o documento) para obter o
 PDF correspondente. Qualquer editor capaz de salvar arquivos em formato
 texto puro, como o bloco de notas do windows, vim, emacs etc. pode ser usado.
 Programas como LibreOffice Writer, MS-Word etc. também funcionam, mas
@@ -217,7 +217,7 @@ executando os programas na ordem correta quantas vezes forem
 necessárias\footnote{É possível personalizar o comportamento de \cmd{latexmk}
 com o arquivo de configuração \cmd{latexmkrc}.}. Assim, embora seja possível
 gerar o pdf executando apenas \cmd{pdflatex nome-do-arquivo.tex}, acostume-se
-a compilar o documento sempre com \cmd{latexmk nome-do-arquivo.tex}. Note
+a compilar o documento sempre com \cmd{latexmk -pdf nome-do-arquivo.tex}. Note
 que editores especializados em \LaTeX{} costumam ter uma opção de menu para
 a compilação do documento; muitas vezes essa opção simplesmente aciona
 \cmd{latexmk}.
