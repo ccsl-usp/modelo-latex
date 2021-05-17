@@ -478,15 +478,15 @@
 % utilizam o mesmo environment.
 
 \NewDocumentCommand{\resumo}{+m}{\long\gdef\@resumo{#1}}
-\NewDocumentCommand{\abstract}{+m}{\long\gdef\@abstract{#1}}
+\DeclareDocumentCommand{\abstract}{+m}{\long\gdef\@abstract{#1}}
 
 \newcommand\printResumoAbstract{
-  \bgroup
+  \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
   \expandafter\selectlanguage\expandafter{\@IMEpt}
   \begin{IMEabstract}\@resumo\end{IMEabstract}
   \expandafter\selectlanguage\expandafter{\@IMEen}
   \begin{IMEabstract}\@abstract\end{IMEabstract}
-  \egroup
+  \egroup\egroup
 }
 
 
