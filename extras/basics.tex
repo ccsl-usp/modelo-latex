@@ -10,6 +10,39 @@
 \usepackage{xparse}
 \usepackage{letltxmacro}
 \usepackage{regexpatch}
+
+% O projeto LaTeX3 renomeou algumas macros em 2019-03-05 e removeu
+% a compatibilidade com os nomes antigos em 2020-07-17 a partir de
+% 2021-01-01 (veja o arquivo l3deprecation.dtx e o changelog em
+% https://github.com/latex3/latex3/blob/main/l3kernel/CHANGELOG.md).
+% Isso afetou a package regexpatch: versões antigas da package não
+% funcionam com versões novas de LaTeX e vice-versa. Infelizmente,
+% ubuntu 21.04 (hirsute) e debian 11 (bullseye) incluem essas versões
+% incompatíveis e, portanto, a package regexpatch não funciona nesses
+% ambientes. Talvez fosse possível contornar esse problema com a
+% package latexrelease, mas isso afetaria muitos outros recursos.
+% Ao invés disso, vamos restaurar manualmente a compatibilidade.
+% TODO: remover isto após debian bullseye se tornar obsoleta,
+%       provavelmente no final de 2024.
+\makeatletter
+\ExplSyntaxOn
+
+\@ifpackagelater{regexpatch}{2021/03/21}
+  {} % Se regexpatch é "nova", expl3 deve ser também; nada a fazer
+  {
+    % Talvez o correto seja 2021/01/01, mas na prática o resultado é o mesmo
+    \@ifpackagelater{expl3}{2020/07/17}
+      {
+        % As versões são incompatíveis; vamos recuperar as macros preteridas
+        \cs_gset:Npn \token_get_prefix_spec:N { \cs_prefix_spec:N }
+        \cs_gset:Npn \token_get_arg_spec:N { \cs_argument_spec:N }
+        \cs_gset:Npn \token_get_replacement_spec:N { \cs_replacement_spec:N }
+      }
+      {} % As duas packages são antigas e, portanto, compatíveis entre si
+  }
+\ExplSyntaxOff
+\makeatother
+
 % Algumas packages dependem de xpatch e tentam carregá-la, causando conflitos
 % com regexpatch. Como regexpatch oferece todos os recursos de xpatch (ela
 % é uma versão estendida de xpatch, mas ainda considerada experimental), vamos
