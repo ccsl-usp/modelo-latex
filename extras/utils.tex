@@ -126,19 +126,9 @@
 % qualificação, por exemplo.
 \usepackage{pgfgantt}
 
-% Na versão 5 do pacote pgfgantt, a opção "compress calendar"
-% deixou de existir, sendo substituída por "time slot unit=month".
-% Aqui, um truque para funcionar com ambas as versões.
-\makeatletter
-\@ifpackagelater{pgfgantt}{2018/01/01}
-  {\ganttset{time slot unit=month}}
-  {\ganttset{compress calendar}}
-\makeatother
-
 % Estes parâmetros definem a aparência das gantt charts e variam
 % em função da fonte do documento.
 \ganttset{
-    time slot format=isodate-yearmonth,
     vgrid,
     x unit=1.7em,
     y unit title=3ex,

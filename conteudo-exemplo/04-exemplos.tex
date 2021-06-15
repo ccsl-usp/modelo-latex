@@ -126,7 +126,12 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
 \begin{figure}
   \centering
 
-  \begin{ganttchart}{2017-11}{2018-5}
+  % Package pgfgantt
+  \begin{ganttchart}[
+                     time slot format=isodate-yearmonth,
+                     time slot unit=month,
+                    ]{2017-11}{2018-5}
+
     \gantttitlecalendar{year,month=shortname} \ganttnewline
 
     \ganttgroup[progress=45]{Experimento}{2017-11}{2018-2} \ganttnewline
