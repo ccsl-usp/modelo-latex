@@ -43,13 +43,8 @@
   hmarginratio=12:17, % 24:34 -> com papel A4, 24mm + 152mm + 34mm = 210mm
   textheight=237mm,
   vmarginratio=8:7, % 32:28 -> com papel A4, 32mm + 237mm + 28mm = 297mm
-  % Com geometry, esta medida não é tão relevante; basta garantir que ela
-  % seja menor que "top" e que o texto do cabeçalho caiba nela.
-  headheight=25.4mm,
-  % distância entre o início do texto principal e a base do cabeçalho;
-  % ou seja, o cabeçalho "invade" a margem superior nessa medida. Essa
-  % é a medida que determina a posição do cabeçalho
-  headsep=11mm,
+  headsep=11mm, % distância entre a base do cabeçalho e o texto
+  headheight=21mm, % qualquer medida grande o suficiente, p.ex., top - headsep
   footskip=10mm,
   marginpar=20mm,
   marginparsep=5mm,
