@@ -92,8 +92,7 @@
 
 % Baseado em alphabetic.bbx
 \defbibenvironment{bibliography}
-  {\makeatletter% necessário para disablelinksinlabels (note o escopo restrito)
-  \disablelinksinlabels%
+  {\disablelinksinlabels
   \list
       {\printtext{%
         \mkbibbrackets{%
@@ -101,15 +100,15 @@
               % Gera os labels da bibliografia com o mesmo número de autores
               % antes de "et al." que quando da geração dos labels no texto.
               % Note o escopo restrito.
-              {\c@maxnames\blx@maxcitenames\relax%
-              \c@minnames\blx@mincitenames\relax%
+              {\c@maxnames\blx@maxcitenames\relax
+              \c@minnames\blx@mincitenames\relax
               \usebibmacro{cite}}}}}}
       {\setlength{\labelwidth}{\bibhang}%
       \setlength{\labelsep}{\biblabelsep}%
       \addtolength{\leftmargin}{\labelsep}%
       \setlength{\itemsep}{\bibitemsep}%
       \setlength{\parsep}{\bibparsep}}%
-  \makeatother}
+  }
   {\endlist}
   {\item}
 
