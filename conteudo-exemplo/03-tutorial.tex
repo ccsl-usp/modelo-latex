@@ -633,22 +633,23 @@ em dia, embora também só possa usar as fontes adaptadas para uso com o
 \item \XeLaTeX{} que, além dos recursos do pdf\LaTeX{}, opera internamente
 em UTF-8 (ou seja, funciona melhor com múltiplas línguas) e pode funcionar
 não só com as fontes adaptadas para o \LaTeX{} como também com as fontes
-instaladas no sistema.
+instaladas no sistema. \XeLaTeX{} foi muito importante ao ser lançado,
+mas atualmente a comunidade está mais empenhada em evoluir o sistema com
+\LuaLaTeX{}.
 
 \item \LuaLaTeX{}, que oferece os mesmos recursos que o \XeLaTeX{} e
 também pode ser estendido internamente com mais facilidade (através da
 linguagem de programação Lua).
 \end{enumerate}
 
-Todas essas versões são instaladas quando você instala o \LaTeX{} na sua
-máquina. \XeLaTeX{} e \LuaLaTeX{} são as duas propostas da comunidade para
-o futuro novo padrão do sistema, mas você não tem nada a perder se escolher
-a ``errada'', pois para todos os efeitos práticos elas são equivalentes.
-Em geral, se você pretende escrever apenas com línguas no alfabeto latino e
-não pretende usar fontes diferentes das disponíveis por padrão no \LaTeX{},
-qualquer das três versões modernas (pdf\LaTeX{}, \XeLaTeX{}
-e \LuaLaTeX{}) é adequada. Se você pretende usar outros
-alfabetos ou se gostaria de escolher fontes diferentes, use \LuaLaTeX{}.
+Todas essas versões são instaladas quando você instala \LaTeX{} na
+sua máquina. Em geral, se você pretende escrever apenas com línguas no
+alfabeto latino e não pretende usar fontes diferentes das disponíveis
+por padrão no \LaTeX{}, qualquer das três versões modernas (pdf\LaTeX{},
+\XeLaTeX{} e \LuaLaTeX{}) é adequada, mas pdf\LaTeX{} é um pouco mais
+rápido. Se você pretende usar outros alfabetos, gostaria de escolher
+fontes diferentes ou precisa de recursos tipográficos avançados
+(\cmd{texdoc fontspec}, \cmd{texdoc unicode-math}), use \LuaLaTeX{}.
 
 \section{Limitações do \LaTeX{} e Algumas Dicas}
 \label{sec:limitations}
