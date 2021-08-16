@@ -124,6 +124,23 @@
   % geral por utilizarem a package "concorrente" nfssext-cfr.
   \usepackage{fontaxes}
   \usepackage{mweights}
+
+  % LaTeX substitui algumas sequências de caracteres, como
+  % "fi", "fl" e outras, por caracteres especiais ("ligaduras").
+  % Para que seja possível fazer copiar/colar ou buscas por
+  % textos contendo essas ligaduras, o arquivo PDF precisa
+  % conter uma tabela indicando quais são elas. Com fontes
+  % OTF (LuaLaTeX ou XeLaTeX) isso não costuma ser um problema,
+  % mas com pdfLaTeX pode ser. Estes dois comandos (que só
+  % existem no pdfLaTeX) incluem uma tabela genérica que
+  % funciona para a maioria das fontes. Veja a seção 5 de
+  % http://www.tug.org/TUGboat/Articles/tb29-1/tb91thanh-fonts.pdf
+  % Note que alguns visualizadores de PDF tentam "adivinhar"
+  % o conteúdo da tabela quando ela está incompleta ou não
+  % existe, então copiar/colar e buscas podem funcionar em
+  % alguns visualizadores e em outros não.
+  \input glyphtounicode.tex
+  \pdfgentounicode=1
 \fi
 
 % Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
