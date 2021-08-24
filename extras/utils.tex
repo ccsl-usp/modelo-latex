@@ -44,18 +44,12 @@
 % Sublinhado sem cruzar as linhas descendentes dos caracteres
 \usepackage[outline]{contour}
 \contourlength{1.1pt}
-\let\ORIGul\ul
 \newcommand{\btul}[2][white]{%
   \contourlength{1.1pt}%
   \setul{1.4pt}{.5pt}%
-  \ORIGul{{\phantom{#2}}}% Faz o sublinhado; precisa das chaves adicionais!
+  \ul{{\phantom{#2}}}% Faz o sublinhado; precisa das chaves adicionais!
   \llap{\contour{#1}{#2}}% Escreve o texto com fundo branco/colorido
 }
-
-% Não faço ideia se isto pode ter efeitos colaterais
-% indesejáveis, então melhor deixar desabilitado
-%\let\ul\btul
-%\let\underline\btul
 
 % Notação bra-ket
 %\usepackage{braket}
