@@ -1,0 +1,53 @@
+\begin{tikzpicture}
+  \sffamily\scriptsize
+  \begin{axis}[
+    width=2.9in, height=1.9in,
+    %title=Algum título,
+    ylabel=$f(x)$,
+    xlabel=$x$,
+    xmin = 1,
+    ymin = 0,
+    xmax = 12.5,
+    ymax = 145,
+    ytick distance = 25,
+    legend pos = north west,
+    legend cell align = left,
+  ]
+
+  \addlegendentry{$10x-10$}
+  \addplot+ [no marks] table
+  {
+     1.0   0
+     2.0  10
+     5.0  40
+     7.0  60
+    10.0  90
+    11.9 109
+  };
+
+  \addlegendentry{$x^2-1$}
+  \addplot+ [mark = +] table
+  {
+     1.0   0.0
+     2.0   3.0
+     3.0   8.0
+     4.0  15.0
+     6.0  35.0
+     8.0  63.0
+    11.9 140.6
+  };
+  \addlegendentry{$25\log_{2}(x)$}
+  \addplot+ [error bars/y dir=both, error bars/y explicit,]
+      table [y error minus index=2, y error plus index=3,]
+  {
+     1.0  0.00 0.0 0.0
+     1.5 14.62 3.1 6.8
+     2.0 25.00 5.3 3.8
+     3.0 39.62 3.7 6.2
+     5.0 58.05 2.2 5.5
+     7.0 70.18 3.9 6.6
+     8.0 75.00 7.9 2.3
+    11.9 89.32 7.9 3.8
+  };
+  \end{axis}
+\end{tikzpicture}

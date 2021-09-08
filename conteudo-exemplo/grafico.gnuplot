@@ -29,139 +29,57 @@
 # se houver muitos gráficos (se isso acontecer, utilize lualatex ao
 # invés de pdflatex).
 
-# Exemplo com o terminal cairolatex; utilize "header" para inserir
-# comandos LaTeX que afetem o texto do gráfico como um todo.
-# ATENÇÃO: gnuplot 5.0.5 tem um bug
-# (https://sourceforge.net/p/gnuplot/bugs/1945/) que gera um arquivo
-# pdf fora do padrão; Ele funciona com pdflatex, mas não com lualatex.
-# Para contornar o problema, faça uma conversão de pdf para pdf
-# com algum programa. Por exemplo, em Linux:
-# pdftocairo -pdf original.pdf corrigido.pdf
-# ou
-# pdftk original.pdf output corrigido.pdf
-set terminal cairolatex pdf input size 3.8in,2.5in header "\\footnotesize"
+#### Exemplo com o terminal cairolatex
+# Utilize "header" para inserir comandos LaTeX que afetem o texto do
+# gráfico como um todo. O tipo e tamanho da fonte são definidos pelo
+# LaTeX; "\\scriptsize\\sffamily" são repassados diretamente para
+# ele. "fontscale .4" serve apenas para ajudar gnuplot a estimar o
+# tamanho do texto.
+set terminal cairolatex pdf input size 2.8in,1.8in fontscale .4 header "\\scriptsize\\sffamily"
 
-# Exemplo com terminal lua tikz
-#set terminal lua tikz size 3.8in,2.5in font "\\footnotesize"
+#### Exemplo com o terminal lua tikz
+# Neste caso, usamos "charsize 3.8pt,9pt" (largura média, altura
+# média) para ajudar gnuplot a estimar o tamanho do texto.
+#set terminal lua tikz size 2.8in,1.8in charsize 3.8pt,9pt font "\\scriptsize\\sffamily"
 
 # Com cairolatex, isso vai gerar também o arquivo figuras/gnuplot.pdf
 set output "figuras/gnuplot.tkz"
 
 set xlabel '$x$'
 set ylabel '$f(x)$'
+set xrange [1:12.5]
+set yrange [0:145]
+set ytics 25
+set key left top # posição da legenda
 
-plot "-" title "linear ($10x-10$)" with lines, "-" title "quadrático ($x^2-1$)" with lines, "-" title "logarítmico ($25\log_2(x)$)" with lines
-0
-3
-6
-9
-12
-15
-18
-21
-24
-27
-30
-33
-36
-39
-42
-45
-48
-51
-54
-57
-60
-63
-66
-69
-72
-75
-78
-81
-84
-87
-90
-93
-96
-99
-102
-105
-108
+
+# "using" porque gnuplot espera os valores absolutos de mínimo
+# e máximo, mas estes dados contém o erro para mais/menos.
+plot "-" title "$10x-10$" with lines, \
+"-" title "$x^2-1$" with linespoints pointtype 1 pointsize .7, \
+"-" using 1:2:($2-$3):($2+$4) title "$25\log_2(x)$" with errorlines pointtype 7 pointsize .5
+ 1.0   0
+ 2.0  10
+ 5.0  40
+ 7.0  60
+10.0  90
+11.9 109
 e
-0
-0.69
-1.56
-2.61
-3.84
-5.25
-6.84
-8.61
-10.56
-12.69
-15
-17.49
-20.16
-23.01
-26.04
-29.25
-32.64
-36.21
-39.96
-43.89
-48
-52.29
-56.76
-61.41
-66.24
-71.25
-76.44
-81.81
-87.36
-93.09
-99
-105.1
-111.4
-117.8
-124.4
-131.3
-138.2
+ 1.0   0.0
+ 2.0   3.0
+ 3.0   8.0
+ 4.0  15.0
+ 6.0  35.0
+ 8.0  63.0
+11.9 140.6
 e
-0
-9.463
-16.95
-23.15
-28.44
-33.05
-37.14
-40.81
-44.14
-47.19
-50
-52.61
-55.04
-57.32
-59.46
-61.49
-63.4
-65.22
-66.95
-68.6
-70.18
-71.7
-73.15
-74.55
-75.89
-77.19
-78.44
-79.65
-80.82
-81.95
-83.05
-84.11
-85.15
-86.16
-87.14
-88.09
-89.02
+ 1.0  0.00 0.0 0.0
+ 1.5 14.62 3.1 6.8
+ 2.0 25.00 5.3 3.8
+ 3.0 39.62 3.7 6.2
+ 5.0 58.05 2.2 5.5
+ 7.0 70.18 3.9 6.6
+ 8.0 75.00 7.9 2.3
+11.9 89.32 7.9 3.8
+e
 unset output

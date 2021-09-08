@@ -29,41 +29,40 @@
 #    for relevante do preâmbulo LaTeX.
 #
 # 3. Usar o backend pgf de matplotlib para gerar um arquivo no
-#    formato pgf e importar esse arquivo no LaTeX com \input. Nesse
-#    caso, basta definir se queremos usar a fonte com serifa ou sem
-#    serifa, a fonte e o tamanho vão seguir o definido no documento
-#    e temos acesso a qualquer macro definida no preâmbulo LaTeX do
-#    documento sem configuração adicional. A desvantagem é que o
-#    processamento do documento pode ficar mais lento.
+#    formato pgf e importar esse arquivo no LaTeX com \input:
+#
+#    \begin{figure}
+#      \centering
+#      \input{arquivo.pgf}
+#      \caption{blah}
+#    \end{figure}
+#
+#    Neste caso, basta definir se queremos usar a fonte com serifa
+#    ou a sem serifa; a fonte correspondente vai seguir o definido no
+#    documento e temos acesso a qualquer macro definida no preâmbulo
+#    LaTeX do documento sem configuração adicional. A desvantagem é
+#    que o processamento do documento pode ficar mais lento.
 #
 # Abaixo, exemplos de como fazer cada uma dessas opções.
 
 import matplotlib as mpl
 
 ################################################################################
-##################### Renderizando apenas o texto com LaTeX ####################
+#################### Renderizando apenas o texto com LaTeX #####################
 ################################################################################
+
+# https://matplotlib.org/stable/tutorials/text/usetex.html
 
 #mpl.rcParams.update({
 #    "text.usetex": True,
-#    # Não esqueça de definir as strings como u"blah"
-#    "text.latex.unicode": True,
-#    "text.latex.preamble": [
-#        "\\usepackage[utf8]{inputenc}",
-#        "\\usepackage[T1]{fontenc}",
-#        "\\usepackage{lmodern}",
-#        "\\usepackage{inconsolata}",
-#        "\\usepackage[mono=false]{libertine}",
-#        "\\usepackage[libertine]{newtxmath}",
-#        "\\useosf",
-#    ],
-#    "font.family": "serif",
-#    "font.size": "10",
+#    "text.latex.preamble": "\\usepackage[T1]{fontenc}\\usepackage{libertinus}\\usepackage[scale=.85]{sourcecodepro}\\usepackage{libertinust1math}",
 #})
 
 ################################################################################
-################### Gerando um pdf usando o backend pgf/LaTeX ##################
+################## Gerando um pdf usando o backend pgf/LaTeX ###################
 ################################################################################
+
+# https://matplotlib.org/stable/tutorials/text/pgf.html
 
 # Estas duas linhas fazem a conversão para PDF
 # usar o backend PGF (ou seja, LaTeX) ao invés do default
@@ -74,51 +73,78 @@ import matplotlib as mpl
 #    "pgf.texsystem": "lualatex",
 #    # Há duas maneiras de configurar as fontes. A primeira é definir
 #    # o que for necessário no preâmbulo LaTeX:
-#    "pgf.preamble": [
-#        "\\usepackage[utf8]{inputenc}",
-#        "\\usepackage[T1]{fontenc}",
-#        "\\usepackage{lmodern}",
-#        "\\usepackage{inconsolata}",
-#        "\\usepackage[mono=false]{libertine}",
-#        "\\usepackage[libertine]{newtxmath}",
-#        "\\useosf",
-#    ],
+#    "pgf.preamble": "\\usepackage[T1]{fontenc}\\usepackage{libertinus}\\usepackage[scale=.85]{sourcecodepro}\\usepackage{libertinust1math}",
 #    # Neste caso, é preciso desabilitar a segunda com o comando
 #    "pgf.rcfonts": False,
+#
 #    # A segunda, que é o default, é carregar a package fontspec e
 #    # usá-la para configurar as fontes conforme a definição nos
 #    # parâmetros "normais" de matplotlib, ou seja, "font.serif",
 #    # "font.sans-serif" etc. são convertidos para \setmainfont,
-#    # \setsansfont etc.
-#    #"font.serif": "Linux Libertine O",
-#    #"font.sans-serif": "Linux Biolinum O",
-#    #"font.monospace": "Inconsolata",
-#    "font.family": "serif",
-#    "font.size": "10",
+#    # \setsansfont etc. Mas não consegui fazer isto funcionar
+#    # corretamente com estas fontes.
+#    #"font.serif": "Libertinus Serif",
+#    #"font.sans-serif": "Libertinus Sans",
+#    #"font.monospace": "SouceCodePro",
 #})
 
 ################################################################################
-######################## Nada especial para arquivos pgf #######################
+#################### Nada especial para gerar arquivos pgf #####################
+################################################################################
+
+################################################################################
+############################# Comum às três opções #############################
 ################################################################################
 
 mpl.rcParams.update({
-    "font.family": "serif",
-    "font.size": "9",
+    "font.family": "sans-serif",
+    "font.size": "8", # LaTeX com corpo 12pt: \scriptsize=8pt, \footnotesize=10pt
 })
 
 ################################################################################
-########################### Gerando o gráfico de fato ##########################
+########################## Gerando o gráfico de fato ###########################
 ################################################################################
 
+import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 
-# figsize in inches
-plt.figure(figsize=(1.5,2.5))
-plt.xticks(range(1,4), (u"SP", u"RJ", u"MG"))
-plt.bar([1,2,3],[2,6,4])
-plt.xlabel(u"\\textit{Estado}")
-plt.ylabel(u"$\\mu$")
-plt.tight_layout(0.1)
+linearX = np.arange(1.0, 12, 0.1)
+linearY = 10*linearX -10
+
+quadraticX = np.array([1, 2, 3,  4,  6,  8,  11.90])
+quadraticY = np.array([0, 3, 8, 15, 35, 63, 140.61])
+
+logarithmicX = np.array([1,  1.50,  2,  3.00,  5.00,  7.00,  8, 11.90])
+logarithmicY = np.array([0, 14.62, 25, 39.62, 58.05, 70.18, 75, 89.32])
+logarithmicErrorBars = np.array([
+    [0.0, 3.1, 5.3, 3.7, 2.2, 3.9, 7.9, 7.9],
+    [0.0, 6.8, 3.8, 6.2, 5.5, 6.6, 2.3, 3.8]
+    ])
+
+fig, ax = plt.subplots(figsize=(3.1,1.8)) # polegadas
+
+ax.plot(linearX, linearY,
+    linewidth=1,
+    label = "$10x-10$")
+
+ax.plot(quadraticX, quadraticY,
+    linewidth=1, marker = "+", markersize=5,
+    label = "$x^2-1$")
+
+ax.errorbar(logarithmicX, logarithmicY, yerr=logarithmicErrorBars,
+    linewidth=1, marker = ".", markersize=5, elinewidth=.5, capsize=2, markeredgewidth=.5,
+    label = "$25\log_{2}(x)$")
+
+ax.set(xlabel='$x$', ylabel='$f(x)$')
+
+ax.set_yticks(np.arange(0, 130, step=25))
+ax.set_ylim(ymin=0, ymax=145)
+ax.set_xlim(xmin=1, xmax=12.5)
+
+ax.legend()
+
+fig.tight_layout()
 
 #plt.savefig("figuras/matplotlib.pdf") # métodos 1 e 2
 plt.savefig("figuras/matplotlib.pgf") # método 3

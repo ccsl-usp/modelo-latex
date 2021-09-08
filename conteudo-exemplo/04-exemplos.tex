@@ -88,7 +88,7 @@ as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
 
   \begin{subfigure}{0.4\textwidth}
     \centering
-    \includegraphics[width=.7\textwidth]{exemplo-grafo}
+    \includegraphics[width=.8\textwidth]{exemplo-grafo}
     \caption{Uma figura simples.\label{fig:subfigures:a}}
   \end{subfigure}
   % ATENÇÃO: Se você deixar uma linha em branco entre as subfiguras,
@@ -98,7 +98,7 @@ as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
   \begin{subfigure}{0.4\textwidth}
     \centering
     \begin{turn}{90}
-      \includegraphics[width=.7\textwidth]{exemplo-grafo}
+      \includegraphics[width=.8\textwidth]{exemplo-grafo}
     \end{turn}
     \caption{O mesmo exemplo, girado.\label{fig:subfigures:b}}
   \end{subfigure}
@@ -173,25 +173,29 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
 
 %%%%%
 
-\LaTeX{} pode importar gráficos gerados por \texttt{matplotlib} e por
+\LaTeX{} é capaz de gerar gráficos de excelente qualidade com a
+\textit{package} \pkg{pgfplots} (há um exemplo comentado neste
+arquivo; experimente des-comentar para ver o resultado). Também é
+possível importar gráficos gerados por \texttt{matplotlib} e por
 \texttt{gnuplot} como qualquer outra imagem, mas nesse caso a fonte
 usada nesses gráficos provavelmente será diferente do corpo do texto.
 Conforme mencionado na Seção~\ref{sec:graficos}, há mecanismos para
 resolver esse problema\footnote{Você pode se interessar também pela
-package \texttt{gnuplottex}.}, como pode ser visto na
-Figura~\ref{fig:graficos}.
+\textit{package} \texttt{gnuplottex}.}: o resultado pode ser visto
+na Figura~\ref{fig:graficos}.
 
 \begin{figure}
   \centering
-  \begin{subfigure}{.65\textwidth}
-    \input{figuras/gnuplot.tkz}
+  \begin{subfigure}[b]{.45\textwidth}
+    \input{figuras/gnuplot.tkz} % Exemplo com gnuplot
+    %\input{figuras/grafico-pgfplots.tex} % Exemplo com pgfplots
     \caption{\texttt{gnuplot}.\label{fig:gnuplot}}
   \end{subfigure}
-  \begin{subfigure}{.3\textwidth}
+  \begin{subfigure}[b]{.5\textwidth}
     \input{figuras/matplotlib.pgf}
     \caption{\texttt{matplotlib}.\label{fig:matplotlib}}
   \end{subfigure}
-	\caption{Exemplos de gráficos gerados externamente}\label{fig:graficos}
+  \caption{Exemplos de gráficos gerados externamente}\label{fig:graficos}
 \end{figure}
 
 Finalmente, talvez você precise organizar a apresentação da informação na forma de
@@ -355,13 +359,13 @@ começar em uma página em modo paisagem.}.
 12 & 1.00 & 0.18 & 0.16 & 1.00 & 0.18 & 0.16 & 1.00 & 0.18 & 0.16 & 1.00 & 0.18 & 0.16 \\
 13 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 \\
 14 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 & 1.00 & 0.18 & 0.17 \\
+15 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 \\
+16 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 \\
+17 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 \\
 % Como nesta página há uma nota de rodapé, a linha separadora da
 % nota e o final da tabela ficam muito próximos; vamos forçar uma
 % quebra de página uma linha antes para resolver isso.
 \pagebreak
-15 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 & 1.00 & 0.18 & 0.18 \\
-16 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 & 1.00 & 0.18 & 0.19 \\
-17 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 & 1.00 & 0.19 & 0.19 \\
 18 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 & 1.00 & 0.19 & 0.20 \\
 19 & 1.00 & 0.19 & 0.21 & 1.00 & 0.19 & 0.21 & 1.00 & 0.19 & 0.21 & 1.00 & 0.19 & 0.21 \\
 20 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 & 1.00 & 0.19 & 0.22 \\
