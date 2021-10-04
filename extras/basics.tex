@@ -208,31 +208,38 @@
 % simplesmente acrescentando uma penalty negativa ao lugar desejado para a
 % quebra.
 %
-% Para cada fonte, o espaço em TeX tem um tamanho ideal, um tamanho mínimo e um
-% tamanho máximo. TeX nunca reduz um espaço para menos que o mínimo da fonte,
-% mas pode aumentá-lo para mais que o máximo. Se os espaços de uma linha ficam
+% Para cada fonte, o espaço entre palavras tem um tamanho ideal, um
+% tamanho mínimo e um tamanho máximo (é possível obter os valores com
+% \number\fontdimenX\font\relax, veja
+% https://tex.stackexchange.com/questions/88991/what-do-different-fontdimennum-mean ).
+% TeX nunca reduz um espaço para menos que o mínimo da fonte, mas pode
+% aumentá-lo para mais que o máximo. Se os espaços de uma linha ficam
 % com o tamanho ideal, a badness da linha é 0; se o tamanho é
-% reduzido/aumentado 50% do mínimo/máximo, a badness da linha é 12; se o
-% tamanho é reduzido/aumentado para o mínimo/máximo, a badness é 100. Se esse
-% aumento for de 30% além do máximo, a badness da linha é 200; se for de 45%
-% além do máximo, a badness é 300; se for de 60% além do máximo, a badness é
-% 400; se for de 100% além do máximo, a badness é 800. O valor máximo possível
-% para badness é 10.000, que significa "badness infinita".
+% reduzido/aumentado 50% do mínimo/máximo, a badness da linha é 12; se
+% o tamanho é reduzido/aumentado para o mínimo/máximo, a badness é 100,
+% e assim por diante. O valor máximo possível para badness é 10.000, que
+% significa "badness infinita". Como é feito o cálculo: se as medidas
+% do espaço definidas pela fonte são "x plus y minus z" e o tamanho
+% final do espaço é "x + k*y" ou "x - k*z", a badness é 100*(k^3). Com
+% Libertinus corpo 12, os valores são "3pt plus 1.5pt minus .9996pt",
+% Então se o espaço tiver sido aumentado para 3.75pt, o fator é 0.5 e
+% a badness é 100*(.5^3) = 12.
 %
 % \tolerance indica a badness máxima que TeX aceita para uma linha; seu valor
 % default é 200. Assim, aumentar para, digamos, 300 ou 400, permite que
-% TeX escolha parágrafos com maior variação no espaçamento entre as linhas.
+% TeX escolha parágrafos com maior variação no espaçamento entre as palavras.
 % No entanto, no cálculo de demerits, a badness e as penalties de cada linha
 % são elevadas ao quadrado, então TeX geralmente prefere escolher outras
-% opções no lugar de uma linha ruim. Por exemplo, órfãs/viúvas têm demerit
-% de 22.500 e dois hífens seguidos têm demerit de 10.000; já uma linha com
-% badness 400 tem demerit 160.000. Portanto, não é surpreendente que a maioria
-% dos parágrafos tenha demerits abaixo de 40.000, quase todos abaixo de 100.000
-% e praticamente nenhum acima de 1.000.000. Isso significa que, para a grande
-% maioria dos parágrafos, aumentar \tolerance não faz diferença: uma linha com
-% badness 400 nunca será efetivamente escolhida se houver qualquer outra opção
-% com badness menor. Também fica claro que não há muita diferença real entre
-% definir \tolerance como 800 ou 9.999.
+% opções no lugar de uma linha com espaçamento ruim. Por exemplo, órfãs/viúvas
+% têm demerit de 22.500 e dois hífens seguidos têm demerit de 10.000; já uma
+% linha com badness 400 tem demerit 160.000. Portanto, não é surpreendente que
+% a maioria dos parágrafos tenha demerits abaixo de 40.000, quase todos abaixo
+% de 100.000 e praticamente nenhum acima de 1.000.000. Isso significa que, para
+% a grande maioria dos parágrafos, aumentar \tolerance não faz diferença: uma
+% linha com badness 400 nunca será efetivamente escolhida se houver qualquer
+% outra opção com badness menor. Também fica claro que não há muita diferença
+% real entre definir \tolerance como 800 ou 9.999 (a não ser fazer TeX
+% trabalhar mais desnecessariamente).
 %
 % O problema muda de figura se TeX não consegue encontrar uma solução. Isso
 % pode acontecer em dois casos: (1) o parágrafo tem ao menos uma linha que não
