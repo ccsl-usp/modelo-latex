@@ -216,7 +216,10 @@ CHECK_RERUN_MESSAGE = grep -Eaq 'Rerun to get .* right|Please rerun .*[tT]e[xX]|
 # resolver isso, usamos o "touch".
 define RUN_LATEX
 	@touch $*-timestamp
-	@$(LATEX) $(LATEXOPTS) $* >/dev/null 2>&1; \
+	@export max_print_line=100000; \
+	export error_line=254; \
+	export half_error_line=238; \
+	$(LATEX) $(LATEXOPTS) $* >/dev/null 2>&1; \
 	stat=$$?; \
 	if test $$stat -ne 0; then \
 		$(SHOW_REPORT); \
@@ -280,7 +283,10 @@ latexmkrc-make: FORCE
 	echo '$$recorder = 1;' >> latexmkrc-make; \
 	echo '$$cleanup_includes_generated = 1;' >> latexmkrc-make; \
 	echo '$$cleanup_includes_cusdep_generated = 1;' >> latexmkrc-make; \
-	echo '$$bibtex_use = 2;' >> latexmkrc-make
+	echo '$$bibtex_use = 2;' >> latexmkrc-make; \
+	echo '$$ENV{max_print_line} = $$log_wrap = 100000;' >> latexmkrc-make; \
+	echo '$$ENV{error_line} = 254;' >> latexmkrc-make; \
+	echo '$$ENV{half_error_line} = 238;' >> latexmkrc-make
 
 # Nao precisamos declarar as dependencias "normais" aqui (arquivos
 # .tex, .bib, imagens etc.) porque latexmk cuida disso. Vamos apenas
