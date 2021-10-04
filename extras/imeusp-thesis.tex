@@ -540,71 +540,51 @@
   \hypersetup{pageanchor=false}
   \bgroup
   \onehalfspacing
+
   \@IMEcover
   \iftoggle{@tcc}{}{\@IMEtitlePage}
+  \@IMEversoPage
+
   \egroup
+  \if@openright\cleardoublepage\else\clearpage\fi
   \hypersetup{pageanchor=true}
 }
 
 % Layout da capa
 \NewDocumentCommand{\@IMEcover}{} {
-  \@calculateCoverMargins
-
   \cleardoublepage
-
   \thispagestyle{empty}
 
   \begin{hyphenrules}{nohyphenation}
-
-    \iftoggle{@tcc}{\@institutionBlock}{}
-
-    \@titleBlock
-
-    \vfill
-
-    \@detailsBlock
-
+      \iftoggle{@tcc}{\@institutionBlock}{}
+      \@titleBlock
+      \vfill
+      \@detailsBlock
   \end{hyphenrules}
-
-  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 % Layout para a página de rosto (duas versões, de acordo
 % com a Resolução CoPGr 6018 de 13/10/2011)
 \NewDocumentCommand{\@IMEtitlePage}{} {
-  \@calculateCoverMargins
-
-  \cleardoublepage
-
+  \if@openright\cleardoublepage\else\clearpage\fi
   \thispagestyle{empty}
 
   \begin{hyphenrules}{nohyphenation}
-
-    \@titleBlock
-
-    \vspace*{2cm plus 2cm minus 1cm}
-
-    \@versionInfoBlock
-
-    \vspace*{3.5cm plus 3cm minus 3.5cm}
-
-    \iftoggle{@finalversion}{\@committeeBlock}{}
-
-    \vspace*{2cm plus 2cm minus 2cm}
-
+      \@titleBlock
+      \vspace*{2cm plus 2cm minus 1cm}
+      \@versionInfoBlock
+      \vspace*{3.5cm plus 3cm minus 3.5cm}
+      \iftoggle{@finalversion}{\@committeeBlock}{}
+      \vspace*{2cm plus 2cm minus 2cm}
   \end{hyphenrules}
+}
 
+\NewDocumentCommand{\@IMEversoPage}{}{
   \clearpage
-
   \thispagestyle{empty}
-
   \vspace*{4cm plus 4cm minus 2cm}
-
   \@versoPageBlock
-
   \vspace*{8cm plus 5cm minus 6cm}
-
-  \if@openright\cleardoublepage\else\clearpage\fi
 }
 
 
@@ -637,11 +617,8 @@
 % topo da página, a margem esquerda da janela com título e autor e a margem
 % esquerda para os demais elementos centralizados da página.
 
-\newcommand*{\@calculateCoverMargins}{
-  % Calcula o valor das margens; chamando este comando explicitamente
-  % quando necessário ao invés de calcular os valores durante a
-  % inicialização garante que vamos calcular após o pacote geometry
-  % ter definido as margens.
+\AtEndPreamble{
+  % Calcula o valor das margens (após geometry ser carregada)
 
   % A distância entre o topo da página e o início do texto (fora o cabeçalho)
   % é dada por (1in + \voffset + \headsep + \topmargin + \headheight).
