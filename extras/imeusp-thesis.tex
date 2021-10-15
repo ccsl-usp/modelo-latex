@@ -24,6 +24,7 @@
 \providecommand\workname{} % Report, Thesis / Tese, Dissertação, Monografia
 \providecommand\degreename{} % Masters, Doctorate, Bachelor / Mestrado, Doutorado, Bacharelado
 \providecommand\titlename{} % Master, Doctor, Bachelor / Mestre(a), Doutor(a), Bacharel
+\providecommand\@licenseboilerplate{O conteúdo deste trabalho é publicado sob a licença}
 
 % Textos longos a serem traduzidos
 \providecommand\@coverTCCText{}
@@ -149,6 +150,7 @@
     Instituto de Matemática e Estatística,
     Universidade de São Paulo%
   }%
+  \renewcommand\@licenseboilerplate{O conteúdo deste trabalho é publicado sob a licença}%
 }
 
 
@@ -267,6 +269,7 @@
     Institute of Mathematics and Statistics,
     University of São Paulo%
   }%
+  \renewcommand\@licenseboilerplate{The content of this work is published under the}%
 }
 
 
@@ -341,7 +344,50 @@
     membrobanca .value_required:n = true,
   }
 
-\NewDocumentCommand\defesa{m}{\keys_set:nn {IME/defense}{#1}}
+\NewDocumentCommand\defesa{m}{%
+  \keys_set:nn {IME/defense}{#1}
+
+  \exp_args:NV \str_case:nnF \@license
+    {
+      {CC-BY}{\gdef\@license{\@licenseboilerplate\space CC~BY~4.0\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by/4.0/}{%
+        (Creative~Commons~Attribution~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by/4.0/}}
+      }
+
+      {CC-BY-NC}{\gdef\@license{\@licenseboilerplate\space CC~BY-NC~4.0\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nc/4.0/}{%
+        (Creative~Commons~Attribution-NonCommercial~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/}}
+      }
+
+      {CC-BY-ND}{\gdef\@license{\@licenseboilerplate\space CC~BY-ND~4.0\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nd/4.0/}{%
+        (Creative~Commons~Attribution-NoDerivatives~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/}}
+      }
+
+      {CC-BY-SA}{\gdef\@license{\@licenseboilerplate\space CC~BY-SA~4.0\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-sa/4.0/}{%
+        (Creative~Commons~Attribution-ShareAlike~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0/}}
+      }
+
+      {CC-BY-NC-SA}{\gdef\@license{\@licenseboilerplate\space CC~BY-NC-SA~4.0\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nc-sa/4.0/}{%
+        (Creative~Commons~Attribution-NonCommercial-ShareAlike~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-sa/4.0/}}
+      }
+
+      {CC-BY-NC-ND}{\gdef\@license{\@licenseboilerplate\space CC~BY-NC-ND~4.0\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nc-nd/4.0/}{%
+        (Creative~Commons~Attribution-NonCommercial-NoDerivatives~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/}}
+      }
+    }
+    % If there is no match, use the user-supplied text
+    {}
+}
 
 \seq_gclear_new:N \@seqkeywordspt
 \seq_gclear_new:N \@seqkeywordsen
@@ -723,7 +769,7 @@
   \onehalfspacing
   \begin{list}{}{\rightmargin 3em \leftmargin 3em}
     \item
-      \@license
+      \bgroup\centering\footnotesize\itshape\@license\par\egroup
 
       \ifcsvoid{@catalogingData} {} {
         \vspace*{3cm plus 3cm minus 1cm}
