@@ -6,6 +6,11 @@
 
 % Formatação de datas de acordo com a língua
 \usepackage[useregional]{datetime2}
+\DTMusemodule{brazilian}{portuges}
+\DTMnewdatestyle{month-year}{%
+  \renewcommand*{\DTMdisplaydate}[4]{##2,\space##1}%
+  \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
+}
 
 \makeatletter
 
@@ -44,6 +49,10 @@
 
 %%%%%%%%%% PORTUGUÊS %%%%%%%%%%
 \expandafter\addto\csname captions\@IMEpt\endcsname{%
+  \DTMrenewdatestyle{month-year}{%
+    \renewcommand*{\DTMdisplaydate}[4]
+      {\DTMportugesmonthname{##2}\space de\space##1}%
+  }%
   \let\@title\@titlept
   \let\@subtitle\@subtitlept
   \let\@keywords\@keywordspt
@@ -156,6 +165,10 @@
 
 %%%%%%%%%% INGLÊS %%%%%%%%%%
 \expandafter\addto\csname captions\@IMEen\endcsname{%
+  \DTMrenewdatestyle{month-year}{%
+    \renewcommand*{\DTMdisplaydate}[4]
+      {\DTMenglishmonthname{##2},\space##1}%
+  }%
   \let\@title\@titleen
   \let\@subtitle\@subtitleen
   \let\@keywords\@keywordsen
@@ -935,7 +948,9 @@
 
         \@defenselocation
 
-        \DTMusedate{@defensedate}
+        \iftoggle{@tcc}
+          {\DTMfetchyear{@defensedate}}
+          {\DTMsetdatestyle{month-year}\DTMusedate{@defensedate}}
 
       \end{Center}
     \end{minipage}%
