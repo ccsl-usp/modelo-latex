@@ -144,12 +144,23 @@
 % quebra de página para o restante do conteúdo)
 \maketitle
 
-\input{conteudo/corpo-artigo}
-% Um parágrafo em LaTeX termina com uma linha vazia; como não é possível ter
-% certeza que um arquivo incluído (neste caso, "corpo-artigo") terminou
-% com uma linha vazia, é recomendável usar o comando "par" após "input" para
-% garantir que o último parágrafo do arquivo incluído realmente terminou.
-\par
+\begin{abstract}
+  Uma variante do arquivo \texttt{tese.tex} usando a classe \textsf{article}.
+\end{abstract}
+
+\section{Introdução}
+
+Se você precisa criar um texto relativamente curto, como um artigo ou
+um trabalho de disciplina, este modelo pode servir como base. Observe,
+no entanto, que periódicos em geral nas áreas de matemática e computação
+costumam ter seus próprios modelos \LaTeX{} (como é o caso da
+SBC\footnote{Sociedade Brasileira de Computação}\nocite{sbctemplate});
+nesses casos, é melhor utilizá-los e apenas consultar este modelo para
+verificar como usar algum recurso específico. Fique atento: alguns modelos
+antigos ou de periódicos internacionais podem usar \textsf{latin1} ao
+invés de \textsf{utf8} ou mesmo não ter configuração pré-definida para
+caracteres acentuados. Além disso, eles muito frequentemente utilizam
+bibtex ao invés de biblatex para a geração automática da bibliografia.
 
 \printbibliography[
   title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT

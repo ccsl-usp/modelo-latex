@@ -130,10 +130,201 @@
 
 % Em um poster não há \maketitle
 
-\input{conteudo/corpo-poster}
-\par
+\begin{frame}[fragile]\centering
 
-% Como o local da bibliografia em uma apresentação pode variar, os comandos
-% relacionados estão em corpo-poster.tex e não aqui.
+%%%%%%%% Uma coluna %%%%%%%%
+% (precisamos usar columns para alinhar com os demais blocos)
+\begin{columns}[T]
+
+  \singlecol
+
+  \begin{block}{The InterSCity logo}
+      \centering
+      \includegraphics[width=.9\textwidth]{interscity-logo}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%%% Quatro colunas %%%%%%%%
+\begin{columns}[T]
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+  \end{block}
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+  \end{block}
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+  \end{block}
+
+  \onefourthcol
+
+  \begin{block}{Reduced}
+        \centering
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%% Duas colunas %%%%%%%%
+\begin{columns}[T]
+
+  \halfcol
+
+  \begin{block}{Context}
+    \begin{itemize}
+      \item Large cities have problems related to mobility, pollution,
+            health, energy, housing, among others
+      \item Smart cities emerge as a potential solution that aims at:
+      \begin{itemize}
+        \item Using city resources efficiently
+        \item Providing quality services for citizens
+        \item Tackling urban problems
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{The InterSCity Platform}
+    \begin{itemize}
+      \item An open-source, microservice-based project to enable novel
+            smart city research, development, and deployment initiatives
+      \item It provides a set of high-level cloud-based services that
+            mediate the communication between the applications and the
+            city devices:
+      \begin{itemize}
+        \item Manage heterogeneous city resources
+        \item Integrate  with IoT Systems
+        \item Big Data storage and processing
+        \item Context-aware resource discovery
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \halfcol
+
+  \begin{block}{InterSCity Architecture}
+      \centering
+      % Ajustando o tamanho para alinhar o final com a coluna ao lado
+      \includegraphics[width=.753\textwidth,trim=0 230 0 0,clip]{ime-logo}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%% Colunas assimétricas %%%%%%%%
+  \begin{columns}[T]
+
+  \twothirdscol
+
+  \begin{block}{Bibliography}
+    \nocite{FSF:GNU-GPL, MenaChalco08, biblatex}
+    \printbibliography
+    % "Estica" ligeiramente o bloco para alinhar com o final da outra coluna
+    \vspace*{.3\baselineskip}
+  \end{block}
+
+  \onethirdcol
+
+  \begin{block}{IME/USP}
+      \centering
+      \includegraphics[width=.39\textwidth,trim=0 230 0 0,clip]{ime-logo}
+  \end{block}
+
+\end{columns}
+
+\vspace*{.5\baselineskip}
+
+%%%%%%%% Três colunas %%%%%%%%
+\begin{columns}[T]
+
+  \onethirdcol
+
+  \begin{block}{Sponsors}
+    \centering
+    \begin{figure}[H] % [H] é obrigatório em apresentações!
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\includegraphics[width=.9\textwidth]{fapesp-logo}
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{capes-logo}}
+        \raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{interscity-logo}}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{cnpq-logo}}
+        \raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{interscity-logo}}
+      \end{subfigure}
+    \end{figure}
+  \end{block}
+
+  \onethirdcol
+
+  \begin{block}{Sponsors}
+    \centering
+    \begin{figure}[H] % [H] é obrigatório em apresentações!
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\includegraphics[width=.9\textwidth]{fapesp-logo}
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{capes-logo}}
+        \raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{interscity-logo}}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{cnpq-logo}}
+        \raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{interscity-logo}}
+      \end{subfigure}
+    \end{figure}
+  \end{block}
+
+  \onethirdcol
+
+  \begin{block}{Sponsors}
+    \centering
+    \begin{figure}[H] % [H] é obrigatório em apresentações!
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\includegraphics[width=.9\textwidth]{fapesp-logo}
+        \includegraphics[width=.9\textwidth]{interscity-logo}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{capes-logo}}
+        \raisebox{-2.4\baselineskip}{\includegraphics[width=.6\textwidth]{interscity-logo}}
+      \end{subfigure}
+      \begin{subfigure}{.3\textwidth}
+        \centering
+        %\raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{cnpq-logo}}
+        \raisebox{-1.16\baselineskip}{\includegraphics[width=.85\textwidth]{interscity-logo}}
+      \end{subfigure}
+    \end{figure}
+  \end{block}
+
+\end{columns}
+
+\end{frame}
 
 \end{document}
