@@ -80,7 +80,7 @@
     \fi%
     \setlength{\fboxrule}{0.5pt}%
     \setlength{\fboxsep}{1pt}%
-\begin{picture}(4020.00,2580.00)%
+\begin{picture}(3880.00,2580.00)%
     \gplgaddtomacro\gplbacktext{%
       \csname LTb\endcsname%%
       \put(473,435){\makebox(0,0)[r]{\strut{}$0$}}%
@@ -95,23 +95,23 @@
       \csname LTb\endcsname%%
       \put(473,2149){\makebox(0,0)[r]{\strut{}$125$}}%
       \csname LTb\endcsname%%
-      \put(829,299){\makebox(0,0){\strut{}$2$}}%
+      \put(816,299){\makebox(0,0){\strut{}$2$}}%
       \csname LTb\endcsname%%
-      \put(1390,299){\makebox(0,0){\strut{}$4$}}%
+      \put(1353,299){\makebox(0,0){\strut{}$4$}}%
       \csname LTb\endcsname%%
-      \put(1951,299){\makebox(0,0){\strut{}$6$}}%
+      \put(1890,299){\makebox(0,0){\strut{}$6$}}%
       \csname LTb\endcsname%%
-      \put(2512,299){\makebox(0,0){\strut{}$8$}}%
+      \put(2426,299){\makebox(0,0){\strut{}$8$}}%
       \csname LTb\endcsname%%
-      \put(3073,299){\makebox(0,0){\strut{}$10$}}%
+      \put(2963,299){\makebox(0,0){\strut{}$10$}}%
       \csname LTb\endcsname%%
-      \put(3634,299){\makebox(0,0){\strut{}$12$}}%
+      \put(3500,299){\makebox(0,0){\strut{}$12$}}%
     }%
     \gplgaddtomacro\gplfronttext{%
       \csname LTb\endcsname%%
       \put(123,1429){\rotatebox{-270}{\makebox(0,0){\strut{}$f(x)$}}}%
       \csname LTb\endcsname%%
-      \put(2161,95){\makebox(0,0){\strut{}$x$}}%
+      \put(2091,95){\makebox(0,0){\strut{}$x$}}%
       \csname LTb\endcsname%%
       \put(1298,2301){\makebox(0,0)[r]{\strut{}$10x-10$}}%
       \csname LTb\endcsname%%
@@ -120,7 +120,7 @@
       \put(1298,2029){\makebox(0,0)[r]{\strut{}$25log_2(x)$}}%
     }%
     \gplbacktext
-    \put(0,0){\includegraphics[width={201.00bp},height={129.00bp}]{figuras/gnuplot}}%
+    \put(0,0){\includegraphics[width={194.00bp},height={129.00bp}]{figuras/gnuplot}}%
     \gplfronttext
   \end{picture}%
 \endgroup

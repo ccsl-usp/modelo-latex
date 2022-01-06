@@ -122,7 +122,7 @@ logarithmicErrorBars = np.array([
     [0.0, 6.8, 3.8, 6.2, 5.5, 6.6, 2.3, 3.8]
     ])
 
-fig, ax = plt.subplots(figsize=(3.1,1.8)) # polegadas
+fig, ax = plt.subplots(figsize=(2.9,1.8)) # polegadas
 
 ax.plot(linearX, linearY,
     linewidth=1,

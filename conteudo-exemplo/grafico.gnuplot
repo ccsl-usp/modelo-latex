@@ -35,7 +35,7 @@
 # LaTeX; "\\scriptsize\\sffamily" são repassados diretamente para
 # ele. "fontscale .4" serve apenas para ajudar gnuplot a estimar o
 # tamanho do texto.
-set terminal cairolatex pdf input size 2.8in,1.8in fontscale .4 header "\\scriptsize\\sffamily"
+set terminal cairolatex pdf input size 2.7in,1.8in fontscale .4 header "\\scriptsize\\sffamily"
 
 #### Exemplo com o terminal lua tikz
 # Neste caso, usamos "charsize 3.8pt,9pt" (largura média, altura
