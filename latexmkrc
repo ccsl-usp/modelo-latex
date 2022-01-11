@@ -11,17 +11,7 @@ $custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction b
 #ensure_path('BSTINPUTS', 'extras//');
 #ensure_path('BSTINPUTS', '.');
 
-# With older versions of latexmk, this is the recommended
-# method for choosing which latex engine to use:
 $pdflatex = 'pdflatex' . $custom_latex_opts . '%O %S';
-#$pdflatex = 'lualatex' . $custom_latex_opts . '%O %S';
-#$pdflatex = 'xelatex' . $custom_latex_opts . '%O %S';
-
-# With newer versions, the previous approach continues to work
-# fine (and is probably easier to use!), but you may also use
-# the command line options "-lualatex" and "-xelatex", which
-# are controlled by these variables (note that they do exist
-# on older versions, but work a little differently):
 $lualatex = 'lualatex' . $custom_latex_opts . '%O %S';
 $xelatex = 'xelatex' . $custom_latex_opts . '%O %S';
 
