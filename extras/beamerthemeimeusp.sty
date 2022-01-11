@@ -12,6 +12,26 @@
 
 \RequirePackage{calc}
 
+\RequirePackage{ragged2e}
+
+% Inspirado no comando \narrowragged da package varwidth.
+%
+% Num texto normal, os parágrafos costumam ser justificados. Em uma
+% apresentação, os parágrafos são muito curtos (1-3 linhas), então
+% justificar não é tão bom e, por isso, beamer usa parágrafos
+% ragged right.
+%
+% De forma similar, em um texto normal, a última linha de um parágrafo
+% pode ser bastante curta. Isso também é problemático em uma apresentação,
+% mas beamer não trata isso de forma especial. Aqui, incentivamos LaTeX
+% a fazer as linhas do parágrafo um pouco mais curtas para evitar que a
+% última fique curta demais. Além disso, fazemos LaTeX preferir não
+% hifenizar palavras se possível. Os valores dos parâmetros são chutes :)
+% mas devem funcionar razoavelmente.
+\RaggedRightRightskip .05\textwidth plus .2\textwidth minus .05\textwidth\relax
+\RaggedRightParfillskip .2\textwidth plus .2\textwidth minus .2\textwidth\relax
+\hyphenpenalty=200
+
 \usetheme[sectionpage=progressbar,subsectionpage=none,numbering=fraction,progressbar=frametitle]{metropolis}
 
 \usefonttheme{professionalfonts}
@@ -25,7 +45,7 @@
 % As margens default são muito grandes
 \setbeamersize{
   text margin left=.03\paperwidth,
-  text margin right=.03\paperwidth
+  text margin right=.05\paperwidth
 }
 
 \usefonttheme{structurebold}
@@ -35,29 +55,78 @@
 \setbeamerfont{itemize/enumerate body}{series=\bfseries}
 \setbeamerfont{itemize/enumerate subbody}{series=\normalfont}
 \setbeamerfont{itemize/enumerate subsubbody}{series=\itshape}
+
 % Os triângulos ficam MUITO grandes, acho que por conta do
 % inner theme "circles"; vamos definir manualmente.
 %\setbeamertemplate{itemize items}[triangle]
 \setbeamertemplate{itemize item}{\raisebox{-.05em}{\Large\textbf{\textbullet}}}
+
 % O triângulo fica de tamanhos diferentes com pdflatex e lualatex;
 % para contornar isso, vamos (1) redimensionar para o tamanho do
 % \strut e (2) redimensionar para 25% desse valor.
 \setbeamertemplate{itemize subitem}{{\normalsize\raisebox{.4\totalheight}{\scalebox{.25}{\resizebox*{!}{\totalheightof{\strut}}{\ensuremath{\blacktriangleright}}}}}}
 \setbeamertemplate{itemize subsubitem}{\raisebox{.02em}{{\textbf{\guillemotright}}}}
+
+% A margem esquerda das listas de itens no beamer são um tanto exageradas
 \addtolength{\leftmargini}{-.9em}
 \addtolength{\leftmarginii}{-1.3em}
 \addtolength{\leftmarginiii}{-1em}
 \addtolength{\labelsep}{-.3em}
 
 \setbeamertemplate{caption}[numbered]
+
 % Os triângulos ficam MUITO grandes, acho que por conta do
 % inner theme "circles"; vamos definir manualmente.
 %\setbeamertemplate{bibliography item}[triangle]
 \setbeamertemplate{bibliography item}{{\normalsize\raisebox{.4\totalheight}{\scalebox{.25}{\resizebox*{!}{\totalheightof{\strut}}{\ensuremath{\blacktriangleright}}}}}}
+
+% Normalmente, beamer não utiliza os "labels" normais na bibliografia;
+% ao invés disso, ele coloca ícones indicando o tipo de item. Isso
+% funciona corretamente na configuração padrão e usando bibtex, mas
+% gera alguns problemas com biblatex ou quando utilizamos "labels"
+% personalizados, como os triângulos que definimos logo acima.
+%
+% Versões mais novas de beamer + biblatex + latex usam hooks para
+% ajustar o tamanho dos labels, resolvendo a incompatibilidade com
+% biblatex. Ainda assim, há problemas com nosso label personalizado.
+% Aqui, aplicamos duas correções:
+%
+% 1. Detectamos se estamos usando uma versão mais antiga de biblatex
+%    (sem suporte a hooks) e, se sim, imitamos a configuração das
+%    versões mais novas. Isso deve funcionar com bibliografias no
+%    formato autor-data e autor-título, não sei com outros! Veja
+%    https://github.com/josephwright/beamer/commit/2a81ef0c0172a4ba7ee11676a177c7f6fd21cf3d
+%    TODO: isto pode ser removido em 2024.
+%
+% 2. Ajustamos bibhang para que, independentemente do tamanho do label,
+%    as linhas subsequentes estejam alinhadas à esquerda.
+
 \AtEndPreamble{
   \@ifpackageloaded{biblatex}
-    {\setlength{\biblabelsep}{0pt}}
-    {}
+    {
+      % O item 1 da explicação acima
+      \@ifpackagelater{biblatex}{2020/08/23}
+        {}
+        {
+          \mode<presentation>{%
+            \pretocmd{\bibsetup}{%
+              \newlength{\beamer@bibiconwidth}%
+              \settowidth\beamer@bibiconwidth{\usebeamertemplate*{bibliography item}}%
+              \setlength{\labelwidth}{-\beamer@bibiconwidth}%
+              \addtolength{\labelwidth}{2\labelsep}%
+              \addtolength{\bibhang}{\labelsep}% desnecessário, vamos redefinir abaixo
+            }{}{}%
+          }
+        }
+
+      % O item 2 da explicação acima
+      \mode<presentation>{%
+        \apptocmd{\bibsetup}{%
+          \setlength{\bibhang}{2\noexpand\beamer@bibiconwidth}%
+          \addtolength{\bibhang}{-2\labelsep}%
+        }{}{}%
+      }
+    }{}
 }
 
 % Remove ícones de navegação

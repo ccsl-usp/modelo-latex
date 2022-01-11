@@ -14,6 +14,11 @@
 
 \RequirePackage{etoolbox}
 
+\RequirePackage{ragged2e}
+
+% Vamos fazer LaTeX preferir não hifenizar palavras se possível.
+\hyphenpenalty=200
+
 \RequirePackage{tikz}
 \newcommand{\footimage}[1]{\def\footim@ge{#1}}
 \usefonttheme[onlymath]{serif}
@@ -41,10 +46,65 @@
 \setbeamertemplate{caption}[numbered]
 
 \setbeamertemplate{bibliography item}[triangle]
+
+% Normalmente, beamer não utiliza os "labels" normais na bibliografia;
+% ao invés disso, ele coloca ícones indicando o tipo de item. Isso
+% funciona corretamente na configuração padrão e usando bibtex, mas
+% gera alguns problemas com biblatex ou quando utilizamos "labels"
+% personalizados, como os triângulos que definimos logo acima.
+%
+% Versões mais novas de beamer + biblatex + latex usam hooks para
+% ajustar o tamanho dos labels, resolvendo a incompatibilidade com
+% biblatex. Ainda assim, há problemas com nosso label personalizado.
+% Aqui, aplicamos duas correções:
+%
+% 1. Detectamos se estamos usando uma versão mais antiga de biblatex
+%    (sem suporte a hooks) e, se sim, imitamos a configuração das
+%    versões mais novas. Isso deve funcionar com bibliografias no
+%    formato autor-data e autor-título, não sei com outros! Veja
+%    https://github.com/josephwright/beamer/commit/2a81ef0c0172a4ba7ee11676a177c7f6fd21cf3d
+%    TODO: isto pode ser removido em 2024.
+%
+% 2. Ajustamos bibhang para que, independentemente do tamanho do label,
+%    as linhas subsequentes estejam alinhadas à esquerda.
+
 \AtEndPreamble{
   \@ifpackageloaded{biblatex}
-    {\setlength{\biblabelsep}{0pt}}
-    {}
+    {
+
+      % O item 1 da explicação acima
+      \@ifpackagelater{biblatex}{2020/08/23}
+        {}
+        {
+          \mode<presentation>{%
+            \pretocmd{\bibsetup}{%
+              \newlength{\beamer@bibiconwidth}%
+              \settowidth\beamer@bibiconwidth{\usebeamertemplate*{bibliography item}}%
+              \setlength{\labelwidth}{-\beamer@bibiconwidth}%
+              \addtolength{\labelwidth}{2\labelsep}%
+              \addtolength{\bibhang}{\labelsep}% desnecessário, vamos redefinir abaixo
+            }{}{}%
+          }
+        }
+
+      % labelsep por padrão é MUITO grande
+      \mode<presentation>{%
+        \pretocmd{\bibsetup}{%
+          \setlength{\labelsep}{.2em}%
+        }{}{}
+      }
+
+      % O item 2 da explicação acima
+      \mode<presentation>{%
+        \apptocmd{\bibsetup}{%
+          \setlength{\bibhang}{2\noexpand\beamer@bibiconwidth}%
+          % Com as dimensões atuais, a bibliografia fica muito
+          % à esquerda; vamos empurrar tudo para a direita
+          %\addtolength{\bibhang}{-2\labelsep}%
+          \addtolength{\labelwidth}{-.4em}
+        }{}{}%
+      }
+    }{}
 }
 
 \setbeamertemplate{block begin}{
