@@ -1,6 +1,6 @@
 @default_files = ('tese');
 
-$custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction batchmode ';
+set_tex_cmds('-synctex=1 -halt-on-error %O %S');
 
 # Nao eh necessario neste modelo, mas pode ser util.
 # Veja a secao 5 de "textoc kpathsea" e
@@ -10,10 +10,6 @@ $custom_latex_opts = ' -synctex=1 -halt-on-error -file-line-error -interaction b
 #ensure_path('TEXINPUTS', '.');
 #ensure_path('BSTINPUTS', 'extras//');
 #ensure_path('BSTINPUTS', '.');
-
-$pdflatex = 'pdflatex' . $custom_latex_opts . '%O %S';
-$lualatex = 'lualatex' . $custom_latex_opts . '%O %S';
-$xelatex = 'xelatex' . $custom_latex_opts . '%O %S';
 
 # Rodando latexmk a partir do editor atom, texindy falha;
 # "2>&1 | tee" é um truque para contornar esse problema
