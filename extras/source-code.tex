@@ -1,8 +1,8 @@
 % Para formatar código-fonte (ex. em Java). listings funciona bem mas
 % tem algumas limitações (https://tex.stackexchange.com/a/153915 ).
 % Se isso for um problema, a package minted pode oferecer resultados
-% melhores; a desvantagem é que ela depende de um programa externo,
-% o pygments (escrito em python).
+% (muito) melhores; a desvantagem é que ela depende de um programa
+% externo, o pygments (escrito em python).
 %
 % listings também não tem suporte específico a pseudo-código, mas
 % incluímos uma configuração para isso que deve ser suficiente.
@@ -10,11 +10,62 @@
 % de pseudocódigo:
 %
 %  * a mais comum é algorithmicx ("\usepackage{algpseudocode}");
+%
 %  * algorithm2e é bastante flexível, mas um tanto complexa;
-%  * clrscode3e foi usada no livro "Introduction to Algorithms"
-%    de Cormen, Leiserson, Rivert e Stein.
-%  * pseudocode foi usada no livro "Combinatorial Algorithms"
-%    de Kreher e Stinson.
+%
+%  * clrscode3e foi usada no livro "Introduction to Algorithms",
+%    de Cormen, Leiserson, Rivert e Stein;
+%
+%  * pseudocode foi usada no livro "Combinatorial Algorithms",
+%    de Kreher e Stinson;
+%
+%  * algpseudocodex é uma package relativamente nova similar
+%    a algorithmicx/algpseudocode mas com diversas melhorias;
+%
+%  * pseudo também é relativamente nova; ela funciona de forma
+%    um pouco diferente das demais e é bastante customizável.
+%
+% A diferença entre essas packages e listings/minted é que estas
+% últimas "entendem" o código e aplicam a formatação automaticamente,
+% enquanto com as packages acima o usuário precisa usar comandos LaTeX
+% para definir a formatação.
+%
+% algorithmicx/algpseudocode, algorithm2e, clrscode3e, pseudocode
+% e algpseudocodex usam uma "linguagem" própria baseada em comandos
+% LaTeX que pode ser facilmente modificada pelo usuário (ou seja,
+% é fácil fazer pseudocódigo em português). Segue um exemplo com
+% algpseudocodex, provavelmente a opção mais interessante dentre
+% este grupo (note o comando "\While", que imprime automaticamente
+% a palavra-chave "while" e ajusta a indentação):
+%
+% \begin{algorithmic}[1]
+%   \Function{Euclid}{$a, b$} \Comment{The g.c.d. of a and b}
+%     \State $r\gets a\bmod b$
+%     \While{$r\not=0$} \Comment{We have the answer if r is 0}
+%       \State $a\gets b$
+%       \State $b\gets r$
+%       \State $r\gets a\bmod b$
+%     \EndWhile
+%     \State \textbf{return} $b$ \Comment{The gcd is b}
+%   \EndFunction
+% \end{algorithmic}
+%
+% pseudo não usa uma "linguagem" própria desse tipo; ao invés disso,
+% ela oferece comandos para a formatação direta de palavras-chave,
+% variáveis, indentação etc. Um exemplo ("\\", "\\+" e "\\-" controlam
+% as quebras de linha e a indentação):
+%
+% \begin{pseudo}
+%    \kw{Function} \fn{Euclid}(a, b) \ct{The g.c.d. of a and b} \\+
+%      $r\gets a\bmod b$ \\
+%      \kw{while} $r\not=0$ \ct{We have the answer if r is 0} \\+
+%        $a\gets b$ \\
+%        $b\gets r$ \\
+%        $r\gets a\bmod b$ \\-
+%      \kw{end} \\
+%      \kw{return} $b$ \ct{The gcd is b} \\-
+%    \kw{end}
+% \end{pseudo}
 
 \usepackage{listings}
 \usepackage{lstautogobble}
