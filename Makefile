@@ -90,7 +90,7 @@ MAKEINDEX := makeindex
 # mais abaixo. Ela nao esta habilitada por padrao porque pode acarretar
 # problemas de seguranca
 #LATEXOPTS := --shell-escape
-LATEXOPTS := -synctex=1 -halt-on-error -file-line-error -interaction batchmode -recorder
+LATEXOPTS := -synctex=1 -halt-on-error -interaction batchmode -recorder
 
 # Opcoes para makeindex
 MAKEINDEXOPTS := -s mkidxhead.ist -l -c
