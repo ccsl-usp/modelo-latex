@@ -241,15 +241,23 @@ define COMPILE_WITHOUT_LATEXMK
 	@$(REFRESH_CHECKSUMS)
 	@echo
 	@if $(CHECK_RERUN_MESSAGE); then touch $*.checksums; fi
+	@# result will never be 0: make will always believe there is something \
+	to do for the .ind and .bbl files. What happens then is, we'll run make \
+	once again, it will run those rules but they will do nothing (because of \
+	the checksums), and the rule that calls LaTeX won't be executed (because \
+	there are no changes to the .bbl and .ind files).
 	@$(MAKE) -sq $@; result=$$?; \
 	if [ $$result -eq 0 ]; then \
-		$(SHOW_REPORT); \
-		$(SHOW_SUCCESS_MSG); \
+		exit 0 ; \
 	elif [ $$result -eq 1 ]; then \
 		$(MAKE) -s $@; \
 	else \
 		$(SHOW_FAIL_MSG); \
 		exit $$result; \
+	fi
+    @if test $(MAKELEVEL) -eq 0; then \
+		$(SHOW_REPORT); \
+		$(SHOW_SUCCESS_MSG); \
 	fi
 endef
 
