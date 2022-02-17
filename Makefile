@@ -226,6 +226,7 @@ endif
 # do arquivo copiado.
 define REFRESH_CHECKSUMS
 $(FIND_TEX_TEMP_FILES) | while read filename; do \
+  if ! test -e "$$filename"; then continue; fi; \
   currentsum="`md5sum "$$filename"`"; \
   if ! grep -q "$$currentsum" "$*.checksums"; then \
     sed -i -E -e "/^[0-9a-f]{32}  $$filename"'$$/d' "$*.checksums"; \
