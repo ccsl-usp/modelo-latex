@@ -24,7 +24,7 @@ $makeindex = 'makeindex -s mkidxhead.ist -l -c %O -o %D %S';
 $pdf_mode = 1;
 $postscript_mode = $dvi_mode = 0;
 
-$silent = 1;
+$silent = 1; # This adds "-interaction batchmode"
 $silence_logfile_warnings = 1;
 
 # Make latexmk -c/-C clean *all* generated files
@@ -36,3 +36,98 @@ $bibtex_use = 2;
 $ENV{max_print_line} = $log_wrap = 100000;
 $ENV{error_line} = 254;
 $ENV{half_error_line} = 238;
+
+END {
+  if (-e "$root_filename.blg" and open my $bibfile, '<', "$root_filename.blg") {
+      print("**********************\n");
+      print("bibtex/biber messages:\n\n");
+
+      my $showed_something = 0;
+      while(my $line = <$bibfile>) {
+          if ($line =~ /You.ve used/) {
+              last;
+          } elsif ($line =~ /INFO/) {
+              next;
+          } else {
+              print($line);
+              $showed_something = 1;
+          };
+      };
+      close($bibfile);
+
+      if ($showed_something) {
+          print("\n");
+      } else {
+          print("No important messages to show\n\n");
+      };
+  };
+
+  if (-e "$root_filename.ilg" and open my $indfile, '<', "$root_filename.ilg") {
+      print("*************************\n");
+      print("makeindex/xindy messages:\n\n");
+
+      my $showed_something = 0;
+      while(my $line = <$indfile>) {
+          if ($line =~ /This is makeindex, version/
+                  or $line =~ /Scanning style file/
+                  or $line =~ /Scanning input file/
+                  or $line =~ /Sorting entries/
+                  or $line =~ /Generating output file/
+                  or $line =~ /Output written in/
+                  or $line =~ /Transcript written in/
+                  or $line =~ /done.*accepted.*rejected/
+                  or $line =~ /done.*lines written/
+          ) {
+              next;
+          } else {
+              print($line);
+              $showed_something = 1;
+          };
+      };
+      close($indfile);
+
+      if ($showed_something) {
+          print("\n");
+      } else {
+          print("No important messages to show\n\n");
+      };
+  };
+
+  if (-e "$root_filename.log") {
+      print("***************\n");
+      print("LaTeX messages:\n\n");
+
+      my $cmd = "";
+      my $givenpath = File::Spec->catfile('extras', 'texlogsieve');
+      if (-s 'texlogsieve') {
+          $cmd = 'texlua texlogsieve';
+      } elsif (-s $givenpath) {
+          $cmd = 'texlua' . ' ' . $givenpath;
+      } else {
+          my $nothing = `texlogsieve -h 2>&1`;
+          if ($? == 0) {
+              $cmd = 'texlogsieve';
+          };
+      };
+
+      my $showed_something = 0;
+      if ($cmd ne "") {
+          my $conffile = File::Spec->catfile('extras', 'texlogsieverc');
+          if (-e $conffile) { $cmd = $cmd . ' -c ' . $conffile; };
+          Run_subst($cmd . ' %R.log');
+          $showed_something = 1;
+      } elsif (open my $logfile, '<', "$root_filename.log") {
+          while (my $line = <$logfile>) {
+              print($line);
+              $showed_something = 1;
+          };
+          close($logfile);
+      };
+
+      if ($showed_something) {
+          print("\n");
+      } else {
+          print("No important messages to show\n\n");
+      }
+  };
+};

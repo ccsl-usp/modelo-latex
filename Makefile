@@ -167,13 +167,40 @@ endif
 # isso de duas maneiras: filtrando as mensagens inuteis (com o comando
 # abaixo) e mostrando na tela apenas o resultado da ultima execucao de
 # cada comando (com o alvo "SHOW_REPORT").
-#
-# Filtra linhas no formato "(arquivo-da-package-carregada)", que
-# comecam com "(" e terminam com uma destas extensoes seguida de ")".
-FILTER_MSGS := grep -Eav '(^$$)|(^ *\(.*(sty|ldf|def|cfg|dfu|fd|bbx|cbx|lbx|tex)\)*$$)'
 
-# Usamos texfot (script que filtra a saida de LaTeX) se estiver disponivel
-TEXFOT = $(shell if texfot --version >/dev/null 2>&1; then echo texfot --quiet; fi)
+# Vamos usar texlogsieve se ele estiver disponivel
+TEXLOGSIEVE_CMD = $(wildcard texlogsieve)
+ifeq ("$(TEXLOGSIEVE_CMD)", "")
+    TEXLOGSIEVE_CMD = $(wildcard extras/texlogsieve)
+endif
+
+ifneq ("$(TEXLOGSIEVE_CMD)", "")
+    TEXLOGSIEVE_CMD := texlua $(TEXLOGSIEVE_CMD)
+else
+    ifeq ($(shell if texlogsieve --version >/dev/null 2>&1; then echo true; else echo false; fi), true)
+        TEXLOGSIEVE_CMD = texlogsieve
+    endif
+endif
+
+ifneq ("$(TEXLOGSIEVE_CMD)", "")
+    TEXLOGSIEVE_CFG = $(wildcard extras/texlogsieverc)
+    ifneq ("$(TEXLOGSIEVE_CFG)", "")
+        TEXLOGSIEVE_CMD := $(TEXLOGSIEVE_CMD) -c $(TEXLOGSIEVE_CFG)
+    endif
+endif
+
+ifneq ("$(TEXLOGSIEVE_CMD)", "")
+    FILTER_MSGS := $(TEXLOGSIEVE_CMD)
+else
+    # texlogsieve nao esta disponivel, vamos filtrar "manualmente"
+    #
+    # Filtra linhas no formato "(arquivo-da-package-carregada)", que
+    # comecam com "(" e terminam com uma destas extensoes seguida de ")".
+    FILTER_MSGS := grep -Eav '(^$$)|(^ *\(.*(sty|ldf|def|cfg|dfu|fd|bbx|cbx|lbx|tex)\)*$$)'
+
+    # Usamos texfot (script que filtra a saida de LaTeX) se estiver disponivel
+    TEXFOT = $(shell if texfot --version >/dev/null 2>&1; then echo texfot --quiet; fi)
+endif
 
 # LaTeX nao se adequa ao modelo de compilacao esperado pelo make, pois ele
 # recria os arquivos intermediarios toda vez, impedindo a definicao de regras
@@ -267,7 +294,6 @@ define COMPILE_WITH_LATEXMK
 	@echo
 	@latexmk $(LATEXMKOPTS) $*; \
 	result=$$?; \
-	$(SHOW_REPORT); \
 	if [ $$result -eq 0 ]; then \
 		$(SHOW_SUCCESS_MSG); \
 	else \
@@ -422,14 +448,14 @@ define SHOW_REPORT
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por bibtex/biber (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat $*.blg | sed -e '/You.ve used/,$$d'; \
+		cat $*.blg | sed -e '/You.ve used/,$$d' | grep -E -v INFO ; \
 	fi; \
 	if test -s $*.ilg; then \
 		echo; \
 		echo "***********************************************************************"; \
 		echo "       Mensagens geradas por makeindex/xindy (processando $*) na ultima iteracao:"; \
 		echo; \
-		cat $*.ilg; \
+		cat $*.ilg | grep -E -v '(This is makeindex, version)|(Scanning style file)|(Scanning input file)|(Sorting entries)|(Generating output file)|(Output written in)|(Transcript written in)|(done.*accepted.*rejected)|(done.*lines written)' ; \
 	fi; \
 	if test -s $*.log; then \
 		echo; \
