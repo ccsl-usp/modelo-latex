@@ -782,7 +782,8 @@
   \onehalfspacing
   \begin{list}{}{\rightmargin 3em \leftmargin 3em}
     \item
-      \bgroup\centering\footnotesize\itshape\@license\par\egroup
+      % Cuidado com este bug: https://github.com/schlcht/microtype/issues/10
+      \begingroup\centering\footnotesize\itshape\@license\par\endgroup
 
       \ifcsvoid{@catalogingData} {} {
         \vspace*{3cm plus 3cm minus 1cm}
