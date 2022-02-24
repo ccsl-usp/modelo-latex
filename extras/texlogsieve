@@ -1377,6 +1377,12 @@ function adjustSeverity(msg)
   formatted = trim(msg:realToString())
   if formatted == "" then return end
 
+  DEFAULT_FORCED_DEBUG = {
+    -- This is a harmless message caused by a bug in the
+    -- biblatex-abnt package that can safely be ignored
+    "File 'brazilian%-abnt%-abnt%.lbx' not found!",
+  }
+
   DEFAULT_FORCED_INFO = {
     "File %b`' already exists on the system%."
             .. "%s*Not generating it from",
@@ -1406,7 +1412,15 @@ function adjustSeverity(msg)
 
 
   -- We do things this way so that user-defined strings override these
-  -- defaults (note that there is no "return" in the first two blocks)
+  -- defaults (note that there is no "return" in the DEFAULT_FORCED... blocks)
+  if msg.severity ~= DEBUG then
+      for _, val in ipairs(DEFAULT_FORCED_DEBUG) do
+          if string.find(formatted, val) or string.find(msg.content, val) then
+              msg.severity = DEBUG
+          end
+      end
+  end
+
   if msg.severity ~= INFO then
       for _, val in ipairs(DEFAULT_FORCED_INFO) do
           if string.find(formatted, val) or string.find(msg.content, val) then
@@ -2360,6 +2374,10 @@ beginningOfLineDebugStringsHandler.patterns = {
   '^luaotfload | init : Loading fontloader '
                    .. '["“][^"]+["”] from .-["“][^"]+["”]%.',
 
+  '^luaotfload | db : Font names database not found, generating new one%.',
+
+  '^luaotfload | db : This can take several minutes; please be patient%.',
+
   -- there may be dots in the path, so we need to
   -- anchor the final dot to the end of the line
   '^luaotfload | conf : Root cache directory is "?[^"]-"?%.$',
@@ -2440,6 +2458,8 @@ beginningOfLineDebugStringsHandler.patterns = {
   '^Requested font ".-" at [%d%.]+pt',
   '^Requested font ".-" scaled %d+',
 
+  '^<QR code requested for ".-" in version .->',
+
   -- Usually these are warnings, but for font "nil", why bother?
   '^luaotfload | aux : font no %d+ %(nil%) does not define feature '
                             .. '.- for script .- with language %S+',
@@ -2492,6 +2512,26 @@ anywhereDebugStringsHandler.patterns = {
           .. " Typewriter text macros based on txfonts %(msharpe%)",
 
   '^%s*%* soulpos %- computing points %- it may take a few seconds %*',
+
+  -- package qrcode
+  '^%s*<Calculating QR code for ".-" in version .->',
+  '^%s*<Splitting off block %d+>',
+  '^%s*<Making error block %d+>',
+  '^%s*<Interleaving datablocks of length %d+\\? and %d+: [ %d,]+%.>',
+  '^%s*<Interleaving errorblocks of length %d+: [ %d,]+%.>',
+  '^%s*<Interleaving complete%.>',
+  '^%s*<Writing data%.%.%.%s?done%.>',
+  '^%s*<Applying Mask %d+%.%.%.%s?done%. Calculating penalty%.%.%.%s?penalty is %d+>',
+  '^%s*<Selected Mask %d+>',
+  '^%s*<Encoding and writing format string%.%.%.%s?done%.>',
+  '^%s*<Encoding and writing version information%.%.%.%s?done%.>',
+  '^%s*<Saving QR code to memory%.%.%.%s?done%.>',
+  '^%s*<Writing QR code to aux file%.%.%.%s?done%.>',
+  '^%s*<Printing matrix%.%.%.%s?done%.>',
+  '^%s*<Error%-correction level increased from %S+%s?  to %S+ at no cost%.>',
+  '^%s*<Inserting dummy QR code in draft mode for "[^"]+" in version .-%.>',
+  '^%s*<Copying the QR code for "[^"]+" in version .- as previously calculated%.>',
+  '^%s*<Reading QR code for "[^"]+" at level %S+ from aux file%.>',
 }
 
 
@@ -2515,6 +2555,8 @@ beginningOfLineInfoStringsHandler.patterns = {
   "^No file .-%.ind%.",
   "^No file .-%.bbl%.",
   "^No file .-%.gls%.",
+
+  'luaotfload | db : Reload initiated %(formats: .-%); reason: Font ".-" not found%.',
 
   "^reledmac reminder:%s*\n"
         .. "%s*The number of the footnotes in this section "
@@ -2604,6 +2646,9 @@ anywhereInfoStringsHandler.patterns = {
   '^%s*ASCII Hyphenation patterns for American English',
   '^%s*UTF%-8 %S+ hyphenation patterns',
   '^%s*EC %S+ hyphenation patterns',
+
+  "^%s*<Requested QR version '[^']+' is too small for desired text%.%s?Version increased to '[^']+' to fit text%.>",
+
 }
 
 
@@ -2618,6 +2663,7 @@ beginningOfLineWarningStringsHandler.patterns = {
 
   '^luaotfload | aux : font no .- %b() defines no feature for script %S+',
   '^luaotfload | aux : no font with id %d+',
+  '^luaotfload | resolve : sequence of 3 lookups yielded nothing appropriate%.',
 
   "^warning  %(pdf backend%): ignoring duplicate destination "
                             .. "with the name '.-'",
@@ -3797,12 +3843,12 @@ Message.rerunMessages = {
   {
     WARNING,
     'longtable',
-    'Table widths have changed%. Rerun LaTeX%.'
+    'Table %S+s have changed%. Rerun LaTeX%.'
   },
   {
     WARNING,
     'longtable',
-    'Column widths have changed\nin table'
+    'Column %S+s have changed\nin table'
   },
   {
     WARNING,
@@ -3823,6 +3869,459 @@ Message.rerunMessages = {
     WARNING,
     'hyperref',
     'Rerun to get /PageLabels entry%.'
+  },
+  {
+    WARNING,
+    'hyperref',
+    "Rerun to get outlines right\nor use package `bookmark'",
+  },
+  {
+    WARNING,
+    'backref',
+    'Rerun to get bibliographical references right',
+  },
+  {
+    WARNING,
+    'pbalance',
+    'Last two%-column page cols not balanced%. Rerun LaTeX%.',
+  },
+  {
+    WARNING,
+    'simurgh',
+    'unjustified poem%. rerun lualatex to get poem right%.',
+  },
+  {
+    WARNING,
+    'bidipoem',
+    'Unjustified poem%. Rerun XeLaTeX to get poem right',
+  },
+  {
+    WARNING,
+    'biblatex',
+    'Page references have changed%.\nRerun to get references right%.',
+  },
+  {
+    WARNING,
+    'biblatex',
+    'Please rerun LaTeX%. Page breaks have changed%.',
+  },
+  {
+    WARNING,
+    'biblatex',
+    'Please rerun LaTeX%.',
+  },
+  {
+    WARNING,
+    'bidi-perpage',
+    "Counter %b`' may not have been reset per page%. Rerun to reset counter %b`' per page%.",
+  },
+  {
+    WARNING,
+    'Changebar',
+    'Changebar info has changed%.\nRerun to get the bars right',
+  },
+  {
+    WARNING,
+    'thumbs',
+    '\\th@mbmaxwidtha undefined%.\nRerun to get the thumb marks width right%.',
+  },
+  {
+    WARNING,
+    'thumbs',
+    'Rerun to get the thumb marks width right%.',
+  },
+  {
+    WARNING,
+    'thumbs',
+    'Warning: Rerun to get list of thumbs right!',
+  },
+  {
+    WARNING,
+    'thumbs',
+    'File .-%.tmb not found%.\nRerun to get thumbs overview page%(s%) right%.',
+  },
+  {
+    WARNING,
+    'xdoc2',
+    'Page breaks may have changed%.\nRerun to get marginal material right%.',
+  },
+  {
+    WARNING,
+    'bibtopic',
+    'Rerun to get indentation of bibitems right%.',
+  },
+  {
+    WARNING,
+    'polytable',
+    'Column widths have changed%. Rerun LaTeX%.',
+  },
+  {
+    WARNING,
+    'mpostinl',
+    'figure%(s%) may have changed%. Rerun to update figures',
+  },
+  {
+    WARNING,
+    'uftag',
+    'label .- unknown %- rerun',
+  },
+  {
+    WARNING,
+    'uftag',
+    'structure with label .- is unknown rerun',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, mciteplus
+    'Rerun to ensure correct mciteplus label max width/count',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, mciteplus
+    'Mciteplus max count has changed',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, mciteplus
+    'Mciteplus max width has changed',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, upmethodology
+    'Project Task%(s%) may have changed%.\nRerun to get cross%-references right',
+  },
+  {
+    WARNING,
+    'media9',
+    'Rerun to get internal references right!',
+  },
+  {
+    WARNING,
+    'pdfbase',
+    'Rerun to get internal references right!',
+  },
+  {
+    WARNING,
+    'revtex4',
+    'Endnote numbers changed: rerun LaTeX',
+  },
+  {
+    WARNING,
+    'natbib',
+    'Citation%(s%) may have changed%.\nRerun to get citations correct',
+  },
+  {
+    WARNING,
+    'gridset',
+    'Grid position labels may have changed%.\nRerun to get grid positions right%.',
+  },
+  {
+    WARNING,
+    'datagidx',
+    'Rerun required to sort the index/glossary databases',
+  },
+  {
+    WARNING,
+    'datagidx',
+    'Rerun required to ensure the index/glossary location lists are up%-to%-date',
+  },
+  {
+    WARNING,
+    'exframe',
+    'points changed for .- .-; rerun to fix',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually,
+    'Rerun to get page numbers of acronym .- in acronym list right',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, acro
+    'Acronyms may have changed. Please rerun LaTeX',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, acro
+    'Rerun to get barriers of acronym .- right',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, acro
+    'Rerun to get acronym list right',
+  },
+  {
+    WARNING,
+    'changes',
+    'LaTeX rerun needed for list of changes',
+  },
+  {
+    WARNING,
+    'changes',
+    'LaTeX rerun needed for summary of changes',
+  },
+  {
+    WARNING,
+    'totcount',
+    'Rerun to get correct total counts',
+  },
+  {
+    WARNING,
+    'longfigure',
+    '.- .-s have changed%. Rerun %S-%.',
+  },
+  {
+    WARNING,
+    'knowledge',
+    "The label '[^']+' could not be found while searching for '[^']+'%. Possibly rerun latex%.",
+  },
+  {
+    WARNING,
+    'scope',
+    "Unknown label %b`'%. Possibly rerun latex%.",
+  },
+  {
+    WARNING,
+    'scope',
+    "The area %b`' can't be found in context%. Possibly rerun latex%.",
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, constants
+    'Label%(s%) for constants may have changed%. Rerun to get cross%-references right',
+  },
+  {
+    WARNING,
+    'keyvaltable',
+    "No row data available for name '[^']+'%. A LaTeX rerun might be needed\nfor the row data to be available",
+  },
+  {
+    WARNING,
+    'totalcount',
+    'Total counter%(s%) have changed%.\nRerun to get them right',
+  },
+  {
+    WARNING,
+    'caption',
+    "%b`' support has been changed%.\nRerun to get captions right",
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, enotez
+    'Endnotes may have changed%. Rerun to get them right%.',
+  },
+  {
+    WARNING,
+    'autobreak',
+    'Layout may have changed%.\nRerun to get layout correct',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, eqparbox
+    "Rerun to correct the width of eqparbox %b`'",
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, eqparbox
+    "Rerun to correct eqparbox widths",
+  },
+  {
+    WARNING,
+    'lineno',
+    'Linenumber reference failed, rerun to get it right',
+  },
+  {
+    WARNING,
+    'xsavebox',
+    'Rerun to get internal references right!',
+  },
+  {
+    WARNING,
+    'notespage',
+    'New notes pages were added%. Please rerun LaTeX to get header marks right%.',
+  },
+  {
+    WARNING,
+    'linegoal',
+    '\\linegoal value on page .- has changed\n since last run%. Please rerun to get\nthe correct value',
+  },
+  {
+    WARNING,
+    'pgfgantt',
+    'Gantt chart expansion may have changed%. Rerun to get expansion right',
+  },
+  {
+    WARNING,
+    'lastpage',
+    'Rerun to get the references right',
+  },
+  {
+    WARNING,
+    'animate',
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@ Rerun to get internal references right! @\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',
+  },
+  {
+    WARNING,
+    'notes2bib',
+    'To get notes in the correct order, please run:\n 1%) LaTeX\n 2%) BibTeX\n 3%) LaTeX',
+  },
+  {
+    WARNING,
+    'xsim',
+    'Exercise properties may have changed%. Rerun to get them synchronized%.',
+  },
+  {
+    WARNING,
+    'backcite',
+    'Backcite%(s%) may have changed%.\nRerun to get back references right',
+  },
+  {
+    WARNING,
+    'hyper',
+    'Hyper anchor%(s%) may have changed%.\nRerun to get hyper references right',
+  },
+  {
+    WARNING,
+    'footbib',
+    'Bibliography not yet stable%. Rerun LaTeX',
+  },
+  {
+    WARNING,
+    'glossaries',
+    'Navigation panel has changed%. Rerun LaTeX',
+  },
+  {
+    WARNING,
+    'fancylabel',
+    'Fancylabels may have changed%. Please run latex again%.',
+  },
+  {
+    WARNING,
+    'papermas',
+    'Number of pages may have changed%.\nRerun to get it right',
+  },
+  {
+    WARNING,
+    'standalone',
+    "Sub-preamble of file '[^']+' has changed%. Content will be ignored%. Please rerun LaTeX!",
+  },
+  {
+    WARNING,
+    'movie15',
+    '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@ Rerun to get object references right! @@\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',
+  },
+  {
+    WARNING,
+    'atenddvi',
+    'Rerun LaTeX, last page not yet found',
+  },
+  {
+    WARNING,
+    'atenddvi',
+    'Rerun LaTeX, last page has changed',
+  },
+  {
+    WARNING,
+    'transparent',
+    'Rerun to get transparencies right',
+  },
+  {
+    WARNING,
+    'accessibility',
+    'Changed paragraphs, rerun to get it right',
+  },
+  {
+    WARNING,
+    'exam',
+    'Point totals have changed%. Rerun to get point totals right',
+  },
+  {
+    WARNING,
+    'scrlayer-notecolumn',
+    'MD5 of slnc%-file changed%.\nLast: .-\nNew: .-\nAt least one more LaTeX rerun needed to\nmake note columns right',
+  },
+--[[
+-- why are these "INFO"? Maybe they appear even when no rerun is needed?
+  {
+    INFO,
+    'scrlayer-notecolumn',
+    'No text label for \\syncwithnotecolumn%.\nNeed rerun to sync position',
+  },
+  {
+    INFO,
+    'scrlayer-notecolumn',
+    "No note label for sync with note column\n%b`'%.\nNeed rerun to sync position",
+  },
+  {
+    INFO,
+    'scrlayer-notecolumn',
+    'Last note page before last text page%.\nNeed rerun to sync position',
+  },
+  {
+    INFO,
+    'scrlayer-notecolumn',
+    'Last note position before last text\nposition%.\nNeed rerun to sync position',
+  },
+--]]
+  {
+    WARNING,
+    'LaTeX', -- actually, vhistory
+    'Rerun LaTeX to get the history of versions%.',
+  },
+  {
+    WARNING,
+    'bgteubner',
+    'Indentation for theorem titles has been ..creased%.\nRerun to adjust the indentation',
+  },
+  {
+    WARNING,
+    'pageslts',
+    'Label%(s%) may have changed%.\nRerun to get cross-references right',
+  },
+  {
+    WARNING,
+    'limap',
+    'Table .-s have changed%. Rerun LaTeX%.',
+  },
+  {
+    WARNING,
+    'uniq',
+    "%b`' is unique now%.\nRerun LaTeX to pick up the change",
+  },
+  {
+    WARNING,
+    'uniq',
+    "%b`' is not unique anymore%.\nRerun LaTeX to pick up the change",
+  },
+  {
+    WARNING,
+    'uniq',
+    'Uniquenesses have changed.%s?\nRerun LaTeX to pick up the change',
+  },
+  {
+    WARNING,
+    'bibunits',
+    'Label%(s%) may have changed%. Rerun to get cross%-references right',
+  },
+  {
+    WARNING,
+    'ocgx2',
+    'Rerun to get OCG references right!',
+  },
+  {
+    WARNING,
+    'glossaries',
+    "Missing pre%-location tag for %b`'%. Rerun required",
+  },
+  {
+    WARNING,
+    'mparhack',
+    'Marginpars may have changed%.\nRerun to get them right',
+  },
+  {
+    WARNING,
+    'LaTeX', -- actually, etaremune
+    'Etaremune labels have changed%.\n%s+Rerun to get them right',
   },
 }
 

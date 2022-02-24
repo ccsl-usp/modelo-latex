@@ -1,19 +1,22 @@
 no-summary-detail
-set-to-level-info = ////^Cap.-tulo %S%.
-set-to-level-info = ////^Chapter %S%.
-set-to-level-info = ////^Ap.-ndice %S%.
-set-to-level-info = ////^Appendix %S%.
-set-to-level-info = ////^Anexo %S%.
-set-to-level-info = ////^Annex %S%.
+
+# A classe book "anuncia" mudanças de capítulo no arquivo de log
+add-info-message = ////^Cap.-tulo %S%.
+add-info-message = ////^Chapter %S%.
+add-info-message = ////^Ap.-ndice %S%.
+add-info-message = ////^Appendix %S%.
+add-info-message = ////^Anexo %S%.
+add-info-message = ////^Annex %S%.
+
+# Warnings pouco relevantes
 set-to-level-info = tex again after calling `makeindex
 set-to-level-info = Using \overbracket and \underbracket from `mathtools' package
 set-to-level-info = I'm going to overwrite the following commands from the `mathtools' package:
 set-to-level-info = LuaTeX and hyperref package used: Hyperreferences in rotated content will be misplaced regardless
-set-to-level-info = ////%<QR code requested for ".-"[^%>]+%>
-set-to-level-info = ////Reading QR code for ".-"[^%>]+%>
-set-to-level-info = ////Copying the QR code for ".-"[^%>]+%>
 set-to-level-info = The length marginparwidth is less than 2cm and will most likely
 set-to-level-info = You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts
+
+# hyperref remove comandos especiais em \title e \author dos metadados PDF
 set-to-level-info = removing `\@thanks' on input line
 set-to-level-info = removing `\@ifnextchar' on input line
 set-to-level-info = removing `\<def>-command' on input line
