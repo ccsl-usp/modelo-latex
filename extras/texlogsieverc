@@ -15,6 +15,7 @@ set-to-level-info = I'm going to overwrite the following commands from the `math
 set-to-level-info = LuaTeX and hyperref package used: Hyperreferences in rotated content will be misplaced regardless
 set-to-level-info = The length marginparwidth is less than 2cm and will most likely
 set-to-level-info = You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts
+set-to-level-info = Option "binary-units" has been removed
 
 # hyperref remove comandos especiais em \title e \author dos metadados PDF
 set-to-level-info = removing `\@thanks' on input line
