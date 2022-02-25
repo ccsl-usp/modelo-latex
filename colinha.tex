@@ -245,7 +245,7 @@
 \vspace{\baselineskip}
 
 
-\textbackslash{}begin\{verse\}\quad (ver também a \textit{package} \textsf{verse})
+\textbackslash{}begin\{verse\}\quad (veja também a \textit{package} \textsf{verse})
 
 \quad verso\dots\ \textbackslash\textbackslash
 
@@ -314,33 +314,36 @@
 \section*{Caracteres especiais}
 
 \begin{description}
-  \item[elipse:] \textbackslash{}dots
+  \item[elipse:] \textbackslash{}dots\{\}
   \item[espaço não-separável:] \textasciitilde{} (não quebra a linha)
   \item[espaço aumentado:] \textbackslash{}enspace\{\} ou \textbackslash{}quad\{\}
-  \item[aspas tipográficas:] \`{ }\,\`{ }texto\textquotesingle\,\textquotesingle,
-                \`{ }texto\textquotesingle
+  % \strut -> https://github.com/schlcht/microtype/issues/10
+  \item[aspas tipográficas:] \strut\`\space\,\`\space\;\!texto\;\!\textquotesingle\:\textquotesingle,
+                \`\space\;\!texto\;\!\textquotesingle
   \item[hífen, traço, travessão:] -\quad -\hspace{.7pt}-\quad -\hspace{.7pt}-\hspace{.7pt}-
 \end{description}
 
 \vspace{\baselineskip}
 
 \begin{description}
-  \item[não podem ser digitados diretamente:]~\vspace{2pt}\newline
-    \null\quad\textbackslash{}\#
-    \quad\textbackslash{}\$
-    \quad\textbackslash{}\%
-    \quad\textbackslash{}\&
-    \quad\textquotesingle{}\enspace (\,\textbackslash{}textquotesingle\{\}\,)
-    \vspace{2pt}\newline
-    \null\quad\textbackslash{}\^{ }\{ \}
-    \quad\textbackslash{}\~{ }\{ \}
-    \quad\textbackslash{}\`{ }\{ \}
-    \quad\textquotedbl{}\enspace (\,\textbackslash{}textquotedbl\{\}\,)
-    \vspace{2pt}\newline
-    \null\quad\textbackslash{}\_
-    \quad\textbackslash{}\{
-    \quad\textbackslash{}\}
-    \quad\textbackslash{}\enspace (\,\textbackslash{}textbackslash\{\}\,)
+  \item[não podem ser digitados diretamente:]~\vspace{5pt}\newline
+    \textbackslash\#
+    \quad\textbackslash\$
+    \quad\textbackslash\%
+    \quad\textbackslash\&
+    \quad\textbackslash\_
+    \quad\textbackslash{}textbackslash\{\}:\enspace\textbackslash
+    \vspace{3pt}\newline
+    \textbackslash\{
+    \quad\textbackslash\}
+    \quad\textbackslash{}textquotesingle\{\}:\enspace\textquotesingle
+    \quad\textbackslash{}textquotedbl\{\}:\enspace\textquotedbl
+    \vspace{3pt}\newline
+    \textbackslash{}textasciitilde\{\}:\enspace\textasciitilde
+    \quad\textbackslash{}textasciicircum\{\}:\enspace\textasciicircum
+    \quad\raisebox{-.1\baselineskip}{\`\space}%
+        \hspace{.12em}\textbackslash{}space\{\}:
+        \enspace\raisebox{-.1\baselineskip}{\`\space}
 \end{description}
 
 
