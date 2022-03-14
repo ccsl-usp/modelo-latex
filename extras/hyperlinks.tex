@@ -200,6 +200,8 @@
     |
     ( \c{newline} ) % Encontra "\newline"
     |
+    ( \c{par} ) % Encontra "\par" ou uma linha em branco
+    |
       % Isto encontra:
       % 1. A control sequence "\linebreak" -> "\c{linebreak}"
       % 2. Opcionalmente seguida de "[NÚMERO]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
@@ -228,6 +230,7 @@
 
     % Depois transforma URLs em texto simples
     \regex_replace_all:nnN {\c{url}} {\c{@firstofone}} #1
+    \regex_replace_all:nnN {\c{href}} {\c{@secondoftwo}} #1
 
     % Depois elimina espaços repetidos
     \regex_replace_all:nnN {\s+} {\ } #1
