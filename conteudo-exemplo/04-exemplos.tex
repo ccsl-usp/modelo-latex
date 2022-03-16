@@ -274,6 +274,7 @@ separador decimal.
 \sisetup{
   round-precision = 4,
   table-number-alignment = left,
+  table-format = 1.4, % uma casa antes da vírgula e 4 depois
 }
 
 %%%% É possível fazer esta mesma tabela em modo paisagem des-comentando
@@ -281,13 +282,13 @@ separador decimal.
 %\begin{landscape}
 \begin{longtable}[c]{
   r
-  S[table-figures-decimal=4, table-figures-integer=1]
-  S[table-figures-decimal=4, table-figures-integer=1]
-  S[table-figures-decimal=4, table-figures-integer=1]
-  S[table-figures-decimal=4, table-figures-integer=2]
-  S[table-figures-decimal=4, table-figures-integer=2]
-  S[table-figures-decimal=4, table-figures-integer=2]
-  S[table-figures-decimal=4, table-figures-integer=2]
+  S
+  S
+  S
+  S[table-format = 2.4] % nestas colunas, duas casas antes da vírgula
+  S[table-format = 2.4]
+  S[table-format = 2.4]
+  S[table-format = 2.4]
   }
 
 %%%%%%%%%%%%
