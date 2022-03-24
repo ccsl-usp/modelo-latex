@@ -80,10 +80,11 @@
 
 % Algumas packages "padrão" da AMS, que são praticamente obrigatórias.
 % Algumas delas devem ser carregadas antes de unicode-math ou das
-% definições das fontes do documento.
+% definições das fontes do documento. É preciso carregar amsthm após
+% amsmath para o comando \qedhere funcionar dentro do ambiente align.
 \usepackage{amssymb}
-\usepackage{amsthm}
 \usepackage{amsmath}
+\usepackage{amsthm}
 
 % "fontenc" é um parâmetro do NFSS (sistema de gestão de fontes do
 % LaTeX; consulte "texdoc fntguide" e "texdoc fontenc"). O default
