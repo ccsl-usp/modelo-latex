@@ -49,6 +49,15 @@
 % fazê-las acreditar que xpatch já foi carregada.
 \expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}
 
+% Acrescenta a correção deste bug (contida na release 2018-11-28):
+% https://github.com/latex3/latex2e/issues/94 . Se a correção não
+% puder ser aplicada, temos uma versão de LaTeX que já a incorpora.
+% Esse bug afeta apenas textos em duas colunas.
+% TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
+\makeatletter
+\patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{}
+\makeatother
+
 % Arithmetic expressions in \set{length,counter} & \addto{length,counter};
 % commands \widthof, \heightof, \depthof, \totalheightof, \settototalheight
 \usepackage{calc}
