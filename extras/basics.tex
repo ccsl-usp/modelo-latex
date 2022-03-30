@@ -71,21 +71,8 @@
 
 %\usepackage{xfp} % Floating-point calculations
 
-% Esta package permite detectar XeTeX, LuaTeX e pdfTeX, mas pode não estar
-% disponível em todas as instalações de TeX.
-%\usepackage{iftex}
-% Por conta disso, usaremos estas (que não detectam pdfTeX):
-\usepackage{ifxetex}
-\usepackage{ifluatex}
-
-\newbool{unicodeengine}
-\ifboolexpr{bool{xetex} or bool{luatex}}
-  {\booltrue{unicodeengine}}
-  {\boolfalse{unicodeengine}}
-
-% Detecta se estamos produzindo um arquivo PDF ou DVI (lembrando que tanto
-% pdfTeX quanto LuaTeX podem gerar ambos)
-\usepackage{ifpdf}
+% Detecta se estamos usando pdftex, luatex, xetex etc.
+\usepackage{iftex}
 
 % Algumas packages "padrão" da AMS, que são praticamente obrigatórias.
 % Algumas delas devem ser carregadas antes de unicode-math ou das
@@ -112,18 +99,7 @@
 % hifenizar palavras acentuadas com o fontenc TU).
 \usepackage[T1]{fontenc}
 
-\ifunicodeengine
-  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
-  % com eles utf8 é obrigatório.
-  \usepackage{fontspec}
-
-  % Ao invés de usar o sistema tradicional de LaTeX para gerir
-  % as fontes matemáticas, utiliza as extensões matemáticas do
-  % formato otf definidas pela microsoft. Ao ativar esta package
-  % o mecanismo tradicional não funciona mais! Há poucas fontes
-  % com suporte a unicode-math.
-  \usepackage{unicode-math}
-\else
+\ifPDFTeX
   % O texto está escrito em utf8.
   \usepackage[utf8]{inputenc}
 
@@ -151,6 +127,17 @@
   % alguns visualizadores e em outros não.
   \input glyphtounicode.tex
   \pdfgentounicode=1
+\else
+  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
+  % com eles utf8 é obrigatório.
+  \usepackage{fontspec}
+
+  % Ao invés de usar o sistema tradicional de LaTeX para gerir
+  % as fontes matemáticas, utiliza as extensões matemáticas do
+  % formato otf definidas pela microsoft. Ao ativar esta package
+  % o mecanismo tradicional não funciona mais! Há poucas fontes
+  % com suporte a unicode-math.
+  \usepackage{unicode-math}
 \fi
 
 % Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
@@ -166,7 +153,7 @@
 % 1.07 de luatex. Essa combinação faz aparecer um bug:
 % https://tex.stackexchange.com/questions/476740/microtype-error-with-lualatex-attempt-to-call-field-warning-a-nil-value
 % Aqui, aplicamos a solução sugerida, que não tem "contra-indicações".
-\ifluatex
+\ifLuaTeX
   \usepackage{luatexbase}
 \fi
 

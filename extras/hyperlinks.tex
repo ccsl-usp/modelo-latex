@@ -143,14 +143,12 @@
 % contornamos o problema desabilitando o recurso relacionado (o cálculo
 % automático de "byteCount", ou seja, do tamanho aproximado do documento).
 % TODO: remover esse código após 2024.
-\ifunicodeengine
-\else
+\ifPDFTeX
   \LetLtxMacro\HACKoldpdffilesize\pdffilesize
   \renewcommand\pdffilesize[1]{}
 \fi
 \usepackage{hyperxmp}
-\ifunicodeengine
-\else
+\ifPDFTeX
   \LetLtxMacro\pdffilesize\HACKoldpdffilesize
 \fi
 
@@ -168,17 +166,14 @@
 % por este bug.
 
 % TODO: esse bug foi resolvido com o lançamento do LaTeX 2020-10-01, que
-%       deve ser incluído no TeXlive 2021. Assim, podemos remover isto
-%       com tranquilidade em 2024.
+%       deve ser incluído no TeXlive 2021. Assim, provavelmente podemos
+%       remover isto em abril/2025 (veja o comentário em \NeedsTeXFormat)
 \makeatletter
-\ifpdf
-  \ifxetex
-    \relax
-  \else
-    \let\AtEndDvi@AtBeginShipout\relax
-    \let\AtEndDvi@CheckImpl\relax
-    \let\hyxmp@at@end\AtEndDocument
-  \fi
+\ifXeTeX
+\else
+  \let\AtEndDvi@AtBeginShipout\relax
+  \let\AtEndDvi@CheckImpl\relax
+  \let\hyxmp@at@end\AtEndDocument
 \fi
 \makeatother
 

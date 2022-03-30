@@ -34,48 +34,7 @@
 % mecanismo (através da package fontspec), que permite utilizar quaisquer
 % fontes instaladas no computador.
 
-\ifunicodeengine
-    % Com LuaLaTex e XeLaTeX, Latin Modern é a fonte padrão. Existem
-    % diversas packages e "truques" para melhorar alguns aspectos de
-    % Latin Modern, mas eles foram feitos para pdflatex (veja o "else"
-    % logo abaixo). Assim, se você pretende usar Latin Modern como a
-    % fonte padrão do documento, é melhor usar pdfLaTeX. Deve ser
-    % possível implementar essas melhorias com fontspec também, mas
-    % este modelo não faz isso, apenas ativamos Small Caps aqui.
-
-    \ifluatex
-      % Com LuaTeX, basta indicar o nome de cada fonte; para descobrir
-      % o nome "certo", use o comando "otfinfo -i" e veja os itens
-      % "preferred family" e "full name"
-      \setmainfont{Latin Modern Roman}[
-        SmallCapsFont = {LMRomanCaps10-Regular},
-        ItalicFeatures = {
-          SmallCapsFont = {LMRomanCaps10-Oblique},
-        },
-        SlantedFont = {LMRomanSlant10-Regular},
-        SlantedFeatures = {
-          SmallCapsFont = {LMRomanCaps10-Oblique},
-          BoldFont = {LMRomanSlant10-Bold}
-        },
-      ]
-    \fi
-
-    \ifxetex
-      % Com XeTeX, é preciso informar o nome do arquivo de cada fonte.
-      \setmainfont{lmroman10-regular.otf}[
-        SmallCapsFont = {lmromancaps10-regular.otf},
-        ItalicFeatures = {
-          SmallCapsFont = {lmromancaps10-oblique.otf},
-        },
-        SlantedFont = {lmromanslant10-regular.otf},
-        SlantedFeatures = {
-          SmallCapsFont = {lmromancaps10-oblique.otf},
-          BoldFont = {lmromanslant10-bold.otf}
-        },
-      ]
-    \fi
-
-\else
+\ifPDFTeX
     % Usando pdfLaTeX
 
     % Ativa Latin Modern como a fonte padrão.
@@ -123,6 +82,46 @@
     %\DeclareRobustCommand\textlmodern[1]{%
     %  {\lmodern #1}%
     %}
+\else
+    % Com LuaLaTex e XeLaTeX, Latin Modern é a fonte padrão. Existem
+    % diversas packages e "truques" para melhorar alguns aspectos de
+    % Latin Modern, mas eles foram feitos para pdflatex (veja o "else"
+    % logo abaixo). Assim, se você pretende usar Latin Modern como a
+    % fonte padrão do documento, é melhor usar pdfLaTeX. Deve ser
+    % possível implementar essas melhorias com fontspec também, mas
+    % este modelo não faz isso, apenas ativamos Small Caps aqui.
+
+    \ifLuaTeX
+      % Com LuaTeX, basta indicar o nome de cada fonte; para descobrir
+      % o nome "certo", use o comando "otfinfo -i" e veja os itens
+      % "preferred family" e "full name"
+      \setmainfont{Latin Modern Roman}[
+        SmallCapsFont = {LMRomanCaps10-Regular},
+        ItalicFeatures = {
+          SmallCapsFont = {LMRomanCaps10-Oblique},
+        },
+        SlantedFont = {LMRomanSlant10-Regular},
+        SlantedFeatures = {
+          SmallCapsFont = {LMRomanCaps10-Oblique},
+          BoldFont = {LMRomanSlant10-Bold}
+        },
+      ]
+    \fi
+
+    \ifXeTeX
+      % Com XeTeX, é preciso informar o nome do arquivo de cada fonte.
+      \setmainfont{lmroman10-regular.otf}[
+        SmallCapsFont = {lmromancaps10-regular.otf},
+        ItalicFeatures = {
+          SmallCapsFont = {lmromancaps10-oblique.otf},
+        },
+        SlantedFont = {lmromanslant10-regular.otf},
+        SlantedFeatures = {
+          SmallCapsFont = {lmromancaps10-oblique.otf},
+          BoldFont = {lmromanslant10-bold.otf}
+        },
+      ]
+    \fi
 \fi
 
 % Algumas packages mais novas que tratam de fontes funcionam corretamente
@@ -142,10 +141,10 @@
 %\usepackage{newtxtt} % Não funciona com fontspec (lualatex / xelatex)
 %\usepackage{DejaVuSansMono}
 % inconsolata é uma boa fonte, mas não tem variante itálico
-%\ifunicodeengine
-%  \setmonofont{inconsolatan}
-%\else
+%\ifPDFTeX
 %  \usepackage[narrow]{inconsolata}
+%\else
+%  \setmonofont{inconsolatan}
 %\fi
 \usepackage[scale=.85]{sourcecodepro}
 
@@ -164,16 +163,14 @@
       \usepackage[mono=false]{libertinus}
       % Com LuaLaTeX/XeLaTeX, Libertinus configura também
       % a fonte matemática; aqui só precisamos corrigir \mathit
-      \ifunicodeengine
-        \ifluatex
-          \setmathfontface\mathit{Libertinus Serif Italic}
-        \fi
-        \ifxetex
-          % O nome de arquivo da fonte mudou na versão 2019-04-04
-          \@ifpackagelater{libertinus-otf}{2019/04/03}
-              {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
-              {\setmathfontface\mathit{libertinusserif-italic.otf}}
-        \fi
+      \ifLuaTeX
+        \setmathfontface\mathit{Libertinus Serif Italic}
+      \fi
+      \ifXeTeX
+        % O nome de arquivo da fonte mudou na versão 2019-04-04
+        \@ifpackagelater{libertinus-otf}{2019/04/03}
+            {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+            {\setmathfontface\mathit{libertinusserif-italic.otf}}
       \fi
     }
     {
@@ -182,23 +179,19 @@
 
       % Com Libertine, é preciso modificar também a fonte
       % matemática, além de \mathit
-      \ifunicodeengine
-        \ifluatex
-	  \setmathfont{Libertinus Math}
-          \setmathfontface\mathit{Linux Libertine O Italic}
-        \fi
+      \ifLuaTeX
+	    \setmathfont{Libertinus Math}
+        \setmathfontface\mathit{Linux Libertine O Italic}
+      \fi
 
-        \ifxetex
-          \setmathfont{libertinusmath-regular.otf}
-          \setmathfontface\mathit{LinLibertine_RI.otf}
-        \fi
+      \ifXeTeX
+        \setmathfont{libertinusmath-regular.otf}
+        \setmathfontface\mathit{LinLibertine_RI.otf}
       \fi
     }
 \makeatother
 
-\ifunicodeengine
-  \relax
-\else
+\ifPDFTeX
   % A família libertine por padrão não define uma fonte matemática
   % específica para pdfLaTeX; uma opção que funciona bem com ela:
   %\usepackage[libertine]{newtxmath}
@@ -216,7 +209,11 @@
 % Também é possível usar a Times como padrão; nesse caso, a fonte
 % sem serifa usualmente é a Helvetica. Mas provavelmente libertine
 % é uma opção melhor.
-%\ifunicodeengine
+%\ifPDFTeX
+%  \usepackage[helvratio=0.95,largesc]{newtxtext}
+%  \usepackage{newtxtt} % Fonte teletype
+%  \usepackage{newtxmath}
+%\else
 %  % Clone da fonte Times como fonte principal
 %  \setmainfont{TeX Gyre Termes}
 %  \setmathfont[Scale=MatchLowercase]{TeX Gyre Termes Math}
@@ -229,10 +226,6 @@
 %  % Clone da Courier como fonte teletype, mas provavelmente
 %  % é melhor utilizar sourcecodepro
 %  %\setmonofont{TeX Gyre Cursor}
-%\else
-%  \usepackage[helvratio=0.95,largesc]{newtxtext}
-%  \usepackage{newtxtt} % Fonte teletype
-%  \usepackage{newtxmath}
 %\fi
 
 % Cochineal é outra opção de qualidade; ela define apenas a fonte
