@@ -153,27 +153,6 @@
 % o caso de ela não ter sido carregada antes.
 \AtBeginDocument{\usepackage{textcomp}}
 
-% microajustes no tamanho das letras, espaçamento etc. para melhorar
-% a qualidade visual do resultado. LaTeX tradicional não dá suporte a
-% nenhum tipo de microajuste; pdfLaTeX dá suporte a todos. LuaLaTeX
-% e XeLaTeX dão suporte a alguns:
-%
-% * expansion não funciona com XeLaTeX
-% * tracking não funciona com XeLaTeX; é possível obter o mesmo resultado
-%   com a opção "LetterSpace" do pacote fontspec, mas a configuração é
-%   totalmente manual. Por padrão, aumenta o afastamento entre caracteres
-%   nas fontes "small caps"; o resultado não se presta ao uso na
-%   bibliografia ou citações, então melhor desabilitar.
-% * kerning e spacing só funcionam com pdfLaTex; ambas são funções
-%   consideradas experimentais e nem sempre produzem resultados vantajosos.
-
-\newcommand\microtypeopts{
-  protrusion=true,
-  tracking=false,
-  kerning=false,
-  spacing=false
-}
-
 % TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
 % 1.07 de luatex. Essa combinação faz aparecer um bug:
 % https://tex.stackexchange.com/questions/476740/microtype-error-with-lualatex-attempt-to-call-field-warning-a-nil-value
@@ -182,11 +161,9 @@
   \usepackage{luatexbase}
 \fi
 
-\ifxetex
-  \usepackage[expansion=false,\microtypeopts]{microtype}
-\else
-  \usepackage[expansion=true,\microtypeopts]{microtype}
-\fi
+% microajustes no tamanho das letras, espaçamento etc. para melhorar
+% a qualidade visual do resultado.
+\usepackage{microtype}
 
 % Alguns "truques" (sujos?) para minimizar over/underfull boxes.
 %
