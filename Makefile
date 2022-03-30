@@ -48,7 +48,7 @@ all tudo: $(ALL_TARGETS)
 
 # Eh preciso excluir os arquivos *.aux dos subdiretorios para
 # compatibilidade com o comando \include de LaTeX.
-OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard *.cls) $(wildcard extras/*) $(filter-out %.aux,$(wildcard conteudo-exemplo/*)) $(filter-out %.aux,$(wildcard conteudo/*))
+OTHERTEXFILES := $(wildcard *.tex) $(wildcard *.sty) $(wildcard *.cls) $(wildcard extras/*) $(filter-out %.aux,$(wildcard conteudo/*))
 BIBFILES      := $(wildcard *.bib)
 IMGFILES      := $(wildcard figuras/*) $(wildcard logos/*)
 # Voce pode acrescentar outras dependencias e as suas regras de geracao aqui

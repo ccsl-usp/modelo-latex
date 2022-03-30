@@ -103,7 +103,131 @@
 \babelhyphenation[brazilian]{Fu-la-no}
 \babelhyphenation[english]{what-ever}
 
-\input{conteudo/metadados} % título, autor, resumo/abstract, banca etc.
+% Estes comandos definem o título e autoria do trabalho e devem sempre ser
+% definidos, pois além de serem utilizados para criar a capa, também são
+% armazenados nos metadados do PDF.
+\title{
+    % Obrigatório nas duas línguas
+    titlept={Título do trabalho},
+    titleen={Title of the document},
+    % Opcional, mas se houver deve existir nas duas línguas
+    subtitlept={um subtítulo},
+    subtitleen={a subtitle},
+}
+
+\author[fem]{Nome Completo}
+
+% Para TCCs, este comando define o supervisor
+\orientador[fem]{Profª. Drª. Fulana de Tal}
+
+% Se não houver, remova; se houver mais de um, basta
+% repetir o comando quantas vezes forem necessárias
+\coorientador{Prof. Dr. Ciclano de Tal}
+\coorientador[fem]{Profª. Drª. Beltrana de Tal}
+
+% A página de rosto da versão para depósito (ou seja, a versão final
+% antes da defesa) deve ser diferente da página de rosto da versão
+% definitiva (ou seja, a versão final após a incorporação das sugestões
+% da banca).
+\defesa{
+  nivel=mestrado, % mestrado, doutorado ou tcc
+  % É a versão para defesa ou a versão definitiva?
+  %definitiva,
+  % É qualificação?
+  %quali,
+  programa={Ciência da Computação},
+  membrobanca={Profª. Drª. Fulana de Tal (orientadora) -- IME-USP [sem ponto final]},
+  % Em inglês, não há o "ª"
+  %membrobanca{Prof. Dr. Fulana de Tal (advisor) -- IME-USP [sem ponto final]},
+  membrobanca={Prof. Dr. Ciclano de Tal -- IME-USP [sem ponto final]},
+  membrobanca={Profª. Drª. Convidada de Tal -- IMPA [sem ponto final]},
+  % Se não houve bolsa, remova
+  %
+  % Norma sobre agradecimento por auxílios da FAPESP:
+  % https://fapesp.br/11789/referencia-ao-apoio-da-fapesp-em-todas-as-formas-de-divulgacao
+  %
+  % Norma sobre agradecimento por auxílios da CAPES (Portaria 206,
+  % de 4 de Setembro de 2018):
+  % https://www.in.gov.br/materia/-/asset_publisher/Kujrw0TZC2Mb/content/id/39729251/do1-2018-09-05-portaria-n-206-de-4-de-setembro-de-2018-39729135
+  %
+  %apoio={O presente trabalho foi realizado com apoio da Coordenação
+  %       de Aperfeiçoamento\\ de Pessoal de Nível Superior -- Brasil
+  %       (CAPES) -- Código de Financiamento 001}, % o código é sempre 001
+  %
+  %apoio={This study was financed in part by the Coordenação de
+  %       Aperfeiçoamento\\ de Pessoal de Nível Superior -- Brasil
+  %       (CAPES) -- Finance Code 001}, % o código é sempre 001
+  %
+  %apoio={Durante o desenvolvimento deste trabalho, o autor recebeu\\
+  %       auxílio financeiro da FAPESP -- processo nº aaaa/nnnnn-d},
+  %
+  %apoio={During the development if this work, the author received\\
+  %       financial support from FAPESP -- grant \#aaaa/nnnnn-d},
+  %
+  apoio={Durante o desenvolvimento deste trabalho o autor
+         recebeu auxílio financeiro da XXXX},
+  local={São Paulo},
+  data=2017-08-10, % YYYY-MM-DD
+  % A licença do seu trabalho. Use CC-BY, CC-BY-NC, CC-BY-ND, CC-BY-SA,
+  % CC-BY-NC-SA ou CC-BY-NC-ND para escolher a licença Creative Commons
+  % correspondente (o sistema insere automaticamente o texto da licença).
+  % Se quiser estabelecer regras diferentes para o uso de seu trabalho,
+  % converse com seu orientador e coloque o texto da licença aqui, mas
+  % observe que apenas TCCs sob alguma licença Creative Commons serão
+  % acrescentados ao BDTA. Se você tem alguma intenção de publicar o
+  % trabalho comercialmente no futuro, sugerimos a licença CC-BY-NC-ND.
+  direitos={CC-BY}, % Creative Commons Attribution 4.0 International License
+  %direitos={Autorizo a reprodução e divulgação total ou parcial
+  %          deste trabalho, por qualquer meio convencional ou
+  %          eletrônico, para fins de estudo e pesquisa, desde que
+  %          citada a fonte.},
+  % Isto deve ser preparado em conjunto com o bibliotecário
+  %fichacatalografica={nome do autor, título, etc.},
+}
+
+% As palavras-chave são obrigatórias, em português e
+% em inglês. Acrescente quantas forem necessárias.
+\palavrachave{Palavra-chave1}
+\palavrachave{Palavra-chave2}
+\palavrachave{Palavra-chave3}
+
+\keyword{Keyword1}
+\keyword{Keyword2}
+\keyword{Keyword3}
+
+% O resumo é obrigatório, em português e inglês.
+\resumo{
+Elemento obrigatório, constituído de uma sequência de frases concisas e
+objetivas, em forma de texto.  Deve apresentar os objetivos, métodos empregados,
+resultados e conclusões.  O resumo deve ser redigido em parágrafo único, conter
+no máximo 500 palavras e ser seguido dos termos representativos do conteúdo do
+trabalho (palavras-chave). Deve ser precedido da referência do documento.
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto.
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto.
+}
+
+\abstract{
+Elemento obrigatório, elaborado com as mesmas características do resumo em
+língua portuguesa. De acordo com o Regimento da Pós-Graduação da USP (Artigo
+99), deve ser redigido em inglês para fins de divulgação. É uma boa ideia usar
+o sítio \url{www.grammarly.com} na preparação de textos em inglês.
+Text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text.
+Text text text text text text text text text text text text text text text text
+text text text text text text text text text text text text text text text text
+text text text.
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,13 +250,131 @@
 
 \maketitle % capa e folha de rosto
 
-\input{conteudo/paginas-preliminares} % Demais páginas iniciais
+%%%%%%%%%%%%%%%%%%%% DEDICATÓRIA, RESUMO, AGRADECIMENTOS %%%%%%%%%%%%%%%%%%%%%%%
 
-% Um parágrafo em LaTeX termina com uma linha vazia; como não é possível ter
-% certeza que um arquivo incluído (neste caso, "paginas-preliminares") terminou
-% com uma linha vazia, é recomendável usar o comando "par" após "input" para
-% garantir que o último parágrafo do arquivo incluído realmente terminou.
-\par
+\begin{dedicatoria}
+Esta seção é opcional e fica numa página separada; ela pode ser usada para
+uma dedicatória ou epígrafe.
+\end{dedicatoria}
+
+% Reinicia o contador de páginas (a próxima página recebe o número "i") para
+% que a página da dedicatória não seja contada.
+\pagenumbering{roman}
+
+% Agradecimentos:
+% Se o candidato não quer fazer agradecimentos, deve simplesmente eliminar
+% esta página. A epígrafe, obviamente, é opcional; é possível colocar
+% epígrafes em todos os capítulos. O comando "\chapter*" faz esta seção
+% não ser incluída no sumário.
+\chapter*{Agradecimentos}
+\epigrafe{Do. Or do not. There is no try.}{Mestre Yoda}
+
+Texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto texto texto texto texto texto texto texto texto texto
+texto texto texto texto. Texto opcional.
+
+% Resumo e abstract são definidos mais acima (antes de \begin{document}.
+% Este comando também gera automaticamente a referência para o próprio
+% documento, conforme as normas sugeridas da USP.
+\printResumoAbstract
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% LISTAS DE FIGURAS ETC. %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Como as listas que se seguem podem não incluir uma quebra de página
+% obrigatória, inserimos uma quebra manualmente aqui.
+\makeatletter
+\if@openright\cleardoublepage\else\clearpage\fi
+\makeatother
+
+% Todas as listas são opcionais; Usando "\chapter*" elas não são incluídas
+% no sumário. As listas geradas automaticamente também não são incluídas por
+% conta das opções "notlot" e "notlof" que usamos para a package tocbibind.
+
+% Normalmente, "\chapter*" faz o novo capítulo iniciar em uma nova página, e as
+% listas geradas automaticamente também por padrão ficam em páginas separadas.
+% Como cada uma destas listas é muito curta, não faz muito sentido fazer isso
+% aqui, então usamos este comando para desabilitar essas quebras de página.
+% Se você preferir, comente as linhas com esse comando e des-comente as linhas
+% sem ele para criar as listas em páginas separadas. Observe que você também
+% pode inserir quebras de página manualmente (com \clearpage, veja o exemplo
+% mais abaixo).
+\newcommand\disablenewpage[1]{{\let\clearpage\par\let\cleardoublepage\par #1}}
+
+% Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
+% a opção correspondente e as listas dentro de um grupo para ativar
+% raggedbottom apenas temporariamente.
+\bgroup
+\raggedbottom
+
+%%%%% Listas criadas manualmente
+
+%\chapter*{Lista de Abreviaturas}
+\disablenewpage{\chapter*{Lista de Abreviaturas}}
+
+\begin{tabular}{rl}
+   CFT & Transformada contínua de Fourier (\emph{Continuous Fourier Transform})\\
+   DFT & Transformada discreta de Fourier (\emph{Discrete Fourier Transform})\\
+  EIIP & Potencial de interação elétron-íon (\emph{Electron-Ion Interaction Potentials})\\
+  STFT & Transformada de Fourier de tempo reduzido (\emph{Short-Time Fourier Transform})\\
+  ABNT & Associação Brasileira de Normas Técnicas\\
+   URL & Localizador Uniforme de Recursos (\emph{Uniform Resource Locator})\\
+   IME & Instituto de Matemática e Estatística\\
+   USP & Universidade de São Paulo
+\end{tabular}
+
+%\chapter*{Lista de Símbolos}
+\disablenewpage{\chapter*{Lista de Símbolos}}
+
+\begin{tabular}{rl}
+  $\omega$ & Frequência angular\\
+    $\psi$ & Função de análise \emph{wavelet}\\
+    $\Psi$ & Transformada de Fourier de $\psi$\\
+\end{tabular}
+
+% Quebra de página manual
+\clearpage
+
+%%%%% Listas criadas automaticamente
+
+% Você pode escolher se quer ou não permitir a quebra de página
+%\listoffigures
+\disablenewpage{\listoffigures}
+
+% Você pode escolher se quer ou não permitir a quebra de página
+%\listoftables
+\disablenewpage{\listoftables}
+
+% Esta lista é criada "automaticamente" pela package float quando
+% definimos o novo tipo de float "program" (em utils.tex)
+% Você pode escolher se quer ou não permitir a quebra de página
+%\listof{program}{\programlistname}
+\disablenewpage{\listof{program}{\programlistname}}
+
+% Sumário (obrigatório)
+\tableofcontents
+
+\egroup % Final de "raggedbottom"
+
+% Referências indiretas ("x", veja "y") para o índice remissivo (opcionais,
+% pois o índice é opcional). É comum colocar esses itens no final do documento,
+% junto com o comando \printindex, mas em alguns casos isso torna necessário
+% executar texindy (ou makeindex) mais de uma vez, então colocar aqui é melhor.
+\index{Inglês|see{Língua estrangeira}}
+\index{Figuras|see{Floats}}
+\index{Tabelas|see{Floats}}
+\index{Código-fonte|see{Floats}}
+\index{Subcaptions|see{Subfiguras}}
+\index{Sublegendas|see{Subfiguras}}
+\index{Equações|see{Modo Matemático}}
+\index{Fórmulas|see{Modo Matemático}}
+\index{Rodapé, notas|see{Notas de rodapé}}
+\index{Captions|see{Legendas}}
+\index{Versão original|see{Tese/Dissertação, versões}}
+\index{Versão corrigida|see{Tese/Dissertação, versões}}
+\index{Palavras estrangeiras|see{Língua estrangeira}}
+\index{Floats!Algoritmo|see{Floats, Ordem}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CAPÍTULOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -147,8 +389,10 @@
 % Espaçamento simples
 \singlespacing
 
-\input{conteudo/capitulos}
-\par
+\input{conteudo/01-exemplo-introducao}
+\input{conteudo/02-exemplo-latex}
+\input{conteudo/03-exemplo-tutorial}
+\input{conteudo/04-exemplo-exemplos}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -188,7 +432,7 @@
 % só há apêndices, sem anexos, provavelmente não é necessário.
 \addappheadtotoc
 
-\input{conteudo/apendices}
+\input{conteudo/apendice-exemplo-pseudocodigo}
 \par
 
 %%%% Anexos %%%%
@@ -205,7 +449,7 @@
 % só há anexos, sem apêndices, provavelmente não é necessário.
 \addappheadtotoc
 
-\input{conteudo/anexos}
+\input{conteudo/anexo-exemplo-faq}
 \par
 
 
