@@ -204,7 +204,7 @@
 \makeatletter
 \@ifpackageloaded{floatrow}
   {
-    \ltx@IfUndefined{chapter}
+    \ifcsundef{chapter}
         % O novo ambiente se chama "program" ("\begin{program}") e a extensão
         % temporária é "lop"
         {\DeclareNewFloatType{program}{placement=htbp,fileext=lop}}
@@ -223,7 +223,7 @@
     % Figuras e Tables (plain).
     \floatstyle{ruled}
 
-    \ltx@IfUndefined{chapter}
+    \ifcsundef{chapter}
         % O novo ambiente se chama "program" ("\begin{program}") e a extensão
         % temporária é "lop"
         {\newfloat{program}{htbp}{lop}}

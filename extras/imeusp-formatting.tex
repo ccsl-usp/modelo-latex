@@ -151,7 +151,7 @@
 \renewcommand\sourceflush{epShiftLeft}
 
 \newcommand{\epigrafe}[2] {%
-  \ifthenelse{\equal{}{#2}}{
+  \ifstrempty{#2}{
     \epigraph{\itshape #1}{}
   }{
     \epigraph{\itshape #1}{--- #2}

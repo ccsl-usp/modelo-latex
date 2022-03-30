@@ -157,19 +157,35 @@
 % Esta macro implementa o mecanismo descrito acima
 % https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
 \newrobustcmd{\NoChangeOrSentenceCase}[1]{%
-  \ifthenelse{\ifcurrentfield{booktitle}\OR\ifcurrentfield{booksubtitle}%
-    \OR\ifcurrentfield{maintitle}\OR\ifcurrentfield{mainsubtitle}%
-    \OR\ifcurrentfield{journaltitle}\OR\ifcurrentfield{journalsubtitle}%
-    \OR\ifcurrentfield{issuetitle}\OR\ifcurrentfield{issuesubtitle}%
-    \OR\ifentrytype{book}\OR\ifentrytype{mvbook}\OR\ifentrytype{bookinbook}%
-    \OR\ifentrytype{booklet}\OR\ifentrytype{suppbook}%
-    \OR\ifentrytype{collection}\OR\ifentrytype{mvcollection}%
-    \OR\ifentrytype{suppcollection}\OR\ifentrytype{manual}%
-    \OR\ifentrytype{periodical}\OR\ifentrytype{suppperiodical}%
-    \OR\ifentrytype{proceedings}\OR\ifentrytype{mvproceedings}%
-    \OR\ifentrytype{reference}\OR\ifentrytype{mvreference}%
-    \OR\ifentrytype{report}\OR\ifentrytype{thesis}%
-    \OR\ifentrytype{online}\OR\ifentrytype{misc}}
+  \ifboolexpr{
+       test {\ifcurrentfield{booktitle}}
+    or test {\ifcurrentfield{booksubtitle}}
+    or test {\ifcurrentfield{maintitle}}
+    or test {\ifcurrentfield{mainsubtitle}}
+    or test {\ifcurrentfield{journaltitle}}
+    or test {\ifcurrentfield{journalsubtitle}}
+    or test {\ifcurrentfield{issuetitle}}
+    or test {\ifcurrentfield{issuesubtitle}}
+    or test {\ifentrytype{book}}
+    or test {\ifentrytype{mvbook}}
+    or test {\ifentrytype{bookinbook}}
+    or test {\ifentrytype{booklet}}
+    or test {\ifentrytype{suppbook}}
+    or test {\ifentrytype{collection}}
+    or test {\ifentrytype{mvcollection}}
+    or test {\ifentrytype{suppcollection}}
+    or test {\ifentrytype{manual}}
+    or test {\ifentrytype{periodical}}
+    or test {\ifentrytype{suppperiodical}}
+    or test {\ifentrytype{proceedings}}
+    or test {\ifentrytype{mvproceedings}}
+    or test {\ifentrytype{reference}}
+    or test {\ifentrytype{mvreference}}
+    or test {\ifentrytype{report}}
+    or test {\ifentrytype{thesis}}
+    or test {\ifentrytype{online}}
+    or test {\ifentrytype{misc}}
+    }
     {#1}
     {\MakeSentenceCase*{#1}}}
 

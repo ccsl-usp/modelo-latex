@@ -38,32 +38,28 @@ There are some instalation instructions in the [example document,
 included in this repo in PDF format](https://gitlab.com/ccsl-usp/modelo-latex/raw/master/pre-compilados/tese-exemplo.pdf?inline=false).
 The template uses makeindex, biber, and many LaTeX packages.
 
-These packages, in no particular order, are directly used in the template:
-etoolbox, expl3, xparse, letltxmacro, regexpatch, xstring, ifxetex,
-ifluatex, ifpdf, trimspaces, fontenc, inputenc, fontspec, mweights,
-fontaxes, unicode-math, calc, geometry, amsthm, babel, microtype,
-indentfirst, footmisc, emptypage, caption, hyperref, biblatex,
-setspace, parskip, xcolor, ragged2e, textcase, fancyhdr, graphicx,
-float, flafter, placeins, pdflscape, rotating, subcaption, wrapfig,
-pdfpages, tablefootnote, array, dcolumn, longtable, multirow, makecell,
-booktabs, tocbibind, imakeidx, verbatim, latexsym, amsmath, amssymb,
-mathtools, csquotes, hypcap, hyperxmp, url, listings, textcomp,
-multicol, metalogo, epigraph, imakeidx, todonotes, soul, soulutf8,
-translator, pgfgantt, titletoc, titlesec, titleps, framed, adjustbox,
-threeparttable, colortbl, datetime2, iflang, lstautogobble, froufrou,
-enumitem, contour, siunitx, tikz, pgfplots, and hologo. Many others
-are loaded indirectly by these.
+The template probably includes all packages you'd expect, such as the
+AMS packages (amsthm, amsmath etc.), babel, geometry, hyperref, graphicx,
+array etc. It also includes many others; in no particular order, these
+are directly used in the template:
+etoolbox, expl3, xparse, letltxmacro, regexpatch, fontenc, inputenc,
+fontspec, mweights, fontaxes, unicode-math, calc, ragged2e, microtype,
+indentfirst, footmisc, emptypage, caption, biblatex, setspace, parskip,
+xcolor, textcase, fancyhdr, float, flafter, placeins, pdflscape, tikz,
+rotating, subcaption, pdfpages, tablefootnote, dcolumn, longtable,
+multirow, makecell, booktabs, tocbibind, imakeidx, verbatim, mathtools,
+csquotes, hypcap, hyperxmp, url, listings, textcomp, multicol, metalogo,
+epigraph, imakeidx, todonotes, soul, soulutf8, translator, pgfgantt,
+titletoc, titlesec, titleps, framed, adjustbox, threeparttable, colortbl,
+datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
+pgfplots, appendix, iftex, keyval, and hologo. Several others are loaded
+indirectly by these.
 
 The default fonts depend on these packages: lmodern, fix-cm,
-libertinus, libertinust1math, and source code pro.
-
-These packages are not used, but are mentioned and might be useful:
-lastpage, braket, varioref, cleveref, gensymb, glossaries, ifthen
-ltxcmds, xfp, iftex, import, tcolorbox, ctable, csvsimple, tabto-ltx,
-titletoc, fancyhdr, imakeidx, showkeys, lua-visual-debug, and attachfile.
+libertinus, libertinust1math, fourier-orns, and sourcecodepro.
 
 The example presentation and poster use beamer, beamerposter,
-appendixnumberbeamer, and beamertheme-metropolis.
+appendixnumberbeamer, qrcode, and beamertheme-metropolis.
 
 As of 2021, in debian/ubuntu systems, you need to install (with
 their dependencies) at least: texlive-base, texlive-latex-base,

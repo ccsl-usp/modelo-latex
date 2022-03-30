@@ -5,10 +5,19 @@
 % Vários comandos auxiliares para o desenvolvimento de packages e classes;
 % aqui, usamos em alguns comandos de formatação e condicionais.
 \usepackage{etoolbox}
-\usepackage{xstring}
+%\RequirePackage{pdftexcmds}
+\usepackage{letltxmacro}
+%\usepackage{ltxcmds}
+
+% LaTeX 3
 \usepackage{expl3}
 \usepackage{xparse}
-\usepackage{letltxmacro}
+
+% Detecta se estamos usando pdftex, luatex, xetex etc.
+\usepackage{iftex}
+
+%\usepackage{xfp} % Floating-point calculations
+
 \usepackage{regexpatch}
 
 % O projeto LaTeX3 renomeou algumas macros em 2019-03-05 e removeu
@@ -61,18 +70,6 @@
 % Arithmetic expressions in \set{length,counter} & \addto{length,counter};
 % commands \widthof, \heightof, \depthof, \totalheightof, \settototalheight
 \usepackage{calc}
-
-% Sempre que possível, é melhor usar os recursos de etoolbox ao invés de
-% ifthen; no entanto, várias packages dependem dela.
-%\usepackage{ifthen}
-
-% Esta não está em uso mas pode ser útil.
-%\usepackage{ltxcmds}
-
-%\usepackage{xfp} % Floating-point calculations
-
-% Detecta se estamos usando pdftex, luatex, xetex etc.
-\usepackage{iftex}
 
 % Algumas packages "padrão" da AMS, que são praticamente obrigatórias.
 % Algumas delas devem ser carregadas antes de unicode-math ou das

@@ -33,7 +33,8 @@
 \renewbibmacro*{cite}{%
   \printtext[bibhyperref]{%
     \iffieldundef{shorthand}
-      {\ifthenelse{\ifnameundef{labelname}\OR\iffieldundef{labelyear}}
+      {\ifboolexpr{test {\ifnameundef{labelname}}
+                or test {\iffieldundef{labelyear}}}
          {\usebibmacro{cite:label}%
           \setunit{\printdelim{nonameyeardelim}}}
          {\printnames{labelname}%

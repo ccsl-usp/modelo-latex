@@ -142,7 +142,8 @@
 % última atualização de TeXLive 2020 são afetadas. Ainda assim, aqui
 % contornamos o problema desabilitando o recurso relacionado (o cálculo
 % automático de "byteCount", ou seja, do tamanho aproximado do documento).
-% TODO: remover esse código após 2024.
+% TODO: remover esse código após 2024. Ao mesmo tempo, também podemos
+%       desabilitar a package letltxmacro, que é usada apenas aqui.
 \ifPDFTeX
   \LetLtxMacro\HACKoldpdffilesize\pdffilesize
   \renewcommand\pdffilesize[1]{}
