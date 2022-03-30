@@ -284,20 +284,23 @@
 % à definição padrão.
 \let\centering\LaTeXcentering
 \let\center\LaTeXcenter
+\let\endcenter\endLaTeXcenter
 
 % Com ragged2e e a opção "newcommands", textos curtos não-justificados
 % podem gerar warnings sobre "underfull \hbox". Não há razão para pensar
 % muito nesses warnings, então melhor desabilitá-los.
 % https://tex.stackexchange.com/questions/17659/ragged2e-newcommands-option-produces-underfull-hbox-warnings
 \makeatletter
-\g@addto@macro{\raggedright}{\hbadness=\@M}
-\g@addto@macro{\RaggedRight}{\hbadness=\@M}
-\g@addto@macro{\raggedleft}{\hbadness=\@M}
-\g@addto@macro{\RaggedLeft}{\hbadness=\@M}
-\g@addto@macro{\flushleft}{\hbadness=\@M}
-\g@addto@macro{\FlushLeft}{\hbadness=\@M}
-\g@addto@macro{\flushright}{\hbadness=\@M}
-\g@addto@macro{\FlushRight}{\hbadness=\@M}
+\gappto{\raggedright}{\hbadness=\@M}
+\gappto{\RaggedRight}{\hbadness=\@M}
+\gappto{\raggedleft}{\hbadness=\@M}
+\gappto{\RaggedLeft}{\hbadness=\@M}
+\gappto{\Centering}{\hbadness=\@M} % not \centering
+\gappto{\flushleft}{\hbadness=\@M}
+\gappto{\FlushLeft}{\hbadness=\@M}
+\gappto{\flushright}{\hbadness=\@M}
+\gappto{\FlushRight}{\hbadness=\@M}
+\gappto{\Center}{\hbadness=\@M} % not \center
 \makeatother
 
 % Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
