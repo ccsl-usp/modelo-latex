@@ -165,8 +165,8 @@
 %
 % Os comandos appendix e annex reiniciam a numeração de capítulos e passam
 % a numerá-los com letras. "annex" não faz parte de nenhuma classe padrão,
-% ele foi criado para este modelo (em annex.sty e utils.tex). Se o
-% trabalho não tiver apêndices ou anexos, remova estas linhas.
+% foi criado para este modelo. Se o trabalho não tiver apêndices ou anexos,
+% remova estas linhas.
 %
 % Diferentemente de \mainmatter, \backmatter etc., \appendix e \annex não
 % forçam o início de uma nova página. Em geral isso não é importante, pois
@@ -184,6 +184,10 @@
 
 \appendix
 
+% \addappheadtotoc acrescenta a palavra "Apêndice" ao sumário; se
+% só há apêndices, sem anexos, provavelmente não é necessário.
+\addappheadtotoc
+
 \input{conteudo/apendices}
 \par
 
@@ -196,6 +200,10 @@
 \pagestyle{appendix} % repete o anterior, caso você não use apêndices
 
 \annex
+
+% \addappheadtotoc acrescenta a palavra "Anexo" ao sumário; se
+% só há anexos, sem apêndices, provavelmente não é necessário.
+\addappheadtotoc
 
 \input{conteudo/anexos}
 \par
