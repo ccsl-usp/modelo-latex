@@ -51,9 +51,6 @@
     \renewcommand*{\DTMdisplaydate}[4]
       {\DTMportugesmonthname{##2}\space de\space##1}%
   }%
-  \let\@title\@titlept
-  \let\@subtitle\@subtitlept
-  \let\@keywords\@keywordspt
   \renewcommand\keywordsname{Palavras-chave}%
   \renewcommand\programname{Programa}%
   \renewcommand\committeename{Comissão julgadora}%
@@ -167,9 +164,6 @@
     \renewcommand*{\DTMdisplaydate}[4]
       {\DTMenglishmonthname{##2},\space##1}%
   }%
-  \let\@title\@titleen
-  \let\@subtitle\@subtitleen
-  \let\@keywords\@keywordsen
   \renewcommand\keywordsname{Keywords}%
   \renewcommand\programname{Program}%
   \renewcommand\committeename{Examining Committee}
@@ -291,6 +285,7 @@
 \renewcommand\author[2][masc]{
   \gdef\@author{#2}
   \gdef\@authorGender{#1}
+  \hypersetup{pdfauthor={\@author}}
 }
 
 \NewDocumentCommand{\orientador}{O{masc} m}{
@@ -413,6 +408,24 @@
 \newcommand*{\@commakeywordspt}{\seq_use:Nn \@seqkeywordspt {,}}
 \newcommand*{\@commakeywordsen}{\seq_use:Nn \@seqkeywordsen {,}}
 
+\newcommand*{\@currlangkeywords}{%
+    \IfLanguagePatterns{brazilian}
+      {\@keywordspt}
+      {\@keywordsen}%
+}
+
+\newcommand*{\@currlangtitle}{%
+    \IfLanguagePatterns{brazilian}
+      {\@titlept}
+      {\@titleen}%
+}
+
+\newcommand*{\@currlangsubtitle}{%
+    \IfLanguagePatterns{brazilian}
+      {\@subtitlept}
+      {\@subtitleen}%
+}
+
 \ExplSyntaxOff
 
 \NewDocumentCommand{\@doutorado}{}{
@@ -433,9 +446,10 @@
   \toggletrue{@tcc}
 }
 
-% Defaults quando o usuário não define alguma dessas variáveis
-
-\author{Autor não definido!}
+% Defaults quando o usuário não define alguma dessas variáveis.
+% Não podemos usar \title ou \author aqui porque esses comandos
+% dependem de hyperref, que ainda não foi carregada.
+\providecommand\@author{Autor não definido!}
 \orientador{Orientador não definido!}
 \DTMsavedate{@defensedate}{1970-01-01}
 \providecommand\@program{Programa não definido!}
@@ -472,17 +486,60 @@
 \RenewDocumentCommand\title{m}{
   \keys_set:nn {IME/title}{#1}
 
-  % Ambos devem existir. Este é o default, mas o valor de fato é definido
-  % por \captionsLANGUAGE.
-  \ifdefvoid{\@titlept}
-    {\let\@title\@titleen}
-    {\let\@title\@titlept}
+  \bgroup
+  % O título deve existir nas duas línguas; o subtítulo é opcional,
+  % mas se houver também deve existir nas duas línguas.
+  \IfLanguagePatterns{brazilian}
+    {
+      \global\let\@title\@titlept
+      \ifdefvoid{\@subtitlept}
+        {}
+        {\global\let\@subtitle\@subtitlept}
 
-  % Estes talvez não existam, mas se um existe o outro deve existir também.
-  % Este é o default, mas o valor de fato é definido por \captionsLANGUAGE.
-  \ifdefvoid{\@subtitlept}
-    {\let\@subtitle\@subtitleen}
-    {\let\@subtitle\@subtitlept}
+      \let\@mainlangtitle\@titlept
+      \let\@mainlangsubtitle\@subtitlept
+      \let\@otherlangtitle\@titleen
+      \let\@otherlangsubtitle\@subtitleen
+      \def\@otherlangname{en}
+    }
+    {
+      \global\let\@title\@titleen
+      \ifdefvoid{\@subtitlept}
+        {}
+        {\global\let\@subtitle\@subtitlept}
+
+      \let\@mainlangtitle\@titleen
+      \let\@mainlangsubtitle\@subtitleen
+      \let\@otherlangtitle\@titlept
+      \let\@otherlangsubtitle\@subtitlept
+      \def\@otherlangname{pt}
+    }
+
+  % Insere os metadados XMP no arquivo PDF final.
+  % \@IMEremoveLinebreaksEtc está definida em hyperlinks.tex.
+
+  \@IMEremoveLinebreaksEtc{\@mainlangtitle}
+  \@IMEremoveLinebreaksEtc{\@mainlangsubtitle}
+  \@IMEremoveLinebreaksEtc{\@otherlangtitle}
+  \@IMEremoveLinebreaksEtc{\@otherlangsubtitle}
+
+  \hypersetup{
+    pdftitle={\@mainlangtitle
+              \ifdefvoid{\@mainlangsubtitle}{}{:~\@mainlangsubtitle}%
+             },
+  }
+
+  \XMPLangAlt{\@otherlangname}{
+      pdftitle={\@otherlangtitle
+                \ifdefvoid{\@otherlangsubtitle}{}{:~\@otherlangsubtitle}%
+               },
+  }
+
+  % XMPLangAlt undefines "\do"; this may cause
+  % problems with biblatex, but we do not need
+  % to worry here because we are in a group.
+  % https://github.com/plk/biblatex/issues/1105
+  \egroup
 }
 
 \ExplSyntaxOff
@@ -525,18 +582,59 @@
 % A página de resumo deve existir em português e inglês; ambas as versões
 % utilizam o mesmo environment.
 
-\NewDocumentCommand{\resumo}{+m}{\long\gdef\@resumo{#1}}
-\DeclareDocumentCommand{\abstract}{+m}{\long\gdef\@abstract{#1}}
-
-\newcommand\printResumoAbstract{
+\NewDocumentCommand{\resumo}{+m}{%
+  \long\gdef\@resumo{#1}%
   \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
   \expandafter\selectlanguage\expandafter{\@IMEpt}
   \begin{IMEabstract}\@resumo\end{IMEabstract}
+  \egroup\egroup
+
+  \let\@cleanresumo\@resumo
+  \@IMEremoveLinebreaksEtc{\@cleanresumo}
+
+  \IfLanguagePatterns{brazilian}
+    {
+      \hypersetup{
+        pdfsubject={\@cleanresumo},
+        pdfkeywords={\@commakeywordspt},
+      }
+    }
+    {
+      \XMPLangAlt{pt}{pdfsubject={\@cleanresumo}}
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, so let's redefine it.
+      % https://github.com/plk/biblatex/issues/1105
+      \def\do{}
+      % o item "keywords" não pode ser traduzido
+    }
+}
+
+\DeclareDocumentCommand{\abstract}{+m}{%
+  \long\gdef\@abstract{#1}%
+  \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
   \expandafter\selectlanguage\expandafter{\@IMEen}
   \begin{IMEabstract}\@abstract\end{IMEabstract}
   \egroup\egroup
-}
 
+  \let\@cleanabstract\@abstract
+  \@IMEremoveLinebreaksEtc{\@cleanabstract}
+
+  \IfLanguagePatterns{brazilian}
+    {
+      \XMPLangAlt{en}{pdfsubject={\@cleanabstract}}
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, so let's redefine it.
+      % https://github.com/plk/biblatex/issues/1105
+      \def\do{}
+      % o item "keywords" não pode ser traduzido
+    }
+    {
+      \hypersetup{
+        pdfsubject={\@cleanabstract},
+        pdfkeywords={\@commakeywordsen},
+      }
+    }
+}
 
 \NewDocumentEnvironment{IMEabstract}{} {
   \if@openright\cleardoublepage\else\clearpage\fi
@@ -568,7 +666,7 @@
       \setlength{\labelwidth}{\widthof{\textbf{\keywordsname:}}}
       \setlength{\labelsep}{\widthof{\quad}}
 
-      \begin{description}\item[\keywordsname:]\@keywords\end{description}
+      \begin{description}\item[\keywordsname:]\@currlangkeywords\end{description}
 
   \endgroup
 }
@@ -755,11 +853,14 @@
 
 \newcommand{\@selfReference} {%
   \bgroup
-  \@IMEremoveLinebreaksEtc{\@title}%
-  \@IMEremoveLinebreaksEtc{\@subtitle}%
-  \@IMEremoveLinebreaksEtc{\@author}%
+  \edef\@tempa{\@currlangtitle}
+  \let\@currlangtitle\@tempa
+  \edef\@tempa{\@currlangsubtitle}
+  \let\@currlangsubtitle\@tempa
+  \@IMEremoveLinebreaksEtc{\@currlangtitle}%
+  \@IMEremoveLinebreaksEtc{\@currlangsubtitle}%
   \@author.
-  \textbf{\@title\ifdefvoid{\@subtitle}{}{: \textit{\@subtitle}}}.
+  \textbf{\@currlangtitle\ifdefvoid{\@currlangsubtitle}{}{: \textit{\@currlangsubtitle}}}.
   \workname{} (\degreename).
   \@institution,
   São Paulo, \DTMfetchyear{@defensedate}.%
@@ -897,7 +998,7 @@
 
           \vspace{0.3cm plus 0.2cm minus 0.1cm}
 
-          \textbf{\textit{\@subtitle}}
+          \ifdefvoid{\@subtitle}{}{\textbf{\textit{\@subtitle}}}
 
           \vspace{1cm plus 1cm minus 0.6cm}
 
@@ -1019,70 +1120,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Insere os metadados XMP no arquivo PDF final. Alguns desses valores são
-% definidos normalmente por hyperref/hyperxmp ou em hyperlinks.tex, mas
-% para teses/dissertações vamos sobrescrevê-los aqui com AtEndPreamble.
-% \@IMEremoveLinebreaksEtc está definida em hyperlinks.tex.
+% TODO: Com versões recentes de hyperxmp (final de 2020), não é
+%       recomendado definir pdflang; no futuro, isto deve ser mudado.
 \AtEndPreamble{
-
-  % Remove quebras de linha, notas de rodapé etc.
-  \let\@cleantitleen\@titleen
-  \let\@cleansubtitleen\@subtitleen
-  \let\@cleantitlept\@titlept
-  \let\@cleansubtitlept\@subtitlept
-  \let\@cleanabstract\@abstract
-  \let\@cleanresumo\@resumo
-
-  \@IMEremoveLinebreaksEtc{\@cleantitleen}
-  \@IMEremoveLinebreaksEtc{\@cleansubtitleen}
-  \@IMEremoveLinebreaksEtc{\@cleantitlept}
-  \@IMEremoveLinebreaksEtc{\@cleansubtitlept}
-  \@IMEremoveLinebreaksEtc{\@cleanabstract}
-  \@IMEremoveLinebreaksEtc{\@cleanresumo}
-
-  \hypersetup{
-    pdfauthor={\@author},
-    % TODO: Seria ótimo apontar para uma licença, mas qual?
-    %pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/},
+\IfLanguagePatterns{brazilian}
+  {
+    \hypersetup{
+      pdflang={pt},
+      pdfmetalang={pt},
+    }
   }
-
-  % TODO: Com versões recentes de hyperxmp (final de 2020), não é
-  %       recomendado definir pdflang; no futuro, isto deve ser mudado.
-  \IfLanguagePatterns{brazilian}
-    {
-      \hypersetup{
-        pdflang={pt},
-        pdfmetalang={pt},
-        pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}},
-        pdfsubject={\@cleanresumo},
-        pdfkeywords={\@commakeywordspt},
-      }
-      % XMPLangAlt redefines "\do"; this may cause
-      % problems with biblatex, so let's use a group.
-      % https://github.com/plk/biblatex/issues/1105
-      \bgroup
-      \XMPLangAlt{en}{pdfsubject={\@cleanabstract}}
-      \XMPLangAlt{en}{pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}}}
-      \egroup
-      % o item "keywords" não pode ser traduzido
+  {
+    \hypersetup{
+      pdflang={en},
+      pdfmetalang={en},
     }
-    {
-      \hypersetup{
-        pdflang={en},
-        pdfmetalang={en},
-        pdftitle={\@cleantitleen\ifdefvoid{\@cleansubtitleen}{}{: \@cleansubtitleen}},
-        pdfsubject={\@cleanabstract},
-        pdfkeywords={\@commakeywordsen},
-      }
-      % XMPLangAlt redefines "\do"; this may cause
-      % problems with biblatex, so let's use a group.
-      % https://github.com/plk/biblatex/issues/1105
-      \bgroup
-      \XMPLangAlt{pt}{pdfsubject={\@cleanresumo}}
-      \XMPLangAlt{pt}{pdftitle={\@cleantitlept\ifdefvoid{\@cleansubtitlept}{}{: \@cleansubtitlept}}}
-      \egroup
-      % o item "keywords" não pode ser traduzido
-    }
+  }
 }
 
 
