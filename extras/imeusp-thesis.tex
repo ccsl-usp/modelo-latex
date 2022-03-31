@@ -445,7 +445,6 @@
 \providecommand\@title{Título não definido!}
 \providecommand\@titlept{Título em português não definido!}
 \providecommand\@titleen{Título em inglês não definido!}
-\providecommand\@shorttitle{título curto não definido!}
 \providecommand\@resumo{Resumo não definido!}
 \providecommand\@abstract{Abstract não definido!}
 
@@ -460,8 +459,6 @@
 \keys_define:nn { IME / title }
   {
     % Chaves à esquerda definem as variáveis à direita
-    shorttitle .tl_gset:N = \@shorttitle,
-    shorttitle .value_required:n = true,
     titlept .tl_gset:N = \@titlept,
     titlept .value_required:n = true,
     titleen .tl_gset:N = \@titleen,
@@ -486,12 +483,6 @@
   \ifdefvoid{\@subtitlept}
     {\let\@subtitle\@subtitleen}
     {\let\@subtitle\@subtitlept}
-
-  \tl_if_blank:VT \@shorttitle
-    {
-      \let\@shorttitle\@title
-      \@IMEremoveLinebreaksEtc{\@shorttitle}
-    }
 }
 
 \ExplSyntaxOff
