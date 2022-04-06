@@ -584,56 +584,60 @@
 
 \NewDocumentCommand{\resumo}{+m}{%
   \long\gdef\@resumo{#1}%
-  \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
-  \expandafter\selectlanguage\expandafter{\@IMEpt}
-  \begin{IMEabstract}\@resumo\end{IMEabstract}
-  \egroup\egroup
 
-  \let\@cleanresumo\@resumo
-  \@IMEremoveLinebreaksEtc{\@cleanresumo}
-
+  \bgroup
+  \@IMEremoveLinebreaksEtc{\@resumo}
   \IfLanguagePatterns{brazilian}
     {
       \hypersetup{
-        pdfsubject={\@cleanresumo},
+        pdfsubject={\@resumo},
         pdfkeywords={\@commakeywordspt},
       }
     }
     {
-      \XMPLangAlt{pt}{pdfsubject={\@cleanresumo}}
-      % XMPLangAlt undefines "\do"; this may cause
-      % problems with biblatex, so let's redefine it.
-      % https://github.com/plk/biblatex/issues/1105
-      \def\do{}
+      \XMPLangAlt{pt}{pdfsubject={\@resumo}}
       % o item "keywords" não pode ser traduzido
+
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, but we do not need
+      % to worry here because we are in a group.
+      % https://github.com/plk/biblatex/issues/1105
     }
+  \egroup
+
+  \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
+  \expandafter\selectlanguage\expandafter{\@IMEpt}
+  \begin{IMEabstract}\@resumo\end{IMEabstract}
+  \egroup\egroup
 }
 
 \DeclareDocumentCommand{\abstract}{+m}{%
   \long\gdef\@abstract{#1}%
+
+  \bgroup
+  \@IMEremoveLinebreaksEtc{\@abstract}
+  \IfLanguagePatterns{brazilian}
+    {
+      \XMPLangAlt{en}{pdfsubject={\@abstract}}
+      % o item "keywords" não pode ser traduzido
+
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, but we do not need
+      % to worry here because we are in a group.
+      % https://github.com/plk/biblatex/issues/1105
+    }
+    {
+      \hypersetup{
+        pdfsubject={\@abstract},
+        pdfkeywords={\@commakeywordsen},
+      }
+    }
+  \egroup
+
   \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
   \expandafter\selectlanguage\expandafter{\@IMEen}
   \begin{IMEabstract}\@abstract\end{IMEabstract}
   \egroup\egroup
-
-  \let\@cleanabstract\@abstract
-  \@IMEremoveLinebreaksEtc{\@cleanabstract}
-
-  \IfLanguagePatterns{brazilian}
-    {
-      \XMPLangAlt{en}{pdfsubject={\@cleanabstract}}
-      % XMPLangAlt undefines "\do"; this may cause
-      % problems with biblatex, so let's redefine it.
-      % https://github.com/plk/biblatex/issues/1105
-      \def\do{}
-      % o item "keywords" não pode ser traduzido
-    }
-    {
-      \hypersetup{
-        pdfsubject={\@cleanabstract},
-        pdfkeywords={\@commakeywordsen},
-      }
-    }
 }
 
 \NewDocumentEnvironment{IMEabstract}{} {
