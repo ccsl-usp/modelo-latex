@@ -91,6 +91,7 @@ coisas automaticamente (e de maneira incompatível com \LaTeX{}).
 Em geral, é recomendável usar editores projetados especificamente para
 trabalhar com \LaTeX{}; eles utilizam cores para distinguir o texto dos
 comandos de formatação, automatizam o processo de compilação do documento
+(veja a Seção~\ref{sec:make})
 e oferecem outras comodidades. O mais usado atualmente é o \TeX{}studio,
 que é software livre e funciona em Windows, MacOS e Linux. O editor Visual
 Studio Code (\url{code.visualstudio.com}) é voltado para programadores e
@@ -99,6 +100,7 @@ com a \emph{package} \pkg{LaTeX Workshop} (do editor, não do \LaTeX), é uma
 boa opção. O mesmo vale para o editor emacs (\url{www.gnu.org/software/emacs})
 e sua package \pkg{AUC\TeX{}}. Ainda outra possibilidade são os editores
 \emph{online}; dentre eles, o overleaf (\url{www.overleaf.com}) é o mais usado.
+\looseness=-1
 
 Um documento \LaTeX{} é dividido em duas partes: o \emph{preâmbulo}, onde
 você coloca comandos de configuração para o documento, e o \emph{corpo}
@@ -198,6 +200,7 @@ acima de \ltxcmd{chapter}). Usar o nome do comando seguido de um asterisco
 no sumário (nem considerado na contagem de capítulos, seções etc.).
 
 \section{Executando \LaTeX{} e Comandos Auxiliares}
+\label{sec:make}
 
 Depois de escrever o arquivo \cmd{.tex}, é preciso \emph{compilá-lo}, ou
 seja, processá-lo para gerar o \textsc{pdf} desejado. Isso envolve executar,
@@ -217,8 +220,8 @@ com o arquivo de configuração \cmd{latexmkrc}.}. Assim, embora seja possível
 gerar o \textsc{pdf} executando apenas \cmd{pdflatex nome-do-arquivo.tex},
 acostume-se a compilar o documento sempre com \cmd{latexmk -pdf nome-do-arquivo.tex}.
 Note que editores especializados em \LaTeX{} costumam ter uma opção de menu
-para a compilação do documento; muitas vezes essa opção simplesmente aciona
-\cmd{latexmk}.
+para a compilação do documento; dentre as configurações possíveis do editor,
+prefira sempre a que simplesmente aciona \cmd{latexmk}.
 
 \section{Mais sobre Estrutura}
 

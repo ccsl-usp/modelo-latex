@@ -67,17 +67,16 @@ arquivos auxiliares:\looseness=-1
 
 \froufrou
 
-Para compilar o documento, basta executar o comando \textsf{latexmk} (ou
-\textsf{make})\footnote{Você também pode usar \textsf{latexmk poster},
-\textsf{make apresentacao} etc.}. Talvez seu editor ofereça uma
-opção de menu para compilar o documento, mas ele provavelmente depende do
-\textsf{latexmk} para isso. \LaTeX{} gera diversos arquivos auxiliares
-durante a compilação que, em algumas raras situações, podem ficar
+Para compilar o documento, basta executar o comando
+\textsf{latexmk}\footnote{Você também pode usar \textsf{latexmk poster},
+\textsf{latexmk apresentacao} etc.}. Talvez seu editor ofereça uma opção
+de menu para compilar o documento; sempre que possível, configure-o para
+utilizar o \textsf{latexmk} ao selecioná-la. \LaTeX{} gera diversos arquivos
+auxiliares durante a compilação que, em algumas raras situações, podem ficar
 inconsistentes (causando erros de compilação ou erros no \textsc{pdf} gerado,
 como referências faltando ou numeração de páginas incorreta no sumário).
-Nesse caso, é só usar o comando \textsf{latexmk -C} (ou \textsf{make clean}),
-que apaga todos os arquivos auxiliares gerados, e em seguida rodar
-\textsf{latexmk} (ou \textsf{make}) novamente.
+Nesse caso, é só usar o comando \textsf{latexmk -C}, que apaga todos esses
+arquivos auxiliares gerados, e em seguida rodar \textsf{latexmk} novamente.
 
 \section{Instalação do \LaTeX{}}
 \label{sec:install}
@@ -98,11 +97,13 @@ outros. Embora uma instalação completa do \LaTeX{} seja relativamente grande
 Se você preferir uma instalação mais ``enxuta'', não deixe de incluir tudo
 que é necessário para este modelo, como indicado no arquivo README.md.
 
-Também é muito importante ter o \textsf{latexmk} (ou o \textsf{make}). No
-Linux, a instalação é similar à de outros programas. No MacOS X e no Windows,
-\textsf{latexmk} pode ser instalado pelo gestor de pacotes do MiK\TeX{} ou
-\TeX{}Live. Observe que ele depende da linguagem \textsf{perl}, que precisa
-ser instalada à parte no Windows (\url{www.perl.org/get.html}).
+Também é muito importante ter o \textsf{latexmk}. No Linux, a instalação é
+similar à de outros programas. No MacOS X e no Windows, \textsf{latexmk}
+pode ser instalado pelo gestor de pacotes do MiK\TeX{} ou \TeX{}Live.
+Observe que ele depende da linguagem \textsf{perl}. No macOS,
+\textsf{perl} já faz parte do sistema; no Windows, \TeX{}Live inclui
+uma versão básica de perl, mas se você estiver usando MiK\TeX{} será
+preciso instalar \textsf{perl} manualmente (\url{www.perl.org/get.html}).
 
 \section{Documentação sobre \LaTeX}
 \label{sec:docs}
