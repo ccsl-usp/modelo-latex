@@ -126,14 +126,15 @@ científicas fornecem modelos de acordo com suas diretrizes.
 
 O preâmbulo \LaTeX{} começa com a definição da \emph{classe} a ser utilizada,
 que determina boa parte da configuração do documento. As principais classes
-são \pkg{book}, \pkg{report} e \pkg{article}; você pode saber mais sobre elas
-(e outras) em qualquer texto introdutório sobre \LaTeX{} na Internet (veja a
-Seção~\ref{sec:docs}). \pkg{book} e \pkg{report} são as mais adequadas para a
-escrita de teses ou dissertações acadêmicas.
-A seguir, são carregadas várias \emph{packages} (``\emph{plugins}'') que
-acrescentam funcionalidades ou modificam as classes padrão. Qualquer documento
-\LaTeX{} utiliza várias delas e é comum que revistas científicas utilizem
-packages próprias que pré-definem a formatação esperada para os artigos.
+são \pkg{book}, \pkg{article} e \pkg{beamer} (para apresentações); você pode
+saber mais sobre elas (e outras) em qualquer texto introdutório sobre \LaTeX{}
+na Internet (veja a Seção~\ref{sec:docs})\footnote{Algumas revistas acadêmicas
+têm suas próprias classes; por exemplo, a AMS (American Mathematical Society)
+disponibiliza as classes \pkg{amsart}, \pkg{amsbook} e \pkg{amsproc}; você
+pode usá-las para seus trabalhos mesmo que não pretenda publicar com a AMS,
+veja \cmd{texdoc Author\_Handbook\_Journals}.}. A seguir, são carregadas
+várias \emph{packages} (``\emph{plugins}'') que acrescentam funcionalidades ou
+modificam as classes padrão; qualquer documento \LaTeX{} utiliza várias delas.
 A classe é definida com o comando \ltxcmd{documentclass\{nome-da-classe\}};
 packages são carregadas com o comando \ltxcmd{usepackage\{nome-da-package\}}.
 Classes e packages podem receber opções adicionais entre colchetes
