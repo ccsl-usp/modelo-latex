@@ -553,7 +553,7 @@ line as the under/overfull box message (both are \message's). The
 offending text, if any, always starts at the beginning of a line and
 ends at the end of a line.
 
-About the description: https://tex.stackexchange.com/a/367589/217608
+About the description: https://tex.stackexchange.com/a/367589
 
 This all means that handling these messages from a pipe is different
 than from the log file, because in the log file you know there will

@@ -155,7 +155,7 @@
 \DeclareFieldFormat{titlecase}{\NoChangeOrSentenceCase{#1}}
 
 % Esta macro implementa o mecanismo descrito acima
-% https://tex.stackexchange.com/questions/22980/sentence-case-for-titles-in-biblatex
+% https://tex.stackexchange.com/q/22980
 \newrobustcmd{\NoChangeOrSentenceCase}[1]{%
   \ifboolexpr{
        test {\ifcurrentfield{booktitle}}

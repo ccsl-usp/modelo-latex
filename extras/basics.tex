@@ -148,7 +148,7 @@
 
 % TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
 % 1.07 de luatex. Essa combinação faz aparecer um bug:
-% https://tex.stackexchange.com/questions/476740/microtype-error-with-lualatex-attempt-to-call-field-warning-a-nil-value
+% https://tex.stackexchange.com/a/476742
 % Aqui, aplicamos a solução sugerida, que não tem "contra-indicações".
 \ifLuaTeX
   \usepackage{luatexbase}
@@ -181,8 +181,7 @@
 %
 % Para cada fonte, o espaço entre palavras tem um tamanho ideal, um
 % tamanho mínimo e um tamanho máximo (é possível obter os valores com
-% \number\fontdimenX\font\relax, veja
-% https://tex.stackexchange.com/questions/88991/what-do-different-fontdimennum-mean ).
+% \number\fontdimenX\font\relax, veja https://tex.stackexchange.com/q/88991 ).
 % TeX nunca reduz um espaço para menos que o mínimo da fonte, mas pode
 % aumentá-lo para mais que o máximo. Se os espaços de uma linha ficam
 % com o tamanho ideal, a badness da linha é 0; se o tamanho é
@@ -286,7 +285,7 @@
 % Com ragged2e e a opção "newcommands", textos curtos não-justificados
 % podem gerar warnings sobre "underfull \hbox". Não há razão para pensar
 % muito nesses warnings, então melhor desabilitá-los.
-% https://tex.stackexchange.com/questions/17659/ragged2e-newcommands-option-produces-underfull-hbox-warnings
+% https://tex.stackexchange.com/a/18019
 \makeatletter
 \gappto{\raggedright}{\hbadness=\@M}
 \gappto{\RaggedRight}{\hbadness=\@M}

@@ -32,7 +32,7 @@ $cleanup_includes_generated = 1;
 $cleanup_includes_cusdep_generated = 1;
 $bibtex_use = 2;
 
-# https://tex.stackexchange.com/a/384153/217608
+# https://tex.stackexchange.com/a/384153
 $ENV{max_print_line} = $log_wrap = 100000;
 $ENV{error_line} = 254;
 $ENV{half_error_line} = 238;
