@@ -406,12 +406,14 @@ Resumindo:
 
 \begin{itemize}
   \item Se uma tabela cabe em uma página, defina-a como um \textit{float};
-  \item se cabe em uma página mas é muito larga e precisa ser impressa em
+  \item Se cabe em uma página mas é muito larga e precisa ser impressa em
         modo paisagem, use \textsf{sidewaystable} (que também é um \textit{float});
-  \item se não cabe em uma página por ser muito longa, use \textsf{longtable};
-  \item se não cabe em uma página por ser muito longa e precisa ser impressa
+  \item Se não cabe em uma página por ser muito longa, use \textsf{longtable};
+  \item Se não cabe em uma página por ser muito longa e precisa ser impressa
         em modo paisagem por ser muito larga, use \textsf{longtable} em
-        conjunto com \textsf{landscape}.
+        conjunto com \textsf{landscape}. Nesse caso, vai haver uma quebra
+        de página no texto para que a tabela inicie em uma nova página em
+        modo paisagem.
 \end{itemize}
 
 %%%%%%%% Tabela em forma de ficha %%%%%%%%
