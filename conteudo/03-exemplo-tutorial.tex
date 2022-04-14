@@ -76,7 +76,7 @@ cada parágrafo como um todo, ao invés de uma linha por vez, para obter
 espaçamentos mais homogêneos e menos palavras hifenizadas.}.
 \end{itemize}
 
-\section{Visão Geral}
+\section{Visão geral}
 
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
@@ -121,7 +121,7 @@ família de modelos (\url{www.abntex.net.br}) que procura seguir as normas
 da ABNT para diversos tipos de documentos científicos, e algumas publicações
 científicas fornecem modelos de acordo com suas diretrizes.
 
-\section{Estrutura de um Documento \LaTeX{}}
+\section{Estrutura de um documento \LaTeX{}}
 \label{sec:basico}
 
 O preâmbulo \LaTeX{} começa com a definição da \emph{classe} a ser utilizada,
@@ -201,7 +201,7 @@ acima de \ltxcmd{chapter}). Usar o nome do comando seguido de um asterisco
 (\ltxcmd{chapter*} etc.) faz o capítulo/seção não ser numerado nem incluído
 no sumário (nem considerado na contagem de capítulos, seções etc.).
 
-\section{Executando \LaTeX{} e Comandos Auxiliares}
+\section{Executando \LaTeX{} e comandos auxiliares}
 \label{sec:make}
 
 Depois de escrever o arquivo \cmd{.tex}, é preciso \emph{compilá-lo}, ou
@@ -225,7 +225,7 @@ Note que editores especializados em \LaTeX{} costumam ter uma opção de menu
 para a compilação do documento; dentre as configurações possíveis do editor,
 prefira sempre a que simplesmente aciona \cmd{latexmk}.
 
-\section{Mais sobre Estrutura}
+\section{Mais sobre estrutura}
 \label{sec:estrutura}
 
 Para criar listas de itens, você pode fazer\footnote{Observe o uso de
@@ -268,7 +268,7 @@ tipográficas (``\;'' e `\;') são inseridas com
 símbolos com \textsf{texdoc symbols-a4} ou em \url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
 Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kirelabs.org/classify.html}.
 
-\section{Figuras e Tabelas (\emph{floats})}
+\section{Figuras e tabelas (\emph{floats})}
 \label{sec:floats}
 
 É possível utilizar \ltxcmd{includegraphics} para acrescentar figuras
@@ -294,14 +294,14 @@ um \emph{float} pode ser qualquer coisa mas, em geral, é
 \ltxcmd{includegraphics} ou \ltxcmd{begin\{tabular\}}.
 
 Uma consequência importante dos tipos diferentes de \emph{floats} é que
-\LaTeX{}\index{Floats!Ordem} garante que a sequência das figuras e a
+\LaTeX{}\index{Floats!ordem} garante que a sequência das figuras e a
 sequência das tabelas sejam respeitadas (a Figura~6 nunca aparece depois da
 Figura~7). No entanto, isso \emph{não} se aplica a \emph{floats} de tipos
 diferentes, ou seja, se você definiu a Figura~5, a Tabela~3 e a Figura~6,
 elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
 ``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
 
-\section{Referências Cruzadas}
+\section{Referências cruzadas}
 \label{sec:refs}
 
 É comum que um trecho do texto faça referência a outro trecho (``como
@@ -323,7 +323,7 @@ mas, como em muitos casos isso gera problemas, é um bom hábito sempre
 colocá-lo dentro dele.}.
 
 
-\section{Referências Bibliográficas e Bibliografia}
+\section{Referências bibliográficas e bibliografia}
 
 \enlargethispage{-.5\baselineskip}
 
@@ -349,7 +349,7 @@ na documentação da package \pkg{natbib}\index{natbib} \citep{natbib}.
 
 \item A escolha do estilo bibliográfico (usando as opções da package
 \pkg{biblatex}) que formata as citações ao longo do texto e gera a bibliografia
-automaticamente através do comando \ltxcmd{printbibliography}.  Normalmente,
+automaticamente através do comando \ltxcmd{printbibliography}. Normalmente,
 apenas as obras efetivamente citadas são incluídas na lista de referências,
 mas é possível forçar a inclusão de uma obra sem citá-la explicitamente com
 o comando \ltxcmd{nocite}.
@@ -436,7 +436,7 @@ especial, consulte a documentação do pacote ou a Internet; é quase certeza
 que \pkg{biblatex} oferece uma solução.
 
 
-\section{Fórmulas Matemáticas}
+\section{Fórmulas matemáticas}
 
 \enlargethispage{-.5\baselineskip}
 
@@ -475,7 +475,7 @@ comandos similares, como \cmd{align}, \cmd{multline} e \cmd{gather},
 definidos e documentados na package \pkg{amsmath}, e todos têm
 a variante com ``*''.
 
-\section{Formatação Manual}
+\section{Formatação manual}
 
 Às vezes é preciso inserir formatação de forma manual; os comandos mais
 importantes são:
@@ -531,7 +531,7 @@ de formatação mencionados acima. Esse é um tópico avançado, mas você
 pode consultar o início do arquivo \LaTeX{} deste capítulo para alguns
 exemplos simples.
 
-\section{Formatos de Imagem}
+\section{Formatos de imagem}
 \label{sec:graficos}
 
 Podemos classificar imagens em quatro categorias:
@@ -574,7 +574,7 @@ de dados na forma de comandos para \pkg{tikz} (garantindo maior
 consistência visual entre o texto principal e o gráfico), e o programa
 \cmd{Asymptote} tem excelente integração com \LaTeX{}.
 
-\section{Detalhes da Linguagem}
+\section{Detalhes da linguagem}
 
 Há quatro estilos típicos de comandos \LaTeX{}:
 
@@ -660,7 +660,7 @@ rápido. Se você pretende usar outros alfabetos, gostaria de escolher
 fontes diferentes ou precisa de recursos tipográficos avançados
 (\cmd{texdoc fontspec}, \cmd{texdoc unicode-math}), use \LuaLaTeX{}.
 
-\section{Limitações do \LaTeX{} e Algumas Dicas}
+\section{Limitações do \LaTeX{} e algumas dicas}
 \label{sec:limitations}
 
 Como qualquer ferramenta, \LaTeX{} tem limitações e características
