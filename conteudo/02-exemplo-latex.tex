@@ -10,59 +10,27 @@ trabalho e o resultado final é muito bom\footnote{O uso de um sistema de
 controle de versões, como mercurial (\url{mercurial-scm.org}) ou git
 (\url{git-scm.com}), também é altamente recomendado.}. Este modelo é
 distribuído com uma ``colinha'' dos principais comandos \LaTeX{} e inclui
-comentários explicativos para auxiliá-lo com
-ele, sendo composto dos arquivos de exemplo
-(\texttt{tese.tex}, \texttt{artigo.tex},
-\texttt{apresentacao.tex} e \texttt{poster.tex}) e de
-arquivos auxiliares:\looseness=-1
+comentários explicativos para auxiliá-lo com ele, sendo composto dos
+arquivos:
 
 \begin{itemize}
-  \item Arquivos com o conteúdo do trabalho:
-  \begin{itemize}
-    \item Capítulos, apêndices etc. no diretório \texttt{conteudo}
-    \item \texttt{bibliografia.bib} (dados bibliográficos)
-  \end{itemize}
-
-  \item Arquivos com as \textit{packages} usadas e suas configurações (leia
-        os comentários neles se quiser modificar algum aspecto do
-        documento ou acrescentar alguma \textit{package}):
-  \begin{itemize}
-    \item \texttt{extras/basics.tex} (\textit{packages} e configurações essenciais),
-          \texttt{extras/fonts.tex} (definição das fontes do documento) e
-          \texttt{extras/floats.tex} (configurações e melhorias para \textit{floats})
-    \item \texttt{extras/imeusp-formatting.tex} (aparência: espaçamento, sumário etc.)
-    \item \texttt{extras/index.tex} (configuração do índice remissivo)
-    \item \texttt{extras/hyperlinks.tex} (configuração das referências cruzadas)
-    \item \texttt{extras/source-code.tex} (exibição de código-fonte e pseudocódigo)
-    \item \texttt{extras/utils.tex} (\textit{packages} adicionais diversas)
-    \item \texttt{extras/bibconfig.tex} (configuração da bibliografia)
-  \end{itemize}
-
-  \item Outros arquivos auxiliares (geralmente não precisam ser editados):
-  \begin{itemize}
-    \item \texttt{extras/languages.tex} (suporte a múltiplas línguas)
-    \item \texttt{extras/imeusp-thesis.tex} (formatação da capa e páginas preliminares)
-    \item \texttt{extras/imeusp-headers.sty} (formatação dos cabeçalhos)
-    \item \texttt{extras/lstpseudocode.sty} (suporte a pseudocódigo com \textsf{listings})
-    \item \texttt{extras/annex.sty} (permite adicionar anexos) e
-          \texttt{extras/appendixlabel.sty} (melhora a lista de
-          apêndices/anexos no sumário)
-    \item \texttt{froufrou.sty} (divisões com ornamentos/florões, como mais abaixo)
-    \item \texttt{extras/beamer*.sty} (\textit{layouts} e cores para
-          apresentações e \textit{posters})
-    \item \texttt{extras/plainnat-ime.*} (estilo plainnat para bibliografias)\index{biblatex}
-    \item \texttt{extras/alpha-ime.bst} (estilo alpha para bibliografias com
-          bibtex)\index{bibtex}
-    \item \texttt{extras/natbib-ime.sty} (tradução da \textit{package}
-          padrão natbib)\index{natbib}
-    \item \texttt{hyperxindy.xdy} (configuração para xindy) e
-          \texttt{mkidxhead.ist} (configuração para makeindex) --- criados automaticamente
-    \item \texttt{latexmkrc} e \texttt{Makefile} (automatizam a geração do
-          documento com os comandos \textsf{latexmk} e \textsf{make} respectivamente)
-    \item \texttt{extras/texlogsieve} e seu arquivo de configuração
-          \texttt{extras/texlogsieverc} (mostra as mensagens mais importantes
-          geradas durante a compilação)
-  \end{itemize}
+  \item \texttt{tese.tex}, \texttt{artigo.tex}, \texttt{apresentacao.tex}
+        e \texttt{poster.tex} (exemplos de cada um desses tipos de documento);
+  \item Capítulos, apêndices, imagens etc. deste texto de exemplo, nos
+        diretórios \texttt{conteudo}, \texttt{figuras} e \texttt{logos}
+        (procure os comandos \texttt{\textbackslash{}input} e
+        \texttt{\textbackslash{}graphicspath} nos arquivos de exemplo
+        mencionados acima para modificar o nome desses diretórios);
+  \item \texttt{bibliografia.bib} (exemplo de banco de dados bibliográficos;
+        procure o comando \texttt{\textbackslash{}addbibresource} nos
+        arquivos de exemplo mencionados acima para modificar o nome desse
+        arquivo ou acrescentar outros);
+  \item Arquivos com as \textit{packages} usadas e suas configurações
+        no diretório \texttt{extras} (normalmente não precisam ser
+        editados, mas você pode acessá-los se quiser aprender mais
+        sobre \LaTeX{} ou modificar/acrescentar algo ao modelo; eles
+        incluem vários comentários explicativos, alguns bastante
+        detalhados).
 \end{itemize}
 
 \froufrou
