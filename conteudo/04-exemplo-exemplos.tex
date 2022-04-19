@@ -57,11 +57,13 @@ não-separável (com ``\textsf{\textasciitilde}'') para evitar que ele
 fique sozinho na última linha (por exemplo, ``\textsf{O discriminante é
 denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
 
+% Equação simples, com numeração à direita
 \begin{equation}
   \label{eq:2grau}
   ax^2+bx+c=y \quad \forall x \in \mathbb{R}
 \end{equation}
 
+% Conjunto de equações agrupadas mas sem alinhamento, com numeração à direita
 \begin{gather}
   \label{eq:bhaskara}
     y=0 \Leftrightarrow x=\frac{-b \pm \sqrt{\Delta}}{2a}
@@ -69,6 +71,107 @@ denotado por\textasciitilde{}\$\textbackslash{}Delta\$}'').\label{orphanchar}
   \label{eq:delta}
     \Delta\enspace(\mathit{delta}) = b^2-4ac
 \end{gather}
+
+Para recursos mais sofisticados, incluindo frações com múltiplas linhas,
+matrizes, sistemas de equações alinhadas, setas, acentos etc., procure
+a documentação das packages \textsf{amsmath} e \textsf{mathtools}. Para
+teoremas, lemas, conjecturas etc., leia a documentação da package
+\textsf{amsthm} e decida de quais tipos de estrutura você vai precisar
+no seu documento. Aqui criamos três: ``Pegadinha'', ``Teorema'' e
+``Conjectura'' (observe as numerações):
+
+% A aparência dos teoremas/lemas/etc. é definida por estilos. Há três
+% estilos padrão (plain, definition e remark), mas é possível criar outros:
+\newtheoremstyle{smile} % nome do estilo
+{3pt} % espaço antes
+{3pt} % espaço depois
+{\itshape} % fonte do corpo
+{} % Indentação
+{\bfseries} % fonte do título
+{} % pontuação após o título
+{.5em} % espaço após o título
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)} :-)\space} % formato do título
+% vazio significa {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+
+\newtheoremstyle{maybe} % nome do estilo
+{3pt} % espaço antes
+{3pt} % espaço depois
+{\itshape} % fonte do corpo
+{} % Indentação
+{\bfseries} % fonte do título
+{:} % pontuação após o título
+{.5em} % espaço após o título
+{\thmname{#1}\space(?)\thmnumber{ #2}\thmnote{ (#3)}} % formato do título
+% vazio significa {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+
+\theoremstyle{smile} % As próximas definições usam este estilo
+\newtheorem{absurd}{Pegadinha}
+
+\begin{absurd}\label{thm:doisum}
+  $1=0$
+\end{absurd}
+
+% "proof" é pré-definido por amsthm
+\begin{proof}
+Tomemos dois números, $a$ e $b$, tais que $a=b+1$.
+
+% Múltiplas linhas alinhadas em "&", sem numeração
+\begin{displaymath}
+  \begin{split}
+    a &= b+1 \\
+    (a-b)a &= (a-b)(b+1) \\
+    a^2 - ab &= ab + a -b^2 -b \\
+    a^2 -ab -a &= ab -b^2 -b \\
+    a(a-b-1) &= b(a-b-1) \\
+    a \cancel{(a-b-1)} &= b \cancel{(a-b-1)} \\
+    a &= b \\
+    b+1 &= b \\
+    1 &= b-b \\
+    1 &= 0
+  \end{split}
+\end{displaymath}
+\end{proof}
+
+\theoremstyle{plain} % As próximas definições usam este estilo
+\newtheorem{theorem}{Teorema}
+
+\begin{theorem}
+  \label{thm:graphcolor}
+  É sempre possível colorir os vértices de um grafo sem que dois vértices
+  adjacentes tenham a mesma cor usando no máximo quatro cores diferentes.
+\end{theorem}
+
+\begin{proof}
+  A demonstração do Teorema~\ref{thm:graphcolor} é um exercício
+  a cargo do leitor.
+  % Como isto não é de fato uma prova, queremos eliminar o símbolo
+  % "QED" que o ambiente proof acrescenta automaticamente.
+  \renewcommand\qedsymbol{} % tem efeito apenas nesta prova!
+\end{proof}
+
+\theoremstyle{maybe} % As próximas definições usam este estilo
+\newtheorem{conjecture}{Conjectura}
+
+\begin{conjecture}
+  \label{conj:fermat}
+  Dado qualquer inteiro $n > 2$, não existem inteiros positivos
+  $a$, $b$ e $c$ tais que $a^n + b^n = c^n$.
+\end{conjecture}
+
+\begin{proof}
+  Este espaço é muito pequeno para apresentá-la.
+  \renewcommand\qedsymbol{}
+\end{proof}
+
+\begin{theorem}
+  \label{thm:pnp}
+  \textup{\textsf{\textbf{P$\ne$NP}}}
+\end{theorem}
+
+\begin{proof}
+  \textsf{\textbf{P}} tem apenas uma letra, enquanto
+  \textsf{\textbf{NP}} tem duas letras.
+\end{proof}
 
 \section{\emph{Floats} (tabelas e figuras)}\index{Floats}
 

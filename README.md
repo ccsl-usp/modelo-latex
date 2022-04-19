@@ -52,8 +52,8 @@ csquotes, hypcap, hyperxmp, url, listings, textcomp, multicol, metalogo,
 epigraph, imakeidx, todonotes, soul, soulutf8, translator, pgfgantt,
 titletoc, titlesec, titleps, framed, adjustbox, threeparttable, colortbl,
 datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
-pgfplots, appendix, iftex, keyval, and hologo. Several others are loaded
-indirectly by these.
+pgfplots, appendix, iftex, keyval, cancel, and hologo. Several others are
+loaded indirectly by these.
 
 The default fonts depend on these packages: lmodern, fix-cm,
 libertinus, libertinust1math, fourier-orns, and sourcecodepro.
