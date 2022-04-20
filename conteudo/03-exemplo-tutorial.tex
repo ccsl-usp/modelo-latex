@@ -582,47 +582,48 @@ de dados na forma de comandos para \pkg{tikz} (garantindo maior
 consistência visual entre o texto principal e o gráfico), e o programa
 \cmd{Asymptote} tem excelente integração com \LaTeX{}.
 
-\section{Detalhes da linguagem}
-
-Há quatro estilos típicos de comandos \LaTeX{}:
-
-\begin{itemize}
-\item Comandos que se referem a um parâmetro; por exemplo,
-\ltxcmd{emph\{um texto\}} significa ``escreva a frase
-`um texto' com ênfase'' (em geral, itálico). As chaves delimitam o início
-e o final do escopo sobre o qual o comando tem efeito. Aqui entram também
-comandos como \ltxcmd{title} e \ltxcmd{author},
-que não escrevem nada diretamente mas definem o título e autoria do documento
-(essa informação é usada, por exemplo, por \ltxcmd{maketitle}).
-
-\item Comandos que se referem a um parâmetro que é um bloco grande de
-texto, possivelmente vários parágrafos; por exemplo, \ltxcmd{begin\{center\}}
-um texto \ltxcmd{end\{center\}} faz ``um texto'' (que podem ser vários
-parágrafos) ser centralizado.
-
-\item Comandos que ativam alguma opção; por exemplo, \ltxcmd{itshape}
-significa ``ative o modo itálico''. Nesse caso, o texto vai ser impresso
-em itálico até outro comando selecionar outro estilo de fonte. Se o comando
-for inserido dentro de um bloco delimitado por chaves, ele ``perde o
-efeito'' após o caractere de fecha-chaves (exemplo: ``\{\ltxcmd{itshape\{\}}
-Fulano de Tal\} é meu nome'' será impresso como ``\textit{Fulano de Tal} é
-meu nome''). Você normalmente não vai utilizar esse estilo de comando, mas
-ele é útil em alguns casos.
-
-\item Comandos que fazem o programa escrever algo específico; por exemplo,
-em várias classes padrão o comando \ltxcmd{maketitle} gera
-uma página de título com o nome do trabalho, autor etc.
-\end{itemize}
-
-Nos dois últimos, não é preciso usar chaves após o comando. Ainda assim, as
-chaves podem ser colocadas e muitas vezes isso é bom: sem elas, \LaTeX{}
-entende que o caractere espaço que se segue a esses comandos serve apenas
-como separador em relação ao que vem a seguir. Por conta disso, ele ignora
-esse espaço. Quando isso não é o que se deseja, a solução é usar as chaves:
-\ltxcmd{itshape\{\}}.
-Vale observar que alguns comandos aceitam mais de um parâmetro, às vezes
-entre chaves, às vezes entre colchetes. Você pode descobrir a sintaxe
-correta para cada caso lendo a documentação de cada comando.
+% Esta informação é muito pouco relevante...
+%\section{Detalhes da linguagem}
+%
+%Há quatro estilos típicos de comandos \LaTeX{}:
+%
+%\begin{itemize}
+%\item Comandos que se referem a um parâmetro; por exemplo,
+%\ltxcmd{emph\{um texto\}} significa ``escreva a frase
+%`um texto' com ênfase'' (em geral, itálico). As chaves delimitam o início
+%e o final do escopo sobre o qual o comando tem efeito. Aqui entram também
+%comandos como \ltxcmd{title} e \ltxcmd{author},
+%que não escrevem nada diretamente mas definem o título e autoria do documento
+%(essa informação é usada, por exemplo, por \ltxcmd{maketitle}).
+%
+%\item Comandos que se referem a um parâmetro que é um bloco grande de
+%texto, possivelmente vários parágrafos; por exemplo, \ltxcmd{begin\{center\}}
+%um texto \ltxcmd{end\{center\}} faz ``um texto'' (que podem ser vários
+%parágrafos) ser centralizado.
+%
+%\item Comandos que ativam alguma opção; por exemplo, \ltxcmd{itshape}
+%significa ``ative o modo itálico''. Nesse caso, o texto vai ser impresso
+%em itálico até outro comando selecionar outro estilo de fonte. Se o comando
+%for inserido dentro de um bloco delimitado por chaves, ele ``perde o
+%efeito'' após o caractere de fecha-chaves (exemplo: ``\{\ltxcmd{itshape\{\}}
+%Fulano de Tal\} é meu nome'' será impresso como ``\textit{Fulano de Tal} é
+%meu nome''). Você normalmente não vai utilizar esse estilo de comando, mas
+%ele é útil em alguns casos.
+%
+%\item Comandos que fazem o programa escrever algo específico; por exemplo,
+%em várias classes padrão o comando \ltxcmd{maketitle} gera
+%uma página de título com o nome do trabalho, autor etc.
+%\end{itemize}
+%
+%Nos dois últimos, não é preciso usar chaves após o comando. Ainda assim, as
+%chaves podem ser colocadas e muitas vezes isso é bom: sem elas, \LaTeX{}
+%entende que o caractere espaço que se segue a esses comandos serve apenas
+%como separador em relação ao que vem a seguir. Por conta disso, ele ignora
+%esse espaço. Quando isso não é o que se deseja, a solução é usar as chaves:
+%\ltxcmd{itshape\{\}}.
+%Vale observar que alguns comandos aceitam mais de um parâmetro, às vezes
+%entre chaves, às vezes entre colchetes. Você pode descobrir a sintaxe
+%correta para cada caso lendo a documentação de cada comando.
 
 \section{Versões do \LaTeX{}}
 \label{sec:versions}
