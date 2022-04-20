@@ -4,8 +4,8 @@
 
 \chapter{Usando o \LaTeX{} e este modelo}
 
-Não é necessário que o texto seja redigido usando \LaTeX{}, mas seu
-uso é fortemente recomendado, pois ele facilita diversas etapas do
+Não é necessário que o texto seja redigido usando \LaTeX{} ou este modelo,
+mas seu uso é fortemente recomendado, pois ele facilita diversas etapas do
 trabalho e o resultado final é muito bom\footnote{O uso de um sistema de
 controle de versões, como mercurial (\url{mercurial-scm.org}) ou git
 (\url{git-scm.com}), também é altamente recomendado.}. Este modelo é
@@ -15,7 +15,9 @@ arquivos:
 
 \begin{itemize}
   \item \texttt{tese.tex}, \texttt{artigo.tex}, \texttt{apresentacao.tex}
-        e \texttt{poster.tex} (exemplos de cada um desses tipos de documento);
+        e \texttt{poster.tex} (exemplos de cada um desses tipos de documento;
+        você pode alterar a língua de todos, incluindo a capa da tese, no
+        início desses arquivos);
   \item Capítulos, apêndices, imagens etc. deste texto de exemplo, nos
         diretórios \texttt{conteudo}, \texttt{figuras} e \texttt{logos}
         (procure os comandos \texttt{\textbackslash{}input} e
@@ -25,15 +27,11 @@ arquivos:
         procure o comando \texttt{\textbackslash{}addbibresource} nos
         arquivos de exemplo mencionados acima para modificar o nome desse
         arquivo ou acrescentar outros);
-  \item Arquivos com as \textit{packages} usadas e suas configurações
-        no diretório \texttt{extras} (normalmente não precisam ser
-        editados, mas você pode acessá-los se quiser aprender mais
-        sobre \LaTeX{} ou modificar/acrescentar algo ao modelo; eles
-        incluem vários comentários explicativos, alguns bastante
-        detalhados).
+  \item Arquivos com as configurações e \textit{packages} usadas, no
+        diretório \texttt{extras} (você só precisa mexer neles se quiser
+        aprender mais sobre \LaTeX{} ou modificar/acrescentar algo ao
+        modelo; eles incluem comentários detalhados).
 \end{itemize}
-
-\froufrou
 
 Para compilar o documento, basta executar o comando
 \textsf{latexmk}\footnote{Você também pode usar \textsf{latexmk poster},
@@ -80,6 +78,8 @@ preciso instalar \textsf{perl} manualmente (\url{www.perl.org/get.html}).
 \section{Documentação sobre \LaTeX}
 \label{sec:docs}
 
+\enlargethispage{.5\baselineskip}
+
 Há muito material sobre \LaTeX{} na Internet, mas também há muita informação
 obsoleta (incluindo trechos da própria documentação oficial!). Em particular,
 você pode ignorar explicações sobre como converter arquivos no formato
@@ -106,8 +106,11 @@ Capítulo~\ref{chap:tutorial} deste modelo e o conteúdo em
 \url{overleaf.com/learn}, que tem escopo similar mas também inclui várias
 páginas sobre como utilizar recursos específicos. Após esse contato inicial,
 o tutorial em \url{tug.org/twg/mactex/tutorials/ltxprimer-1.0.pdf} é
-bastante abrangente e detalhado. Para os principais comandos do modo
-matemático, veja \textsf{texdoc undergradmath}.
+bastante abrangente e detalhado. Não deixe de ver também o
+Capítulo~\ref{chap:exemplos} deste modelo (e seu código-fonte), que
+inclui várias dicas úteis. Para os principais comandos do modo matemático,
+veja \textsf{texdoc undergradmath} e, para aprender a criar apresentações,
+veja \textsf{texdoc beamer}.
 
 Depois que você estiver razoavelmente
 familiarizado com a linguagem, utilize o manual de referência que pode ser
@@ -145,7 +148,9 @@ fórum de perguntas e respostas sobre \LaTeX{} muito útil, pois os
 principais desenvolvedores do sistema participam das discussões, e o
 sítio \url{texfaq.org} é bastante abrangente e atualizado.
 
-\subsection{Outros recursos}
+\froufrou
+
+\enlargethispage{.5\baselineskip}
 
 Existem inúmeras alternativas aos materiais citados acima; outros exemplos de
 textos introdutórios são \url{www.maths.tcd.ie/~dwilkins/LaTeXPrimer/GSWLaTeX.pdf}
@@ -160,6 +165,8 @@ original) e ``A Simplified Introduction to \LaTeX{}'' (\textsf{texdoc
 simplified-intro}). Versões recentes do \LaTeX{} incluem também o
 ``\LaTeXe{} via exemplos'' (\textsf{texdoc latex-via-exemplos}), em português.
 
+\subsection{Outros recursos (avançados)}
+
 O sítio \url{ctan.org} é o repositório semi-oficial das \textit{packages}
 \LaTeX{} e sua documentação; \TeX{}Live e MiK\TeX{} são construídas a
 partir do que está nesse site, então a última versão estável de qualquer
@@ -167,17 +174,19 @@ partir do que está nesse site, então a última versão estável de qualquer
 em geral está ali.
 
 \textsf{texdoc fntguide} explica como funciona a gestão de fontes de
-\LaTeX{} (mas note que \LuaLaTeX{} e \XeLaTeX{} usam outro mecanismo;
-veja \textsf{texdoc fontspec}). Você pode ver exemplos de fontes
-disponíveis para \LaTeX{} em \url{tug.org/FontCatalogue}.
+\LaTeX{}, e você pode ver exemplos de fontes disponíveis para \LaTeX{}
+em \url{tug.org/FontCatalogue}. \LuaLaTeX{} e \XeLaTeX{} funcionam de
+outra maneira, permitindo também o uso das fontes comuns instaladas
+no seu sistema operacional (veja \textsf{texdoc fontspec}).
 
 Minúcias sobre o funcionamento interno do sistema estão descritas em
 \textsf{texdoc source2e} e, sobre as classes padrão (\textsf{article, book}
 etc.), em \textsf{texdoc classes}. Você normalmente não vai usar esses
 documentos, mas eles podem servir para esclarecer algum detalhe.
-\textsf{texdoc clsguide} é um guia para a criação de novas classes e
-\textit{packages}, e \textsf{texdoc macros2e} é uma lista de comandos
-especialmente úteis para isso.
+\textsf{texdoc macros2e}, \textsf{texdoc xparse} e \textsf{texdoc
+interface3} apresentam a linguagem de programação usada por \LaTeX{},
+enquanto \textsf{texdoc clsguide} é um guia para a criação de novas
+classes e \textit{packages}.
 
 Quando você se tornar um usuário avançado, pode se interessar em conhecer
 melhor a linguagem \TeX{}, que está na base do \LaTeX{}. ``The \TeX{} book'',
