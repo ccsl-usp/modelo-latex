@@ -164,7 +164,7 @@ que não tem nenhum efeito sobre o resultado final do documento. Comentários
 podem ser usados como lembretes sobre alguma decisão, para indicar um
 parágrafo que ainda precisa de revisão etc. Por conta desse significado
 especial, para inserir um caractere \% ``normal'' no texto é preciso digitar
-``\ltxcmd{\%}''.
+``\ltxcmd{\%}''.\looseness=-1
 
 Como mencionado anteriormente, \LaTeX{} divide o trabalho de produção
 de um texto entre a preparação do conteúdo e a definição da forma de
@@ -178,8 +178,6 @@ utilizar \textbf{negrito}, \textsc{Versalete} ou outro mecanismo para
 dar ênfase a uma palavra. Essa é uma orientação geral para a escrita de
 textos com \LaTeX{}: procure definir a estrutura, não a aparência.
 
-%Um exemplo de documento \LaTeX{} simples (lembre-se do significado
-%de ``\%''):
 Um exemplo de documento \LaTeX{} simples (lembre-se, ``\%'' indica um comentário):
 
 \begin{verbatim}
@@ -189,8 +187,8 @@ Um exemplo de documento \LaTeX{} simples (lembre-se, ``\%'' indica um comentári
         \documentclass[11pt]{book}
         % Vamos escrever em português do Brasil
         \usepackage[brazilian]{babel}
-        % Estas linhas não imprimem nada, apenas definem
-        % as informações que serão usadas por "\maketitle"
+        % Estas linhas não imprimem nada, apenas definem as
+        % informações que serão usadas por "\maketitle" mais adiante
         \author{Fulano de Tal}
         \title{Começando a usar o \LaTeX{}}
         % Finaliza o preâmbulo e inicia o conteúdo:
@@ -302,15 +300,16 @@ cada \emph{float}\footnote{É possível criar outros tipos de \emph{float}
 também: como pode ser visto no Captítulo~\ref{chap:exemplos}, este
 modelo define o tipo \cmd{program}.}. À parte isso, o conteúdo de
 um \emph{float} pode ser qualquer coisa mas, em geral, é
-\ltxcmd{includegraphics} ou \ltxcmd{begin\{tabular\}}.
+\ltxcmd{includegraphics} ou \ltxcmd{begin\{tabular\}} respectivamente.
 
-Uma consequência importante dos tipos diferentes de \emph{floats} é que
-\LaTeX{}\index{Floats!ordem} garante que a sequência das figuras e a
-sequência das tabelas sejam respeitadas (a Figura~6 nunca aparece depois da
-Figura~7). No entanto, isso \emph{não} se aplica a \emph{floats} de tipos
-diferentes, ou seja, se você definiu a Figura~5, a Tabela~3 e a Figura~6,
-elas podem aparecer no documento na ordem ``Figura~5, Tabela~3, Figura~6'',
-``Figura~5, Figura~6, Tabela~3'' ou ``Tabela~3, Figura~5, Figura~6''.
+Uma consequência importante (e proposital) dos tipos diferentes de
+\emph{floats} é que \LaTeX{}\index{Floats!ordem} garante que a sequência
+das figuras e a sequência das tabelas sejam respeitadas (a Figura~6 nunca
+aparece depois da Figura~7). No entanto, isso \emph{não} se aplica a
+\emph{floats} de tipos diferentes, ou seja, se você definiu a Figura~5,
+a Tabela~3 e a Figura~6, elas podem aparecer no documento na ordem
+``Figura~5, Tabela~3, Figura~6'', ``Figura~5, Figura~6, Tabela~3'' ou
+``Tabela~3, Figura~5, Figura~6''.
 
 \section{Referências cruzadas}
 \label{sec:refs}
@@ -406,8 +405,6 @@ Application-Level Checkpointing of \{MPI\} Programs'').
 %  (``Um título só tem maiúsculas em abreviaturas, como ABNT, ou nomes
 %  próprios'').
 %\end{description}
-%
-%\enlargethispage{-.5\baselineskip}
 %
 %Cada estilo de bibliografia utiliza um desses formatos e, portanto, é
 %desejável que o banco de dados funcione corretamente com ambos. No
@@ -512,9 +509,9 @@ as fontes oferecem essa possibilidade),
 \ltxcmd{begin\{flushleft\}} (alinha parágrafos à esquerda),
 \ltxcmd{begin\{flushright\}} (alinha parágrafos à direita)\footnote{É
 altamente recomendável carregar a package \pkg{ragged2e} (já incluída
-neste modelo) e utilizar \ltxcmd{Center}, \ltxcmd{FlushLeft} e
-\ltxcmd{FlushRight} ao invés de \ltxcmd{center}, \ltxcmd{flushleft}
-e \ltxcmd{flushright}.},
+neste modelo) e utilizar \cmd{Center}, \cmd{FlushLeft} e
+\cmd{FlushRight} ao invés de \cmd{center}, \cmd{flushleft}
+e \cmd{flushright}.},
 \ltxcmd{babelhyphenation} (permite ``ensinar'' \LaTeX{} como hifenizar
 uma lista de palavras, veja \cmd{texdoc babel}; note que, em geral, a
 hifenização automática de \LaTeX{} é excelente),
@@ -529,7 +526,7 @@ linha \emph{não} é justificada nesse caso),
 da página é espalhado verticalmente de maneira a fazer a última linha
 alinhada com o final das demais páginas) e
 \ltxcmd{newpage} (força uma quebra de página; o final da página
-\emph{não} é alinhado com o final das demais páginas nesse caso).
+\emph{não} é alinhado com o final das demais páginas nesse~caso).
 
 Mas, como discutido na Seção~\ref{sec:basico}, não é recomendável
 usar esses comandos ao longo do texto: o ideal em \LaTeX{} é expressar
