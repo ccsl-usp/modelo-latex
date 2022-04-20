@@ -315,8 +315,6 @@ a Tabela~3 e a Figura~6, elas podem aparecer no documento na ordem
 \section{Referências cruzadas}
 \label{sec:refs}
 
-\enlargethispage{-.5\baselineskip}
-
 É comum que um trecho do texto faça referência a outro trecho (``como
 discutimos no Capítulo~X\ldots''). Isso pode ser feito diretamente, mas
 se você reorganizar o documento ou acrescentar seções, a numeração pode
@@ -330,10 +328,7 @@ Esse mecanismo também é muito útil para figuras e tabelas. Dentro do
 uma legenda com \ltxcmd{caption}\index{Legendas}. Além disso, é possível
 inserir um \ltxcmd{label} dentro da legenda para que se possa fazer
 referência à figura/tabela no texto (com os comandos \ltxcmd{ref} e
-\ltxcmd{pageref})\footnote{Em alguns casos, é possível colocar o
-\ltxcmd{label} de uma figura ou tabela fora do comando \ltxcmd{caption}
-mas, como em muitos casos isso gera problemas, é um bom hábito sempre
-colocá-lo dentro dele.}.
+\ltxcmd{pageref}).
 
 \section{Referências bibliográficas e bibliografia}
 
@@ -385,8 +380,6 @@ ele pode ser citado com o comando \ltxcmd{cite\{dissertjourney\}}:
         }
 
 \end{verbatim}
-
-\enlargethispage{-.5\baselineskip}
 
 Em alguns casos, \LaTeX{} troca as letras maiúsculas definidas em
 \ltxcmd{title} para minúsculas. Para evitar que isso afete siglas

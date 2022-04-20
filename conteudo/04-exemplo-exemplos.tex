@@ -351,8 +351,19 @@ visto na Figura~\ref{fig:graficos}.
   \caption{Exemplos de gráficos gerados externamente}\label{fig:graficos}
 \end{figure}
 
-Observe que \LaTeX{} nem sempre posiciona os \emph{floats} no melhor
-lugar possível; leia a discussão a respeito na Seção~\ref{sec:limitations}.
+Ao trabalhar com \emph{floats}, tenha duas coisas em mente:
+
+\begin{itemize}
+
+  \item \emph{Floats} em geral incluem uma legenda e um \emph{label}.
+  Prefira sempre colocar o comando \textsf{\textbackslash{}label} de uma
+  figura ou tabela dentro do comando \textsf{\textbackslash{}caption};
+  não fazê-lo muitas vezes funciona, mas às vezes causa problemas.
+
+  \item \LaTeX{} nem sempre posiciona os \emph{floats} no melhor lugar
+  possível; leia a discussão a respeito na Seção~\ref{sec:limitations}.
+
+\end{itemize}
 
 \section{Tabelas}\index{Floats}
 
