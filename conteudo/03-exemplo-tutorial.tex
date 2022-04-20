@@ -281,8 +281,9 @@ Uma outra maneira de encontrar símbolos é usar este sítio: \url{detexify.kire
 \label{sec:floats}
 
 É possível utilizar \ltxcmd{includegraphics} para acrescentar figuras
-ao texto, mas normalmente elas não são inseridas assim. A razão é que,
-se você simplesmente inserir uma figura em qualquer lugar, ela pode
+ao texto (nos formatos \textsc{pdf}, \textsc{png} e \textsc{jpeg}),
+mas normalmente elas não são inseridas diretamente. A razão é que, se
+você simplesmente inserir uma figura em qualquer lugar, ela pode
 ser grande demais para o espaço disponível na página, o que forçará
 \LaTeX{} a deixar um espaço em branco e colocá-la na página seguinte.
 O mesmo vale para tabelas (criadas com \ltxcmd{begin\{tabular\}}).
@@ -538,36 +539,6 @@ o mais adequado é definir comandos novos, em geral usando os comandos
 de formatação mencionados acima. Esse é um tópico avançado, mas você
 pode consultar o início do arquivo \LaTeX{} deste capítulo para alguns
 exemplos simples.
-
-\section{Formatos de imagem}
-\label{sec:graficos}
-
-Podemos classificar imagens em quatro categorias:
-
-\begin{enumerate}
-    \item Imagens fotográficas ou escaneadas, que consistem em um conjunto
-    de \emph{pixels} coloridos sem organização previsível.
-
-    \item Ilustrações, que consistem em curvas e figuras geométricas
-    que formam uma imagem completa, como um objeto ou uma paisagem.
-    Apesar de lidarem com abstrações geométricas ao invés de meros
-    \emph{pixels}, elas ainda são desenhadas de forma totalmente manual
-    em programas como Inkscape ou CorelDraw!.
-
-    \item Diagramas, que são ilustrações estruturadas, como fluxogramas,
-    grafos ou diagramas UML, criadas com ferramentas como Draw.io,
-    LibreOffice Draw ou Microsoft Visio. Graças à sua estrutura intrínseca,
-    os programas podem automatizar, ao menos parcialmente, o trabalho de
-    posicionar e alinhar cada elemento.
-
-    \item Gráficos de dados, como gráficos de pizza ou de barras. A
-    geração desses gráficos, em geral, é quase totalmente automatizada
-    por ferramentas como Gnuplot, R, LibreOffice Calc ou Microsoft Excel.
-\end{enumerate}
-
-Em \LaTeX{}, é possível importar imagens fotográficas nos formatos
-\textsc{png} e \textsc{jpeg} e imagens dos demais tipos no formato
-\textsc{pdf}.
 
 % Esta informação é muito pouco relevante...
 %\section{Detalhes da linguagem}
