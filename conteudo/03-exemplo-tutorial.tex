@@ -445,8 +445,10 @@ que \pkg{biblatex} oferece uma solução.
 
 \enlargethispage{-.5\baselineskip}
 
-A diagramação de fórmulas matemáticas tem regras específicas; assim, para
-criar fórmulas em \LaTeX{}, é preciso usar um comando para iniciar o modo
+A diagramação de fórmulas matemáticas tem regras específicas: letras são
+interpretadas como variáveis e espaços em branco são ignorados (\LaTeX{}
+usa o contexto da fórmula para definir o espaçamento). Assim, para criar
+fórmulas em \LaTeX{}, é preciso usar um comando para iniciar o modo
 matemático. Isso pode ser feito de duas formas:
 
 \begin{itemize}
@@ -458,16 +460,6 @@ matemático. Isso pode ser feito de duas formas:
   separado são inseridas com \cmd{\sla{}[\emph{fórmula}\sla{}]} (ou
   \ltxcmd{begin\{displaymath\}}).
 \end{itemize}
-
-No modo matemático, letras são interpretadas como variáveis e espaços
-em branco são ignorados (\LaTeX{} usa o contexto da fórmula para
-definir o espaçamento). Para inserir um espaço explicitamente, use
-\ltxcmd{quad} ou \ltxcmd{enspace}. Para inserir texto ``normal'' em
-uma fórmula matemática, use \ltxcmd{text\{texto\}} (para texto de fato)
-ou \ltxcmd{mathit\{texto\}} (para nomes de variáveis ou funções com
-mais de uma letra). Pode ser necessário deixar um espaço no início do
-texto para evitar que ele fique colado com o caractere matemático que
-o antecede.
 
 Usando \ltxcmd{begin\{equation\}}, a fórmula recebe um número (que
 aparece à direita) ao qual você pode se referir no texto usando os
