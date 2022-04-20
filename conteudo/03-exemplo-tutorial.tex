@@ -213,6 +213,8 @@ no sumário (nem considerado na contagem de capítulos, seções etc.).
 \section{Executando \LaTeX{} e comandos auxiliares}
 \label{sec:make}
 
+\enlargethispage{.5\baselineskip}
+
 Depois de escrever o arquivo \cmd{.tex}, é preciso \emph{compilá-lo}, ou
 seja, processá-lo para gerar o \textsc{pdf} desejado. Isso envolve executar,
 além do próprio \LaTeX{} (veja a Seção~\ref{sec:versions}), alguns
@@ -276,6 +278,8 @@ nota\}}\index{Notas de rodapé}.
 \section{Figuras e tabelas (\emph{floats})}
 \label{sec:floats}
 
+\enlargethispage{.5\baselineskip}
+
 É possível utilizar \ltxcmd{includegraphics} para acrescentar figuras
 ao texto (nos formatos \textsc{pdf}, \textsc{png} e \textsc{jpeg}),
 mas normalmente elas não são inseridas diretamente. A razão é que, se
@@ -311,6 +315,8 @@ a Tabela~3 e a Figura~6, elas podem aparecer no documento na ordem
 \section{Referências cruzadas}
 \label{sec:refs}
 
+\enlargethispage{-.5\baselineskip}
+
 É comum que um trecho do texto faça referência a outro trecho (``como
 discutimos no Capítulo~X\ldots''). Isso pode ser feito diretamente, mas
 se você reorganizar o documento ou acrescentar seções, a numeração pode
@@ -329,10 +335,7 @@ referência à figura/tabela no texto (com os comandos \ltxcmd{ref} e
 mas, como em muitos casos isso gera problemas, é um bom hábito sempre
 colocá-lo dentro dele.}.
 
-
 \section{Referências bibliográficas e bibliografia}
-
-\enlargethispage{-.5\baselineskip}
 
 A geração de bibliografias no \LaTeX{} é feita através da package
 \pkg{biblatex}\index{biblatex} e do programa auxiliar
@@ -380,7 +383,10 @@ ele pode ser citado com o comando \ltxcmd{cite\{dissertjourney\}}:
             edition   = 2,
             location  = {Thousand Oaks, CA},
         }
+
 \end{verbatim}
+
+\enlargethispage{-.5\baselineskip}
 
 Em alguns casos, \LaTeX{} troca as letras maiúsculas definidas em
 \ltxcmd{title} para minúsculas. Para evitar que isso afete siglas
@@ -442,8 +448,6 @@ que \pkg{biblatex} oferece uma solução.
 
 
 \section{Fórmulas matemáticas}
-
-\enlargethispage{-.5\baselineskip}
 
 A diagramação de fórmulas matemáticas tem regras específicas: letras são
 interpretadas como variáveis e espaços em branco são ignorados (\LaTeX{}
