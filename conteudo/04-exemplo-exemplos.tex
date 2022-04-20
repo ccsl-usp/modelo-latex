@@ -283,16 +283,25 @@ Apêndice\textasciitilde\textbackslash{}ref\{ap:pseudocode\}}''.}.
 
 %%%%%
 
-\LaTeX{} é capaz de gerar gráficos de excelente qualidade com a
-\textit{package} \pkg{pgfplots} (há um exemplo comentado neste
-arquivo; experimente des-comentar para ver o resultado). Também é
-possível importar gráficos gerados por \texttt{matplotlib} e por
-\texttt{gnuplot} como qualquer outra imagem, mas nesse caso a fonte
-usada nesses gráficos provavelmente será diferente do corpo do texto.
-Conforme mencionado na Seção~\ref{sec:graficos}, há mecanismos para
-resolver esse problema\footnote{Você pode se interessar também pela
-\textit{package} \texttt{gnuplottex}.}: o resultado pode ser visto
-na Figura~\ref{fig:graficos}.
+\LaTeX{} também é capaz de gerar ilustrações e diagramas diretamente, mas
+usar esses recursos em geral não é trivial. Em particular, a package
+\textsf{tikz} oferece bons mecanismos para a criação de figuras (incluindo
+funções pré-prontas para formas geométricas, grafos, matrizes etc.) e é
+fácil usá-la para traçar linhas ou curvas simples.
+
+Gráficos de dados ou funções matemáticas de excelente qualidade podem ser
+gerados com a \textit{package} \pkg{pgfplots} (há um exemplo comentado neste
+arquivo; experimente des-comentar para ver o resultado). Também é possível
+importar gráficos gerados por \texttt{matplotlib} e por \texttt{gnuplot}
+como qualquer outra imagem, mas nesse caso a fonte usada nesses gráficos
+provavelmente será diferente do corpo do texto. Felizmente, isso pode ser
+solucionado: \cmd{Gnuplot}, com o \emph{driver} \cmd{lua tikz}\footnote{
+\url{www.gnuplot.info/docs\_5.2/Gnuplot\_5.2.pdf\#section*.516}}, e
+\cmd{matplotlib}, com o \emph{backend} \textsc{pgf}\footnote{
+\url{matplotlib.org/users/pgf.html}}, são capazes de exportar gráficos de
+dados na forma de comandos para \pkg{tikz}\footnote{Você pode se interessar
+também pela \textit{package} \texttt{gnuplottex}.}: o resultado pode ser
+visto na Figura~\ref{fig:graficos}.
 
 \begin{figure}
   \centering
