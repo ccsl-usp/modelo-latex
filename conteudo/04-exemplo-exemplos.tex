@@ -181,7 +181,7 @@ Tomemos dois números, $a$ e $b$, tais que $a=b+1$.
 Evidentemente, \LaTeX{} permite inserir figuras no texto; além disso, ele
 também permite girá-las e criar subfiguras (com sublegendas\index{Legendas}),
 como no exemplo da Figura~\ref{fig:subfigures}\index{Subfiguras}, que inclui
-as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
+as subfiguras~\ref{fig:subfigures:a} e~\ref{fig:subfigures:b}.
 
 % As packages relevantes para lidar com figuras são graphicx,
 % float, caption, rotating e subcaption. Observe que "subfigure"
@@ -203,7 +203,7 @@ as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
   % de lado a lado.
   \begin{subfigure}{0.4\textwidth}
     \centering
-    \begin{turn}{90}
+    \begin{turn}{90} % package rotating
       \includegraphics[width=.8\textwidth]{exemplo-grafo}
     \end{turn}
     \caption{O mesmo exemplo, girado.\label{fig:subfigures:b}}
@@ -213,8 +213,8 @@ as subfiguras \ref{fig:subfigures:a} e \ref{fig:subfigures:b}.
 \end{figure}
 
 Uma ``figura'', na verdade, pode ser qualquer tipo de conteúdo ilustrativo
-(um exemplo interessante é o cronograma mostrado na Figura~\ref{fig:gantt}) mas, com a
-\textit{package} \textsf{float}, também é possível definir ambientes
+(um exemplo interessante é o cronograma mostrado na Figura~\ref{fig:gantt})
+mas, com a \textit{package} \textsf{float}, também é possível definir ambientes
 específicos para cada tipo de conteúdo adicional (cada um com numeração
 independente), como é o caso do Programa~\ref{prog:java}\index{Floats}. Há
 mais informações e dicas sobre recursos específicos para inclusão de
