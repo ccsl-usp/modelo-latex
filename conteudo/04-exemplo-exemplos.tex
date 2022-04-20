@@ -373,6 +373,11 @@ sítio \url{www.tablesgenerator.com}.}; um exemplo simples é a Tabela~\ref{tab:
 Para um resultado visual excelente, não deixe de ler a documentação da
 \emph{package} \pkg{booktabs}.
 
+Normalmente, o fim de cada linha de uma tabela é indicado por
+\textsf{\textbackslash\textbackslash}. No entanto, se sua tabela causar
+erros misteriosos, experimente usar \textsf{\textbackslash{}tabularnewline}
+ao invés de \textsf{\textbackslash\textbackslash}.
+
 %%%%%%%% Tabelas lado-a-lado %%%%%%%%
 
 \begin{table}
@@ -537,16 +542,16 @@ separador decimal.
 33 & 0,5760 & 0,5446 & 0,8387 & 0,6494  & 1,5399  & 1,1924  & 1,8361  \\
 36 & 0,6283 & 0,5878 & 0,8090 & 0,7265  & 1,3764  & 1,2361  & 1,7013  \\
 39 & 0,6807 & 0,6293 & 0,7771 & 0,8098  & 1,2349  & 1,2868  & 1,5890  \\
+% Como nesta página há uma nota de rodapé, a linha separadora da
+% nota e o final da tabela ficam muito próximos; vamos forçar uma
+% quebra de página uma linha antes para resolver isso.
+\pagebreak
 42 & 0,7330 & 0,6691 & 0,7431 & 0,9004  & 1,1106  & 1,3456  & 1,4945  \\
 45 & 0,7854 & 0,7071 & 0,7071 & 1       & 1       & 1,4142  & 1,4142  \\
 48 & 0,8378 & 0,7431 & 0,6691 & 1,1106  & 0,9004  & 1,4945  & 1,3456  \\
 51 & 0,8901 & 0,7771 & 0,6293 & 1,2349  & 0,8098  & 1,5890  & 1,2868  \\
 54 & 0,9425 & 0,8090 & 0,5878 & 1,3764  & 0,7265  & 1,7013  & 1,2361  \\
 57 & 0,9948 & 0,8387 & 0,5446 & 1,5399  & 0,6494  & 1,8361  & 1,1924  \\
-% Como nesta página há uma nota de rodapé, a linha separadora da
-% nota e o final da tabela ficam muito próximos; vamos forçar uma
-% quebra de página uma linha antes para resolver isso.
-\pagebreak
 60 & 1,0472 & 0,8660 & 0,5000 & 1,7321  & 0,5774  & 2,0000  & 1,1547  \\
 63 & 1,0996 & 0,8910 & 0,4540 & 1,9626  & 0,5095  & 2,2027  & 1,1223  \\
 66 & 1,1519 & 0,9135 & 0,4067 & 2,2460  & 0,4452  & 2,4586  & 1,0946  \\
