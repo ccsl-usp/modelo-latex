@@ -49,6 +49,22 @@ bibliografia na página \pageref{bibliografia} para ver o resultado impresso):
   \end{itemize}
 \end{multicols}
 
+\textsf{biblatex} prefere o uso do campo ``date'' para definir ano, mês
+etc. No entanto, se você quiser garantir compatibilidade tanto com
+\textsf{biblatex} quanto com \textsf{bibtex}, use os campos ``year'' e
+``month''. Ambos reconhecem diversos formatos para o campo ``month'',
+mas apenas um funciona corretamente com os dois: o nome do mês em inglês,
+abreviado com três letras minúsculas e sem chaves, ou seja:
+
+\begin{verbatim}
+    ...
+    author = {Somebody},
+    year = {2011},
+    month = oct,
+    title = {Some title},
+    ...
+\end{verbatim}
+
 \section{Modo matemático}\index{Modo matemático}
 
 O modo matemático do \LaTeX{} tem sintaxe própria, mas ela não é complicada e

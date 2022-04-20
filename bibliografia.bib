@@ -22,17 +22,39 @@
 %
 % 6. Na verdade, as regras não são bem essas, mas segui-las é uma boa ideia:
 %    https://tex.stackexchange.com/a/262282
-
-
-% Esta entrada está comentada, ou seja, não tem efeito: se houvesse uma
-% referência a ela no texto, a referência ficaria inválida. Observe que,
-% para isso, o caractere arroba foi apagado!
+%
+% Por exemplo, esta entrada está comentada, ou seja, não tem efeito: se
+% houvesse uma referência a ela no texto, a referência ficaria inválida.
+% Observe que, para isso, o caractere arroba foi apagado!
+%
 %Book{JW82,
 % author    = {Richard A. Johnson and Dean W. Wichern},
 % title     = {Applied Multivariate Statistical Analysis},
 % publisher = {Prentice-Hall},
 % year      = {1983}
 %}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% O CAMPO "MONTH" %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% biblatex prefere o uso do campo "date" para definir ano, mês etc. No
+% entanto, se você quiser garantir compatibilidade tanto com biblatex
+% quanto com bibtex, use os campos "year" e "month". Ambos reconhecem
+% diversos formatos para o campo "month", mas apenas um funciona
+% corretamente com os dois: o nome do mês em inglês, abreviado com três
+% letras minúsculas e sem chaves, ou seja:
+%
+% ...
+% author = {Somebody},
+% year = {2011},
+% month = oct,
+% title = {Some title},
+% ...
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Esta entrada não está em uso em tese.tex, apenas em
 % apresentacao.tex, mas isso não é um problema: você pode
@@ -42,7 +64,7 @@
  title       = {{CORBA} v3.0 Specification},
  author      = {{Object Management Group}},
  shortauthor = {OMG},
- month       = Jul,
+ month       = jul,
  year        = {2002},
  note        = {OMG Document 02-06-33}
 }
@@ -77,7 +99,7 @@
  title    = {Handbook of Writing for the Mathematical Sciences},
  edition  = 2,
  publisher= {SIAM: Society for Industrial and Applied Mathematics},
- month    = Aug,
+ month    = aug,
  year     = {1998},
 }
 
@@ -85,7 +107,7 @@
  author   = {Donald E. Knuth and Tracy Larrabee and Paul M. Roberts},
  title    = {Mathematical Writing},
  publisher= {The Mathematical Association of America},
- month    = Sep,
+ month    = sep,
  year     = {1996}
 }
 
@@ -95,7 +117,7 @@
  booktitle= {ICCSA'03: The 2003 International Conference on Computational Science and its Applications},
  year     = {2003},
  pages    = {249-258},
- month    = May,
+ month    = may,
  publisher= {Springer-Verlag}
 }
 
@@ -163,7 +185,7 @@
  school   = {Instituto de Computação, Universidade de Campinas},
  address  = {Campinas, Brasil},
  year     = {2001},
- month    = Dec
+ month    = dec
 }
 
 @Conference{bronevetsky02,
@@ -192,14 +214,14 @@
  school   = {Instituto de Computação, Universidade de Campinas},
  address  = {Campinas, Brasil},
  year     = {2003},
- month    = Oct
+ month    = oct
 }
 
 @online{fowler04:designDead,
  author   = {Martin Fowler},
  title    = {Is Design Dead?},
  year     = {2004},
- month    = May,
+ month    = may,
  urldate  = {2010-01-30},
  url      = {martinfowler.com/articles/designDead.html},
 }
