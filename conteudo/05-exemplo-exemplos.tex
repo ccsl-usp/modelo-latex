@@ -13,6 +13,7 @@ o Capítulo~\ref{chap:tutorial} e outros materiais citados na
 Seção~\ref{sec:docs} apresentam os conceitos básicos.
 
 \section{Bibliografia e referências}
+\label{sec:exemplos-biblatex}
 
 A documentação do pacote biblatex\index{biblatex}~\citep{biblatex} é
 bastante extensa e explica (nas Seções~2.1.1 e 2.2.2) os diversos
@@ -49,6 +50,14 @@ bibliografia na página \pageref{bibliografia} para ver o resultado impresso):
   \end{itemize}
 \end{multicols}
 
+A maioria das revistas científicas ainda utiliza bibtex e não
+biblatex, mas isso não faz muita diferença na prática: \textsf{latexmk}
+identifica automaticamente qual sistema usar durante a geração do
+documento e os modelos normalmente já incluem os comandos
+\textsf{\textbackslash{}bibliography},
+\textsf{\textbackslash{}printbibliography},
+\textsf{\textbackslash{}bibliographystyle} etc. conforme o caso.
+O único detalhe importante se refere a datas:
 \textsf{biblatex} prefere o uso do campo ``date'' para definir ano, mês
 etc. No entanto, se você quiser garantir compatibilidade tanto com
 \textsf{biblatex} quanto com \textsf{bibtex}, use os campos ``year'' e
@@ -65,7 +74,36 @@ abreviado com três letras minúsculas e sem chaves, ou seja:
     ...
 \end{verbatim}
 
+Para citar material \emph{online}, há três casos:
+
+\begin{itemize}
+  \item Para citar publicações \emph{online} que se enquadram em
+  formatos tradicionais (como um ebook ou a versão online de um artigo
+  científico, independentemente de a revista existir ou não no formato
+  impresso), use o tipo correspondente (\textsf{@article}, \textsf{@book},
+  \textsf{@inproceedings} etc.) e acrescente o campo \textsf{url} no
+  arquivo .bib, aceito por todos os tipos de documento do bibtex/biblatex.
+
+  \item Para citar materiais essencialmente \emph{online} que possuem
+  título e autor definidos (como uma postagem ou comentário em blog
+  ou uma mensagem de email para uma lista de discussão), use o tipo
+  \textsf{@online} de biblatex. Bibtex\index{bibtex}, por padrão,
+  não tem um tipo específico para isso; com ele, normalmente usa-se
+  o campo ``howpublished'' para especificar que se trata de um recurso
+  \emph{online}.
+
+  \item Se o que você está citando não é algo com título, autor etc.
+  claramente determinados mas sim um sítio (como uma empresa ou um
+  produto), pode ser mais adequado colocar a referência apenas como
+  nota de rodapé e não na lista de referências. Outra opção é criar
+  uma segunda lista de referências especificamente para recursos
+  \emph{online} desse tipo (biblatex\index{biblatex} permite criar
+  múltiplas bibliografias).
+\end{itemize}
+
 \section{Caracteres especiais}
+
+\enlargethispage{.8\baselineskip}
 
 Um espaço não-separável é indicado pelo caractere til
 (``\cmd{\textasciitilde{}}'') e é possível forçar uma quebra de linha com
@@ -111,6 +149,8 @@ ou \ltxcmd{mathit\{texto\}} (para nomes de variáveis ou funções com
 mais de uma letra). Pode ser necessário deixar um espaço no início do
 texto para evitar que ele fique colado com o caractere matemático que
 o antecede.
+
+\enlargethispage{.8\baselineskip}
 
 Para recursos mais sofisticados, incluindo frações com múltiplas linhas,
 matrizes, sistemas de equações alinhadas, setas, acentos etc., procure
@@ -214,6 +254,7 @@ Tomemos dois números, $a$ e $b$, tais que $a=b+1$.
 \end{proof}
 
 \section{Figuras, gráficos e outros \emph{floats}}\index{Floats}
+\label{sec:exemplos-graficos}
 
 Evidentemente, \LaTeX{} permite inserir figuras no texto; além disso, ele
 também permite girá-las e criar subfiguras (com sublegendas\index{Legendas}),
@@ -248,6 +289,26 @@ as subfiguras~\ref{fig:subfigures:a} e~\ref{fig:subfigures:b}.
 
   \caption{Exemplo de subfiguras.\label{fig:subfigures}}
 \end{figure}
+
+\emph{Floats} em geral incluem uma legenda e um \emph{label}.
+Prefira sempre colocar o comando \textsf{\textbackslash{}label} de uma
+figura ou tabela dentro do comando \textsf{\textbackslash{}caption};
+não fazê-lo muitas vezes funciona, mas às vezes causa problemas.
+
+Você pode carregar arquivos de imagem de um subdiretório usando
+\texttt{dir/img.pdf}, mas é mais fácil modificar o comando
+\textsf{\textbackslash{}graphicspath} próximo ao início de cada
+arquivo \texttt{.tex} de exemplo.
+
+Para centralizar uma imagem mais larga que o texto da página, use
+a \emph{package} \textsf{adjustbox} (incluída neste modelo):
+
+\begin{verbatim}
+  \begin{figure}
+  \adjustbox{center}{\includegraphics[width=1.2\textwidth]{img.pdf}}
+  \caption{...}
+  \end{figure}
+\end{verbatim}
 
 Uma ``figura'', na verdade, pode ser qualquer tipo de conteúdo ilustrativo
 (um exemplo interessante é o cronograma mostrado na Figura~\ref{fig:gantt})
@@ -351,19 +412,10 @@ visto na Figura~\ref{fig:graficos}.
   \caption{Exemplos de gráficos gerados externamente}\label{fig:graficos}
 \end{figure}
 
-Ao trabalhar com \emph{floats}, tenha duas coisas em mente:
-
-\begin{itemize}
-
-  \item \emph{Floats} em geral incluem uma legenda e um \emph{label}.
-  Prefira sempre colocar o comando \textsf{\textbackslash{}label} de uma
-  figura ou tabela dentro do comando \textsf{\textbackslash{}caption};
-  não fazê-lo muitas vezes funciona, mas às vezes causa problemas.
-
-  \item \LaTeX{} nem sempre posiciona os \emph{floats} no melhor lugar
-  possível; leia a discussão a respeito na Seção~\ref{sec:limitations}.
-
-\end{itemize}
+Como dito antes, \LaTeX{} nem sempre posiciona os \emph{floats} no melhor
+lugar possível; se eles estão aparecendo em lugares ruins, tente defini-los
+no seu texto um pouco antes ou depois (veja a discussão a respeito na
+Seção~\ref{sec:limitations}).
 
 \section{Tabelas}\index{Floats}
 
@@ -528,41 +580,90 @@ separador decimal.
 % um item na lista de tabelas com o número de página correspondente.
 \captionlistentry{Exemplo de tabela com valores numéricos.}\label{tab:numeros}
 
+% a cada 2 graus
 0  & 0      & 0      & 1      & 0       & {-}     & 1       & {-}     \\
-3  & 0,0524 & 0,0523 & 0,9986 & 0,0524  & 19,0811 & 1,0014  & 19,1073 \\
-6  & 0,1047 & 0,1045 & 0,9945 & 0,1051  & 9,5144  & 1,0055  & 9,5668  \\
-9  & 0,1571 & 0,1564 & 0,9877 & 0,1584  & 6,3138  & 1,0125  & 6,3925  \\
-12 & 0,2094 & 0,2079 & 0,9781 & 0,2126  & 4,7046  & 1,0223  & 4,8097  \\
-15 & 0,2618 & 0,2588 & 0,9659 & 0,2679  & 3,7321  & 1,0353  & 3,8637  \\
-18 & 0,3142 & 0,3090 & 0,9511 & 0,3249  & 3,0777  & 1,0515  & 3,2361  \\
-21 & 0,3665 & 0,3584 & 0,9336 & 0,3839  & 2,6051  & 1,0711  & 2,7904  \\
-24 & 0,4189 & 0,4067 & 0,9135 & 0,4452  & 2,2460  & 1,0946  & 2,4586  \\
-27 & 0,4712 & 0,4540 & 0,8910 & 0,5095  & 1,9626  & 1,1223  & 2,2027  \\
-30 & 0,5236 & 0,5000 & 0,8660 & 0,5774  & 1,7321  & 1,1547  & 2,0000  \\
-33 & 0,5760 & 0,5446 & 0,8387 & 0,6494  & 1,5399  & 1,1924  & 1,8361  \\
-36 & 0,6283 & 0,5878 & 0,8090 & 0,7265  & 1,3764  & 1,2361  & 1,7013  \\
-39 & 0,6807 & 0,6293 & 0,7771 & 0,8098  & 1,2349  & 1,2868  & 1,5890  \\
+2  & 0,0349 & 0,0349 & 0,9994 &  0,0349 & 28,6363 &  1,0006 & 28,6537 \\
+4  & 0,0698 & 0,0698 & 0,9976 &  0,0699 & 14,3007 &  1,0024 & 14,3356 \\
+6  & 0,1047 & 0,1045 & 0,9945 &  0,1051 &  9,5144 &  1,0055 &  9,5668 \\
+8  & 0,1396 & 0,1392 & 0,9903 &  0,1405 &  7,1154 &  1,0098 &  7,1853 \\
+10 & 0,1745 & 0,1736 & 0,9848 &  0,1763 &  5,6713 &  1,0154 &  5,7588 \\
+12 & 0,2094 & 0,2079 & 0,9781 &  0,2126 &  4,7046 &  1,0223 &  4,8097 \\
+14 & 0,2443 & 0,2419 & 0,9703 &  0,2493 &  4,0108 &  1,0306 &  4,1336 \\
+16 & 0,2793 & 0,2756 & 0,9613 &  0,2867 &  3,4874 &  1,0403 &  3,6280 \\
+18 & 0,3142 & 0,3090 & 0,9511 &  0,3249 &  3,0777 &  1,0515 &  3,2361 \\
+20 & 0,3491 & 0,3420 & 0,9397 &  0,3640 &  2,7475 &  1,0642 &  2,9238 \\
+22 & 0,3840 & 0,3746 & 0,9272 &  0,4040 &  2,4751 &  1,0785 &  2,6695 \\
+24 & 0,4189 & 0,4067 & 0,9135 &  0,4452 &  2,2460 &  1,0946 &  2,4586 \\
+26 & 0,4538 & 0,4384 & 0,8988 &  0,4877 &  2,0503 &  1,1126 &  2,2812 \\
+28 & 0,4887 & 0,4695 & 0,8829 &  0,5317 &  1,8807 &  1,1326 &  2,1301 \\
+30 & 0,5236 & 0,5000 & 0,8660 &  0,5774 &  1,7321 &  1,1547 &  2,0000 \\
+32 & 0,5585 & 0,5299 & 0,8480 &  0,6249 &  1,6003 &  1,1792 &  1,8871 \\
+34 & 0,5934 & 0,5592 & 0,8290 &  0,6745 &  1,4826 &  1,2062 &  1,7883 \\
+36 & 0,6283 & 0,5878 & 0,8090 &  0,7265 &  1,3764 &  1,2361 &  1,7013 \\
+38 & 0,6632 & 0,6157 & 0,7880 &  0,7813 &  1,2799 &  1,2690 &  1,6243 \\
+40 & 0,6981 & 0,6428 & 0,7660 &  0,8391 &  1,1918 &  1,3054 &  1,5557 \\
+42 & 0,7330 & 0,6691 & 0,7431 &  0,9004 &  1,1106 &  1,3456 &  1,4945 \\
+44 & 0,7679 & 0,6947 & 0,7193 &  0,9657 &  1,0355 &  1,3902 &  1,4396 \\
+45 & 0,7854 & 0,7071 & 0,7071 &  1      &  1      &  1,4142 &  1,4142 \\
+46 & 0,8029 & 0,7193 & 0,6947 &  1,0355 &  0,9657 &  1,4396 &  1,3902 \\
+48 & 0,8378 & 0,7431 & 0,6691 &  1,1106 &  0,9004 &  1,4945 &  1,3456 \\
+50 & 0,8727 & 0,7660 & 0,6428 &  1,1918 &  0,8391 &  1,5557 &  1,3054 \\
+52 & 0,9076 & 0,7880 & 0,6157 &  1,2799 &  0,7813 &  1,6243 &  1,2690 \\
+54 & 0,9425 & 0,8090 & 0,5878 &  1,3764 &  0,7265 &  1,7013 &  1,2361 \\
+56 & 0,9774 & 0,8290 & 0,5592 &  1,4826 &  0,6745 &  1,7883 &  1,2062 \\
+58 & 1,0123 & 0,8480 & 0,5299 &  1,6003 &  0,6249 &  1,8871 &  1,1792 \\
+60 & 1,0472 & 0,8660 & 0,5000 &  1,7321 &  0,5774 &  2,0000 &  1,1547 \\
+62 & 1,0821 & 0,8829 & 0,4695 &  1,8807 &  0,5317 &  2,1301 &  1,1326 \\
 % Como nesta página há uma nota de rodapé, a linha separadora da
 % nota e o final da tabela ficam muito próximos; vamos forçar uma
 % quebra de página uma linha antes para resolver isso.
 \pagebreak
-42 & 0,7330 & 0,6691 & 0,7431 & 0,9004  & 1,1106  & 1,3456  & 1,4945  \\
-45 & 0,7854 & 0,7071 & 0,7071 & 1       & 1       & 1,4142  & 1,4142  \\
-48 & 0,8378 & 0,7431 & 0,6691 & 1,1106  & 0,9004  & 1,4945  & 1,3456  \\
-51 & 0,8901 & 0,7771 & 0,6293 & 1,2349  & 0,8098  & 1,5890  & 1,2868  \\
-54 & 0,9425 & 0,8090 & 0,5878 & 1,3764  & 0,7265  & 1,7013  & 1,2361  \\
-57 & 0,9948 & 0,8387 & 0,5446 & 1,5399  & 0,6494  & 1,8361  & 1,1924  \\
-60 & 1,0472 & 0,8660 & 0,5000 & 1,7321  & 0,5774  & 2,0000  & 1,1547  \\
-63 & 1,0996 & 0,8910 & 0,4540 & 1,9626  & 0,5095  & 2,2027  & 1,1223  \\
-66 & 1,1519 & 0,9135 & 0,4067 & 2,2460  & 0,4452  & 2,4586  & 1,0946  \\
-69 & 1,2043 & 0,9336 & 0,3584 & 2,6051  & 0,3839  & 2,7904  & 1,0711  \\
-72 & 1,2566 & 0,9511 & 0,3090 & 3,0777  & 0,3249  & 3,2361  & 1,0515  \\
-75 & 1,3090 & 0,9659 & 0,2588 & 3,7321  & 0,2679  & 3,8637  & 1,0353  \\
-78 & 1,3614 & 0,9781 & 0,2079 & 4,7046  & 0,2126  & 4,8097  & 1,0223  \\
-81 & 1,4137 & 0,9877 & 0,1564 & 6,3138  & 0,1584  & 6,3925  & 1,0125  \\
-84 & 1,4661 & 0,9945 & 0,1045 & 9,5144  & 0,1051  & 9,5668  & 1,0055  \\
-87 & 1,5184 & 0,9986 & 0,0523 & 19,0811 & 0,0524  & 19,1073 & 1,0014  \\
-90 & 1,5708 & 1      & 0      & {-}     & 0       & {-}     & 1
+64 & 1,1170 & 0,8988 & 0,4384 &  2,0503 &  0,4877 &  2,2812 &  1,1126 \\
+66 & 1,1519 & 0,9135 & 0,4067 &  2,2460 &  0,4452 &  2,4586 &  1,0946 \\
+68 & 1,1868 & 0,9272 & 0,3746 &  2,4751 &  0,4040 &  2,6695 &  1,0785 \\
+70 & 1,2217 & 0,9397 & 0,3420 &  2,7475 &  0,3640 &  2,9238 &  1,0642 \\
+72 & 1,2566 & 0,9511 & 0,3090 &  3,0777 &  0,3249 &  3,2361 &  1,0515 \\
+74 & 1,2915 & 0,9613 & 0,2756 &  3,4874 &  0,2867 &  3,6280 &  1,0403 \\
+76 & 1,3265 & 0,9703 & 0,2419 &  4,0108 &  0,2493 &  4,1336 &  1,0306 \\
+78 & 1,3614 & 0,9781 & 0,2079 &  4,7046 &  0,2126 &  4,8097 &  1,0223 \\
+80 & 1,3963 & 0,9848 & 0,1736 &  5,6713 &  0,1763 &  5,7588 &  1,0154 \\
+82 & 1,4312 & 0,9903 & 0,1392 &  7,1154 &  0,1405 &  7,1853 &  1,0098 \\
+84 & 1,4661 & 0,9945 & 0,1045 &  9,5144 &  0,1051 &  9,5668 &  1,0055 \\
+86 & 1,5010 & 0,9976 & 0,0698 & 14,3007 &  0,0699 & 14,3356 &  1,0024 \\
+88 & 1,5359 & 0,9994 & 0,0349 & 28,6363 &  0,0349 & 28,6537 &  1,0006 \\
+90 & 1,5708 & 1      & 0      & {-}     &  0      & {-}     &  1
+% A cada 3 graus:
+%0  & 0      & 0      & 1      & 0       & {-}     & 1       & {-}     \\
+%3  & 0,0524 & 0,0523 & 0,9986 & 0,0524  & 19,0811 & 1,0014  & 19,1073 \\
+%6  & 0,1047 & 0,1045 & 0,9945 & 0,1051  & 9,5144  & 1,0055  & 9,5668  \\
+%9  & 0,1571 & 0,1564 & 0,9877 & 0,1584  & 6,3138  & 1,0125  & 6,3925  \\
+%12 & 0,2094 & 0,2079 & 0,9781 & 0,2126  & 4,7046  & 1,0223  & 4,8097  \\
+%15 & 0,2618 & 0,2588 & 0,9659 & 0,2679  & 3,7321  & 1,0353  & 3,8637  \\
+%18 & 0,3142 & 0,3090 & 0,9511 & 0,3249  & 3,0777  & 1,0515  & 3,2361  \\
+%21 & 0,3665 & 0,3584 & 0,9336 & 0,3839  & 2,6051  & 1,0711  & 2,7904  \\
+%24 & 0,4189 & 0,4067 & 0,9135 & 0,4452  & 2,2460  & 1,0946  & 2,4586  \\
+%27 & 0,4712 & 0,4540 & 0,8910 & 0,5095  & 1,9626  & 1,1223  & 2,2027  \\
+%30 & 0,5236 & 0,5000 & 0,8660 & 0,5774  & 1,7321  & 1,1547  & 2,0000  \\
+%33 & 0,5760 & 0,5446 & 0,8387 & 0,6494  & 1,5399  & 1,1924  & 1,8361  \\
+%36 & 0,6283 & 0,5878 & 0,8090 & 0,7265  & 1,3764  & 1,2361  & 1,7013  \\
+%39 & 0,6807 & 0,6293 & 0,7771 & 0,8098  & 1,2349  & 1,2868  & 1,5890  \\
+%42 & 0,7330 & 0,6691 & 0,7431 & 0,9004  & 1,1106  & 1,3456  & 1,4945  \\
+%45 & 0,7854 & 0,7071 & 0,7071 & 1       & 1       & 1,4142  & 1,4142  \\
+%48 & 0,8378 & 0,7431 & 0,6691 & 1,1106  & 0,9004  & 1,4945  & 1,3456  \\
+%51 & 0,8901 & 0,7771 & 0,6293 & 1,2349  & 0,8098  & 1,5890  & 1,2868  \\
+%54 & 0,9425 & 0,8090 & 0,5878 & 1,3764  & 0,7265  & 1,7013  & 1,2361  \\
+%57 & 0,9948 & 0,8387 & 0,5446 & 1,5399  & 0,6494  & 1,8361  & 1,1924  \\
+%60 & 1,0472 & 0,8660 & 0,5000 & 1,7321  & 0,5774  & 2,0000  & 1,1547  \\
+%63 & 1,0996 & 0,8910 & 0,4540 & 1,9626  & 0,5095  & 2,2027  & 1,1223  \\
+%66 & 1,1519 & 0,9135 & 0,4067 & 2,2460  & 0,4452  & 2,4586  & 1,0946  \\
+%69 & 1,2043 & 0,9336 & 0,3584 & 2,6051  & 0,3839  & 2,7904  & 1,0711  \\
+%72 & 1,2566 & 0,9511 & 0,3090 & 3,0777  & 0,3249  & 3,2361  & 1,0515  \\
+%75 & 1,3090 & 0,9659 & 0,2588 & 3,7321  & 0,2679  & 3,8637  & 1,0353  \\
+%78 & 1,3614 & 0,9781 & 0,2079 & 4,7046  & 0,2126  & 4,8097  & 1,0223  \\
+%81 & 1,4137 & 0,9877 & 0,1564 & 6,3138  & 0,1584  & 6,3925  & 1,0125  \\
+%84 & 1,4661 & 0,9945 & 0,1045 & 9,5144  & 0,1051  & 9,5668  & 1,0055  \\
+%87 & 1,5184 & 0,9986 & 0,0523 & 19,0811 & 0,0524  & 19,1073 & 1,0014  \\
+%90 & 1,5708 & 1      & 0      & {-}     & 0       & {-}     & 1
 \end{longtable}
 %\end{landscape}
 \egroup % definições especiais para siunitx
@@ -619,3 +720,4 @@ Resumindo:
 
 % Redefinindo para o valor default
 \setlength\extrarowheight{0pt}
+

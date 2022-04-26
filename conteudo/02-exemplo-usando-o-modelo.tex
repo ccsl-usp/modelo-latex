@@ -15,9 +15,7 @@ arquivos:
 
 \begin{itemize}
   \item \texttt{tese.tex}, \texttt{artigo.tex}, \texttt{apresentacao.tex}
-        e \texttt{poster.tex} (exemplos de cada um desses tipos de documento;
-        você pode alterar a língua de todos, incluindo a capa da tese, no
-        início desses arquivos);
+        e \texttt{poster.tex} (exemplos de cada um desses tipos de documento);
   \item Capítulos, apêndices, imagens etc. deste texto de exemplo, nos
         diretórios \texttt{conteudo}, \texttt{figuras} e \texttt{logos}
         (procure os comandos \texttt{\textbackslash{}input} e
@@ -30,7 +28,7 @@ arquivos:
   \item Arquivos com as configurações e \textit{packages} usadas, no
         diretório \texttt{extras} (você só precisa mexer neles se quiser
         aprender mais sobre \LaTeX{} ou modificar/acrescentar algo ao
-        modelo; eles incluem comentários detalhados).
+        modelo).
 \end{itemize}
 
 Para compilar o documento, basta executar o comando
@@ -43,6 +41,16 @@ inconsistentes (causando erros de compilação ou erros no \textsc{pdf} gerado,
 como referências faltando ou numeração de páginas incorreta no sumário).
 Nesse caso, é só usar o comando \textsf{latexmk -C}, que apaga todos esses
 arquivos auxiliares gerados, e em seguida rodar \textsf{latexmk} novamente.
+
+Você pode mudar a língua do documento para o inglês no início de cada
+arquivo .tex de exemplo, na linha \textsf{\textbackslash{}documentclass}.
+No caso do arquivo \textsf{tese.tex}, isso muda todos os textos padrão
+da capa e folhas de rosto.
+
+Os arquivos deste modelo, incluindo os do diretório \texttt{extras},
+incluem vários comentários com dicas e explicações; se o que você precisa
+não está mencionado diretamente, é provável que haja pelo menos a indicação
+da \textit{package} relacionada ao que você precisa.
 
 Se você encontrar algum problema com o modelo, ajude a melhorá-lo!
 Envie um relatório de erro ou entre em contato em
