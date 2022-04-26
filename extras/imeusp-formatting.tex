@@ -104,6 +104,8 @@
 % package coloca o espaço em branco e desabilita o recuo; como queremos
 % o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
 % redefini-lo depois de carregar a package.
+% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
+%       as linhas "oldparindent" e carregar a package com a opção "indent".
 \newlength\oldparindent
 \setlength\oldparindent\parindent
 \usepackage[parfill]{parskip}
