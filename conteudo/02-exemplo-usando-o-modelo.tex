@@ -1,0 +1,49 @@
+%!TeX root=../tese.tex
+%("dica" para o editor de texto: este arquivo é parte de um documento maior)
+% para saber mais: https://tex.stackexchange.com/q/78101
+
+\chapter{Usando este modelo}
+
+Não é necessário que o texto seja redigido usando \LaTeX{} ou este modelo,
+mas seu uso é fortemente recomendado, pois ele facilita diversas etapas do
+trabalho e o resultado final é muito bom\footnote{O uso de um sistema de
+controle de versões, como mercurial (\url{mercurial-scm.org}) ou git
+(\url{git-scm.com}), também é altamente recomendado.}. Este modelo é
+distribuído com uma ``colinha'' dos principais comandos \LaTeX{} e inclui
+comentários explicativos para auxiliá-lo com ele, sendo composto dos
+arquivos:
+
+\begin{itemize}
+  \item \texttt{tese.tex}, \texttt{artigo.tex}, \texttt{apresentacao.tex}
+        e \texttt{poster.tex} (exemplos de cada um desses tipos de documento;
+        você pode alterar a língua de todos, incluindo a capa da tese, no
+        início desses arquivos);
+  \item Capítulos, apêndices, imagens etc. deste texto de exemplo, nos
+        diretórios \texttt{conteudo}, \texttt{figuras} e \texttt{logos}
+        (procure os comandos \texttt{\textbackslash{}input} e
+        \texttt{\textbackslash{}graphicspath} nos arquivos de exemplo
+        mencionados acima para modificar o nome desses diretórios);
+  \item \texttt{bibliografia.bib} (exemplo de banco de dados bibliográficos;
+        procure o comando \texttt{\textbackslash{}addbibresource} nos
+        arquivos de exemplo mencionados acima para modificar o nome desse
+        arquivo ou acrescentar outros);
+  \item Arquivos com as configurações e \textit{packages} usadas, no
+        diretório \texttt{extras} (você só precisa mexer neles se quiser
+        aprender mais sobre \LaTeX{} ou modificar/acrescentar algo ao
+        modelo; eles incluem comentários detalhados).
+\end{itemize}
+
+Para compilar o documento, basta executar o comando
+\textsf{latexmk}\footnote{Você também pode usar \textsf{latexmk poster},
+\textsf{latexmk apresentacao} etc.}. Talvez seu editor ofereça uma opção
+de menu para compilar o documento; sempre que possível, configure-o para
+utilizar o \textsf{latexmk} ao selecioná-la. \LaTeX{} gera diversos arquivos
+auxiliares durante a compilação que, em algumas raras situações, podem ficar
+inconsistentes (causando erros de compilação ou erros no \textsc{pdf} gerado,
+como referências faltando ou numeração de páginas incorreta no sumário).
+Nesse caso, é só usar o comando \textsf{latexmk -C}, que apaga todos esses
+arquivos auxiliares gerados, e em seguida rodar \textsf{latexmk} novamente.
+
+Se você encontrar algum problema com o modelo, ajude a melhorá-lo!
+Envie um relatório de erro ou entre em contato em
+\url{gitlab.com/ccsl-usp/modelo-latex}.
