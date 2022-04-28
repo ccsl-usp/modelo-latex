@@ -101,20 +101,16 @@ Para citar material \emph{online}, há três casos:
   múltiplas bibliografias).
 \end{itemize}
 
-\section{Caracteres especiais}
+\section{Identificando problemas}
 
-\enlargethispage{.8\baselineskip}
+Como mencionado na Seção~\ref{sec:limitations}, \LaTeX{} gera um grande
+volume de mensagens informativas durante o processamento, o que torna mais
+difícil encontrar problemas. O arquivo de configuração \cmd{latexmkrc} deste
+modelo utiliza o programa \cmd{texlogsieve} para filtrar essas mensagens,
+apresentando apenas as mais importantes para o usuário; considere usá-lo
+em outros trabalhos com \LaTeX{} também.
 
-Um espaço não-separável é indicado pelo caractere til
-(``\cmd{\textasciitilde{}}'') e é possível forçar uma quebra de linha com
-``\cmd{\sla\sla{}}''. Aspas tipográficas (``\;'' e `\;') são inseridas
-com \`\space\,\`\space\space\,\textquotesingle\,\textquotesingle{} e
-\`\space\,\,\textquotesingle. Os principais símbolos matemáticos estão
-listados em \textsf{texdoc undergradmath} e você pode consultar a lista
-completa de símbolos disponíveis com \textsf{texdoc symbols-a4} ou em
-\url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
-Uma outra maneira de encontrar símbolos é usar este sítio:
-\url{detexify.kirelabs.org/classify.html}.
+\enlargethispage{.5\baselineskip}
 
 \section{Modo matemático}\index{Modo matemático}
 
@@ -125,7 +121,7 @@ por Einstein'', ou ainda ``equações de segundo grau (Equação \ref{eq:2grau})
 são estudadas no ensino médio. As raízes de uma equação de segundo grau podem
 ser encontradas por~\eqref{eq:bhaskara} --- a fórmula de Bháskara.
 O valor do discriminante $\Delta$ (Equação \ref{eq:delta}) determina se a
-equação tem zero, uma ou duas raízes reais distintas''.
+equação tem zero, uma ou duas raízes reais~distintas''.
 
 % Equação simples, com numeração à direita
 \begin{equation}
@@ -142,6 +138,8 @@ equação tem zero, uma ou duas raízes reais distintas''.
     \Delta\enspace(\mathit{delta}) = b^2-4ac
 \end{gather}
 
+\enlargethispage{.5\baselineskip}
+
 Para inserir um espaço explicitamente no modo matemático, use
 \ltxcmd{quad} ou \ltxcmd{enspace}. Para inserir texto ``normal'' em
 uma fórmula matemática, use \ltxcmd{text\{texto\}} (para texto de fato)
@@ -149,8 +147,6 @@ ou \ltxcmd{mathit\{texto\}} (para nomes de variáveis ou funções com
 mais de uma letra). Pode ser necessário deixar um espaço no início do
 texto para evitar que ele fique colado com o caractere matemático que
 o antecede.
-
-\enlargethispage{.8\baselineskip}
 
 Para recursos mais sofisticados, incluindo frações com múltiplas linhas,
 matrizes, sistemas de equações alinhadas, setas, acentos etc., procure
@@ -252,6 +248,28 @@ Tomemos dois números, $a$ e $b$, tais que $a=b+1$.
   \textsf{\textbf{P}} tem apenas uma letra, enquanto
   \textsf{\textbf{NP}} tem duas letras.
 \end{proof}
+
+
+\section{Quebras de página}
+\label{sec:quebras}
+
+O algoritmo que \LaTeX{} usa para quebrar páginas funciona bem, minimizando
+linhas órfãs ou viúvas e garantindo uma distribuição homogênea do texto na
+página, mas não é excelente. Assim, se houver quebras de página ruins no
+seu texto final, pode ser útil modificá-las manualmente. Uma técnica usada
+por editores profissionais é mudar ligeiramente a altura do texto impresso
+em algumas páginas, melhorando a distribuição geral do texto. Para isso,
+ao invés de comandos como \ltxcmd{pagebreak} ou \ltxcmd{newpage}, o mais
+adequado é usar \ltxcmd{enlargethispage\{\sla{}baselineskip\}} (ou
+\cmd{-1\sla{}baselineskip}). Esse comando instrui \LaTeX{} a fazer a
+página ligeiramente maior (ou menor), tornando possível acomodar mais
+uma linha de texto (ou uma linha a menos). Em documentos frente e verso,
+lembre-se de sempre garantir que a página adjacente também tenha seu
+tamanho modificado para que a alteração não seja tão perceptível. Um
+outro truque às vezes útil é aplicar o comando \ltxcmd{looseness=1} (ou
+-1) a um parágrafo, que faz \LaTeX{} tentar reorganizar as quebras de
+linha de maneira a fazer o parágrafo ter uma linha a mais (ou a menos),
+se isso for possível.
 
 \section{Figuras, gráficos e outros \emph{floats}}\index{Floats}
 \label{sec:exemplos-graficos}
@@ -412,10 +430,22 @@ visto na Figura~\ref{fig:graficos}.
   \caption{Exemplos de gráficos gerados externamente}\label{fig:graficos}
 \end{figure}
 
-Como dito antes, \LaTeX{} nem sempre posiciona os \emph{floats} no melhor
-lugar possível; se eles estão aparecendo em lugares ruins, tente defini-los
-no seu texto um pouco antes ou depois (veja a discussão a respeito na
-Seção~\ref{sec:limitations}).
+Note que a colocação automática dos \emph{floats} em geral funciona bem,
+mas às vezes pode ser melhorada. Isso acontece porque \LaTeX{} decide o
+posicionamento de cada \emph{float} individualmente, sem levar em conta
+os próximos \emph{floats}, e nunca reavalia essa decisão. No exemplo da
+Seção~\ref{sec:floats}, se a ordem ``Figura~5, Tabela~3, Figura~6'' for
+aceitável, esse vai ser o resultado, mesmo que a ordem ``Tabela~3, Figura~5,
+Figura~6'' seja melhor. Apenas se não for possível encontrar um lugar
+aceitável para a Figura~5 imediatamente (ou seja, na página atual) é que
+\LaTeX{} processa os \emph{floats} seguintes e, depois, procura novamente
+um lugar para ela. Por isso, depois que seu trabalho estiver finalizado,
+vale a pena avaliar se a colocação dos \emph{floats} pode ser melhorada;
+se sim, mudar o lugar em que eles são definidos no documento (veja algumas
+dicas em \cite{floats2014}) pode fazer \LaTeX{} gerar um resultado melhor
+(mas lembre-se que isso só faz sentido depois que o documento estiver
+pronto, pois qualquer mudança no texto pode mudar totalmente a posição
+final dos \emph{floats}).
 
 \section{Tabelas}\index{Floats}
 
@@ -424,11 +454,6 @@ tabelas\index{Floats}\footnote{Para defini-las com \LaTeX{}, pode valer a pena u
 sítio \url{www.tablesgenerator.com}.}; um exemplo simples é a Tabela~\ref{tab:amino_acidos}.
 Para um resultado visual excelente, não deixe de ler a documentação da
 \emph{package} \pkg{booktabs}.
-
-Normalmente, o fim de cada linha de uma tabela é indicado por
-\textsf{\textbackslash\textbackslash}. No entanto, se sua tabela causar
-erros misteriosos, experimente usar \textsf{\textbackslash{}tabularnewline}
-ao invés de \textsf{\textbackslash\textbackslash}.
 
 %%%%%%%% Tabelas lado-a-lado %%%%%%%%
 
@@ -474,6 +499,11 @@ ao invés de \textsf{\textbackslash\textbackslash}.
 
   \caption{Exemplos de tabelas (códigos, abreviaturas e nomes dos aminoácidos).\label{tab:amino_acidos}}
 \end{table}
+
+Normalmente, o fim de cada linha de uma tabela é indicado por
+\textsf{\textbackslash\textbackslash}. No entanto, se sua tabela causar
+erros misteriosos, experimente usar \textsf{\textbackslash{}tabularnewline}
+ao invés de \textsf{\textbackslash\textbackslash}.
 
 Se a tabela tem muitas linhas e, portanto, não cabe em uma única página, é
 possível fazê-la continuar ao longo de várias páginas com a \textit{package}
@@ -586,6 +616,10 @@ separador decimal.
 4  & 0,0698 & 0,0698 & 0,9976 &  0,0699 & 14,3007 &  1,0024 & 14,3356 \\
 6  & 0,1047 & 0,1045 & 0,9945 &  0,1051 &  9,5144 &  1,0055 &  9,5668 \\
 8  & 0,1396 & 0,1392 & 0,9903 &  0,1405 &  7,1154 &  1,0098 &  7,1853 \\
+% Como nesta página há uma nota de rodapé, a linha separadora da
+% nota e o final da tabela ficam muito próximos; vamos forçar uma
+% quebra de página uma linha antes para resolver isso.
+\pagebreak
 10 & 0,1745 & 0,1736 & 0,9848 &  0,1763 &  5,6713 &  1,0154 &  5,7588 \\
 12 & 0,2094 & 0,2079 & 0,9781 &  0,2126 &  4,7046 &  1,0223 &  4,8097 \\
 14 & 0,2443 & 0,2419 & 0,9703 &  0,2493 &  4,0108 &  1,0306 &  4,1336 \\
@@ -604,7 +638,6 @@ separador decimal.
 40 & 0,6981 & 0,6428 & 0,7660 &  0,8391 &  1,1918 &  1,3054 &  1,5557 \\
 42 & 0,7330 & 0,6691 & 0,7431 &  0,9004 &  1,1106 &  1,3456 &  1,4945 \\
 44 & 0,7679 & 0,6947 & 0,7193 &  0,9657 &  1,0355 &  1,3902 &  1,4396 \\
-45 & 0,7854 & 0,7071 & 0,7071 &  1      &  1      &  1,4142 &  1,4142 \\
 46 & 0,8029 & 0,7193 & 0,6947 &  1,0355 &  0,9657 &  1,4396 &  1,3902 \\
 48 & 0,8378 & 0,7431 & 0,6691 &  1,1106 &  0,9004 &  1,4945 &  1,3456 \\
 50 & 0,8727 & 0,7660 & 0,6428 &  1,1918 &  0,8391 &  1,5557 &  1,3054 \\
@@ -614,10 +647,6 @@ separador decimal.
 58 & 1,0123 & 0,8480 & 0,5299 &  1,6003 &  0,6249 &  1,8871 &  1,1792 \\
 60 & 1,0472 & 0,8660 & 0,5000 &  1,7321 &  0,5774 &  2,0000 &  1,1547 \\
 62 & 1,0821 & 0,8829 & 0,4695 &  1,8807 &  0,5317 &  2,1301 &  1,1326 \\
-% Como nesta página há uma nota de rodapé, a linha separadora da
-% nota e o final da tabela ficam muito próximos; vamos forçar uma
-% quebra de página uma linha antes para resolver isso.
-\pagebreak
 64 & 1,1170 & 0,8988 & 0,4384 &  2,0503 &  0,4877 &  2,2812 &  1,1126 \\
 66 & 1,1519 & 0,9135 & 0,4067 &  2,2460 &  0,4452 &  2,4586 &  1,0946 \\
 68 & 1,1868 & 0,9272 & 0,3746 &  2,4751 &  0,4040 &  2,6695 &  1,0785 \\
@@ -720,4 +749,17 @@ Resumindo:
 
 % Redefinindo para o valor default
 \setlength\extrarowheight{0pt}
+
+\section{Caracteres especiais}
+
+Um espaço não-separável é indicado pelo caractere til
+(``\cmd{\textasciitilde{}}'') e é possível forçar uma quebra de linha com
+``\cmd{\sla\sla{}}''. Aspas tipográficas (``\;'' e `\;') são inseridas
+com \`\space\,\`\space\space\,\textquotesingle\,\textquotesingle{} e
+\`\space\,\,\textquotesingle. Os principais símbolos matemáticos estão
+listados em \textsf{texdoc undergradmath} e você pode consultar a lista
+completa de símbolos disponíveis com \textsf{texdoc symbols-a4} ou em
+\url{www.ctan.org/tex-archive/info/symbols/comprehensive/symbols-a4.pdf}.
+Uma outra maneira de encontrar símbolos é usar este sítio:
+\url{detexify.kirelabs.org/classify.html}.
 

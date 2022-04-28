@@ -30,6 +30,8 @@ mas sim expor seus princípios de funcionamento e principais recursos,
 de maneira que o leitor esteja melhor capacitado a compreender outros
 documentos e exemplos.
 
+\enlargethispage{-.5\baselineskip}
+
 \section{Por que \LaTeX{}?}
 
 Preparar um texto para impressão envolve duas coisas:
@@ -89,6 +91,8 @@ espaçamentos mais homogêneos e menos palavras hifenizadas.}.
 
 \section{Visão geral}
 
+\enlargethispage{.5\baselineskip}
+
 Com \LaTeX{}, você prepara o texto (incluindo as indicações de estrutura) em
 um editor de textos qualquer, salva como arquivo de texto puro (``.txt'',
 mas é comum usar a extensão ``.tex'' ao invés de ``.txt'') e processa esse
@@ -134,6 +138,8 @@ científicas fornecem modelos de acordo com suas diretrizes.
 
 \section{Estrutura de um documento \LaTeX{}}
 \label{sec:basico}
+
+\enlargethispage{.5\baselineskip}
 
 O preâmbulo \LaTeX{} começa com a definição da \emph{classe} a ser utilizada,
 que determina boa parte da configuração do documento. As principais classes
@@ -648,41 +654,10 @@ indesejáveis:
     isso pode ser contornado mudando a ordem em que elas são carregadas,
     mas em outros pode simplesmente não ser possível combiná-las.
 
-    \item A colocação automática dos \emph{floats} em geral funciona bem, mas
-    nem sempre. Isso acontece porque \LaTeX{} decide o posicionamento de cada
-    \emph{float} individualmente, sem levar em conta os próximos \emph{floats},
-    e nunca reavalia essa decisão. No exemplo da Seção~\ref{sec:floats}, se a
-    ordem ``Figura~5, Tabela~3, Figura~6'' for aceitável, esse vai ser o
-    resultado, mesmo que a ordem ``Tabela~3, Figura~5, Figura~6'' seja melhor.
-    Apenas se não for possível encontrar um lugar aceitável para a Figura~5
-    imediatamente (ou seja, na página atual) é que \LaTeX{} processa os
-    \emph{floats} seguintes e, depois, procura novamente um lugar para ela.
-    Por isso, depois que seu trabalho estiver finalizado, vale a pena
-    avaliar se a colocação dos \emph{floats} pode ser melhorada; se sim,
-    mudar o lugar em que eles são definidos no documento (veja algumas
-    dicas em \cite{floats2014}) pode fazer \LaTeX{}
-    gerar um resultado melhor (mas lembre-se que isso só faz sentido depois
-    que o documento estiver pronto, pois qualquer mudança no texto pode
-    mudar totalmente a posição final dos \emph{floats}).
-
-    \item O algoritmo que \LaTeX{} usa para quebrar páginas funciona
-    bem, minimizando linhas órfãs ou viúvas e garantindo uma distribuição
-    homogênea do texto na página, mas não é excelente. Assim, se
-    houver quebras de página ruins no seu texto final, pode ser útil
-    modificá-las manualmente. Uma técnica usada por editores profissionais
-    é mudar ligeiramente a altura do texto impresso em algumas páginas,
-    melhorando a distribuição geral do texto. Para isso, ao invés
-    de comandos como \ltxcmd{pagebreak} ou \ltxcmd{newpage}, o mais
-    adequado é usar \ltxcmd{enlargethispage\{\sla{}baselineskip\}} (ou
-    \cmd{-1\sla{}baselineskip}). Esse comando instrui \LaTeX{} a fazer
-    a página ligeiramente maior (ou menor), tornando possível acomodar
-    mais uma linha de texto (ou uma linha a menos). Em documentos frente
-    e verso, lembre-se de sempre garantir que a página adjacente também
-    tenha seu tamanho modificado para que a alteração não seja tão
-    perceptível. Um outro truque às vezes útil é aplicar o comando
-    \ltxcmd{looseness=1} (ou -1) a um parágrafo, que faz \LaTeX{} tentar
-    reorganizar as quebras de linha de maneira a fazer o parágrafo ter
-    uma linha a mais (ou a menos), se isso for possível.
+    \item A colocação automática dos \emph{floats} e o algoritmo
+    que encontra as quebras de página em geral funcionam bem, mas às
+    vezes é possível obter resultados melhores manualmente (veja as
+    Seções~\ref{sec:exemplos-graficos} e \ref{sec:quebras}).
 
     % LaTeX atualmente usa utf-8 por padrão; esta informação já
     % era pouco útil antes, agora é quase totalmente irrelevante
