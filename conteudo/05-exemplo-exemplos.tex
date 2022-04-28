@@ -405,13 +405,15 @@ fácil usá-la para traçar linhas ou curvas simples.
 Gráficos de dados ou funções matemáticas de excelente qualidade podem ser
 gerados com a \textit{package} \pkg{pgfplots} (há um exemplo comentado neste
 arquivo; experimente des-comentar para ver o resultado). Também é possível
-importar gráficos gerados por \texttt{matplotlib} e por \texttt{gnuplot}
+importar gráficos gerados por \cmd{matplotlib}, \cmd{gnuplot} e \cmd{R}
 como qualquer outra imagem, mas nesse caso a fonte usada nesses gráficos
 provavelmente será diferente do corpo do texto. Felizmente, isso pode ser
-solucionado: \cmd{Gnuplot}, com o \emph{driver} \cmd{lua tikz}\footnote{
-\url{www.gnuplot.info/docs\_5.2/Gnuplot\_5.2.pdf\#section*.516}}, e
-\cmd{matplotlib}, com o \emph{backend} \textsc{pgf}\footnote{
-\url{matplotlib.org/users/pgf.html}}, são capazes de exportar gráficos de
+solucionado: \cmd{Gnuplot} (com o \emph{driver} \cmd{lua tikz}\footnote{
+\url{www.gnuplot.info/docs\_5.2/Gnuplot\_5.2.pdf\#section*.516}}),
+\cmd{matplotlib} (com o \emph{backend} \textsc{pgf}\footnote{
+\url{matplotlib.org/users/pgf.html}}) e \cmd{R} (com
+\cmd{tikzDevice}\footnote{\url{cran.r-project.org/package=tikzDevice}})
+são capazes de exportar gráficos de
 dados na forma de comandos para \pkg{tikz}\footnote{Você pode se interessar
 também pela \textit{package} \texttt{gnuplottex}.}: o resultado pode ser
 visto na Figura~\ref{fig:graficos}.
