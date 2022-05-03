@@ -27,7 +27,8 @@
 \providecommand\workname{} % Report, Thesis / Tese, Dissertação, Monografia
 \providecommand\degreename{} % Masters, Doctorate, Bachelor / Mestrado, Doutorado, Bacharelado
 \providecommand\titlename{} % Master, Doctor, Bachelor / Mestre(a), Doutor(a), Bacharel
-\providecommand\@licenseboilerplate{O conteúdo deste trabalho é publicado sob a licença}
+\providecommand\@assembleLicenseText[1]{O conteúdo deste trabalho
+                                        é publicado sob a licença #1}
 
 % Textos longos a serem traduzidos
 \providecommand\@coverTCCText{}
@@ -154,7 +155,8 @@
     Instituto de Matemática e Estatística,
     Universidade de São Paulo%
   }%
-  \renewcommand\@licenseboilerplate{O conteúdo deste trabalho é publicado sob a licença}%
+  \renewcommand{\@assembleLicenseText}[1]{O conteúdo deste trabalho
+                                          é publicado sob a licença #1}%
 }
 
 
@@ -274,7 +276,8 @@
     Institute of Mathematics and Statistics,
     University of São Paulo%
   }%
-  \renewcommand\@licenseboilerplate{The content of this work is published under the}%
+  \renewcommand{\@assembleLicenseText}[1]{The content of this work is
+                                          published under the #1 license}%
 }
 
 
@@ -355,37 +358,37 @@
 
   \exp_args:NV \str_case:nnF \@license
     {
-      {CC-BY}{\gdef\@license{\@licenseboilerplate\space CC~BY~4.0\\
+      {CC-BY}{\gdef\@license{\@assembleLicenseText{CC~BY~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by/4.0/}{%
         (Creative~Commons~Attribution~4.0~International~License)}}
         \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by/4.0/}}
       }
 
-      {CC-BY-NC}{\gdef\@license{\@licenseboilerplate\space CC~BY-NC~4.0\\
+      {CC-BY-NC}{\gdef\@license{\@assembleLicenseText{CC~BY-NC~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by-nc/4.0/}{%
         (Creative~Commons~Attribution-NonCommercial~4.0~International~License)}}
         \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/}}
       }
 
-      {CC-BY-ND}{\gdef\@license{\@licenseboilerplate\space CC~BY-ND~4.0\\
+      {CC-BY-ND}{\gdef\@license{\@assembleLicenseText{CC~BY-ND~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by-nd/4.0/}{%
         (Creative~Commons~Attribution-NoDerivatives~4.0~International~License)}}
         \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/}}
       }
 
-      {CC-BY-SA}{\gdef\@license{\@licenseboilerplate\space CC~BY-SA~4.0\\
+      {CC-BY-SA}{\gdef\@license{\@assembleLicenseText{CC~BY-SA~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by-sa/4.0/}{%
         (Creative~Commons~Attribution-ShareAlike~4.0~International~License)}}
         \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0/}}
       }
 
-      {CC-BY-NC-SA}{\gdef\@license{\@licenseboilerplate\space CC~BY-NC-SA~4.0\\
+      {CC-BY-NC-SA}{\gdef\@license{\@assembleLicenseText{CC~BY-NC-SA~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by-nc-sa/4.0/}{%
         (Creative~Commons~Attribution-NonCommercial-ShareAlike~4.0~International~License)}}
         \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-sa/4.0/}}
       }
 
-      {CC-BY-NC-ND}{\gdef\@license{\@licenseboilerplate\space CC~BY-NC-ND~4.0\\
+      {CC-BY-NC-ND}{\gdef\@license{\@assembleLicenseText{CC~BY-NC-ND~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by-nc-nd/4.0/}{%
         (Creative~Commons~Attribution-NonCommercial-NoDerivatives~4.0~International~License)}}
         \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/}}
