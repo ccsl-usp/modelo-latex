@@ -411,24 +411,6 @@
 \newcommand*{\@commakeywordspt}{\seq_use:Nn \@seqkeywordspt {,}}
 \newcommand*{\@commakeywordsen}{\seq_use:Nn \@seqkeywordsen {,}}
 
-\newcommand*{\@currlangkeywords}{%
-    \IfLanguagePatterns{brazilian}
-      {\@keywordspt}
-      {\@keywordsen}%
-}
-
-\newcommand*{\@currlangtitle}{%
-    \IfLanguagePatterns{brazilian}
-      {\@titlept}
-      {\@titleen}%
-}
-
-\newcommand*{\@currlangsubtitle}{%
-    \IfLanguagePatterns{brazilian}
-      {\@subtitlept}
-      {\@subtitleen}%
-}
-
 \ExplSyntaxOff
 
 \NewDocumentCommand{\@doutorado}{}{
@@ -673,7 +655,11 @@
       \setlength{\labelwidth}{\widthof{\textbf{\keywordsname:}}}
       \setlength{\labelsep}{\widthof{\quad}}
 
-      \begin{description}\item[\keywordsname:]\@currlangkeywords\end{description}
+      \begin{description}
+        \item[\keywordsname:]\IfLanguagePatterns{brazilian}
+                             {\@keywordspt}
+                             {\@keywordsen}%
+      \end{description}
 
   \endgroup
 }
@@ -856,14 +842,20 @@
     }%
   \end{tabular}
 }
+
 \ExplSyntaxOff
 
 \newcommand{\@selfReference} {%
   \bgroup
-  \edef\@tempa{\@currlangtitle}
-  \let\@currlangtitle\@tempa
-  \edef\@tempa{\@currlangsubtitle}
-  \let\@currlangsubtitle\@tempa
+  \IfLanguagePatterns{brazilian}
+    {%
+      \let\@currlangtitle\@titlept
+      \let\@currlangsubtitle\@subtitlept
+    }
+    {%
+      \let\@currlangtitle\@titleen
+      \let\@currlangsubtitle\@subtitleen
+    }%
   \@IMEremoveLinebreaksEtc{\@currlangtitle}%
   \@IMEremoveLinebreaksEtc{\@currlangsubtitle}%
   \@author.
