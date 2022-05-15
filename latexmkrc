@@ -38,6 +38,7 @@ $ENV{error_line} = 254;
 $ENV{half_error_line} = 238;
 
 END {
+  local $?; # do not override previous exit status
   if (-e "$root_filename.blg" and open my $bibfile, '<', "$root_filename.blg") {
       print("**********************\n");
       print("bibtex/biber messages:\n\n");
