@@ -353,7 +353,7 @@
     membrobanca .value_required:n = true,
   }
 
-\NewDocumentCommand\defesa{m}{%
+\NewDocumentCommand\defesa{+m}{%
   \keys_set:nn {IME/defense}{#1}
 
   \exp_args:NV \str_case:nnF \@license
@@ -721,9 +721,18 @@
 \NewDocumentCommand{\@IMEversoPage}{}{
   \clearpage
   \thispagestyle{empty}
-  \vspace*{4cm plus 4cm minus 2cm}
-  \@versoPageBlock
-  \vspace*{8cm plus 5cm minus 6cm}
+  \ifcsvoid{@catalogingData}
+    {\vspace*{4cm}}
+    {\vspace*{2cm}}
+
+  \begin{list}{}{\rightmargin 3em \leftmargin 3em}
+    \onehalfspacing\centering\footnotesize\itshape
+    \item\@license
+  \end{list}
+
+  \ifcsvoid{@catalogingData} {} {\vspace{\fill}\@catalogingData}
+
+  \vspace{1cm minus 1cm}
 }
 
 
@@ -863,32 +872,6 @@
   \workname{} (\degreename).
   \@institution,
   São Paulo, \DTMfetchyear{@defensedate}.%
-  \egroup
-}
-
-\NewDocumentCommand{\@versoPageBlock}{} {
-  \bgroup
-  \onehalfspacing
-  \begin{list}{}{\rightmargin 3em \leftmargin 3em}
-    \item
-      % Cuidado com este bug: https://github.com/schlcht/microtype/issues/10
-      \begingroup\centering\footnotesize\itshape\@license\par\endgroup
-
-      \ifcsvoid{@catalogingData} {} {
-        \vspace*{3cm plus 3cm minus 1cm}
-        \setlength{\fboxsep}{20pt}
-        \begin{center}
-        \fbox{
-          \begin{minipage}[t]{120mm}
-            \setlength\parskip{1em}
-
-            \@catalogingData
-
-          \end{minipage}
-        }
-        \end{center}
-      }
-  \end{list}
   \egroup
 }
 
