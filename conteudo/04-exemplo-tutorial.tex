@@ -188,18 +188,17 @@ Um exemplo de documento \LaTeX{} simples (lembre-se, ``\%'' indica um
 comentário):
 
 \begin{verbatim}
-
         % O documento começa com o preâmbulo
         % Vamos usar a classe "book" com fonte no tamanho 11pt
         \documentclass[11pt]{book}
         % Vamos escrever em português do Brasil
         \usepackage[brazilian]{babel}
-        % Estas linhas não imprimem nada, apenas definem as
-        % informações que serão usadas por "\maketitle" mais adiante
-        \author{Fulano de Tal}
-        \title{Começando a usar o \LaTeX{}}
         % Finaliza o preâmbulo e inicia o conteúdo:
         \begin{document}
+        % Estas linhas não imprimem nada, apenas definem as
+        % informações que serão usadas por "\maketitle" a seguir
+        \author{Fulano de Tal}
+        \title{Começando a usar o \LaTeX{}}
         % Cria um bloco ou página de título com os dados acima
         \maketitle
         % Capítulos, seções etc. são numerados automaticamente
@@ -207,7 +206,6 @@ comentário):
         Oi, Galera!
         % É preciso sinalizar o final do documento
         \end{document}
-
 \end{verbatim}
 
 Esse exemplo mostra como definir o nome de um capítulo. Existem também os
