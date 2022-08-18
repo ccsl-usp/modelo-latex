@@ -41,6 +41,9 @@
 \usefonttheme{structurebold}
 \useinnertheme{circles}
 
+\setlength{\metropolis@progressinheadfoot@linewidth}{2.5pt}
+\setlength{\metropolis@titleseparator@linewidth}{0pt}
+
 % Customizando "itemize" (bold/itálico, formato dos bullets, margens)
 \setbeamerfont{itemize/enumerate body}{series=\bfseries}
 \setbeamerfont{itemize/enumerate subbody}{series=\normalfont}
@@ -156,126 +159,131 @@
 
 \RequirePackage{qrcode}
 
-\newcommand\presentationurl[1]{
-  \gdef\thepresentationurl{#1}
-}
+\newcommand\qrcodeurl[1]{\gdef\@IMEqrcodeURL{#1}}
 
 \newcommand\showqrcode{
-  \ifcsvoid{thepresentationurl}{\relax}{% else
-    \begin{frame}[plain]
-      \vfill
-      {\centering\noindent\qrcode[height=.8\paperheight,level=H]{\thepresentationurl}\par}
-      \vfill
-    \end{frame}
-  }
+  \ifcsvoid{@IMEqrcodeURL}
+    {}
+    {
+      \begin{frame}[plain]
+        \vfill
+        \bgroup
+        \centering
+        \qrcode[height=.8\paperheight,level=H]{\@IMEqrcodeURL}\par
+        \egroup
+        \vfill
+      \end{frame}
+    }
 }
 
-\newcommand\includeqrcodeintoc{
-  \ifcsvoid{thepresentationurl}{\relax}{% else
-    \gdef\qrcodecontents{\thepresentationurl}
-  }
+\newtoggle{@IMEqrcodeInTOC}
+\toggletrue{@IMEqrcodeInTOC}
+
+\newcommand\qrcodeintoc{\toggletrue{@IMEqrcodeInTOC}}
+\newcommand\noqrcodeintoc{\togglefalse{@IMEqrcodeInTOC}}
+
+\newcommand\@IMEqrcode{
+  \ifboolexpr
+    { togl {@IMEqrcodeInTOC} and not test {\ifcsvoid{@IMEqrcodeURL}} }
+    {
+      \vskip 2\baselineskip plus 1\baselineskip minus 2.5\baselineskip
+      \bgroup
+      \centering
+      \hfill\qrcode[height=.27\paperheight,level=H]{\@IMEqrcodeURL}\par
+      \egroup
+    }
+    {}
 }
 
-\newcommand\qrcodeintoc{
-  \ifcsvoid{qrcodecontents}{\relax}{% else
-    \vskip 2\baselineskip plus \baselineskip minus 2.5\baselineskip
-    {\centering\noindent\qrcode[height=.27\paperheight,level=H]{\thepresentationurl}\par}
-  }
+\newcommand\@IMEqrcodeSpace{
+  \ifboolexpr
+    { togl {@IMEqrcodeInTOC} and not test {\ifcsvoid{@IMEqrcodeURL}} }
+    {
+      \vskip 2\baselineskip plus 1\baselineskip minus 2.5\baselineskip
+      \rule{0pt}{.27\paperheight}\par
+    }
+    {}
 }
 
-\newcommand\spaceforqrcode{
-  \ifcsvoid{qrcodecontents}{\relax}{% else
-    \vskip 2\baselineskip plus \baselineskip minus 2.5\baselineskip
-    ~\vspace{.3\paperheight}\par
-  }
-}
-
-\newcommand\toccolumns[1]{
-  \gdef\thetoccolumns{#1}
-}
-
-\newcommand{\theoverview}{\tableofcontents\qrcodeintoc}
-\newcommand{\intermezzo}{\tableofcontents[currentsection]\spaceforqrcode}
+\gdef\@IMEtocColumnSplit{0}
+\newcommand\toccolumnsplit[1]{\gdef\@IMEtocColumnSplit{#1}}
 
 \newcommand\overview{
-  \ifcsvoid{thetoccolumns}{\relax}{% else
-
-    \gdef\theoverview{%
-      \begin{columns}[t]
+  \ifnumequal{\@IMEtocColumnSplit}{0}
+    {\tableofcontents\@IMEqrcode}
+    {
+      \begin{columns}[T]
         \column{.45\textwidth}
-          \tableofcontents[sections={1-\thetoccolumns}]
+          \tableofcontents[sections={1-\@IMEtocColumnSplit}]
         \column{.45\textwidth}
-          \tableofcontents[sections={\the\numexpr 1 + \thetoccolumns\relax-}]
+          \tableofcontents[sections={\the\numexpr 1
+                                     + \@IMEtocColumnSplit\relax-}]
 
-          \qrcodeintoc
+          \@IMEqrcode
       \end{columns}
     }
-
-    \gdef\intermezzo{%
-      \begin{columns}[t]
-        \column{.45\textwidth}
-          \tableofcontents[currentsection,sections={1-\thetoccolumns}]
-        \column{.45\textwidth}
-          \tableofcontents[currentsection,sections={\the\numexpr 1 + \thetoccolumns\relax-}]
-
-          \spaceforqrcode
-      \end{columns}
-    }
-  } % end ifnumequal
-
-  \theoverview
 }
 
-\newcommand\bgimage[1]{
-  \gdef\thebgimage{%
+\newcommand{\intermezzo}{
+  \ifnumequal{\@IMEtocColumnSplit}{0}
+    {\tableofcontents[currentsection]\@IMEqrcodeSpace}
+    {
+      \begin{columns}[T]
+        \column{.45\textwidth}
+          \tableofcontents[currentsection,sections={1-\@IMEtocColumnSplit}]
+        \column{.45\textwidth}
+          \tableofcontents[currentsection,
+                           sections={\the\numexpr 1
+                                     + \@IMEtocColumnSplit\relax-}]
+
+          \@IMEqrcodeSpace
+      \end{columns}
+    }
+}
+
+\newcommand\titlebgimage[1]{
+  \gdef\@IMEtitleBgImage{%
       \noindent\begin{minipage}[b][\paperheight][b]{\paperwidth}
         \vfill
-        \centering\noindent#1\par
+        \centering#1\par
       \end{minipage}%
   }
 }
 
+% .7\paperwidth porque o lado direito do pano de fundo é muito escuro
 \newcommand\logos[1]{
-  \gdef\thelogos{%
-      \noindent\begin{minipage}[b][\paperheight][b]{\paperwidth}
-          % O centro da área de impressão não é o centro do papel;
-          % aqui queremos centralizar no papel, então compensamos
-          % a diferença (esse ajuste foi feito "no olho") com
-          % \hspace
+  \gdef\@IMElogos{%
+      \noindent\hspace{.05\paperwidth}%
+      \begin{minipage}[b][\paperheight][b]{.7\paperwidth}
           \vfill
-          \centering%
-          % "\strut" para garantir que "\hfil" à direita funcione
-          \noindent\hspace*{-.04\textwidth}#1\strut\par
-          \noindent\hspace*{-.04\textwidth}\includegraphics[height=.0311\paperheight]{cc-by}\par
+          #1\par
           \vspace{.3\baselineskip}
       \end{minipage}%
   }
 }
 
-\newcommand\customtitlepage{
+\renewcommand\maketitle{
   {
-      % Traz o título para cima para deixar mais espaço para a imagem
-      % de fundo que fica mais para baixo
-      \addtobeamertemplate{title}{\vspace*{-3\baselineskip}}{}
-      \addtobeamertemplate{title separator}{\vspace*{-.5\baselineskip}}{\vspace*{-\baselineskip}}
-      \definecolor{bggray}{RGB}{238,238,236}
-      \setbeamercolor{background canvas}{bg=bggray}
-      \setbeamercolor{background}{bg=}
-      % Duas minipages sobrepostas, uma com a imagem de
-      % fundo e a outra com os logotipos das agências
-      % Precisa estar dentro das minipages porque fica
-      % mais fácil fazer o alinhamento vertical
-      \setbeamertemplate{background}{%
-          \ifcsvoid{thebgimage}{\relax}{%
-              \thebgimage%
-              \hspace{-\paperwidth}% "Volta o cursor"
-          }%
-          \ifcsvoid{thelogos}{\relax}{\thelogos}%
-      }
+    \thispagestyle{empty}
+    % Traz o título para cima
+    \addtobeamertemplate{title}{\vspace*{-3\baselineskip}}{}
+    \addtobeamertemplate{title separator}%
+                        {\vspace*{-.5\baselineskip}}%
+                        {\vspace*{-\baselineskip}}
 
-      \begin{frame}
-          \titlepage
-      \end{frame}
+    \definecolor{bggray}{RGB}{238,238,236}
+    \setbeamercolor{background canvas}{bg=bggray}
+    \setbeamercolor{background}{bg=}
+    % Duas minipages sobrepostas, uma com a imagem de
+    % fundo e a outra com os logotipos das agências
+    % Precisa estar dentro das minipages porque fica
+    % mais fácil fazer o alinhamento vertical
+    \setbeamertemplate{background}{%
+      \ifcsvoid{@IMEtitleBgImage}{}{\@IMEtitleBgImage\hspace{-\paperwidth}}
+      \ifcsvoid{@IMElogos}{}{\@IMElogos}%
+    }
+
+    \begin{frame}\titlepage\end{frame}
   }
 }
 

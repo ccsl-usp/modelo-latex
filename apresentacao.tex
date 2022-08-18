@@ -71,7 +71,7 @@
 % A cada nova seção, recapitula o sumário
 % Para desabilitar, é só comentar este trecho
 \AtBeginSection[]{
-  \begin{frame}<beamer>{Overview}
+  \begin{frame}<beamer>[t]{Overview}
     \intermezzo
   \end{frame}
 }
@@ -131,33 +131,48 @@
 \date{Month and day, year}
 
 % Coloca a imagem no fundo da página de título
-\bgimage{\includegraphics[width=\paperwidth]{fundo_predios_e_grafo}}
+\titlebgimage{\includegraphics[width=\paperwidth,height=\paperheight]%
+             {bg-ime}}
 
-% Logotipos no rodapé da página de título
-\logos{
-  \hfil\hfil\includegraphics[width=.1\textwidth]{usp-logo}\hfil%
-  \raisebox{-.0103\paperheight}{\includegraphics[height=.0932\paperheight]{interscity-logo}}\hfil%
-  \raisebox{-.0037\paperheight}{\includegraphics[width=.1\textwidth]{ime-logo}}\hfil\hfil
+% Logotipos no rodapé da página de título. Na verdade, qualquer coisa pode
+% ser colocada aqui para aparecer próximo ao final da página de título.
+% Esse material é colocado em uma minipage de largura .7\textwidth, porque
+% o pano de fundo tem um pedaço muito escuro à direita da página.
+%
+% De acordo com o manual de identidade visual, a altura do logo da USP deve
+% ser 2/3 da altura do logo do IME; o logo da USP deve ficar deslocado para
+% cima 1/6 da altura do logo do IME. As posições e tamanhos dos logos da
+% fapesp/capes/cnpq não seguem nenhuma lógica bem definida (na verdade,
+% nada está alinhado com nada!): eu (Nelson) fiz "a olho" da maneira que
+% me pareceu mais harmônica.
+\logos{%
+  \includegraphics[height=.9\baselineskip]{ime-logo}%
+  \quad\quad
+  \raisebox{.15\baselineskip}{\includegraphics[height=.6\baselineskip]{usp-logo}}%
+  %\quad\quad
+  %\raisebox{.178\baselineskip}{\includegraphics[height=.515\baselineskip]{fapesp-logo}}%
+  %\quad\quad
+  %\raisebox{-.1732\baselineskip}{\includegraphics[height=1.2\baselineskip]{capes-logo}}%
+  %\quad\quad
+  %\raisebox{.124\baselineskip}{\includegraphics[height=.6\baselineskip]{cnpq-logo}}%
+  \par
+  % Queremos que o logo cc-by fique próximo da margem direita da página, mas
+  % este material está dentro de uma minipage de largura .7\textwidth. Assim,
+  % usamos esse hspace, que "estoura" a largura da minipage para a direita.
+  \hspace{.87\paperwidth}\includegraphics[width=.05\paperwidth]{cc-by}\par
 }
 
-%\logos{
-%  \hfil\hfil\includegraphics[width=.1\textwidth]{usp-logo}\hfil%
-%  \raisebox{-.0103\paperheight}{\includegraphics[height=.0932\paperheight]{interscity-logo}}\hfil%
-%  \raisebox{-.00517\paperheight}{\includegraphics[height=.057\paperheight]{cnpq-logo}}\hfil%
-%  \raisebox{-.0342\paperheight}{\includegraphics[height=.1035\paperheight]{capes-logo}}\hfil%
-%  \includegraphics[height=.044\paperheight]{fapesp-logo}\hfil\hfil
-%}
-
 % Usado para criar o qrcode com o endereço da apresentação
-\presentationurl{http://interscity.org}
+\qrcodeurl{http://ccsl.ime.usp.br}
 
-% Inclui o qrcode no sumário da apresentação
-\includeqrcodeintoc
+% Inclui ou não o qrcode no sumário da apresentação
+%\qrcodeintoc % default
+%\noqrcodeintoc
 
 % O slide de sumário pode ser dividido em colunas; o parâmetro
 % determina após qual o número da seção fazer a quebra de coluna
 % (use zero para uma coluna ou simplesmente omita este comando).
-\toccolumns{4}
+\toccolumnsplit{5}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -166,17 +181,12 @@
 
 \begin{document}
 
-% Em uma apresentação não há \maketitle. No entanto, é complicado
-% colocar uma imagem de fundo, os logos das agências e o conteúdo
-% "normal" do slide de título sem que as coisas fiquem bagunçadas,
-% então definimos um comando para gerar o slide de título no lugar
-% de \maketitle
-\customtitlepage
+\maketitle
 
 % Slide com o qrcode
 \showqrcode
 
-\begin{frame}{Overview}
+\begin{frame}[t]{Overview}
   \overview
 \end{frame}
 
@@ -315,16 +325,16 @@
 \end{frame}
 
 % Recapitulando
-\begin{frame}{\insertshorttitle}
+\begin{frame}[t]{\insertshorttitle}
   \overview
 
-  % \begin{center} acrescenta espaço vertical;
-  % como possivelmente temos bem pouco espaço aqui,
-  % vamos usar centering
-  {%
-    \centering\noindent%
+  % \begin{center} acrescenta espaço vertical; como possivelmente temos
+  % pouco espaço aqui, vamos usar centering e adicionar o espaço manualmente
+  \vspace{1\baselineskip}
+  \bgroup
+  \centering
     \url{https://gitlab.com/link-of-your-repository}\par
-  }
+  \egroup
 
 \end{frame}
 
