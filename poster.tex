@@ -70,14 +70,13 @@
 
 % Blocos de cor personalizada
 \newenvironment{coloredblock}[2]%
-{
+  {
     \setbeamercolor{block title}{fg=white,bg=#1!80!white}
     \setbeamercolor{block body}{fg=darkgray,bg=#1!20!white}
     \setbeamercolor{local structure}{fg=darkgray,bg=#1!20!white}
     \begin{block}{#2}
-}{
-    \end{block}
-}
+  }
+  {\end{block}}
 
 % Bibliografia
 \usepackage[

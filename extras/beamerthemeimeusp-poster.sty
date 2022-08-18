@@ -1,4 +1,5 @@
-% Authors: David Vilar (2007 initial version), Rob J Hyndman (2010), and Lian Tze Lim (2011).
+% Authors: David Vilar (2007 initial version), Rob J Hyndman (2010), and
+% Lian Tze Lim (2011).
 % Licence: LPPL / GPLv2
 %
 % This file was downloaded from
@@ -20,12 +21,18 @@
 \hyphenpenalty=200
 
 \RequirePackage{tikz}
+
 \newcommand{\footimage}[1]{\def\footim@ge{#1}}
 \usefonttheme[onlymath]{serif}
+
 \setbeamertemplate{headline}{
   \begin{beamercolorbox}[wd=\textwidth]{headline}
      \vskip2em\centering
-     \parbox{\linewidth}{\normalbaselines\centering\usebeamercolor{title in headline}\color{fg}{\bfseries\rmfamily\huge\inserttitle\par}}%
+     \parbox{\linewidth}{%
+       \normalbaselines\centering
+       \usebeamercolor{title in headline}%
+       \color{fg}{\bfseries\rmfamily\huge\inserttitle\par}%
+     }%
      \vskip2em
   \end{beamercolorbox}
 
@@ -39,8 +46,20 @@
 \setbeamertemplate{itemize/enumerate body begin}{\vspace*{-1ex}}
 \setbeamertemplate{itemize/enumerate body end}{\vspace*{-0.5ex}}
 
-\setbeamertemplate{itemize item}{{\small\raisebox{.2\totalheight}{\ensuremath{\blacktriangleright}}}}
-\setbeamertemplate{itemize subitem}{{\large\raisebox{-.15\totalheight}{\ensuremath{\bullet}}}}
+\setbeamertemplate{itemize item}
+  {%
+    \bgroup
+      \small\raisebox{.2\totalheight}{\ensuremath{\blacktriangleright}}%
+    \egroup
+  }
+
+\setbeamertemplate{itemize subitem}
+  {%
+    \bgroup
+      \large\raisebox{-.15\totalheight}{\ensuremath{\bullet}}%
+    \egroup
+  }
+
 \setlength\leftmargini{3.5em}
 
 \setbeamertemplate{caption}[numbered]

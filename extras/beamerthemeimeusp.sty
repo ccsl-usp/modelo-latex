@@ -61,11 +61,26 @@
 %\setbeamertemplate{itemize items}[triangle]
 \setbeamertemplate{itemize item}{\raisebox{-.05em}{\Large\textbf{\textbullet}}}
 
-% O triângulo fica de tamanhos diferentes com pdflatex e lualatex;
+% Os triângulos ficam de tamanhos diferentes com pdflatex e lualatex;
 % para contornar isso, vamos (1) redimensionar para o tamanho do
 % \strut e (2) redimensionar para 25% desse valor.
-\setbeamertemplate{itemize subitem}{{\normalsize\raisebox{.4\totalheight}{\scalebox{.25}{\resizebox*{!}{\totalheightof{\strut}}{\ensuremath{\blacktriangleright}}}}}}
-\setbeamertemplate{itemize subsubitem}{\raisebox{.02em}{{\textbf{\guillemotright}}}}
+\setbeamertemplate{itemize subitem}
+  {%
+    \bgroup
+    \normalsize
+    \raisebox{.4\totalheight}
+      {%
+        \scalebox{.25}
+          {%
+            \resizebox*{!}{\totalheightof{\strut}}
+                          {\ensuremath{\blacktriangleright}}%
+          }%
+      }%
+    \egroup
+  }
+
+\setbeamertemplate{itemize subsubitem}
+  {\raisebox{.02em}{{\textbf{\guillemotright}}}}
 
 % A margem esquerda das listas de itens no beamer são um tanto exageradas
 \addtolength{\leftmargini}{-.9em}
@@ -78,7 +93,20 @@
 % Os triângulos ficam MUITO grandes, acho que por conta do
 % inner theme "circles"; vamos definir manualmente.
 %\setbeamertemplate{bibliography item}[triangle]
-\setbeamertemplate{bibliography item}{{\normalsize\raisebox{.4\totalheight}{\scalebox{.25}{\resizebox*{!}{\totalheightof{\strut}}{\ensuremath{\blacktriangleright}}}}}}
+\setbeamertemplate{bibliography item}
+  {%
+    \bgroup
+    \normalsize
+    \raisebox{.4\totalheight}
+      {%
+        \scalebox{.25}
+          {%
+            \resizebox*{!}{\totalheightof{\strut}}
+                          {\ensuremath{\blacktriangleright}}%
+          }%
+      }%
+    \egroup
+  }
 
 % Normalmente, beamer não utiliza os "labels" normais na bibliografia;
 % ao invés disso, ele coloca ícones indicando o tipo de item. Isso
@@ -111,10 +139,12 @@
           \mode<presentation>{%
             \pretocmd{\bibsetup}{%
               \newlength{\beamer@bibiconwidth}%
-              \settowidth\beamer@bibiconwidth{\usebeamertemplate*{bibliography item}}%
+              \settowidth\beamer@bibiconwidth%
+                          {\usebeamertemplate*{bibliography item}}%
               \setlength{\labelwidth}{-\beamer@bibiconwidth}%
               \addtolength{\labelwidth}{2\labelsep}%
-              \addtolength{\bibhang}{\labelsep}% desnecessário, vamos redefinir abaixo
+              \addtolength{\bibhang}{\labelsep}% desnecessário, vamos
+                                               % redefinir abaixo
             }{}{}%
           }
         }

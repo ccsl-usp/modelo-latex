@@ -59,6 +59,7 @@
 % Desabilita a cor de rodapé
 \setbeamercolor{footline}{fg=,bg=}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand\col{\column{.5\textwidth}}
@@ -73,14 +74,13 @@
 
 % Blocos de cor personalizada
 \newenvironment{coloredblock}[2]%
-{
+  {
     \setbeamercolor{block title}{fg=white,bg=#1!80!white}
     \setbeamercolor{block body}{fg=darkgray,bg=#1!20!white}
     \setbeamercolor{local structure}{fg=darkgray,bg=#1!20!white}
     \begin{block}{#2}
-}{
-    \end{block}
-}
+  }
+  {\end{block}}
 
 % Bibliografia
 \usepackage[
@@ -99,7 +99,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS E SLIDE TÍTULO %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % O arquivo com os dados bibliográficos para biblatex; você pode usar
@@ -113,13 +113,16 @@
 % de referências
 %\nocite{*}
 
-\title[The shortened title]{The full title, which may be quite,\\ quite long indeed}
+\title[The shortened title]{The full title, which may be quite,\\
+                            quite long indeed}
+
 \subtitle{The (optional) subtitle}
 
-\author[Authors Name]{Authors Name}
+\author[Shortened Author Names]{Author Names}
 
-\institute[USP]{\textbf{Workshop Name} \\ Computer Science Department \\ IME USP}
-%\institute[USP]{\textbf{Orientador:} \\ Computer Science Department \\ IME USP}
+\institute{\textbf{Workshop Name}\\Computer Science Department\\IME USP}
+%\institute{\textbf{Orientador:} Fulano de Tal\\
+%           Computer Science Department\\IME USP}
 
 \date{Month and day, year}
 
