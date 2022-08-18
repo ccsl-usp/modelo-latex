@@ -17,7 +17,8 @@
 % Vários pacotes e opções de configuração genéricos
 \input{extras/basics}
 \input{extras/languages}
-% A fonte precisa ser definida depois que o tema metropolis foi carregado
+% A fonte precisa ser definida depois
+% de o tema ser carregado, mais abaixo
 %\input{extras/fonts}
 \input{extras/floats}
 % index não é necessário, mas deixamos aqui para usar os mesmos
@@ -50,6 +51,9 @@
 
 % Tema metropolis com algumas modificações
 \usetheme{imeusp} % carregado do diretório extras (veja basics.tex)
+
+% A fonte precisa ser definida depois de o tema metropolis ser carregado
+\input{extras/fonts}
 
 % O padrão usa um tom de vermelho escuro como cor principal; a opção
 % "greeny" troca essa cor por um tom de verde; a opção "sandy" usa o

@@ -1,12 +1,7 @@
 % Author: Nelson Lago
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{beamerthemeimeusp}[2018/10/16 v1.0 IME/USP Beamer theme]
-
-% Caso LaTeX faça alguma substituição de fontes, vamos garantir que ele
-% use Latin Modern e não outra versão das fontes Computer Modern.
-\RequirePackage{lmodern}
-\RequirePackage{fix-cm}
+\ProvidesPackage{beamerthemeimeusp}[2022/08/16 v1.1 IME/USP Beamer theme]
 
 \RequirePackage{etoolbox}
 
@@ -32,15 +27,10 @@
 \RaggedRightParfillskip .2\textwidth plus .2\textwidth minus .2\textwidth\relax
 \hyphenpenalty=200
 
-\usetheme[sectionpage=progressbar,subsectionpage=none,numbering=fraction,progressbar=frametitle]{metropolis}
-
-\usefonttheme{professionalfonts}
-
-% Estas packages precisam ser carregadas depois do tema metropolis
-\PassOptionsToPackage{mono=false}{libertine}
-\PassOptionsToPackage{scale=.85}{sourcecodepro}
-\RequirePackage{sourcecodepro}
-\RequirePackage{libertine}
+\usetheme[sectionpage=progressbar,
+          subsectionpage=none,
+          numbering=fraction,
+          progressbar=frametitle]{metropolis}
 
 % As margens default são muito grandes
 \setbeamersize{
