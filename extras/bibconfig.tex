@@ -72,7 +72,10 @@
 
   % em apresentações e posters, a bibliografia deve ser o mais compacta possível
   \@ifclassloaded{beamer}
-    {\ExecuteBibliographyOptions{maxbibnames=2,maxcitenames=2}}
+    {
+      \ExecuteBibliographyOptions{maxbibnames=2,maxcitenames=2}
+      \AtBeginBibliography{\RaggedRight}
+    }
     {}
 }
 \makeatother

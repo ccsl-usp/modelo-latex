@@ -13,11 +13,29 @@
 %
 % Small customizations by Nelson Lago
 
+\ProvidesPackage{beamerthemeimeusp-poster}[2022/08/16 v1.1
+                                           IME/USP Beamer poster theme]
+
 \RequirePackage{etoolbox}
 
 \RequirePackage{ragged2e}
 
-% Vamos fazer LaTeX preferir não hifenizar palavras se possível.
+% Inspirado no comando \narrowragged da package varwidth.
+%
+% Num texto normal, os parágrafos costumam ser justificados. Em uma
+% apresentação, os parágrafos são muito curtos (1-3 linhas), então
+% justificar não é tão bom e, por isso, beamer usa parágrafos
+% ragged right.
+%
+% De forma similar, em um texto normal, a última linha de um parágrafo
+% pode ser bastante curta. Isso também é problemático em uma apresentação,
+% mas beamer não trata isso de forma especial. Aqui, incentivamos LaTeX
+% a fazer as linhas do parágrafo um pouco mais curtas para evitar que a
+% última fique curta demais. Além disso, fazemos LaTeX preferir não
+% hifenizar palavras se possível. Os valores dos parâmetros são chutes :)
+% mas devem funcionar razoavelmente.
+\RaggedRightRightskip .05\textwidth plus .2\textwidth minus .05\textwidth\relax
+\RaggedRightParfillskip 0pt plus .4\textwidth minus 0pt\relax
 \hyphenpenalty=200
 
 \RequirePackage{tikz}
