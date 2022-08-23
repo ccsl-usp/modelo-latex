@@ -107,28 +107,69 @@
 \ExplSyntaxOff
 \makeatother
 
-% Internacionalização dos nomes das seções ("chapter" X "capítulo" etc.),
-% hifenização e outras convenções tipográficas. babel deve ser um dos
-% primeiros pacotes carregados. É possível passar a língua do documento
-% como parâmetro aqui, mas já fizemos isso ao carregar a classe, no início
-% do documento.
+% Babel permite definir a língua ou línguas usadas no documento e deve
+% ser um dos primeiros pacotes a serem carregados. É possível definir
+% as línguas como parâmetro aqui, mas já fizemos isso ao carregar a
+% classe, no início do documento.
+%
+% A escolha da língua afeta quatro coisas:
+%
+% 1. A internacionalização das palavras criadas automaticamente, como
+%    "Capítulo/Chapter", "Sumário/Table of Contents" etc. - babel chama
+%    essas palavras de "captions";
+%
+% 2. A hifenização das palavras;
+%
+% 3. Algumas convenções tipográficas. Por exemplo, em francês é usual
+%    acrescentar um espaço antes de caracteres como "?" e "!"; línguas
+%    diferentes usam caracteres diferentes para as aspas tipográficas;
+%    com algumas línguas asiáticas, pode ser necessário utilizar uma
+%    fonte diferente etc.;
+%
+% 4. Atalhos (shorthands) - algumas línguas definem "atalhos" (shorthands"),
+%    ou seja, tratam alguns caracteres como comandos especiais; por exemplo,
+%    em francês o espaço que é colocado antes da exclamação funciona porque
+%    o caracter "!" é, na verdade, um comando.
+%
+%%%% MUDANDO A LÍNGUA E HIFENIZAÇÃO %%%%
+%
+% Cada documento tem uma língua padrão; quando usamos pequenos trechos em
+% outra língua, como por exemplo em citações, queremos alterar apenas os
+% aspectos 2, 3 e 4; nesse caso, a troca da língua deve ser feita com
+% \foreignlanguage{língua}{texto} ou com \begin{otherlanguage*}{língua}.
+% Para alterar todos os quatro aspectos, deve-se usar \selectlanguage{língua}
+% (que altera a língua padrão a partir desse ponto) ou
+% \begin{otherlanguage}{língua}{texto}, que faz a alteração apenas até
+% \end{otherlanguage}. Se você quiser apenas desabilitar a hifenização de
+% um trecho de texto, pode usar \begin{hyphenrules}{nohyphenation}.
+% Finalmente, com \babeltags é possível definir comandos curtos como
+% "\textbr" (para "brazilian") que são equivalentes a \foreignlanguage.
+%
+%%%% PERSONALIZANDO CAPTIONS %%%%
+%
+% É possível personalizar os captions. Para versões de babel a partir
+% de 3.51 (lançada em outubro de 2020), basta fazer
+% \setlocalecaption{english}{contents}{Table of Contents}. Com versões
+% anteriores, por razões históricas há dois mecanismos para fazer isso,
+% então é preciso checar qual deve ser usado para cada língua (veja a
+% documentação de babel ou faça um teste). São eles:
+%
+%   1. \renewcommand\spanishchaptername{Capítulo}
+%
+%   2. \addto\captionsenglish{\renewcommand\contentsname{Table of Contents}}
+%      (este é o mais comum)
+%
+% Esses métodos valem também para a bibliografia, mas apenas se você
+% estiver usando bibtex; com biblatex, que é o padrão neste modelo, é
+% melhor usar o comando "\DefineBibliographyStrings" (veja a documentação
+% de biblatex).
+%
+% Quando babel faz uma troca de língua, ele executa \extraslíngua e, se for
+% necessário trocar os "captions", \captionslíngua (ou seja, os comandos
+% acima modificam \captionslíngua). Então, se você quiser executar algo a
+% mais quando uma língua é selecionada, faça \addto\extrasenglish{\blah}.
 \usepackage{babel}
 \usepackage{iflang}
-
-% É possível personalizar as palavras-chave que babel utiliza, por exemplo:
-%\addto\extrasbrazilian{\renewcommand{\chaptername}{Chap.}}
-% Com BibTeX, isso vale também para a bibliografia; com BibLaTeX, é melhor
-% usar o comando "DefineBibliographyStrings".
-
-% Para línguas baseadas no alfabeto latino, como o inglês e o português,
-% o pacote babel funciona muito bem, mas com outros alfabetos ele às vezes
-% falha. Por conta disso, o pacote polyglossia foi criado para substituí-lo.
-% polyglossia só funciona com LuaTeX e XeTeX; como babel também funciona com
-% esses sistemas, provavelmente não há razão para usar polyglossia, mas é
-% possível que no futuro esse pacote se torne o padrão.
-%\usepackage{polyglossia}
-%\setdefaultlanguage{brazilian}
-%\setotherlanguage{english}
 
 % Alguns pacotes (espeficicamente, tikz) usam, além de babel, este pacote
 % como auxiliar para a tradução de palavras-chave, como os meses do ano.

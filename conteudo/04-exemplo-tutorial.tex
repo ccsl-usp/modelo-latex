@@ -476,12 +476,12 @@ problema de diagramação para matemática; basta ler a documentação.
 importantes são:
 \ltxcmd{emph} (texto \emph{enfatizado}, em geral itálico),
 \ltxcmd{texttt} (texto \texttt{teletype}, imitando um
-terminal de texto ou uma impressora),
+                terminal de texto ou uma impressora),
 \ltxcmd{textit} (\textit{itálico}),
 \ltxcmd{textbf} (\textbf{negrito}),
 \ltxcmd{textsf} (fonte \textsf{sem serifa}),
 \ltxcmd{textsc} (texto \textsc{Versalete} --- nem todas
-as fontes oferecem essa possibilidade),
+                as fontes oferecem essa possibilidade),
 \ltxcmd{normalsize} (tamanho normal),
 \ltxcmd{small} (tamanho reduzido),
 \ltxcmd{footnotesize} (ainda menor),
@@ -495,25 +495,29 @@ as fontes oferecem essa possibilidade),
 \ltxcmd{begin\{center\}} (centraliza parágrafos),
 \ltxcmd{begin\{flushleft\}} (alinha parágrafos à esquerda),
 \ltxcmd{begin\{flushright\}} (alinha parágrafos à direita)\footnote{É
-altamente recomendável carregar a package \pkg{ragged2e} (já incluída
-neste modelo) e utilizar \cmd{Center}, \cmd{FlushLeft} e
-\cmd{FlushRight} ao invés de \cmd{center}, \cmd{flushleft}
-e \cmd{flushright}.},
-\ltxcmd{babelhyphenation} (permite ``ensinar'' \LaTeX{} como hifenizar
-uma lista de palavras, veja \cmd{texdoc babel}; note que, em geral, a
-hifenização automática de \LaTeX{} é excelente),
-\ltxcmd{-} (sugere uma possível hifenização localizada),
-\ltxcmd{linebreak}[0--4] (sugere uma quebra de linha; o número indica
-quão forte é a sugestão, ou seja, 4 faz a quebra obrigatória; se o
-parágrafo é justificado, a linha quebrada também é justificada),
-\ltxcmd{newline} ou \cmd{\sla\sla} (força uma quebra de linha; a
-linha \emph{não} é justificada nesse caso),
-\ltxcmd{pagebreak}[0--4] (sugere uma quebra de página; como
-\ltxcmd{linebreak}, o número indica quão forte é a sugestão; o texto
-da página é espalhado verticalmente de maneira a fazer a última linha
-alinhada com o final das demais páginas) e
-\ltxcmd{newpage} (força uma quebra de página; o final da página
-\emph{não} é alinhado com o final das demais páginas nesse~caso).
+                             altamente recomendável carregar a package
+                             \pkg{ragged2e} (já incluída neste modelo)
+                             e utilizar \cmd{Center}, \cmd{FlushLeft} e
+                             \cmd{FlushRight} ao invés de \cmd{center},
+                             \cmd{flushleft} e \cmd{flushright}.},
+\ltxcmd{-} (sugere um possível local para hifenização localizada),
+\ltxcmd{linebreak}[0--4] (sugere um possível local para mudar de linha;
+                         o número indica quão forte é a sugestão, ou
+                         seja, 4 faz a mudança obrigatória. Por ser uma
+                         mudança de linha ``normal'', se o parágrafo é
+                         justificado, a linha é justificada normalmente),
+\ltxcmd{newline} ou \cmd{\sla\sla} (força uma quebra de linha; por ser
+                                   uma quebra forçada, a linha \emph{não}
+                                   é justificada nesse caso),
+\ltxcmd{pagebreak}[0--4] (sugere um possível local para mudar de página;
+                         como \ltxcmd{linebreak}, o número indica quão
+                         forte é a sugestão. Por ser uma mudança de página
+                         ``normal'', o texto da página é espalhado
+                         verticalmente de maneira a fazer a última linha
+                         alinhada com o final das demais páginas) e
+\ltxcmd{newpage} (força uma quebra de página; por ser uma quebra forçada,
+                 o final da página \emph{não} é alinhado com o final das
+                 demais páginas nesse caso).
 
 Mas, como discutido na Seção~\ref{sec:basico}, não é recomendável
 usar esses comandos ao longo do texto: o ideal em \LaTeX{} é expressar

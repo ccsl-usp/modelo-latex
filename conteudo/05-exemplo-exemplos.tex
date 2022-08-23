@@ -765,3 +765,21 @@ completa de símbolos disponíveis com \textsf{texdoc symbols-a4} ou em
 Uma outra maneira de encontrar símbolos é usar este sítio:
 \url{detexify.kirelabs.org/classify.html}.
 
+\section{Línguas e hifenização}
+
+Detalhes sobre o suporte a diferentes línguas estão descritos na
+documentação da \textit{package} \pkg{babel}. Para mudar temporariamente
+a língua do documento (por conta de uma citação, por exemplo), use
+\ltxcmd{foreignlanguage\{língua\}\{texto\}} (isso altera a hifenização
+das palavras e algumas convenções tipográficas, como espaços antes de
+pontuação em francês). Para trocar completamente de língua (o que
+inclui ``captions'', ou seja, palavras geradas automaticamente como
+``Capítulo'', ``Sumário'' etc.), use \ltxcmd{selectlanguage\{língua\}}.
+Se você quiser apenas desativar temporariamente a hifenização, faça
+\ltxcmd{begin\{hyphenrules\}\{nohyphenation\}} (para uma única
+palavra, \ltxcmd{mbox\{palavra\}} é mais simples). \LaTeX{} em
+geral é capaz de hifenizar palavras de maneira excelente, mas você
+pode ``ensiná-lo'' a hifenizar uma palavra de maneira diferente do
+padrão acrescentando ao preâmbulo \ltxcmd{babelhyphenation\{al-gu-mas
+pa-la-vras\}} (todas as línguas) ou \ltxcmd{babelhyphenation[língua,
+língua\dots]\{al-gu-mas pa-la-vras\}} (uma ou mais línguas específicas).
