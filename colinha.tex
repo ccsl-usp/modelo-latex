@@ -211,8 +211,8 @@
 
 \vspace{\baselineskip}
 
-
-\textbackslash{}begin\{table\}\quad (veja \url{www.tablesgenerator.com})
+\textbackslash{}begin\{table\}\quad \mbox{(veja \url{tablesgenerator.com}
+                                     e \textsf{texdoc booktabs})}
 
 \quad\textbackslash{}centering
 
@@ -396,11 +396,12 @@
 
 \textbackslash{}noindent (elimina indentação do parágrafo)
 
-\textbackslash{}begin\{center\}
+\textbackslash{}begin\{center|flushleft|flushright\}\quad \mbox{(veja também
+                                                    \textsf{texdoc ragged2e})}
 
-\quad texto centralizado\dots
+\quad texto centralizado | alinhado à esquerda | à direita
 
-\textbackslash{}end\{center\}
+\textbackslash{}end\{center|flushleft|flushright\}
 
 \end{multicols}
 
