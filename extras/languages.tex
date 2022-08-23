@@ -171,6 +171,15 @@
 \usepackage{babel}
 \usepackage{iflang}
 
+% Por padrão, LaTeX utiliza maiúsculas no início de cada palavra nestas
+% expressões ("Lista de Figuras"); vamos usar maiúsculas apenas na primeira
+% palavra.
+\addto\captionsbrazilian{%
+  \renewcommand\listfigurename{Lista de figuras}%
+  \renewcommand\listtablename{Lista de tabelas}%
+  \renewcommand\indexname{Índice remissivo}%
+}
+
 % Alguns pacotes (espeficicamente, tikz) usam, além de babel, este pacote
 % como auxiliar para a tradução de palavras-chave, como os meses do ano.
 \usepackage{translator}
