@@ -100,11 +100,18 @@
   % O texto está escrito em utf8.
   \usepackage[utf8]{inputenc}
 
-  % Permitem utilizar small caps + itálico (e outras pequenas
-  % melhorias). Em geral, desnecessário com fontspec, a menos
-  % que alguma package utilize especificamente. Algumas raras
-  % packages de fontes podem causar conflitos com fontaxes, em
-  % geral por utilizarem a package "concorrente" nfssext-cfr.
+  % Várias packages que definem as fontes do documento carregam fontaxes,
+  % mas carregamos aqui porque, com qualquer fonte, ela permite utilizar
+  % small caps + itálico. Algumas raras packages de fontes podem causar
+  % conflitos com fontaxes, em geral por utilizarem a package "concorrente"
+  % nfssext-cfr.
+  %
+  % TODO A funcionalidade pela qual faz sentido carregar fontaxes aqui
+  %      (small caps + itálico) foi incorporada ao kernel do LaTeX na
+  %      versão 2020-02-02, então está em TeXLive 2021. Remover isto
+  %      quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
+  %      descontinuada (abril de 2025). As packages que precisam de
+  %      fontaxes podem continuar a carregá-la sem problemas.
   \usepackage{fontaxes}
 
   % LaTeX substitui algumas sequências de caracteres, como
@@ -121,6 +128,11 @@
   % o conteúdo da tabela quando ela está incompleta ou não
   % existe, então copiar/colar e buscas podem funcionar em
   % alguns visualizadores e em outros não.
+  %
+  % TODO Isto foi incluído no kernel do LaTeX versão 2021-06-01,
+  %      então está em TeXLive 2022. Remover isto quando arxiv
+  %      usar TeXLive >= 2022 e ubuntu 22.04 (jammy) for
+  %      descontinuada (abril de 2027).
   \input glyphtounicode.tex
   \pdfgentounicode=1
 \else
