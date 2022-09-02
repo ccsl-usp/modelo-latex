@@ -155,12 +155,19 @@
 % fontes carregam textcomp, às vezes com opções específicas; assim,
 % para evitar problemas, vamos carregá-la no final do preâmbulo para
 % o caso de ela não ter sido carregada antes.
+%
+% TODO A funcionalidade oferecida por textcomp foi incorporada ao kernel
+%      do LaTeX na versão 2020-02-02, então está em TeXLive 2021. Remover
+%      isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
+%      descontinuada (abril de 2025). As packages que precisam de textcomp
+%      podem continuar a carregá-la sem problemas.
 \AtBeginDocument{\usepackage{textcomp}}
 
 % TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
 % 1.07 de luatex. Essa combinação faz aparecer um bug:
 % https://tex.stackexchange.com/a/476742
 % Aqui, aplicamos a solução sugerida, que não tem "contra-indicações".
+% TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
 \ifLuaTeX
   \usepackage{luatexbase}
 \fi
