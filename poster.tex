@@ -250,20 +250,30 @@
   \twothirdscol
 
   \begin{block}{Bibliography (assimetrical columns -- two thirds width)}
+    % "Estica" ligeiramente o bloco para alinhar com o final da outra coluna
+    \vspace{.62\baselineskip}
     \nocite{FSF:GNU-GPL, MenaChalco08, biblatex}
     \printbibliography
-    % "Estica" ligeiramente o bloco para alinhar com o final da outra coluna
-    \vspace{.8\baselineskip}
+    \vspace{.62\baselineskip}
   \end{block}
 
   \onethirdcol
 
-  \begin{block}{IME/USP (one third width)}
+  \begin{block}{A Table (one third width)}
+  \begin{table}[H] % [H] é obrigatório com beamer!
     \centering
-    % Ajustando o tamanho para alinhar o final com a coluna ao lado
-    \vspace{.3\baselineskip}
-    \includegraphics[width=.4\textwidth,trim=0 0 70 0,clip]{ime-logo}
-    \vspace{.2\baselineskip}
+    \begin{tabular}{ccl}
+      \toprule
+      Code      & Abbreviation  & Name \\
+      \midrule
+      \texttt{A}  & Ala          & Alanine \\
+      \texttt{C}  & Cys          & Cysteine \\
+      \texttt{W}  & Trp          & Tryptophan \\
+      \texttt{Y}  & Tyr          & Tyrosine \\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+
   \end{block}
 
 \end{columns}
