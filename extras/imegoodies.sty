@@ -1,0 +1,356 @@
+\NeedsTeXFormat{LaTeX2e}[2015/01/01]
+\ProvidesPackage{imegoodies}[2022/11/13 1.0 Load several common
+                                            and useful packages]
+
+
+% Você provavelmente vai querer ler a documentação de alguns destes pacotes
+% para personalizar algum aspecto do trabalho ou usar algum recurso específico.
+
+% Mais recursos para trechos de texto "puro" (texto em que tabs, quebras de
+% linha etc. não são modificados), e também o ambiente "\begin{comment}".
+\RequirePackage{verbatim}
+
+% Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
+\RequirePackage{setspace}
+
+% Às vezes um float pode ser adiado por muitas páginas; é possível forçar
+% LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
+% para isso, o usuário deve identificar os casos problemáticos e inserir
+% \clearpage manualmente. Esta package acrescenta o comando \FloatBarrier,
+% que executa \clearpage apenas se necessário no local em que é chamado.
+% "above" e "below" desabilitam a barreira quando os floats estão na mesma
+% página. A desvantagem de placeins é que, para funcionar, ela gera quebras
+% de página que muitas vezes são inesperadas; em muitos casos, é melhor
+% fazer ajustes manualmente.
+%\RequirePackage[above,below]{placeins}
+
+% Às vezes é interessante utilizar uma imagem mais larga que o texto.
+% Por padrão, \centering *não* vai centralizar a imagem corretamente
+% nesse caso. Com esta package, podemos acrescentar a opção "center"
+% ao comando \includegraphics para resolver esse problema:
+% \noindent\includegraphics[width=1.2\textwidth,center]{imagem}.
+% A package tem muitos outros recursos também.
+\RequirePackage[export]{adjustbox}
+
+% Define o ambiente "\begin{landscape} -- \end{landscape}"; o texto entre
+% esses comandos é impresso em modo paisagem, podendo se estender por
+% várias páginas. A rotação não inclui os cabeçalhos e rodapés das páginas.
+% O principal uso desta package é em conjunto com a package longtable: se
+% você precisa mostrar uma tabela muito larga (que precisa ser impressa em
+% modo paisagem) e longa (que se estende por várias páginas), use
+% "\begin{landscape}" e "\begin{longtable}" em conjunto. Note que o modo
+% landscape entra em ação imediatamente, ou seja, "\begin{landscape}" gera
+% uma quebra de página no local em que é chamado. Na maioria dos casos, o
+% que se quer não é isso, mas sim um "float paisagem"; isso é o que a
+% package rotating oferece (veja abaixo).
+\RequirePackage{pdflscape}
+
+% Define dois novos tipos de float: sidewaystable e sidewaysfigure, que
+% imprimem a figura ou tabela sozinha em uma página em modo paisagem. Além
+% disso, permite girar elementos na página de diversas outras maneiras.
+\RequirePackage[figuresright,clockwise]{rotating}
+
+% Sub-figuras (e seus captions) - observe que existe uma package chamada
+% "subfigure", mas ela é obsoleta; use esta no seu lugar.
+\RequirePackage{subcaption}
+
+% Permite criar imagens com texto ao redor.
+%\RequirePackage{wrapfig}
+% Esta é similar, mas me parece uma opção melhor:
+%\RequirePackage{cutwin}
+
+% Permite incorporar um arquivo PDF como uma página adicional. Útil se
+% for necessário importar uma imagem ou tabela muito grande ou ainda
+% para definir uma capa personalizada.
+\RequirePackage{pdfpages}
+
+% Caixas de texto coloridas
+%\RequirePackage{tcolorbox}
+
+% LaTeX por padrão não permite notas de rodapé dentro de tabelas. De maneira
+% geral, notas de rodapé em tabelas são consideradas "ruins" em termos de
+% tipografia, mas às vezes são necessárias. Se esse é o caso, o recomendado
+% é que as notas de rodapé apareçam no "rodapé" da tabela, com numeração
+% própria, e não no rodapé da página. Você pode fazer isso com esta package:
+\RequirePackage{threeparttable}
+% Formatação personalizada das notas de threeparttable:
+\appto{\TPTnoteSettings}{\footnotesize\itshape}
+\def\TPTtagStyle{\textit}
+% Outra opção é a package ctable, que ainda oferece vários outros
+% recursos mas usa uma sintaxe diferente.
+%\RequirePackage{ctable}
+
+% Se você realmente quer notas de rodapé em tabelas que aparecem como as
+% demais notas de rodapé (no final da página e mantendo a sequência numérica),
+% você pode usar a package abaixo. No entanto, ela não funciona com floats
+% duplos (floats que ocupam toda a largura da página em um documento de duas
+% colunas) e, em alguns casos, a nota pode desaparecer ou aparecer em uma
+% página diferente da tabela (mova o lugar do texto em que ela é definida
+% para resolver esse problema).
+\RequirePackage{tablefootnote}
+
+% Por padrão, cada coluna de uma tabela tem a largura do maior texto contido
+% nela, ou seja, se uma coluna contém uma célula muito larga, LaTeX não
+% força nenhuma quebra de linha e a tabela "estoura" a largura do papel. A
+% solução simples, nesses casos, é inserir uma ou mais quebras de linha
+% manualmente, o que além de deselegante não é totalmente trivial (é preciso
+% usar \makecell).
+% Esta package estende o ambiente tabular para permitir definir um tamanho
+% fixo para uma ou mais colunas; nesse caso, LaTeX quebra as linhas se uma
+% célula é larga demais para a largura definida. Encontrar valores "bons"
+% para as larguras das colunas, no entanto, também é um trabalho manual
+% um tanto penoso. As packages tabularx e tabulary permitem configurar
+% algumas colunas como "largura automática", evitando a necessidade da
+% definição manual. Finalmente, ltxtable permite utilizar tabularx e
+% longtable juntas. Neste modelo, não usamos tabularx/tabulary, mas você
+% pode carregá-las se quiser.
+\RequirePackage{array}
+
+% Permite alinhar os elementos de uma coluna pelo ponto decimal; dê
+% preferência à package siunitx (carregada mais abaixo), que também
+% oferece esse recurso e muitos outros.
+%\RequirePackage{dcolumn}
+
+% Define tabelas do tipo "longtable", similares a "tabular" mas que podem ser
+% divididas em várias páginas. "longtable" também funciona corretamente com
+% notas de rodapé. Note que, como uma longtable pode se estender por várias
+% páginas, não faz sentido colocá-las em um float "table". Por conta disso,
+% longtable define o comando "\caption" internamente.
+\RequirePackage{longtable}
+
+% Permite agregar linhas de tabelas, fazendo colunas "compridas".
+\RequirePackage{multirow}
+
+% Cria comando adicional para possibilitar a inserção de quebras de linha
+% em uma célula de tabela, entre outros.
+\RequirePackage{makecell}
+
+% Modifica (melhora) o layout default das tabelas e acrescenta os comandos
+% \toprule, \bottomrule, \midrule e \cmidrule. Vale muito a pena ler a
+% documentação desta package!
+\RequirePackage{booktabs}
+
+% Permite colorir linhas, colunas ou células de uma tabela.
+\RequirePackage{colortbl}
+
+% Ao invés de digitar os dados de uma tabela dentro do seu documento,
+% você pode fazer LaTeX ler os dados de um arquivo CSV e criar uma
+% tabela automaticamente com uma destas duas packages:
+%\RequirePackage{csvsimple}     % mais simples
+%\RequirePackage{pgfplotstable} % mais complexa
+
+% Você também pode se interessar pelo ambiente "tabbing", que permite
+% criar tabelas simples com algumas vantagens em relação a "tabular",
+% ou por esta package, que permite criar tabulações.
+%\RequirePackage{tabto}
+
+% melhorias e recursos adicionais para o modo matemático; leia a documentação
+\RequirePackage{mathtools}
+
+% Permite mostrar itens "cancelados" em fórmulas matemáticas, como:
+% 2a = 2(b+1)
+% \cancel{2}a = \cancel{2}(b+1)
+% a = b+1
+\RequirePackage{cancel}
+
+% Para inserir separações no texto que não correspondem a seções com um nome
+% definido, é comum usar um ornamento ou florão (em inglês e francês: fleuron).
+% Esta package define o comando \froufrou que insere um florão desse tipo.
+\RequirePackage{froufrou}
+
+% Símbolos adicionais: \degree, \celsius, \ohm, \micro, \perthousand.
+% Provavelmente é melhor usar os recursos da package siunitx.
+%\RequirePackage{gensymb}
+
+% Permite criar listas como glossários, listas de abreviaturas etc.
+% https://en.wikibooks.org/wiki/LaTeX/Glossary
+%\RequirePackage{glossaries}
+
+% Permite formatar um trecho de texto em colunas.
+\RequirePackage{multicol}
+
+% O formato pdf permite anexar arquivos ao documento, que aparecem
+% na página como ícones "clicáveis"; esta package implementa esse
+% recurso em LaTeX.
+%\RequirePackage{attachfile}
+
+% Citações melhores; se você pretende fazer citações de textos
+% relativamente extensos, vale a pena ler a documentação. biblatex
+% utiliza recursos deste pacote.
+\RequirePackage{csquotes}
+
+% Sublinhado e outras formas de realce de texto.
+\RequirePackage{soul}
+\RequirePackage{soulutf8}
+
+% Melhorias e personalização do sublinhado com soul (comando \ul)
+
+% Distância e largura do sublinhado
+\setul{1.4pt}{.5pt}
+
+% btul -> "Better Underline" (https://alexwlchan.net/2017/10/latex-underlines/ )
+% Sublinhado sem cruzar as linhas descendentes dos caracteres
+\RequirePackage[outline]{contour}
+\contourlength{1.1pt}
+\newcommand{\btul}[2][white]{%
+  \contourlength{1.1pt}%
+  \setul{1.4pt}{.5pt}%
+  \ul{{\phantom{#2}}}% Faz o sublinhado; precisa das chaves adicionais!
+  \llap{\contour{#1}{#2}}% Escreve o texto com fundo branco/colorido
+}
+
+% Formatação personalizada das listas "itemize", "enumerate" e
+% "description", além de permitir criar novos tipos de listas.
+% Com a opção "inline", a package define os novos ambientes "itemize*",
+% "description*" e "enumerate*", que fazem os itens da lista como
+% parte de um único parágrafo. Como ela causa problemas com
+% beamer, apenas a carregamos se não estivermos usando beamer.
+\@ifclassloaded{beamer}
+  {}
+  {\RequirePackage[inline]{enumitem}}
+
+% TODO: siunitx removed option "binary-units" in 2021;
+%       we can remove this option here after, say, 2025.
+% Vários recursos para apresentação de números e grandezas (unidades, notação
+% científica, melhor apresentação de números longos etc.), além de permitir
+% alinhar números em tabelas pelo ponto decimal (como a package dcolumn)
+% através do tipo de coluna "S". Por exemplo, \si{\ohm}, \si{\celsius},
+% \si{\milli\litre} (apenas as unidades) ou \SI{10}{\hertz} (a grandeza e a
+% unidade), ou \num[round-mode=places,round-precision=4]{3.1415926} -> 3,1416.
+
+\RequirePackage[binary-units]{siunitx}
+\sisetup{
+  mode=text,
+  round-mode=places,
+}
+
+% siunitx usa a package translator para apresentar estas expressões na
+% língua do documento; vamos fornecer as traduções para o português.
+\providetranslation[to=Portuguese]{to (numerical range)}{a}
+\providetranslation[to=Portuguese]{and}{e}
+\addto\extrasbrazil{\sisetup{output-decimal-marker = {,}}}
+\addto\extrasbrazilian{\sisetup{output-decimal-marker = {,}}}
+
+\RequirePackage{url}
+% URL com fonte sem serifa ao invés de teletype
+\urlstyle{sf}
+
+% Permite inserir comentários, muito bom durante a escrita do texto;
+% você também pode se interessar pela package pdfcomment.
+\RequirePackage[textsize=scriptsize,colorinlistoftodos,textwidth=2.5cm]{todonotes}
+\presetkeys{todonotes}{color=orange!40!white}{}
+
+% Comando para fazer notas com highlight no texto correspondente:
+% \hltodo[texto][opções]{comentário}
+\if@todonotes@disabled
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{#1}
+\else
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{
+    \ifstrempty{#1}{}{\texthl{#1}}%
+    \todo[#2]{#3}{}%
+  }
+\fi
+
+% Vamos reduzir o espaçamento entre linhas nas notas/comentários
+\xpatchcmd{\@todo}
+  {\renewcommand{\@todonotes@text}{#2}}
+  {\renewcommand{\@todonotes@text}{\begin{spacing}{0.5}#2\end{spacing}}}
+  {}
+  {}
+
+% Outras ferramentas que podem ser úteis durante a preparação do texto:
+
+% Faz LaTeX mostrar um traço ao lado de linhas "overfull".
+%\overfullrule=1mm
+
+% Faz LaTeX mostrar labels e referências bibliográficas:
+%\RequirePackage{showkeys}
+
+% Faz LaTeX mostrar linhas e traços indicando espaçamento, kerning etc.
+% Funciona apenas com lualatex.
+%\RequirePackage{lua-visual-debug}
+
+% Além disso, o programa checkcites, instalado juntamente com LaTeX,
+% indica problemas com citações bibliográficas.
+
+% Gantt charts; útil para fazer o cronograma para o exame de
+% qualificação, por exemplo.
+\RequirePackage{pgfgantt}
+
+% Estes parâmetros definem a aparência das gantt charts e variam
+% em função da fonte do documento.
+\ganttset{
+    vgrid,
+    x unit=1.7em,
+    y unit title=3ex,
+    y unit chart=4ex,
+    % O "strut" é necessário para alinhar o baseline dos nomes dos meses
+    title label font=\strut\footnotesize,
+    group label font=\footnotesize\bfseries,
+    bar label font=\footnotesize,
+    milestone label font=\footnotesize\itshape,
+    % "align=right" é necessário para \ganttalignnewline funcionar
+    group label node/.append style={align=right},
+    bar label node/.append style={align=right},
+    milestone label node/.append style={align=right},
+    group incomplete/.append style={fill=black!50},
+    bar/.append style={fill=black!25,draw=black},
+    bar incomplete/.append style={fill=white,draw=black},
+    % Não é preciso imprimir "0%"
+    progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
+    % Formato e tamanho dos elementos
+    title height=.9,
+    group top shift=.4,
+    group left shift=0,
+    group right shift=0,
+    group peaks tip position=0,
+    group peaks width=.2,
+    group peaks height=.3,
+    milestone height=.4,
+    milestone top shift=.4,
+    milestone left shift=.8,
+    milestone right shift=.2,
+}
+
+% Em inglês, tanto o nome completo quanto a abreviação do mês de maio
+% são "May"; por conta disso, na tradução em português LaTeX erra a
+% abreviação. Como talvez usemos o nome inteiro do mês em outro lugar,
+% ao invés de forçar a tradução para "Mai" globalmente, fazemos isso
+% apenas em ganttchart.
+\AtBeginEnvironment{ganttchart}{\deftranslation[to=Portuguese]{May}{Mai}}
+
+% Ilustrações, diagramas, gráficos etc. criados diretamente em LaTeX.
+% Também é útil se você quiser importar gráficos gerados com GnuPlot.
+\RequirePackage{tikz}
+
+% Gráficos gerados diretamente em LaTeX; é possível usar tikz para
+% isso também.
+\RequirePackage{pgfplots}
+% sobre níveis de compatibilidade do pgfplots, veja
+% https://tex.stackexchange.com/a/81912
+%\pgfplotsset{compat=1.14} % TeXLive 2016
+%\pgfplotsset{compat=1.15} % TeXLive 2017
+%\pgfplotsset{compat=1.16} % TeXLive 2019
+\pgfplotsset{compat=newest}
+
+% Importação direta de arquivos gerados por gnuplot com o
+% driver/terminal "lua tikz"; esta package não faz parte da
+% instalação padrão do LaTeX, mas sim do gnuplot.
+%\RequirePackage{gnuplot-lua-tikz}
+
+% Notas de rodapé "órfãs", ou seja, textos que aparecem junto
+% das notas de rodapé mas que não têm referência em nenhum lugar.
+% "0" desabilita o marcador porque não existe o 0-ésimo símbolo.
+\newcommand\detachedfootnote[1]{%
+    \bgroup
+    \renewcommand\thefootnote{\fnsymbol{footnote}}%
+    \renewcommand\thempfootnote{\fnsymbol{mpfootnote}}%
+    \footnotetext[0]{#1}%
+    \egroup
+}
+
+% Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta
+% comandos para vários outros logos da família TeX. Você provavelmente não
+% precisa desse recurso e, portanto, pode removê-la.
+\usepackage{hologo}
+\providecommand{\XeLaTeX}{\hologo{XeLaTeX}}

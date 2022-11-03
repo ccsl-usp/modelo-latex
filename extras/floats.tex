@@ -73,17 +73,6 @@
 % diferença.
 \usepackage{flafter}
 
-% Às vezes um float pode ser adiado por muitas páginas; é possível forçar
-% LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
-% para isso, o usuário deve identificar os casos problemáticos e inserir
-% \clearpage manualmente. Esta package acrescenta o comando \FloatBarrier,
-% que executa \clearpage apenas se necessário no local em que é chamado.
-% "above" e "below" desabilitam a barreira quando os floats estão na mesma
-% página. A desvantagem de placeins é que, para funcionar, ela gera quebras
-% de página que muitas vezes são inesperadas; em muitos casos, é melhor
-% fazer ajustes manualmente.
-\usepackage[above,below]{placeins}
-
 % Em documentos com duas colunas, floats normalmente são colocados como
 % parte de uma das colunas. No entanto, é possível usar "\begin{figure*}"
 % ou "\begin{table*}" para criar floats que ocupam as duas colunas. Floats
@@ -114,32 +103,6 @@
 % 3. Soluciona o terceiro problema.
 \usepackage{stfloats}
 
-% Às vezes é interessante utilizar uma imagem mais larga que o texto.
-% Por padrão, \centering *não* vai centralizar a imagem corretamente
-% nesse caso. Com esta package, podemos acrescentar a opção "center"
-% ao comando \includegraphics para resolver esse problema:
-% \noindent\includegraphics[width=1.2\textwidth,center]{imagem}.
-% A package tem muitos outros recursos também
-\usepackage[export]{adjustbox}
-
-% Define o ambiente "\begin{landscape} -- \end{landscape}"; o texto entre
-% esses comandos é impresso em modo paisagem, podendo se estender por várias
-% páginas. A rotação não inclui os cabeçalhos e rodapés das páginas.
-% O principal uso desta package é em conjunto com a package longtable: se
-% você precisa mostrar uma tabela muito larga (que precisa ser impressa em
-% modo paisagem) e longa (que se estende por várias páginas), use
-% "\begin{landscape}" e "\begin{longtable}" em conjunto. Note que o modo
-% landscape entra em ação imediatamente, ou seja, "\begin{landscape}" gera
-% uma quebra de página no local em que é chamado. Na maioria dos casos, o
-% que se quer não é isso, mas sim um "float paisagem"; isso é o que a
-% package rotating oferece (veja abaixo).
-\usepackage{pdflscape}
-
-% Define dois novos tipos de float: sidewaystable e sidewaysfigure, que
-% imprimem a figura ou tabela sozinha em uma página em modo paisagem. Além
-% disso, permite girar elementos na página de diversas outras maneiras.
-\usepackage[figuresright,clockwise]{rotating}
-
 % Captions com fonte menor, indentação normal, corpo do texto
 % negrito e nome do caption itálico
 \usepackage[
@@ -154,20 +117,6 @@
 % que os captions ficam abaixo das tabelas.
 \captionsetup*[longtable]{position=bottom}
 
-% Sub-figuras (e seus captions) - observe que existe uma package chamada
-% "subfigure", mas ela é obsoleta; use esta no seu lugar.
-\usepackage{subcaption}
-
-% Permite criar imagens com texto ao redor
-%\usepackage{wrapfig}
-% Esta é similar, mas me parece uma opção melhor:
-%\usepackage{cutwin}
-
-% Permite incorporar um arquivo PDF como uma página adicional. Útil se
-% for necessário importar uma imagem ou tabela muito grande ou ainda
-% para definir uma capa personalizada.
-\usepackage{pdfpages}
-
 % Permite importar figuras. LaTeX "tradicional" só é capaz de trabalhar com
 % figuras EPS; hoje em dia não há nenhuma boa razão para usar essa versão.
 % Já pdfTeX, XeTeX e LuaTeX podem usar figuras nos formatos PDF, JPG e PNG.
@@ -175,100 +124,3 @@
 % arquivos EPS para PDF, mas não isso é garantido, então é melhor evitar o
 % formato EPS.
 \usepackage{graphicx}
-
-% Caixas de texto coloridas
-%\usepackage{tcolorbox}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TABELAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Tabelas simples são fáceis de fazer em LaTeX; tabelas com alguma sofisticação
-% são trabalhosas, pois é difícil controlar alinhamento, largura das colunas,
-% distância entre células etc. Ou seja, é muito comum que a tabela final fique
-% "torta". Por isso, em muitos casos, vale mais a pena gerar a tabela em uma
-% planilha, como LibreOffice calc ou excel, transformar em PDF e importar como
-% figura, especialmente se você quer controlar largura/altura das células
-% manualmente etc. No entanto, se você quiser fazer as tabelas em LaTeX para
-% garantir a consistência com o tipo e o tamanho das fontes, é possível e o
-% resultado é muito bom. Aqui há alguns pacotes que incrementam os recursos de
-% tabelas do LaTeX e alguns comandos pré-prontos que podem facilitar um pouco
-% seu uso.
-
-% LaTeX por padrão não permite notas de rodapé dentro de tabelas. De maneira
-% geral, notas de rodapé em tabelas são consideradas "ruins" em termos de
-% tipografia, mas às vezes são necessárias. Se esse é o caso, o recomendado
-% é que as notas de rodapé apareçam no "rodapé" da tabela, com numeração
-% própria, e não no rodapé da página. Você pode fazer isso com esta package:
-\usepackage{threeparttable}
-% Formatação personalizada das notas de threeparttable:
-\appto{\TPTnoteSettings}{\footnotesize\itshape}
-\def\TPTtagStyle{\textit}
-% Outra opção é a package ctable, que ainda oferece vários outros
-% recursos mas usa uma sintaxe diferente.
-%\usepackage{ctable}
-
-% Se você realmente quer notas de rodapé em tabelas que aparecem como as
-% demais notas de rodapé (no final da página e mantendo a sequência numérica),
-% você pode usar a package abaixo. No entanto, ela não funciona com floats
-% duplos (floats que ocupam toda a largura da página em um documento de duas
-% colunas) e, em alguns casos, a nota pode desaparecer ou aparecer em uma
-% página diferente da tabela (mova o lugar do texto em que ela é definida
-% para resolver esse problema).
-\usepackage{tablefootnote}
-
-% Por padrão, cada coluna de uma tabela tem a largura do maior texto contido
-% nela, ou seja, se uma coluna contém uma célula muito larga, LaTeX não
-% força nenhuma quebra de linha e a tabela "estoura" a largura do papel. A
-% solução simples, nesses casos, é inserir uma ou mais quebras de linha
-% manualmente, o que além de deselegante não é totalmente trivial (é preciso
-% usar \makecell).
-% Esta package estende o ambiente tabular para permitir definir um tamanho
-% fixo para uma ou mais colunas; nesse caso, LaTeX quebra as linhas se uma
-% célula é larga demais para a largura definida. Encontrar valores "bons"
-% para as larguras das colunas, no entanto, também é um trabalho manual
-% um tanto penoso. As packages tabularx e tabulary permitem configurar
-% algumas colunas como "largura automática", evitando a necessidade da
-% definição manual. Finalmente, ltxtable permite utilizar tabularx e
-% longtable juntas. Neste modelo, não usamos tabularx/tabulary, mas você
-% pode carregá-las se quiser.
-\usepackage{array}
-
-% Permite alinhar os elementos de uma coluna pelo ponto decimal; dê
-% preferência à package siunitx (carregada em utils.tex), que também
-% oferece esse recurso e muitos outros.
-%\usepackage{dcolumn}
-
-% Define tabelas do tipo "longtable", similares a "tabular" mas que podem ser
-% divididas em várias páginas. "longtable" também funciona corretamente com
-% notas de rodapé. Note que, como uma longtable pode se estender por várias
-% páginas, não faz sentido colocá-las em um float "table". Por conta disso,
-% longtable define o comando "\caption" internamente.
-\usepackage{longtable}
-
-% Permite agregar linhas de tabelas, fazendo colunas "compridas"
-\usepackage{multirow}
-
-% Cria comando adicional para possibilitar a inserção de quebras de linha
-% em uma célula de tabela, entre outros
-\usepackage{makecell}
-
-% Modifica (melhora) o layout default das tabelas e acrescenta os comandos
-% \toprule, \bottomrule, \midrule e \cmidrule. Vale muito a pena ler a
-% documentação desta package!
-\usepackage{booktabs}
-
-% Permite colorir linhas, colunas ou células
-\usepackage{colortbl}
-
-% Ao invés de digitar os dados de uma tabela dentro do seu documento,
-% você pode fazer LaTeX ler os dados de um arquivo CSV e criar uma
-% tabela automaticamente com uma destas duas packages:
-%\usepackage{csvsimple}     % mais simples
-%\usepackage{pgfplotstable} % mais complexa
-
-% Você também pode se interessar pelo ambiente "tabbing", que permite
-% criar tabelas simples com algumas vantagens em relação a "tabular",
-% ou por esta package, que permite criar tabulações.
-%\usepackage{tabto}

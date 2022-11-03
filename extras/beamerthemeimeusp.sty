@@ -1,31 +1,141 @@
 % Author: Nelson Lago
 % This file is distributed under the MIT Licence
 
-\ProvidesPackage{beamerthemeimeusp}[2022/08/16 v1.1 IME/USP Beamer theme]
+\ProvidesPackage{beamerthemeimeusp}[2023/01/02 v2.0 IME/USP Beamer theme]
 
 \RequirePackage{etoolbox}
-
+\RequirePackage{xcolor}
 \RequirePackage{calc}
-
 \RequirePackage{ragged2e}
 
-% Inspirado no comando \narrowragged da package varwidth.
+\newtoggle{IMEgreeny}
+\DeclareOption{greeny}{
+    \toggletrue{IMEgreeny}
+    \togglefalse{IMEbluey}
+    \togglefalse{IMEsandy}
+}
+
+\newtoggle{IMEbluey}
+\DeclareOption{bluey}{
+    \toggletrue{IMEbluey}
+    \togglefalse{IMEgreeny}
+    \togglefalse{IMEsandy}
+}
+
+\newtoggle{IMEsandy}
+\DeclareOption{sandy}{
+    \toggletrue{IMEgreeny}
+    \toggletrue{IMEsandy}
+    \togglefalse{IMEbluey}
+}
+
+\newif\ifIMEposter
+\DeclareOption{poster}{\IMEpostertrue}
+
+\ExecuteOptions{bluey}
+
+\ProcessOptions\relax
+
+
+\ifIMEposter
+
+% The poster style code:
+% Authors: David Vilar (2007 initial version), Rob J Hyndman (2010), and
+% Lian Tze Lim (2011).
+% Licence: LPPL / GPLv2
 %
-% Num texto normal, os parágrafos costumam ser justificados. Em uma
-% apresentação, os parágrafos são muito curtos (1-3 linhas), então
-% justificar não é tão bom e, por isso, beamer usa parágrafos
-% ragged right.
+% The original file was downloaded from
+% http://latex-my.blogspot.com/2011/03/creating-academic-posters-and-printing.html
+% As the author points out, it is derived from
+% https://robjhyndman.com/hyndsight/beamer-poster/
+% which in turn is derived from the I6dv theme included in the
+% beamerposter package (https://github.com/deselaers/latex-beamerposter ),
+% which is LPPL / GPL, as stated here:
+% https://ctan.org/pkg/beamerposter
 %
-% De forma similar, em um texto normal, a última linha de um parágrafo
-% pode ser bastante curta. Isso também é problemático em uma apresentação,
-% mas beamer não trata isso de forma especial. Aqui, incentivamos LaTeX
-% a fazer as linhas do parágrafo um pouco mais curtas para evitar que a
-% última fique curta demais. Além disso, fazemos LaTeX preferir não
-% hifenizar palavras se possível. Os valores dos parâmetros são chutes :)
-% mas devem funcionar razoavelmente.
-\RaggedRightRightskip .05\textwidth plus .2\textwidth minus .05\textwidth\relax
-\RaggedRightParfillskip 0pt plus .4\textwidth minus 0pt\relax
-\hyphenpenalty=200
+% Small customizations by Nelson Lago
+
+\RequirePackage{tikz}
+
+\newcommand{\footimage}[1]{\def\footim@ge{#1}}
+\usefonttheme[onlymath]{serif}
+
+\setbeamertemplate{headline}{
+  \begin{beamercolorbox}[wd=\textwidth]{headline}
+     \vskip2em\centering
+     \parbox{\linewidth}{%
+       \normalbaselines\centering
+       \usebeamercolor{title in headline}%
+       \color{fg}{\bfseries\rmfamily\huge\inserttitle\par}%
+     }%
+     \vskip2em
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{1em}
+  \end{beamercolorbox}
+}
+
+\setbeamerfont{structure}{family=\sffamily,size=\Large}
+
+\setbeamertemplate{itemize/enumerate body begin}{\vspace*{-1ex}}
+\setbeamertemplate{itemize/enumerate body end}{\vspace*{-0.5ex}}
+
+\setbeamertemplate{itemize item}
+  {%
+    \bgroup
+      \small\raisebox{.2\totalheight}{\ensuremath{\blacktriangleright}}%
+    \egroup
+  }
+
+\setbeamertemplate{itemize subitem}
+  {%
+    \bgroup
+      \large\raisebox{-.15\totalheight}{\ensuremath{\bullet}}%
+    \egroup
+  }
+
+\setlength\leftmargini{3.5em}
+
+\setbeamertemplate{caption}[numbered]
+
+\setbeamertemplate{bibliography item}[triangle]
+
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex]{block title}%
+    \usebeamerfont{block title}\insertblocktitle
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[colsep*=.75ex,sep=.2ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+\setbeamertemplate{block end}{
+  \end{beamercolorbox}\vskip1ex
+}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamerfont{footline}{size=\small,family=\rmfamily}
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{.5em}
+  \end{beamercolorbox}
+   \begin{beamercolorbox}[wd=\paperwidth]{footline}
+     \vskip1.5ex
+     \hspace{1em}\usebeamercolor{author in footline}{\bfseries\large\insertauthor}\par\vskip1ex
+     \hspace{1em}{\small\ttfamily\bfseries\insertshortauthor}\par\vskip.8ex
+     \hspace{1em}\usebeamercolor{institute in footline}{\color{fg}\small\bfseries\insertinstitute}\vskip1ex
+   \end{beamercolorbox}
+%
+\ifdefined\footim@ge
+  \tikz[overlay,remember picture]%
+  \node[anchor=south east,inner sep=12pt] at (current page.south east) %
+  {\footim@ge};
+\fi
+}
+
+\else % \ifIMEposter
 
 \usetheme[sectionpage=progressbar,
           subsectionpage=none,
@@ -107,11 +217,33 @@
     \egroup
   }
 
+\fi % \ifIMEposter
+
+
+% Inspirado no comando \narrowragged da package varwidth.
+%
+% Num texto normal, os parágrafos costumam ser justificados. Em uma
+% apresentação, os parágrafos são muito curtos (1-3 linhas), então
+% justificar não é tão bom e, por isso, beamer usa parágrafos
+% ragged right.
+%
+% De forma similar, em um texto normal, a última linha de um parágrafo
+% pode ser bastante curta. Isso também é problemático em uma apresentação,
+% mas beamer não trata isso de forma especial. Aqui, incentivamos LaTeX
+% a fazer as linhas do parágrafo um pouco mais curtas para evitar que a
+% última fique curta demais. Além disso, fazemos LaTeX preferir não
+% hifenizar palavras se possível. Os valores dos parâmetros são chutes :)
+% mas devem funcionar razoavelmente.
+\RaggedRightRightskip .05\textwidth plus .2\textwidth minus .05\textwidth\relax
+\RaggedRightParfillskip 0pt plus .4\textwidth minus 0pt\relax
+\hyphenpenalty=200
+
+
 % Normalmente, beamer não utiliza os "labels" normais na bibliografia;
 % ao invés disso, ele coloca ícones indicando o tipo de item. Isso
 % funciona corretamente na configuração padrão e usando bibtex, mas
 % gera alguns problemas com biblatex ou quando utilizamos "labels"
-% personalizados, como os triângulos que definimos logo acima.
+% personalizados, como os triângulos que definimos abaixo.
 %
 % Versões mais novas de beamer + biblatex + latex usam hooks para
 % ajustar o tamanho dos labels, resolvendo a incompatibilidade com
@@ -184,17 +316,17 @@
               \setlength{\bibhang}{2\noexpand\beamer@bibiconwidth}%
               % Com as dimensões atuais, a bibliografia fica muito
               % à esquerda; vamos empurrar tudo para a direita
-              \addtolength{\bibhang}{-2\labelsep}%
+              \addtolength{\labelwidth}{-.4em}%
+              %\addtolength{\bibhang}{-2\labelsep}% Poster
             }{}{}%
           }%
         }{}
     }{}
 }
 
-% Remove ícones de navegação
-\beamertemplatenavigationsymbolsempty
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS AUXILIARES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS AUXILIARES PARA %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% A "CAPA" DA APRESENTAÇÃO %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{qrcode}
 
@@ -344,5 +476,132 @@
 % é mais simples de fazer e (esperemos!) não vai causar problemas.
 % Bug report: https://github.com/josephwright/beamer/issues/524
 \pretocmd{\beamer@tocact}{\strut}{}{}
+
+% Remove ícones de navegação
+\beamertemplatenavigationsymbolsempty
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CORES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Generic colors
+\definecolor{DarkRed}{HTML}{872718}
+\definecolor{Blackish}{HTML}{232830}
+\definecolor{SandyPaper}{HTML}{FFFCE2}
+
+% Greeny colors (based on the InterSCity project main color)
+\definecolor{InterSCity}{HTML}{00998C}
+\definecolor{DarkInterSCity}{HTML}{0D6D65}
+\definecolor{PastelGreen}{HTML}{73937E}
+%\definecolor{GreenishBrown}{HTML}{363020} % not used
+
+% Sandy colors
+\definecolor{BrownishGreen}{HTML}{5F603A}
+
+% Colors defined in the IME-USP visual identity manual
+\definecolor{imeblue}{RGB}{20,45,105}
+\definecolor{imeyellow}{RGB}{230,175,60}
+\definecolor{imered}{RGB}{130,20,60}
+\definecolor{imesoftblue}{RGB}{0,100,160}
+
+% Some reasonable defaults:
+\setbeamercolor{normal text}{fg=Blackish}
+% 1. blocks
+\setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg}
+% 2. example blocks
+\setbeamercolor{block title example}{use=example text,fg=example text.fg,bg=example text.fg!20!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!50!bg}
+
+\setbeamercolor{structure}{fg=DarkRed}
+\setbeamercolor{alerted text}{fg=DarkRed}
+\setbeamercolor{progress bar}{fg=DarkRed!40!red}
+\setbeamercolor{separation line}{bg=DarkRed!40!red,fg=}
+
+\setbeamercolor{palette primary}{fg=white,bg=DarkRed!80!black}
+\setbeamercolor{palette secondary}{fg=DarkRed, bg=SandyPaper}
+\setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper}
+
+% headline, footline, and author in footline are used in posters
+\setbeamercolor{headline}{fg=white,bg=DarkRed}
+\setbeamercolor{footline}{fg=white,bg=DarkRed}
+% Bug: this actually affects the institution, not the author...
+\setbeamercolor{author in footline}{fg=DarkRed!20!white}
+
+\iftoggle{IMEgreeny}{
+    \setbeamercolor{structure}{fg=InterSCity}
+    %\setbeamercolor{alerted text}{fg=PastelGreen!80!black}
+    %\setbeamercolor{alerted text}{fg=DarkRed} % same as default
+    \setbeamercolor{progress bar}{fg=InterSCity!75!green}
+    \setbeamercolor{separation line}{bg=PastelGreen,fg=}
+
+    \setbeamercolor{palette primary}{fg=white,bg=DarkInterSCity}
+    %\setbeamercolor{palette secondary}{fg=DarkRed, bg=SandyPaper} % same as default
+    %\setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper} % same as default
+
+    % headline, footline, and author in footline are used in posters
+    \setbeamercolor{headline}{fg=PastelGreen!10!white,bg=InterSCity}
+    \setbeamercolor{footline}{fg=white,bg=InterSCity}
+    % Bug: this actually affects the institution, not the author...
+    \setbeamercolor{author in footline}{fg=PastelGreen!30!white}
+}{}
+
+\iftoggle{IMEsandy}{
+    % Cores default para blocos
+    % block body preto é melhor para impressão
+    \setbeamercolor{block body}{fg=black,bg=SandyPaper}
+    %\setbeamercolor{block body}{fg=BrownishGreen!50!black,bg=SandyPaper}
+    \setbeamercolor{block title}{fg=BrownishGreen!50!black,bg=SandyPaper!90!black}
+}{}
+
+\iftoggle{IMEbluey}{
+    \setbeamercolor{block title}{use=structure,fg=white,bg=imesoftblue}
+    \setbeamercolor{block body}{fg=black,bg=SandyPaper}
+
+    \setbeamercolor{structure}{fg=imeblue}
+    \setbeamercolor{alerted text}{fg=imered}
+    \setbeamercolor{progress bar}{fg=imeyellow}
+    \setbeamercolor{separation line}{bg=imeyellow,fg=}
+
+    \setbeamercolor{palette primary}{fg=white,bg=imeblue}
+    \setbeamercolor{palette secondary}{fg=imered, bg=SandyPaper}
+    %\setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper} % same as default
+
+    % headline, footline, and author in footline are used in posters
+    \setbeamercolor{headline}{fg=white,bg=imeblue}
+    \setbeamercolor{footline}{fg=white,bg=imesoftblue}
+    % Bug: this actually affects the institution, not the author...
+    \setbeamercolor{author in footline}{fg=imesoftblue!30!white}
+}{}
+
+% Proofs, theorems etc. don't change with the different themes
+%
+% Cores especiais para bloco proof.
+% Não existe um template específico para definir as
+% cores do bloco proof, então fazemos de outra maneira
+\addtobeamertemplate{proof begin}{%
+    \setbeamercolor{block title}{fg=black,bg=orange!50!white}
+    \setbeamercolor{block body}{fg=orange!80!black,bg=orange!20!white}
+}{}
+
+% Não é boa ideia fazer "\addtobeamertemplate{theorem begin}" para definir
+% cores para teoremas porque essa template vale para theorem, corollary,
+% definition, fact e example e não tem como fazer override depois. Vamos
+% usar isto no lugar
+\AtBeginEnvironment{theorem}{
+    \setbeamercolor{block title}{use=example text,fg=white,bg=example text.fg!75!black}
+    \setbeamercolor{block body}{parent=normal text,use=block title example,bg=block title example.bg!50!bg}
+}{}
+
+% Cor especial para definition
+\AtBeginEnvironment{definition}{%
+    \setbeamercolor{block title}{fg=black,bg=brown!80!red!70!white}
+    \setbeamercolor{block body}{fg=brown!70!black,bg=brown!80!red!30!white}
+}{}
+
+% Exemplo de novo tipo de teorema (proposition) com cor personalizada
+\newtheorem{proposition}{Proposition}
+\AtBeginEnvironment{proposition}{
+    \setbeamercolor{block title}{fg=black,bg=yellow!50!black!50!white}
+    \setbeamercolor{block body}{fg=yellow!50!black,bg=yellow!50!black!30!white}
+}{}
 
 \endinput

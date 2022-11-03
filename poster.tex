@@ -23,7 +23,8 @@
 \input{extras/hyperlinks}
 \hidelinks % desabilita cor/sublinhado dos links (URLs, refs etc.)
 \input{extras/source-code}
-\input{extras/utils}
+
+\usepackage{imegoodies}
 
 % Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
 % completo em \includegraphics (e nem a extensão).
@@ -47,13 +48,7 @@
 %% Font sizes can be changed using the scale option.
 \usepackage[size=a1,orientation=portrait,scale=1.8]{beamerposter}
 
-\usetheme{imeusp-poster} % carregado do diretório extras (veja basics.tex)
-
-% O padrão usa um tom de vermelho escuro como cor principal; a opção
-% "greeny" troca essa cor por um tom de verde; a opção "sandy" usa o
-% mesmo tom de verde mas modifica a cor padrão dos blocos para um tom
-% amarelado. "bluey" usa as cores do manual de identidade visual do IME.
-\usecolortheme[bluey]{imeusp} % carregado do diretório extras (veja basics.tex)
+\usetheme[poster]{imeusp} % carregado do diretório extras (veja basics.tex)
 
 %Remove ícones de navegação
 \beamertemplatenavigationsymbolsempty

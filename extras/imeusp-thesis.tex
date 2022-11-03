@@ -1134,4 +1134,101 @@
 % os comentários no arquivo da package).
 \usepackage{imagechapter} % carregado do diretório extras (veja basics.tex)
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% A classe Book inclui o comando \appendix, que (obviamente) permite inserir
+% apêndices no documento. No entanto, não há suporte similar para anexos. Esta
+% package acrescenta alguns recursos adicionais para apêndices; vamos usá-la
+% para permitir colocar a palavra "Apêndice" no sumário e também para definir
+% o comando \annex.
+\usepackage{appendix}
+\noappendicestocpagenum
+
+% Altera a formatação da palavra "Apêndice" no sumário
+%
+% Não queremos a linha "Apêndice" como a última da página no sumário;
+% para isso:
+%
+% 1. Acrescentamos um pouco de espaço elástico logo antes dela
+%
+% 2. Colocamos uma sugestão de quebra de página
+%
+% 3. Usamos \@afterheading
+%
+% 1 e 2 incentivam (mas não forçam) LaTeX a realizar a quebra antes
+% dela e 3 força LaTeX a mantê-la na mesma página que a próxima linha.
+%
+% \addtocontents pode pregar peças se usamos \include; contornamos
+% com \immediate: https://tex.stackexchange.com/a/13926
+\renewcommand\addappheadtotoc{%
+  \begingroup
+    \let\origwrite\write
+    \def\write{\immediate\origwrite}%
+    \addtocontents{toc}{{\large\vspace{0pt plus 2\baselineskip minus 0pt}}}%
+    \addtocontents{toc}{\protect\pagebreak[2]}%
+    \addtocontents{toc}{\vspace{.8\baselineskip}}%
+    \addtocontents{toc}{{\large\bfseries\hspace{-1.3em}\appendixtocname\par}}%
+    \addtocontents{toc}{\protect\@afterheading}%
+  \endgroup
+}
+
+\let\@IMErealAppendixname\appendixname
+\let\@IMErealAppendixtocname\appendixtocname
+\let\@IMErealAppendixpagename\appendixpagename
+\def\appendixname{\@IMErealAppendixname}
+\def\appendixtocname{\@IMErealAppendixtocname}
+\def\appendixpagename{\@IMErealAppendixpagename}
+
+\providecommand\annexname{Annex}
+\providecommand\annextocname{Annexes}
+\providecommand\annexpagename{Annexes}
+
+\addto\captionsbrazil{%
+  \renewcommand\annexname{Anexo}%
+  \renewcommand\annextocname{Anexos}%
+  \renewcommand\annexpagename{Anexos}%
+  \renewcommand\@IMErealAppendixname{Apêndice}%
+  \renewcommand\@IMErealAppendixtocname{Apêndices}%
+  \renewcommand\@IMErealAppendixpagename{Apêndices}%
+}
+
+\addto\captionsbrazilian{%
+  \renewcommand\annexname{Anexo}%
+  \renewcommand\annextocname{Anexos}%
+  \renewcommand\annexpagename{Anexos}%
+  \renewcommand\@IMErealAppendixname{Apêndice}%
+  \renewcommand\@IMErealAppendixtocname{Apêndices}%
+  \renewcommand\@IMErealAppendixpagename{Apêndices}%
+}
+
+\addto\captionsenglish{%
+  \renewcommand\annexname{Annex}%
+  \renewcommand\annextocname{Annexes}%
+  \renewcommand\annexpagename{Annexes}%
+  \renewcommand\@IMErealAppendixname{Appendix}%
+  \renewcommand\@IMErealAppendixtocname{Appendixes}%
+  \renewcommand\@IMErealAppendixpagename{Appendixes}%
+}
+
+\let\@IMEorigAppendix\appendix
+\renewcommand\appendix{%
+    \def\appendixname{\@IMErealAppendixname}
+    \def\appendixtocname{\@IMErealAppendixtocname}
+    \def\appendixpagename{\@IMErealAppendixpagename}
+    \def\Hy@appendixstring{appendix}%
+    \@IMEorigAppendix
+}
+
+\newcommand\annex{%
+    \def\Hy@appendixstring{annex}
+    \def\appendixname{\annexname}
+    \def\appendixtocname{\annextocname}
+    \def\appendixpagename{\annexpagename}
+    \@IMEorigAppendix
+}
+
 \makeatother
