@@ -13,6 +13,8 @@
 \usepackage{expl3}
 \usepackage{xparse}
 
+%\usepackage{filehook}
+
 % Detecta se estamos usando pdftex, luatex, xetex etc.
 \usepackage{iftex}
 
@@ -35,7 +37,6 @@
 %       provavelmente no final de 2024.
 \makeatletter
 \ExplSyntaxOn
-
 \@ifpackagelater{regexpatch}{2021/03/21}
   {} % Se regexpatch é "nova", expl3 deve ser também; nada a fazer
   {
