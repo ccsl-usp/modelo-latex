@@ -235,18 +235,6 @@
 % pode carregá-las se quiser.
 \usepackage{array}
 
-% Se você quer ter um pouco mais de controle sobre o tamanho de cada coluna da
-% tabela, utilize estes tipos de coluna (criados com base nos recursos do pacote
-% array). É só usar algo como M{número}, onde "número" (por exemplo, 0.4) é a
-% fração de \textwidth que aquela coluna deve ocupar. "M" significa que o
-% conteúdo da célula é centralizado; "L", alinhado à esquerda; "J", justificado;
-% "R", alinhado à direita. Obviamente, a soma de todas as frações não pode ser
-% maior que 1, senão a tabela vai ultrapassar a linha da margem.
-\newcolumntype{M}[1]{>{\centering}m{#1\textwidth}}
-\newcolumntype{L}[1]{>{\RaggedRight}m{#1\textwidth}}
-\newcolumntype{R}[1]{>{\RaggedLeft}m{#1\textwidth}}
-\newcolumntype{J}[1]{m{#1\textwidth}}
-
 % Permite alinhar os elementos de uma coluna pelo ponto decimal; dê
 % preferência à package siunitx (carregada em utils.tex), que também
 % oferece esse recurso e muitos outros.
@@ -265,18 +253,6 @@
 % Cria comando adicional para possibilitar a inserção de quebras de linha
 % em uma célula de tabela, entre outros
 \usepackage{makecell}
-
-% Se quiser criar uma linha mais grossa no meio de uma tabela, use
-% o comando "\thickhline".
-\newlength\savedwidth
-\newcommand\thickhline{
-  \noalign{
-    \global\savedwidth\arrayrulewidth
-    \global\arrayrulewidth 1.5pt
-  }
-  \hline
-  \noalign{\global\arrayrulewidth\savedwidth}
-}
 
 % Modifica (melhora) o layout default das tabelas e acrescenta os comandos
 % \toprule, \bottomrule, \midrule e \cmidrule

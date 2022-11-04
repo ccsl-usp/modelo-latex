@@ -734,9 +734,35 @@ Resumindo:
 \end{itemize}
 
 %%%%%%%% Tabela em forma de ficha %%%%%%%%
+%
+% Primeiro, alguns ajustes:
 
 % Aumenta o espaçamento entre as linhas da tabela (default: 0pt)
 \setlength\extrarowheight{4pt}
+
+% Novos tipos de colunas, com larguras proporcionais à largura total
+% do texto, criados com base nos recursos do pacote array. É só usar
+% algo como M{número}, onde "número" (por exemplo, 0.4) é a fração de
+% \textwidth que aquela coluna deve ocupar. "M" significa que o conteúdo
+% da célula é centralizado; "L", alinhado à esquerda; "J", justificado;
+% "R", alinhado à direita. Obviamente, a soma de todas as frações não
+% pode ser maior que 1, senão a tabela vai ultrapassar a linha da margem.
+\newcolumntype{M}[1]{>{\centering}m{#1\textwidth}}
+\newcolumntype{L}[1]{>{\RaggedRight}m{#1\textwidth}}
+\newcolumntype{R}[1]{>{\RaggedLeft}m{#1\textwidth}}
+\newcolumntype{J}[1]{m{#1\textwidth}}
+
+% Para fazer uma linha mais grossa no meio de uma tabela, vamos criar
+% o comando "\thickhline".
+\newlength\savedwidth
+\newcommand\thickhline{
+  \noalign{
+    \global\savedwidth\arrayrulewidth
+    \global\arrayrulewidth 1.5pt
+  }
+  \hline
+  \noalign{\global\arrayrulewidth\savedwidth}
+}
 
 % sidewaystable e comandos relacionados são definidos na package rotating
 \begin{sidewaystable}
