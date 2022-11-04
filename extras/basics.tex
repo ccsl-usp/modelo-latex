@@ -56,7 +56,11 @@
 % com regexpatch. Como regexpatch oferece todos os recursos de xpatch (ela
 % é uma versão estendida de xpatch, mas ainda considerada experimental), vamos
 % fazê-las acreditar que xpatch já foi carregada.
-\expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}
+\makeatletter
+\@ifpackagelater{regexpatch}{2020/10/06}
+    {\expandafter\xdef\csname ver@xpatch.sty\endcsname{2020/03/25}}
+    {\expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}}
+\makeatother
 
 % Acrescenta a correção deste bug (contida na release 2018-11-28):
 % https://github.com/latex3/latex2e/issues/94 . Se a correção não
