@@ -265,11 +265,6 @@
 % em uma célula de tabela, entre outros
 \usepackage{makecell}
 
-% Às vezes a tabela é muito larga e não cabe na página. Se os cabeçalhos da
-% tabela é que são demasiadamente largos, uma solução é inclinar o texto das
-% células do cabeçalho. Para fazer isso, use o comando "\rothead".
-\renewcommand{\rothead}[2][60]{\makebox[11mm][l]{\rotatebox{#1}{\makecell[c]{#2}}}}
-
 % Se quiser criar uma linha mais grossa no meio de uma tabela, use
 % o comando "\thickhline".
 \newlength\savedwidth

@@ -459,6 +459,9 @@ Para um resultado visual excelente, não deixe de ler a documentação da
 
 %%%%%%%% Tabelas lado-a-lado %%%%%%%%
 
+% Para forçar quebras de linha em células de uma tabela é preciso
+% colocar a célula dentro de \makecell, veja o exemplo abaixo.
+
 \begin{table}
 \centering
 
@@ -481,8 +484,15 @@ Para um resultado visual excelente, não deixe de ler a documentação da
     \end{tabular}
     \caption{Com linhas de cores alternadas.}
   \end{subtable}
-  % Como mencionado mais acima, não deixe linhas em branco aqui
+  % Como mencionado no exemplo com subfigure, não deixe linhas em branco aqui
   \hspace*{\fill}\hspace*{\fill}\hspace*{\fill}
+  % Às vezes a tabela é muito larga e não cabe na página. Se os cabeçalhos
+  % da tabela é que são demasiadamente largos, uma solução é inclinar o
+  % texto das células do cabeçalho com o comando "\rothead" da pkg makecell.
+  \renewcommand\cellrotangle{60}
+  \setlength\rotheadsize{21mm} % Largura máxima do texto inclinado
+  \renewcommand\theadfont{\normalsize} % Não queremos modificar a fonte
+  \setlength\tabcolsep{2pt} % Default é 6pt
   \begin{subtable}[b]{0.37\textwidth}
     \centering
     \begin{tabular}{ccl}
@@ -520,7 +530,7 @@ des-comentar as linhas correspondentes\footnote{Observe que, nesse caso,
 vai sempre haver uma quebra de página no texto para fazer a tabela
 começar em uma página em modo paisagem.}. Ela também demonstra o uso
 da \emph{package} \pkg{siunitx} para alinhar as colunas numéricas pelo
-separador decimal.
+separador decimal.\looseness=-1
 
 %%%%%%%% Tabela longa em várias páginas %%%%%%%%
 
