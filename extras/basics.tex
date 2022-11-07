@@ -350,30 +350,18 @@
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
 \usepackage[hyperref,svgnames,x11names,table]{xcolor}
 
-% LaTeX oferece desde sempre 2 pares de comandos nativos para mudar textos
-% para caixa alta ou baixa: \uppercase, \lowercase, \MakeUppercase e
-% \MakeLowecase, mas esses comandos têm algumas limitações importantes
-% (https://tug.org/TUGboat/tb41-1/tb127wright-case.pdf ). Por muito tempo,
-% o recomendado era usar os comandos \MakeTextUppercase e \MakeTextLowercase
-% da package textcase, mas os comandos abaixo, disponíveis em versões mais
-% recentes de LaTeX, são mais robustos.
-%
-% TODO: Quando ubuntu 20.04 se tornar obsoleta (abril de 2025), podemos
-%       eliminar estas macros auxiliares e usar \text_[upper|lower]case:n
-%       diretamente.
-\makeatletter
-\ExplSyntaxOn
-\@ifl@t@r\fmtversion{2020/01/12}
-  {
-    \providecommand\@IMEuppercase[1]{\text_uppercase:n{#1}}
-    \providecommand\@IMElowercase[1]{\text_lowercase:n{#1}}
-  }
-  {
-    \providecommand\@IMEuppercase[1]{\tl_upper_case:n{#1}}
-    \providecommand\@IMElowercase[1]{\tl_lower_case:n{#1}}
-  }
-\ExplSyntaxOff
-\makeatother
+% LaTeX oferece 2 pares de comandos nativos para mudar textos para caixa
+% alta ou baixa: \uppercase ou \lowercase (TeX "puro") e \MakeUppercase
+% ou \MakeLowecase (LaTeX), mas esses comandos têm algumas limitações
+% (https://tug.org/TUGboat/tb41-1/tb127wright-case.pdf ). Esta package
+% define os comandos \MakeTextUppercase e \MakeTextLowercase que resolvem
+% isso.
+% TODO: quando TeXLive 2023 for a versão mais antiga de LaTeX a que
+%       estivermos dando suporte, podemos eliminar a package textcase
+%       e usar \MakeUppercase e \MakeLowercase diretamente. A partir
+%       dessa versão, essas macros usam \text_[upper|lower]case:n de
+%       expl3.
+\usepackage{textcase}
 
 % Em documentos frente-e-verso, LaTeX faz o final da página terminar sempre
 % no mesmo lugar (exceto no final dos capítulos). Esse comportamento pode ser

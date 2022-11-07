@@ -12,21 +12,6 @@
 
 \makeatletter
 
-% TODO: Quando ubuntu 20.04 se tornar obsoleta (abril de 2025), podemos
-%       eliminar estas macros auxiliares e usar \text_[upper|lower]case:n
-%       diretamente.
-\ExplSyntaxOn
-\@ifl@t@r\fmtversion{2020/01/12}
-  {
-    \providecommand\@IMEuppercase[1]{\text_uppercase:n{#1}}
-    \providecommand\@IMElowercase[1]{\text_lowercase:n{#1}}
-  }
-  {
-    \providecommand\@IMEuppercase[1]{\tl_upper_case:n{#1}}
-    \providecommand\@IMElowercase[1]{\tl_lower_case:n{#1}}
-  }
-\ExplSyntaxOff
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%% TEXTOS PADRÃO EM PT E EN PARA A CAPA %%%%%%%%%%%%%%%%%%%%%
@@ -156,12 +141,12 @@
       Esta é a versão original do texto de qualificação elaborado
       \@bywhom{}, tal como submetido à Comissão Julgadora.%
     }{%
-      Esta é a versão original da \@IMElowercase{\workname} elaborada
+      Esta é a versão original da \MakeTextLowercase{\workname} elaborada
       \@bywhom{}, tal como submetida à Comissão Julgadora.%
     }%
   }%
   \renewcommand\@finalFrontmatterText{%
-    Esta versão da \@IMElowercase{\workname} contém as correções e alterações
+    Esta versão da \MakeTextLowercase{\workname} contém as correções e alterações
     sugeridas pela Comissão Julgadora durante a defesa da versão
     original do trabalho, realizada em \DTMusedate{@defensedate}.\\[1\baselineskip]
     Uma cópia da versão original está disponível no Instituto de
@@ -276,12 +261,12 @@
       This is the original version of the qualifying text prepared
       by candidate \@author, as submitted to the Examining Committee.%
     }{%
-      This is the original version of the \@IMElowercase{\workname} prepared
+      This is the original version of the \MakeTextLowercase{\workname} prepared
       by candidate \@author, as submitted to the Examining Committee.%
     }%
   }%
   \renewcommand\@finalFrontmatterText{%
-    This version of the \@IMElowercase{\workname} includes the corrections
+    This version of the \MakeTextLowercase{\workname} includes the corrections
     and modifications suggested by the Examining Committee during
     the defense of the original version of the work, which took
     place on \DTMusedate{@defensedate}.\\[1\baselineskip]

@@ -23,22 +23,6 @@
 
 \ProcessOptions
 
-% TODO: Quando ubuntu 20.04 se tornar obsoleta (abril de 2025), podemos
-%       eliminar estas macros auxiliares e usar \text_[upper|lower]case:n
-%       diretamente.
-\ExplSyntaxOn
-\@ifl@t@r\fmtversion{2020/01/12}
-  {
-    \providecommand\@IMEuppercase[1]{\text_uppercase:n{#1}}
-    \providecommand\@IMElowercase[1]{\text_lowercase:n{#1}}
-  }
-  {
-    \providecommand\@IMEuppercase[1]{\tl_upper_case:n{#1}}
-    \providecommand\@IMElowercase[1]{\tl_lower_case:n{#1}}
-  }
-\ExplSyntaxOff
-
-
 \ifUseFancyhdr % implementação com fancyhdr
 
 \RequirePackage{fancyhdr}
@@ -126,8 +110,8 @@
 }
 
 \newcommand{\formataCabecalhosDinamicos}{
-  \fancyhead[LO]{\scriptsize\@IMEuppercase{\rightmark}}
-  \fancyhead[RE]{\scriptsize\@IMEuppercase{\leftmark}}
+  \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+  \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
 }
 
 \fancypagestyle{mainmatter}{
@@ -262,7 +246,7 @@
 \newrobustcmd\IHpgnum{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
 
 % Formata "X | título do capítulo" e "X.X | título da seção"
-\newrobustcmd\IHformat[2]{\@IMEuppercase{#1\hskip 0.3em |\hskip 0.3em #2}}
+\newrobustcmd\IHformat[2]{\MakeTextUppercase{#1\hskip 0.3em |\hskip 0.3em #2}}
 
 % Número e nome do capítulo
 \newrobustcmd\IHchap{\IHformat{\thechapter}{\chaptertitle}}
@@ -275,12 +259,12 @@
 }
 
 % "Apêndice X" / "Anexo X"
-\newrobustcmd\IHapp{\@IMEuppercase{\@chapapp\ \thechapter}}
+\newrobustcmd\IHapp{\MakeTextUppercase{\@chapapp\ \thechapter}}
 
 % "Bibliografia", "Índice Remissivo" e
 % capítulos não-numerados (Introdução)
-\newrobustcmd\IHbarechap{\@IMEuppercase{\chaptertitle}}
-\newrobustcmd\IHbaresect{\@IMEuppercase{\sectiontitle}}
+\newrobustcmd\IHbarechap{\MakeTextUppercase{\chaptertitle}}
+\newrobustcmd\IHbaresect{\MakeTextUppercase{\sectiontitle}}
 
 %%%%% Formato dos cabeçalhos %%%%%
 
