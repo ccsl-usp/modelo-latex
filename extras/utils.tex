@@ -154,14 +154,18 @@
 % Vários recursos para apresentação de números e grandezas (unidades, notação
 % científica, melhor apresentação de números longos etc.), além de permitir
 % alinhar números em tabelas pelo ponto decimal (como a package dcolumn)
-% através do tipo de coluna "S". Por exemplo, \SI{10}{\hertz} ou
-% \num[round-mode=places,round-precision=2]{3.1415926}.
+% através do tipo de coluna "S". Por exemplo, \si{\ohm}, \si{\celsius},
+% \si{\milli\litre} (apenas as unidades) ou \SI{10}{\hertz} (a grandeza e a
+% unidade), ou \num[round-mode=places,round-precision=4]{3.1415926} -> 3,1416.
+
 \usepackage[binary-units]{siunitx}
 \sisetup{
   mode=text,
   round-mode=places,
 }
 
+% siunitx usa a package translator para apresentar estas expressões na
+% língua do documento; vamos fornecer as traduções para o português.
 \providetranslation[to=Portuguese]{to (numerical range)}{a}
 \providetranslation[to=Portuguese]{and}{e}
 \addto\extrasbrazil{\sisetup{output-decimal-marker = {,}}}
@@ -218,7 +222,8 @@
 % Além disso, o programa checkcites, instalado juntamente com LaTeX,
 % indica problemas com citações bibliográficas.
 
-% Símbolos adicionais, como \celsius, \ohm, \perthousand etc.
+% Símbolos adicionais: \degree, \celsius, \ohm, \micro, \perthousand.
+% Provavelmente é melhor usar os recursos da package siunitx.
 %\usepackage{gensymb}
 
 % Permite criar listas como glossários, listas de abreviaturas etc.
