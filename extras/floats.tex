@@ -80,7 +80,8 @@
 % que executa \clearpage apenas se necessário no local em que é chamado.
 % "above" e "below" desabilitam a barreira quando os floats estão na mesma
 % página. A desvantagem de placeins é que, para funcionar, ela gera quebras
-% de página que muitas vezes são inesperadas.
+% de página que muitas vezes são inesperadas; em muitos casos, é melhor
+% fazer ajustes manualmente.
 \usepackage[above,below]{placeins}
 
 % Em documentos com duas colunas, floats normalmente são colocados como
@@ -116,8 +117,8 @@
 % Às vezes é interessante utilizar uma imagem mais larga que o texto.
 % Por padrão, \centering *não* vai centralizar a imagem corretamente
 % nesse caso. Com esta package, podemos acrescentar a opção "center"
-% ao comando \includegraphics para resolver esse problema
-% (ou seja, \includegraphics[width=1.2\textwidth,center]{imagem}.
+% ao comando \includegraphics para resolver esse problema:
+% \noindent\includegraphics[width=1.2\textwidth,center]{imagem}.
 % A package tem muitos outros recursos também
 \usepackage[export]{adjustbox}
 
