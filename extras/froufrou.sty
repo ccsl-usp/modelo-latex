@@ -5,10 +5,10 @@
 %% The original source files were:
 %%
 %% froufrou.dtx  (with options: `package')
-%% Copyright 2020 Nelson Lago <lago@ime.usp.br>
+%% Copyright 2020-2021 Nelson Lago <lago@ime.usp.br>
 %% 
 %% This work may be distributed and/or modified under the conditions of the
-%% LaTeX Project Public License, either version 1.3 of this license or (at
+%% LaTeX Project Public License, either version 1.3c of this license or (at
 %% your option) any later version. The latest version of this license can be
 %% found at http://www.latex-project.org/lppl.txt and version 1.3 or later
 %% is part of all distributions of LaTeX version 2005/12/01 or later.
@@ -18,10 +18,12 @@
 %% The Current Maintainer of this work is Nelson Lago <lago@ime.usp.br>.
 %% 
 \NeedsTeXFormat{LaTeX2e}[2015/01/01]
-\ProvidesPackage{froufrou}[2020/12/22 1.2 Visual section separator]
+\ProvidesPackage{froufrou}[2021/05/06 1.4.0 Visual section separator]
 
 \RequirePackage{etoolbox}
 \RequirePackage{expl3}
+\RequirePackage{xparse}
+\RequirePackage{tikz}
 
 \RequirePackage{fourier-orns}
 \newcommand\@froufrouFleuron{%
@@ -72,6 +74,67 @@
 
 \newcommand{\@froufrouDinkus}{\relax*\quad*\quad*}
 
+\newcommand{\@froufrouClosing}{
+  \begingroup
+  \def\i{\pgfusepath{clip}}%
+  \def\k{\pgfusepath{stroke}}%
+  \let\o\pgfpathclose
+  \let\s\pgfusepathqfillstroke
+  \def\p ##1##2{\pgfqpoint{##1bp}{##2bp}}%
+  \def\m ##1 ##2 {\pgfpathmoveto{\p{##1}{##2}}}%
+  \def\r ##1 ##2 ##3 ##4 {\pgfpathrectangle{\p{##1}{##2}}{%
+  \p{##3}{##4}}}%
+  \def\l ##1 ##2 {\pgfpathlineto{\p{##1}{##2}}}%
+  \def\c ##1 ##2 ##3 ##4 ##5 ##6 {%
+  \pgfpathcurveto{\p{##1}{##2}}{\p{##3}{##4}}{\p{##5}{##6}}}%
+  \begin{tikzpicture}
+  \pgftransformscale{.7}
+  \m 361.42743307 485.43412913
+  \c 364.42138961 486.7928315 367.73662488 487.42057323 370.95633638 488.30607874
+  \c 379.74149291 490.44056693 383.76755906 490.62308031 391.35855118 488.3695748
+  \c 405.76059213 484.51011024 406.70554961 483.73814173 413.58935433 483.38611654
+  \c 416.16343937 483.29540787 417.77933858 483.3672189 420.40183937 483.67147087
+  \c 422.89485354 483.96740787 426.64293543 485.12473701 426.71546457 486.98607874
+  \c 426.6103937 488.63913071 423.03061417 487.99570394 423.57588661 488.15168504
+  \c 418.2015874 487.67754331 413.49017953 485.75739213 408.4583811 484.02119055
+  \c 399.74728819 480.47652283 390.74634331 477.26052283 381.83172283 474.28418268
+  \c 375.53600126 472.27740472 370.4288315 471.94854803 367.61240693 473.5680378
+  \c 364.79626583 475.33300157 371.42866394 477.84098268 372.45991559 478.09961575
+  \c 377.50835906 479.82100157 383.18290394 480.01485354 386.6184189 478.67342362
+  \c 393.54591496 475.75513701 402.00702992 472.28330079 405.77480315 471.12691654
+  \c 412.4688 468.98203465 416.39803465 468.57569764 419.52922205 469.03139528
+  \c 421.66703622 469.34169449 423.44821417 470.04102047 424.39819843 470.98314331
+  \c 425.30127874 472.04364094 424.96837795 473.86847244 421.96418268 473.86250079
+  \c 421.2608126 473.87005984 418.78662047 473.90520945 414.92602205 472.87320945
+  \c 408.18776693 471.2327811 401.88672756 467.46954331 396.75938268 462.73613858
+  \c 392.33865827 458.27013543 390.73662992 453.68923465 389.21480315 447.90428976
+  \c 388.56245669 444.65930079 390.39484724 441.00941102 387.00623622 440.46667087
+  \c 386.52650079 443.15096693 387.11508661 447.4599685 388.18087559 450.49296378
+  \c 391.04658898 457.85060787 395.2343811 463.9695874 401.94822047 467.95831181
+  \c 406.58543622 470.56331339 412.23809764 472.88794961 416.70444094 473.7440126
+  \c 420.24733228 474.27533858 421.93621417 474.76622362 424.25132598 473.81431181
+  \c 425.94848504 472.94452913 426.61549606 470.68221732 422.90362205 468.96185197
+  \c 420.50127874 468.31547717 415.42231181 466.65660472 407.19348661 469.46415118
+  \c 399.46495748 472.24679055 399.78568819 472.31028661 390.79419213 475.96452283
+  \c 387.20500157 477.36532913 385.63029921 478.95983622 380.68550551 478.98274016
+  \c 380.36613543 478.99785827 379.3023874 478.95628346 378.77374488 478.93474016
+  \c 374.11377638 478.63464567 368.68895622 476.18622992 368.36232189 475.76991496
+  \c 365.33666646 473.89031811 370.62351496 473.26998425 372.80703874 473.48534173
+  \c 373.85684031 473.51557795 376.5843326 473.63009764 379.31032441 474.56628661
+  \c 388.16209134 477.4280315 396.81985512 480.20341417 405.51753071 483.50762835
+  \c 410.38851024 485.35827402 414.70730079 487.11896693 419.77632756 488.3767937
+  \c 422.21064567 488.90418898 426.66326929 490.4783622 428.19949606 487.8576
+  \c 428.96462362 486.08613543 426.88304882 484.21878425 423.46219843 483.49243465
+  \c 418.42117795 482.74091339 413.21850709 482.48779843 407.04702992 483.81936378
+  \c 399.01345512 485.29413543 392.91106772 487.3039748 384.77571024 489.11584252
+  \c 383.20051654 489.31729134 382.84312441 489.53967874 381.31464567 489.51473386
+  \c 374.93645102 489.38849764 370.27737827 486.79150866 364.25366929 484.92170079
+  \c 363.08989228 484.58154331 362.13536126 485.15338583 361.42743307 485.43405354
+  \o\s
+  \end{tikzpicture}
+  \endgroup
+}
+
 \ExplSyntaxOn
 \newcommand\setfroufrou[1]{%
   \str_case:nnF{#1}{
@@ -82,6 +145,7 @@
       {tightasterism}{\def\@froufrouOrnament{\@froufrouTightAsterism}}
       {trueasterism}{\def\@froufrouOrnament{\@froufrouTrueAsterism}}
       {dinkus}{\def\@froufrouOrnament{\@froufrouDinkus}}%
+      {closing}{\def\@froufrouOrnament{\@froufrouClosing}}%
   }{\def\@froufrouOrnament{#1}}%
 }
 \ExplSyntaxOff
@@ -89,15 +153,11 @@
 \def\@froufrouspacebefore{\vskip 22pt plus 7pt minus 5pt}
 \def\@froufrouspaceafter{\@froufrouspacebefore}
 
-\newcommand{\froufrou}{%
-  \@ifstar{\@afterindenttrue\@realfroufrou}{\@afterindentfalse\@realfroufrou}%
-}
-
-\newcommand\frufru{\froufrou}
-
-\newcommand{\@realfroufrou}[1][]{%
+\NewDocumentCommand{\froufrou}{s O{}}{%
   % Make sure we left horizontal mode.
   \nopagebreak[4]\par
+
+  \IfBooleanTF{#1}{\@afterindenttrue}{\@afterindentfalse}
 
   \nopagebreak[4]\@froufrouspacebefore\nopagebreak[4]
 
@@ -108,7 +168,7 @@
   % for the ornament because font size changes in it should not
   % affect spacing either.
   \bgroup
-    \setfroufrou{#1}%
+    \setfroufrou{#2}%
     \normalsize
     \ifdefvoid{\setstretch}{}{\setstretch{\setspace@singlespace}}% normally 1
     \setlength{\parskip}{0pt}
@@ -130,6 +190,10 @@
   % the first line of the next paragraph from being indented
   % and absolutely forbid a club line in the next paragraph.
   \@afterheading
+}
+
+\NewDocumentCommand{\frufru}{s O{}}{%
+  \IfBooleanTF{#1}{\froufrou*[#2]}{\froufrou[#2]}%
 }
 
 \newcommand\@froufrouFixSpacingAfter{
@@ -162,6 +226,7 @@
 \DeclareOption{tightasterism}{\setfroufrou{tightasterism}}
 \DeclareOption{trueasterism}{\setfroufrou{trueasterism}}
 \DeclareOption{dinkus}{\setfroufrou{dinkus}}
+\DeclareOption{closing}{\setfroufrou{closing}}
 \DeclareOption*{\PackageWarning{froufrou}{Unknown option `\CurrentOption'}}
 \ExecuteOptions{fleuron}
 \ProcessOptions\relax
