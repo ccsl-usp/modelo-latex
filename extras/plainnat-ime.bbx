@@ -20,6 +20,10 @@
 % Com mais de 5 nomes, usa "et al."
 \ExecuteBibliographyOptions{maxbibnames=5}
 
+% standard.bbx utiliza "in:" para artigos em periódicos; os
+% estilo mais comuns não usam isso, então vamos removê-lo.
+\xpatchbibdriver{article}{\usebibmacro{in:}}{}{}{}
+
 % Vamos deixar um pequeno espaço entre cada item da bibliografia
 \setlength{\bibitemsep}{1em}
 
@@ -48,8 +52,13 @@
   % isso é "ver...", vamos trocar.
   backrefpage  = {citado na pg\adddot},
   backrefpages = {citado nas pgs\adddot},
-  page         = {pg\adddot},
-  pages        = {pgs\adddot},
+  page         = {p\adddot},
+  pages        = {pp\adddot},
+  % portuguese.lbx traduz estes elementos para "em";
+  % no entanto, o usual é manter em latim ("in").
+  involumes    = {in},
+  inseries     = {in},
+  in           = {in},
 }
 
 % Por padrão, os labels na bibliografia não têm nada de
