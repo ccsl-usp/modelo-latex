@@ -97,21 +97,36 @@
 %
 % 1. Detectamos se estamos usando uma versão mais antiga de biblatex
 %    (sem suporte a hooks) e, se sim, imitamos a configuração das
-%    versões mais novas. Isso deve funcionar com bibliografias no
-%    formato autor-data e autor-título, não sei com outros! Veja
+%    versões mais novas, veja
 %    https://github.com/josephwright/beamer/commit/2a81ef0c0172a4ba7ee11676a177c7f6fd21cf3d
-%    TODO: isto pode ser removido em 2024.
+%
+%    TODO: Remover isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04
+%          (focal) for descontinuada (abril de 2025).
 %
 % 2. Ajustamos bibhang para que, independentemente do tamanho do label,
 %    as linhas subsequentes estejam alinhadas à esquerda.
 
+% O item 1 da explicação acima
 \AtEndPreamble{
-  \@ifpackageloaded{biblatex}
+  \@ifpackagelater{biblatex}{2020/08/23}
+    {}
     {
+      \ifboolexpr
+        {
+             test {\ifcsdef{blx@file@numeric.bbx}}
+          or test {\ifcsdef{blx@file@alphabetic.bbx}}
+        }
+        {
+          \mode<presentation>{%
+            \setbeamertemplate{bibliography item}{\insertbiblabel}%
+          }
+        }{}
 
-      % O item 1 da explicação acima
-      \@ifpackagelater{biblatex}{2020/08/23}
-        {}
+      \ifboolexpr
+        {
+             test {\ifcsdef{blx@file@authoryear.bbx}}
+          or test {\ifcsdef{blx@file@authortitle.bbx}}
+        }
         {
           \mode<presentation>{%
             \pretocmd{\bibsetup}{%
@@ -121,26 +136,35 @@
               \addtolength{\labelwidth}{2\labelsep}%
               \addtolength{\bibhang}{\labelsep}% desnecessário, vamos redefinir abaixo
             }{}{}%
-          }
-        }
+          }%
+        }{}
+    }
+}
 
+\AtEndPreamble{
+  \@ifpackageloaded{biblatex}
+    {
       % labelsep por padrão é MUITO grande
       \mode<presentation>{%
-        \pretocmd{\bibsetup}{%
-          \setlength{\labelsep}{.2em}%
-        }{}{}
+        \pretocmd{\bibsetup}{\setlength{\labelsep}{.2em}}{}{}%
       }
 
       % O item 2 da explicação acima
-      \mode<presentation>{%
-        \apptocmd{\bibsetup}{%
-          \setlength{\bibhang}{2\noexpand\beamer@bibiconwidth}%
-          % Com as dimensões atuais, a bibliografia fica muito
-          % à esquerda; vamos empurrar tudo para a direita
-          %\addtolength{\bibhang}{-2\labelsep}%
-          \addtolength{\labelwidth}{-.4em}
-        }{}{}%
-      }
+      \ifboolexpr
+        {
+             test {\ifcsdef{blx@file@authoryear.bbx}}
+          or test {\ifcsdef{blx@file@authortitle.bbx}}
+        }
+        {
+          \mode<presentation>{%
+            \apptocmd{\bibsetup}{%
+              \setlength{\bibhang}{2\noexpand\beamer@bibiconwidth}%
+              % Com as dimensões atuais, a bibliografia fica muito
+              % à esquerda; vamos empurrar tudo para a direita
+              \addtolength{\labelwidth}{-.4em}%
+            }{}{}%
+          }%
+        }{}
     }{}
 }
 

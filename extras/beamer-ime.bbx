@@ -1,0 +1,19 @@
+% Author: Nelson Lago
+% This file is derived from files in the BibLaTeX distribution
+% and, therefore, is distributed under the LPPL
+
+\ProvidesFile{beamer-ime.bbx}
+[2022/11/17 v1.0 authoryear bibliographies adapted to IME/USP beamer styles]
+
+\RequirePackage{etoolbox}
+\RequirePackage{xpatch}
+\RequirePackage{ragged2e}
+
+\RequireBibliographyStyle{authoryear-comp}
+\ExecuteBibliographyOptions{maxbibnames=2,maxcitenames=2}
+\AtEndPreamble{\ExecuteBibliographyOptions{backref=false}}
+\AtBeginBibliography{\RaggedRight}
+
+% standard.bbx utiliza "in:" para artigos em periódicos; os
+% estilos mais comuns não usam isso, então vamos removê-lo.
+\xpatchbibdriver{article}{\usebibmacro{in:}}{}{}{}

@@ -78,7 +78,12 @@
   }
   {\end{block}}
 
-% Bibliografia
+% Bibliografia. Apenas estilos bibliográficos derivados de numeric,
+% alphabetic, authortitle e authoryear (como beamer-ime) vão funcionar
+% bem aqui! Outros estilos, como abnt ou apa, vão gerar problemas de
+% layout que você vai precisar ajustar manualmente. Observe que, num
+% poster ou apresentação, provavelmente é uma boa ideia usar apenas
+% \nocite e não \cite.
 \usepackage[
   %style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
   %style=alphabetic, % similar a alpha
@@ -86,8 +91,7 @@
   %style=authoryear-comp, % autor-data "padrão" do biblatex
   %style=apa, % variante de autor-data, muito usado
   %style=abnt,
-  style=authortitle,
-  dashed=false,
+  style=extras/beamer-ime,
 ]{biblatex}
 
 % Num poster, a bibliografia pode ficar em tamanho menor
@@ -251,10 +255,10 @@
 
   \begin{block}{Bibliography (assimetrical columns -- two thirds width)}
     % "Estica" ligeiramente o bloco para alinhar com o final da outra coluna
-    \vspace{.62\baselineskip}
+    \vspace{.26\baselineskip}
     \nocite{FSF:GNU-GPL, MenaChalco08, biblatex}
     \printbibliography
-    \vspace{.62\baselineskip}
+    \vspace{.26\baselineskip}
   \end{block}
 
   \onethirdcol
