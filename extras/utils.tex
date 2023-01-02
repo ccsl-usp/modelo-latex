@@ -311,11 +311,8 @@
     \egroup
 }
 
-% Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta os
-% comandos \XeLaTeX e \LuaLaTeX. Você provavelmente não precisa desse recurso
-% e, portanto, pode removê-la.
-\usepackage{metalogo}
-\providecommand{\ConTeXt}{\textsc{Con\TeX{}t}}
-% Outros logos da família TeX; você também pode remover estas linhas:
+% Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta
+% comandos para vários outros logos da família TeX. Você provavelmente não
+% precisa desse recurso e, portanto, pode removê-la.
 \usepackage{hologo}
-\renewcommand{\ConTeXt}{\hologo{ConTeXt}}
+\providecommand{\XeLaTeX}{\hologo{XeLaTeX}}
