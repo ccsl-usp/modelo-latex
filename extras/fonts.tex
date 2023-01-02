@@ -90,6 +90,11 @@
     % padrão do documento, é melhor usar pdfLaTeX. Deve ser possível
     % implementar essas melhorias com fontspec também, mas este modelo
     % não faz isso, apenas ativamos Small Caps aqui.
+    %
+    % TODO: isso funciona automaticamente em versões recentes do LaTeX;
+    %       Remover essa correção para LuaLaTeX e XeLaTeX quando arxiv
+    %       usar TeXLive >= 2021 e ubuntu 20.04 (focal) for descontinuada
+    %       (abril de 2025).
 
     \ifLuaTeX
       % Com LuaTeX, basta indicar o nome de cada fonte; para descobrir
