@@ -1,0 +1,1523 @@
+\NeedsTeXFormat{LaTeX2e}[2015/01/01]
+\ProvidesPackage{imegoodies}[2022/11/13 1.0 Load several common
+                                            and useful packages]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% CONFIGURAÇÕES E PACOTES BÁSICOS %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Vários comandos auxiliares para o desenvolvimento de packages e classes;
+% aqui, usamos em alguns comandos de formatação e condicionais.
+\RequirePackage{etoolbox}
+%\RequirePackage{pdftexcmds}
+\RequirePackage{letltxmacro}
+%\RequirePackage{ltxcmds}
+
+% LaTeX 3
+\RequirePackage{expl3}
+\RequirePackage{xparse}
+
+%\RequirePackage{filehook}
+
+% Detecta se estamos usando pdftex, luatex, xetex etc.
+\RequirePackage{iftex}
+
+%\RequirePackage{xfp} % Floating-point calculations
+
+\RequirePackage{regexpatch}
+
+% O projeto LaTeX3 renomeou algumas macros em 2019-03-05 e removeu
+% a compatibilidade com os nomes antigos em 2020-07-17 a partir de
+% 2021-01-01 (veja o arquivo l3deprecation.dtx e o changelog em
+% https://github.com/latex3/latex3/blob/main/l3kernel/CHANGELOG.md).
+% Isso afetou a package regexpatch: versões antigas da package não
+% funcionam com versões novas de LaTeX e vice-versa. Infelizmente,
+% ubuntu 21.04 (hirsute) e debian 11 (bullseye) incluem essas versões
+% incompatíveis e, portanto, a package regexpatch não funciona nesses
+% ambientes. Talvez fosse possível contornar esse problema com a
+% package latexrelease, mas isso afetaria muitos outros recursos.
+% Ao invés disso, vamos restaurar manualmente a compatibilidade.
+% TODO: remover isto após debian bullseye se tornar obsoleta,
+%       provavelmente no final de 2024.
+\ExplSyntaxOn
+\@ifpackagelater{regexpatch}{2021/03/21}
+  {} % Se regexpatch é "nova", expl3 deve ser também; nada a fazer
+  {
+    % Talvez o correto seja 2021/01/01, mas na prática o resultado é o mesmo
+    \@ifpackagelater{expl3}{2020/07/17}
+      {
+        % As versões são incompatíveis; vamos recuperar as macros preteridas
+        \cs_gset:Npn \token_get_prefix_spec:N { \cs_prefix_spec:N }
+        \cs_gset:Npn \token_get_arg_spec:N { \cs_argument_spec:N }
+        \cs_gset:Npn \token_get_replacement_spec:N { \cs_replacement_spec:N }
+      }
+      {} % As duas packages são antigas e, portanto, compatíveis entre si
+  }
+\ExplSyntaxOff
+
+% Algumas packages dependem de xpatch e tentam carregá-la, causando conflitos
+% com regexpatch. Como regexpatch oferece todos os recursos de xpatch (ela
+% é uma versão estendida de xpatch, mas ainda considerada experimental), vamos
+% fazê-las acreditar que xpatch já foi carregada.
+\@ifpackagelater{regexpatch}{2020/10/06}
+    {\expandafter\xdef\csname ver@xpatch.sty\endcsname{2020/03/25}}
+    {\expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}}
+
+% Acrescenta a correção deste bug (contida na release 2018-11-28):
+% https://github.com/latex3/latex2e/issues/94 . Se a correção não
+% puder ser aplicada, temos uma versão de LaTeX que já a incorpora.
+% Esse bug afeta apenas textos em duas colunas.
+% TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
+\patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{}
+
+% Arithmetic expressions in \set{length,counter} & \addto{length,counter};
+% commands \widthof, \heightof, \depthof, \totalheightof, \settototalheight
+\RequirePackage{calc}
+
+% Algumas packages "padrão" da AMS, que são praticamente obrigatórias.
+% Algumas delas devem ser carregadas antes de unicode-math ou das
+% definições das fontes do documento. É preciso carregar amsthm após
+% amsmath para o comando \qedhere funcionar dentro do ambiente align.
+\RequirePackage{amssymb}
+\RequirePackage{amsmath}
+\RequirePackage{amsthm}
+
+% "fontenc" é um parâmetro do NFSS (sistema de gestão de fontes do
+% LaTeX; consulte "texdoc fntguide" e "texdoc fontenc"). O default
+% é OT1, mas ele tem algumas limitações; a mais importante é que,
+% com ele, palavras acentuadas não podem ser hifenizadas. Por
+% conta disso, quase todos os documentos LaTeX utilizam o fontenc
+% T1. A escolha do fontenc tem consequências para as fontes que
+% podem ser usadas com NFSS; hoje em dia T1 tem mais opções de
+% qualidade, então não se perde nada em usá-lo. A package fontspec
+% (para gestão de fontes usando outro mecanismo, compatível apenas
+% com lualatex e xelatex) carrega fontenc automaticamente, mas
+% usando outra codificação ("TU" e não "T1"). Ainda assim, é útil
+% carregar o fontenc T1 (antes de carregar fontspec!) para o caso
+% de alguma fonte "antiga" ser utilizada no documento (embora isso
+% não seja recomendado: lualatex e xelatex só são capazes de
+% hifenizar palavras acentuadas com o fontenc TU).
+\RequirePackage[T1]{fontenc}
+
+\ifPDFTeX
+  % O texto está escrito em utf8.
+  \RequirePackage[utf8]{inputenc}
+
+  % Várias packages que definem as fontes do documento carregam fontaxes,
+  % mas carregamos aqui porque, com qualquer fonte, ela permite utilizar
+  % small caps + itálico. Algumas raras packages de fontes podem causar
+  % conflitos com fontaxes, em geral por utilizarem a package "concorrente"
+  % nfssext-cfr.
+  %
+  % TODO A funcionalidade pela qual faz sentido carregar fontaxes aqui
+  %      (small caps + itálico) foi incorporada ao kernel do LaTeX na
+  %      versão 2020-02-02, então está em TeXLive 2021. Remover isto
+  %      quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
+  %      descontinuada (abril de 2025). As packages que precisam de
+  %      fontaxes podem continuar a carregá-la sem problemas.
+  \RequirePackage{fontaxes}
+
+  % LaTeX substitui algumas sequências de caracteres, como
+  % "fi", "fl" e outras, por caracteres especiais ("ligaduras").
+  % Para que seja possível fazer copiar/colar ou buscas por
+  % textos contendo essas ligaduras, o arquivo PDF precisa
+  % conter uma tabela indicando quais são elas. Com fontes
+  % OTF (LuaLaTeX ou XeLaTeX) isso não costuma ser um problema,
+  % mas com pdfLaTeX pode ser. Estes dois comandos (que só
+  % existem no pdfLaTeX) incluem uma tabela genérica que
+  % funciona para a maioria das fontes. Veja a seção 5 de
+  % http://www.tug.org/TUGboat/Articles/tb29-1/tb91thanh-fonts.pdf
+  % Note que alguns visualizadores de PDF tentam "adivinhar"
+  % o conteúdo da tabela quando ela está incompleta ou não
+  % existe, então copiar/colar e buscas podem funcionar em
+  % alguns visualizadores e em outros não.
+  %
+  % TODO Isto foi incluído no kernel do LaTeX versão 2021-06-01,
+  %      então está em TeXLive 2022. Remover isto quando arxiv
+  %      usar TeXLive >= 2022 e ubuntu 22.04 (jammy) for
+  %      descontinuada (abril de 2027).
+  \input glyphtounicode.tex
+  \pdfgentounicode=1
+\else
+  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
+  % com eles utf8 é obrigatório.
+  \RequirePackage{fontspec}
+
+  % Ao invés de usar o sistema tradicional de LaTeX para gerir
+  % as fontes matemáticas, utiliza as extensões matemáticas do
+  % formato otf definidas pela microsoft. Ao ativar esta package
+  % o mecanismo tradicional não funciona mais! Há poucas fontes
+  % com suporte a unicode-math.
+  \RequirePackage{unicode-math}
+\fi
+
+% Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
+% disponíveis na maioria das fontes através do fontenc TS1 ou mudando
+% momentaneamente para computer modern/latin modern. Raramente útil
+% com lualatex/xelatex, mas não causa problemas. Várias packages de
+% fontes carregam textcomp, às vezes com opções específicas; assim,
+% para evitar problemas, vamos carregá-la no final do preâmbulo para
+% o caso de ela não ter sido carregada antes.
+%
+% TODO A funcionalidade oferecida por textcomp foi incorporada ao kernel
+%      do LaTeX na versão 2020-02-02, então está em TeXLive 2021. Remover
+%      isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
+%      descontinuada (abril de 2025). As packages que precisam de textcomp
+%      podem continuar a carregá-la sem problemas.
+\AtBeginDocument{\usepackage{textcomp}}
+
+% TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
+% 1.07 de luatex. Essa combinação faz aparecer um bug:
+% https://tex.stackexchange.com/a/476742
+% Aqui, aplicamos a solução sugerida, que não tem "contra-indicações".
+% TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
+\ifLuaTeX
+  \RequirePackage{luatexbase}
+\fi
+
+% microajustes no tamanho das letras, espaçamento etc. para melhorar
+% a qualidade visual do resultado.
+\RequirePackage{microtype}
+
+% Alguns "truques" (sujos?) para minimizar over/underfull boxes.
+%
+% Para fazer um texto justificado, é preciso modificar o tamanho dos espaços
+% em cada linha para mais ou para menos em relação ao seu tamanho ideal. Para
+% escolher as quebras de linha, TeX vai percorrendo o texto procurando lugares
+% possíveis para quebrar as linhas considerando essa flexibilidade mas dentro
+% de um certo limite mínimo/máximo. Nesse processo, ele associa a cada possível
+% linha o valor *badness*, que é o nível de distorção do tamanho dos espaços
+% daquela linha em relação ao ideal, e ignora opções que tenham badness muito
+% grande (esse limite é dado por \tolerance). Depois de encontradas todas
+% as possíveis quebras de linha e a badness de cada uma, TeX calcula as
+% *penalties* das quebras encontradas, que são uma medida de quebras "ruins".
+% Por exemplo, na configuração padrão, quebrar uma linha hifenizando uma
+% palavra gera uma penalty de 50; já uma quebra que faça a última linha
+% do parágrafo ficar sozinha na página seguinte gera uma penalty de 150.
+% Finalmente, TeX calcula a "feiúra" de cada possível linha (demerits)
+% com base na badness e nas penalties e escolhe a solução que minimiza os
+% demerits totais do parágrafo. Os comandos \linebreak e \pagebreak funcionam
+% simplesmente acrescentando uma penalty negativa ao lugar desejado para a
+% quebra.
+%
+% Para cada fonte, o espaço entre palavras tem um tamanho ideal, um
+% tamanho mínimo e um tamanho máximo (é possível obter os valores com
+% \number\fontdimenX\font\relax, veja https://tex.stackexchange.com/q/88991 ).
+% TeX nunca reduz um espaço para menos que o mínimo da fonte, mas pode
+% aumentá-lo para mais que o máximo. Se os espaços de uma linha ficam
+% com o tamanho ideal, a badness da linha é 0; se o tamanho é
+% reduzido/aumentado 50% do mínimo/máximo, a badness da linha é 12; se
+% o tamanho é reduzido/aumentado para o mínimo/máximo, a badness é 100,
+% e assim por diante. O valor máximo possível para badness é 10.000, que
+% significa "badness infinita". Como é feito o cálculo: se as medidas
+% do espaço definidas pela fonte são "x plus y minus z" e o tamanho
+% final do espaço é "x + k*y" ou "x - k*z", a badness é 100*(k^3). Com
+% Libertinus corpo 12, os valores são "3pt plus 1.5pt minus .9996pt",
+% Então se o espaço tiver sido aumentado para 3.75pt, o fator é 0.5 e
+% a badness é 100*(.5^3) = 12.
+%
+% \tolerance indica a badness máxima que TeX aceita para uma linha; seu valor
+% default é 200. Assim, aumentar para, digamos, 300 ou 400, permite que
+% TeX escolha parágrafos com maior variação no espaçamento entre as palavras.
+% No entanto, no cálculo de demerits, a badness e as penalties de cada linha
+% são elevadas ao quadrado, então TeX geralmente prefere escolher outras
+% opções no lugar de uma linha com espaçamento ruim. Por exemplo, órfãs/viúvas
+% têm demerit de 22.500 e dois hífens seguidos têm demerit de 10.000; já uma
+% linha com badness 400 tem demerit 160.000. Portanto, não é surpreendente que
+% a maioria dos parágrafos tenha demerits abaixo de 40.000, quase todos abaixo
+% de 100.000 e praticamente nenhum acima de 1.000.000. Isso significa que, para
+% a grande maioria dos parágrafos, aumentar \tolerance não faz diferença: uma
+% linha com badness 400 nunca será efetivamente escolhida se houver qualquer
+% outra opção com badness menor. Também fica claro que não há muita diferença
+% real entre definir \tolerance como 800 ou 9.999 (a não ser fazer TeX
+% trabalhar mais desnecessariamente).
+%
+% O problema muda de figura se TeX não consegue encontrar uma solução. Isso
+% pode acontecer em dois casos: (1) o parágrafo tem ao menos uma linha que não
+% pode ser quebrada com badness < 10.000 ou (2) o parágrafo tem ao menos uma
+% linha que não pode ser quebrada com badness < tolerance (mas essa badness é
+% menor que 10.000).
+%
+% No primeiro caso, se houver várias possibilidades de linhas que não podem ser
+% quebradas, TeX não vai ser capaz de compará-las e escolher a melhor: todas
+% têm a badness máxima (10.000) e, portanto, a que gerar menos deméritos no
+% restante do parágrafo será a escolhida. Na realidade, no entanto, essas
+% linhas *não* são igualmente ruins entre si, o que pode levar TeX a fazer uma
+% má escolha. Para evitar isso, TeX tenta novamente aplicando
+% \emergencystretch, que "faz de conta" que o tamanho máximo ideal dos espaços
+% da linha é maior que o definido na fonte. Isso reduz a badness de todas as
+% linhas, o que soa parecido com aumentar \tolerance. Há três diferenças, no
+% entanto: (1) essa mudança só afeta os parágrafos que falharam; (2) soluções
+% que originalmente teriam badness = 10.000 (e, portanto, seriam vistas como
+% equivalentes) podem ser avaliadas e comparadas entre si; e (3) como a badness
+% de todas as linhas diminui, a possibilidade de outras linhas que
+% originalmente tinham badness alta serem escolhidas aumenta. Esse último ponto
+% significa que \emergencystretch pode fazer TeX escolher linhas mais
+% espaçadas, fazendo o espaçamento do parágrafo inteiro aumentar e, portanto,
+% tornando o resultado mais homogêneo mesmo com uma linha particularmente ruim.
+%
+% É esse último ponto que justifica o uso de \emergencystretch no segundo caso
+% também: apenas aumentar a tolerância, nesse caso, poderia levar TeX a
+% diagramar uma linha ruim em meio a um parágrafo bom, enquanto
+% \emergencystretch pode fazer TeX aumentar o espaçamento de maneira geral no
+% parágrafo, minimizando o contraste da linha problemática com as demais.
+% Colocando a questão de outra maneira, aumentar \tolerance para lidar com
+% esses parágrafos problemáticos pode fazê-los ter uma linha especialmente
+% ruim, enquanto \emergencystretch pode dividir o erro entre várias linhas.
+% Assim, definir \tolerance em torno de 800 parece razoável: no caso geral,
+% não há diferença e, se um desses casos difíceis não pode ser resolvido com
+% uma linha de badness até 800, \emergencystretch deve ser capaz de gerar um
+% resultado igual ou melhor.
+%
+% Penalties & demerits: https://tex.stackexchange.com/a/51264
+% Definições (fussy, sloppy etc.): https://tex.stackexchange.com/a/241355
+% Mais definições (hfuzz, hbadness etc.): https://tex.stackexchange.com/a/50850
+% Donald Arseneau defendendo o uso de \sloppy: https://groups.google.com/d/msg/comp.text.tex/Dhf0xxuQ66E/QTZ7aLYrdQUJ
+% Artigo detalhado sobre \emergencystretch: https://www.tug.org/TUGboat/tb38-1/tb118wermuth.pdf
+% Esse artigo me leva a crer que algo em torno de 1.5em é suficiente
+
+\tolerance=800
+\hyphenpenalty=100 % Default 50; se o texto é em 2 colunas, 50 é melhor
+\setlength{\emergencystretch}{1.5em}
+
+% Não gera warnings para Overfull menor que 1pt
+\hfuzz=1pt
+\vfuzz\hfuzz
+
+% Não gera warnings para Underfull com badness < 1000
+\hbadness=1000
+\vbadness=1000
+
+% Por padrão, o algoritmo LaTeX para textos não-justificados é (muito) ruim;
+% este pacote implementa um algoritmo bem melhor
+\RequirePackage[newcommands]{ragged2e}
+
+% ragged2e funciona porque permite que LaTeX hifenize palavras em textos
+% não-justificados quando necessário. No caso de textos centralizados,
+% no entanto, isso em geral não é desejável. Assim, newcommands não é
+% interessante para \centering e \begin{center}. newcommands também
+% causa problemas com legendas se o float correspondente usa \centering
+% (o que é muito comum). Assim, vamos voltar \centering e \begin{center}
+% à definição padrão.
+\let\centering\LaTeXcentering
+\let\center\LaTeXcenter
+\let\endcenter\endLaTeXcenter
+
+% Com ragged2e e a opção "newcommands", textos curtos não-justificados
+% podem gerar warnings sobre "underfull \hbox". Não há razão para pensar
+% muito nesses warnings, então melhor desabilitá-los.
+% https://tex.stackexchange.com/a/18019
+\gappto{\raggedright}{\hbadness=\@M}
+\gappto{\RaggedRight}{\hbadness=\@M}
+\gappto{\raggedleft}{\hbadness=\@M}
+\gappto{\RaggedLeft}{\hbadness=\@M}
+\gappto{\Centering}{\hbadness=\@M} % not \centering
+\gappto{\flushleft}{\hbadness=\@M}
+\gappto{\FlushLeft}{\hbadness=\@M}
+\gappto{\flushright}{\hbadness=\@M}
+\gappto{\FlushRight}{\hbadness=\@M}
+\gappto{\Center}{\hbadness=\@M} % not \center
+
+% LaTeX às vezes coloca notas de rodapé logo após o final do texto da
+% página ao invés de no final da página; este pacote evita isso e faz
+% notas de rodapé funcionarem corretamente em títulos de seções.
+% Esta package deve ser carregada depois de setspace.
+\RequirePackage[stable,bottom]{footmisc}
+
+% Se uma página está vazia, não imprime número de página ou cabeçalho
+\RequirePackage{emptypage}
+
+% hyperref deve preferencialmente ser carregada próximo ao final
+% do preâmbulo mas, para o caso de alguma package forçar a sua
+% carga antes de executarmos \usepackage explicitamente, vamos
+% garantir que estas opções estejam ativas.
+\PassOptionsToPackage{
+  unicode=true,
+  pdfencoding=unicode,
+  plainpages=false,
+  pdfpagelabels,
+  bookmarksopen=true,
+  breaklinks=true,
+  %hyperfootnotes=false, % polui desnecessariamente com bordercolor
+}{hyperref}
+
+% Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
+\RequirePackage[hyperref,svgnames,x11names,table]{xcolor}
+
+% LaTeX oferece 2 pares de comandos nativos para mudar textos para caixa
+% alta ou baixa: \uppercase ou \lowercase (TeX "puro") e \MakeUppercase
+% ou \MakeLowecase (LaTeX), mas esses comandos têm algumas limitações
+% (https://tug.org/TUGboat/tb41-1/tb127wright-case.pdf ). Esta package
+% define os comandos \MakeTextUppercase e \MakeTextLowercase que resolvem
+% isso.
+% TODO: quando TeXLive 2023 for a versão mais antiga de LaTeX a que
+%       estivermos dando suporte, podemos eliminar a package textcase
+%       e usar \MakeUppercase e \MakeLowercase diretamente. A partir
+%       dessa versão, essas macros usam \text_[upper|lower]case:n de
+%       expl3.
+\RequirePackage{textcase}
+
+% Em documentos frente-e-verso, LaTeX faz o final da página terminar sempre
+% no mesmo lugar (exceto no final dos capítulos). Esse comportamento pode ser
+% ativado explicitamente com o comando "\flushbottom". Mas se, por alguma
+% razão, o volume de texto na página é "pequeno", essa página vai ter espaços
+% verticais artificialmente grandes. Uma solução para esse problema é utilizar
+% "\raggedbottom" (padrão em documentos que não são frente-e-verso): com essa
+% opção, as páginas podem terminar em alturas ligeiramente diferentes. Outra
+% opção é corrigir manualmente cada página problemática, por exemplo com o
+% comando "\enlargethispage".
+%\raggedbottom
+\flushbottom
+
+% Por padrão, LaTeX coloca uma espaço aumentado após sinais de pontuação;
+% Isso não é tão bom quanto alguns TeX-eiros defendem :) .
+% Esta opção desabilita isso e, consequentemente, evita problemas com
+% "id est" (i.e.) e "exempli gratia" (e.g.)
+\frenchspacing
+
+% Durante o processamento, LaTeX procura por arquivos adicionais necessários
+% (tanto componentes do próprio LaTeX, como packages e fontes, quanto partes
+% do conteúdo em si, como imagens carregadas com \includegraphics ou arquivos
+% solicitados com \input ou \include) no diretório de instalação e também
+% no diretório atual (ou seja, o diretório do projeto). Assim, normalmente
+% é preciso usar caminhos relativos para incluir arquivos de subdiretórios:
+% "\input{diretorio/arquivo}". No entanto, há duas limitações:
+%
+% 1. É necessário dizer "\input{diretorio/arquivo}" mesmo quando o arquivo
+%    que contém esse comando já está dentro do subdiretório.
+%
+% 2. Isso não deve ser usado para packages ("\usepackage{diretorio/package}"),
+%    embora na prática funcione.
+%
+% Há três maneiras recomendadas de resolver esses problemas:
+%
+% 1. Acrescentando os diretórios desejados ao arquivo texmf.cnf
+%
+% 2. Acrescentando os diretórios desejados às variáveis de ambiente
+%    TEXINPUTS e BSTINPUTS
+%
+% 3. Colocando os arquivos adicionais na árvore TEXMF (geralmente, no
+%    diretório texmf dentro do diretório do usuário).
+%
+% Essas soluções, no entanto, não podem ser automatizadas por este modelo
+% e são um tanto complicadas para usuários menos experientes. Veja mais a
+% respeito na seção 5 de "texdoc kpathsea" e em
+% https://www.overleaf.com/learn/latex/Articles/An_introduction_to_Kpathsea_and_how_TeX_engines_search_for_files .
+%
+% A package import pode solucionar o primeiro problema, mas exige o uso
+% de outro comando no lugar de \input, então não a usamos aqui.
+%\RequirePackage{import}
+%
+% Uma solução mais simples é acrescentar os diretórios desejados à macro
+% \input@path, originalmente criada para resolver um problema relacionado
+% à portabilidade. Seu uso não é normalmente recomendado por razões de
+% desempenho, mas no nosso caso (em que adicionamos apenas um diretório
+% com poucos arquivos e com máquinas modernas) isso não é um problema. Veja
+% https://tex.stackexchange.com/questions/241828/define-path-for-packages-in-the-latex-file-analog-of-inputpath-or-graphicspa#comment705011_241832
+\csappto{input@path}{{extras/}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExplSyntaxOn
+
+% We need to have at least some variant of Portuguese and of English
+% loaded to generate the abstract/resumo, palavras-chave/keywords etc.
+% We will make sure that both languages are present in the class options
+% list by adding them if needed. With this, these options become global
+% and therefore are seen by all packages (among them, babel).
+%
+% babel traditionally uses "portuguese", "brazilian", "portuges", or
+% "brazil" to support the Portuguese language, using .ldf files. babel
+% is also in the process of implementing a new scheme, using .ini
+% files, based on the concept of "locales" instead of "languages". This
+% mechanism uses the names "portuguese-portugal", "portuguese-brazil",
+% "portuguese-pt", "portuguese-br", "portuguese", "brazilian", "pt",
+% "pt-PT", and "pt-BR" (i.e., neither "portuges" nor "brazil"). To avoid
+% compatibility problems, let's stick with "brazilian" or "portuguese"
+% by substituting portuges and brazil if necessary.
+
+\NewDocumentCommand\@IMEportugueseAndEnglish{m}{
+
+  % Make sure any instances of "portuges" and "brazil" are replaced
+  % by "portuguese" e "brazilian"; other options are unchanged.
+  \seq_gclear_new:N \l_tmpa_seq
+  \seq_gclear_new:N \l_tmpb_seq
+  \seq_gset_from_clist:Nc \l_tmpa_seq {#1}
+
+  \seq_map_inline:Nn \l_tmpa_seq{
+    \def\@tempa{##1}
+    \ifstrequal{portuges}{##1}
+      {
+        \GenericInfo{sbc2019}{}{Substituting~language~portuges~->~portuguese}
+        \def\@tempa{portuguese}
+      }
+      {}
+    \ifstrequal{brazil}{##1}
+      {
+        \GenericInfo{}{Substituting~language~brazil~->~brazilian}
+        \def\@tempa{brazilian}
+      }
+      {}
+    \seq_gput_right:NV \l_tmpb_seq {\@tempa}
+  }
+
+  % Remove the leftmost duplicates (default is to remove the rightmost ones).
+  % Necessary in case the user did "portuges,portuguese", "brazil,brazilian"
+  % or some variation: When we substitute the language, we end up with the
+  % exact same language twice, which may mess up the main language selection.
+  \seq_greverse:N \l_tmpb_seq
+  \seq_gremove_duplicates:N \l_tmpb_seq
+  \seq_greverse:N \l_tmpb_seq
+
+  % If the user failed to select some variation of English and Portuguese,
+  % we add them here. We also remember which ones of portuguese/brazilian,
+  % english/american/british etc. were selected.
+  \exp_args:Nnx \regex_extract_all:nnNTF
+    {\b(portuguese|brazilian)\b}
+    {\seq_use:Nn \l_tmpb_seq {,}}
+    \l_tmpa_tl
+    {
+      \tl_reverse:N \l_tmpa_tl
+      \xdef\@IMEpt{\tl_head:N \l_tmpa_tl}
+    }
+    {
+      \seq_gput_left:Nn \l_tmpb_seq {brazilian}
+      \gdef\@IMEpt{brazilian}
+    }
+
+  \exp_args:Nnx \regex_extract_all:nnNTF
+    {\b(english|american|USenglish|canadian|british|UKenglish|australian|newzealand)\b}
+    {\seq_use:Nn \l_tmpb_seq {,}}
+    \l_tmpa_tl
+    {
+      \tl_reverse:N \l_tmpa_tl
+      \xdef\@IMEen{\tl_head:N \l_tmpa_tl}
+    }
+    {
+      \seq_gput_left:Nn \l_tmpb_seq {english}
+      \gdef\@IMEen{english}
+    }
+
+  \exp_args:Nc \xdef {#1} {\seq_use:Nn \l_tmpb_seq {,}}
+}
+
+
+% https://tex.stackexchange.com/a/43541
+% This message is part of a larger thread that discusses some
+% limitations of this method, but it is enough for us here.
+\def\@getcl@ss#1.cls#2\relax{\def\@currentclass{#1}}
+\def\@getclass{\expandafter\@getcl@ss\@filelist\relax}
+\@getclass
+
+% The three class option lists we need to update: \@unusedoptionlist,
+% \@classoptionslist and one of \opt@book.cls, \opt@article.cls etc.
+% according to the current class. Note that beamer.cls (and maybe
+% others) does not use \@unusedoptionlist; with it, we incorrectly
+% add "english,brazilian" to \@unusedoptionlist, but that does not
+% cause problems.
+\@IMEportugueseAndEnglish{@unusedoptionlist}
+\@IMEportugueseAndEnglish{@classoptionslist}
+\@IMEportugueseAndEnglish{opt@\@currentclass .cls}
+
+\ExplSyntaxOff
+
+% Babel permite definir a língua ou línguas usadas no documento e deve
+% ser um dos primeiros pacotes a serem carregados. É possível definir
+% as línguas como parâmetro aqui, mas já fizemos isso ao carregar a
+% classe, no início do documento.
+%
+% A escolha da língua afeta quatro coisas:
+%
+% 1. A internacionalização das palavras criadas automaticamente, como
+%    "Capítulo/Chapter", "Sumário/Table of Contents" etc. - babel chama
+%    essas palavras de "captions";
+%
+% 2. A hifenização das palavras;
+%
+% 3. Algumas convenções tipográficas. Por exemplo, em francês é usual
+%    acrescentar um espaço antes de caracteres como "?" e "!"; línguas
+%    diferentes usam caracteres diferentes para as aspas tipográficas;
+%    com algumas línguas asiáticas, pode ser necessário utilizar uma
+%    fonte diferente etc.;
+%
+% 4. Atalhos (shorthands) - algumas línguas definem "atalhos" (shorthands"),
+%    ou seja, tratam alguns caracteres como comandos especiais; por exemplo,
+%    em francês o espaço que é colocado antes da exclamação funciona porque
+%    o caracter "!" é, na verdade, um comando.
+%
+%%%% MUDANDO A LÍNGUA E HIFENIZAÇÃO %%%%
+%
+% Cada documento tem uma língua padrão; quando usamos pequenos trechos em
+% outra língua, como por exemplo em citações, queremos alterar apenas os
+% aspectos 2, 3 e 4; nesse caso, a troca da língua deve ser feita com
+% \foreignlanguage{língua}{texto} ou com \begin{otherlanguage*}{língua}.
+% Para alterar todos os quatro aspectos, deve-se usar \selectlanguage{língua}
+% (que altera a língua padrão a partir desse ponto) ou
+% \begin{otherlanguage}{língua}{texto}, que faz a alteração apenas até
+% \end{otherlanguage}. Se você quiser apenas desabilitar a hifenização de
+% um trecho de texto, pode usar \begin{hyphenrules}{nohyphenation}.
+% Finalmente, com \babeltags é possível definir comandos curtos como
+% "\textbr" (para "brazilian") que são equivalentes a \foreignlanguage.
+%
+%%%% PERSONALIZANDO CAPTIONS %%%%
+%
+% É possível personalizar os captions. Para versões de babel a partir
+% de 3.51 (lançada em outubro de 2020), basta fazer
+% \setlocalecaption{english}{contents}{Table of Contents}. Com versões
+% anteriores, por razões históricas há dois mecanismos para fazer isso,
+% então é preciso checar qual deve ser usado para cada língua (veja a
+% documentação de babel ou faça um teste). São eles:
+%
+%   1. \renewcommand\spanishchaptername{Capítulo}
+%
+%   2. \addto\captionsenglish{\renewcommand\contentsname{Table of Contents}}
+%      (este é o mais comum)
+%
+% Esses métodos valem também para a bibliografia, mas apenas se você
+% estiver usando bibtex; com biblatex, que é o padrão neste modelo, é
+% melhor usar o comando "\DefineBibliographyStrings" (veja a documentação
+% de biblatex).
+%
+% Quando babel faz uma troca de língua, ele executa \extraslíngua e, se for
+% necessário trocar os "captions", \captionslíngua (ou seja, os comandos
+% acima modificam \captionslíngua). Então, se você quiser executar algo a
+% mais quando uma língua é selecionada, faça \addto\extrasenglish{\blah}.
+\RequirePackage{babel}
+\RequirePackage{iflang}
+
+% Por padrão, LaTeX utiliza maiúsculas no início de cada palavra nestas
+% expressões ("Lista de Figuras"); vamos usar maiúsculas apenas na primeira
+% palavra.
+\addto\captionsbrazilian{%
+  \renewcommand\listfigurename{Lista de figuras}%
+  \renewcommand\listtablename{Lista de tabelas}%
+  \renewcommand\indexname{Índice remissivo}%
+}
+
+% Alguns pacotes (tikz, siunitx) usam, além de babel, este pacote como
+% auxiliar para a tradução de palavras-chave, como os meses do ano.
+\RequirePackage{translator}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FONTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LaTeX normalmente usa quatro tipos de fonte:
+%
+% * uma fonte serifada, para o corpo do texto;
+% * uma fonte com design similar à anterior, para modo matemático;
+% * uma fonte sem serifa, para títulos ou "entidades". Por exemplo, "a classe
+%   \textsf{TimeManager} é responsável..." ou "chamamos \textsf{primos} os
+%   números que...". Observe que em quase todos os casos desse tipo é mais
+%   adequado usar negrito ou itálico;
+% * uma fonte "teletype", para trechos de programas.
+%
+% A escolha de uma família de fontes para o documento normalmente é feita
+% carregando uma package específica que, em geral, seleciona as quatro fontes
+% de uma vez.
+%
+% LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
+% precisaram ser re-criadas diversas vezes em formatos diferentes, então há
+% diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX), a
+% versão usada é a BlueSky Computer Modern, que é de boa qualidade, mas com
+% os problemas do OT1. Com fontenc T1 (padrão deste modelo e recomendado), o
+% LaTeX usa o conjunto "cm-super". Com fontspec (ou seja, com LuaLaTeX e
+% XeLaTeX), LaTeX utiliza a versão "Latin Modern". Ao longo do tempo, versões
+% diferentes dessas fontes foram recomendadas como "a melhor"; atualmente, a
+% melhor opção para usar a família Computer Modern é a versão "Latin Modern".
+%
+% Você normalmente não precisa lidar com isso, mas pode ser útil saber: O
+% mecanismo tradicionalmente usado por LaTeX para gerir fontes é o NFSS
+% (veja "texdoc fntguide"). Ele funciona com todas as versões de LaTeX,
+% mas só com fontes que foram adaptadas para funcionar com LaTeX. LuaLaTeX
+% e XeLaTeX podem usar NFSS mas também são capazes de utilizar um outro
+% mecanismo (através da package fontspec), que permite utilizar quaisquer
+% fontes instaladas no computador.
+
+\ifPDFTeX
+    % Usando pdfLaTeX
+
+    % Ativa Latin Modern como a fonte padrão.
+    \RequirePackage{lmodern}
+
+    % Alguns truques para melhorar a aparência das fontes Latin Modern;
+    % eles não funcionam com LuaLaTeX e XeLaTeX.
+
+    % Latin Modern não tem fontes bold + Small Caps, mas cm-super sim;
+    % assim, vamos ativar o suporte às fontes cm-super (sem ativá-las
+    % como a fonte padrão do documento) e configurar substituições
+    % automáticas para que a fonte Latin Modern seja substituída por
+    % cm-super quando o texto for bold + Small Caps.
+    \RequirePackage{fix-cm}
+
+    % Com Latin Modern, é preciso incluir substituições para o encoding TS1
+    % também por conta dos números oldstyle, porque para inclui-los nas fontes
+    % computer modern foi feita uma hack: os dígitos são declarados como sendo
+    % os números itálicos da fonte matemática e, portanto, estão no encoding TS1.
+    %
+    % Primeiro forçamos o LaTeX a carregar a fonte Latin Modern (ou seja, ler
+    % o arquivo que inclui "DeclareFontFamily") e, a seguir, definimos a
+    % substituição
+    \fontencoding{TS1}\fontfamily{lmr}\selectfont
+    \DeclareFontShape{TS1}{lmr}{b}{sc}{<->ssub * cmr/bx/n}{}
+    \DeclareFontShape{TS1}{lmr}{bx}{sc}{<->ssub * cmr/bx/n}{}
+
+    \fontencoding{T1}\fontfamily{lmr}\selectfont
+    \DeclareFontShape{T1}{lmr}{b}{sc}{<->ssub * cmr/bx/sc}{}
+    \DeclareFontShape{T1}{lmr}{bx}{sc}{<->ssub * cmr/bx/sc}{}
+
+    % Latin Modern não tem "small caps + itálico", mas tem "small caps + slanted";
+    % vamos definir mais uma substituição aqui.
+    \fontencoding{T1}\fontfamily{lmr}\selectfont % já feito acima, mas tudo bem
+    \DeclareFontShape{T1}{lmr}{m}{scit}{<->ssub * lmr/m/scsl}{}
+    \DeclareFontShape{T1}{lmr}{bx}{scit}{<->ssub * lmr/bx/scsl}{}
+
+    % Se fizermos mudanças manuais na fonte Latin Modern, estes comandos podem
+    % vir a ser úteis
+    %\newcommand\lmodern{%
+    %  \renewcommand{\oldstylenums}[1]{{\fontencoding{TS1}\selectfont ##1}}%
+    %  \fontfamily{lmr}\selectfont%
+    %}
+    %
+    %\DeclareRobustCommand\textlmodern[1]{%
+    %  {\lmodern #1}%
+    %}
+\else
+    % Com LuaLaTex e XeLaTeX, Latin Modern é a fonte padrão. Existem
+    % diversas packages e "truques" para melhorar alguns aspectos de
+    % Latin Modern, mas eles foram feitos para pdflatex (veja mais
+    % acima). Assim, se você pretende usar Latin Modern como a fonte
+    % padrão do documento, é melhor usar pdfLaTeX. Deve ser possível
+    % implementar essas melhorias com fontspec também, mas este modelo
+    % não faz isso, apenas ativamos Small Caps aqui.
+    %
+    % TODO: isso funciona automaticamente em versões recentes do LaTeX;
+    %       Remover essa correção para LuaLaTeX e XeLaTeX quando arxiv
+    %       usar TeXLive >= 2021 e ubuntu 20.04 (focal) for descontinuada
+    %       (abril de 2025).
+
+    \ifLuaTeX
+      % Com LuaTeX, basta indicar o nome de cada fonte; para descobrir
+      % o nome "certo", use o comando "otfinfo -i" e veja os itens
+      % "preferred family" e "full name"
+      \setmainfont{Latin Modern Roman}[
+        SmallCapsFont = {LMRomanCaps10-Regular},
+        ItalicFeatures = {
+          SmallCapsFont = {LMRomanCaps10-Oblique},
+        },
+        SlantedFont = {LMRomanSlant10-Regular},
+        SlantedFeatures = {
+          SmallCapsFont = {LMRomanCaps10-Oblique},
+          BoldFont = {LMRomanSlant10-Bold}
+        },
+      ]
+    \fi
+
+    \ifXeTeX
+      % Com XeTeX, é preciso informar o nome do arquivo de cada fonte.
+      \setmainfont{lmroman10-regular.otf}[
+        SmallCapsFont = {lmromancaps10-regular.otf},
+        ItalicFeatures = {
+          SmallCapsFont = {lmromancaps10-oblique.otf},
+        },
+        SlantedFont = {lmromanslant10-regular.otf},
+        SlantedFeatures = {
+          SmallCapsFont = {lmromancaps10-oblique.otf},
+          BoldFont = {lmromanslant10-bold.otf}
+        },
+      ]
+    \fi
+\fi
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIGURAS / FLOATS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LaTeX escolhe automaticamente o "melhor" lugar para colocar cada float.
+% Por padrão, ele tenta colocá-los no topo da página e depois no pé da
+% página; se não tiver sucesso, vai para a página seguinte e recomeça.
+% Se esse algoritmo não tiver sucesso "logo", LaTeX cria uma página só
+% com floats. É possível modificar esse comportamento com as opções de
+% posicionamento: "tp", por exemplo, instrui LaTeX a considerar apenas
+% o topo da página ou uma página só de floats (ignorando o pé da página),
+% e "htbp" o instrui para tentar "aqui" como a primeira opção. A ordem
+% dessas opções não é relevante: dentre as opções disponíveis, LaTeX
+% sempre tenta "aqui, topo, pé, página". Os pacotes "float" e "floatrow"
+% acrescentam a opção "H", que significa "aqui, incondicionalmente".
+%
+% A escolha do "melhor" lugar leva em conta os parâmetros abaixo, mas é
+% possível ignorá-los com a opção de posicionamento "!". Dado que os
+% valores default não são muito bons para floats "grandes" ou documentos
+% com muitos floats, é muito comum usar "!" ou "H". No entanto, modificando
+% estes parâmetros o algoritmo automático tende a funcionar melhor. Ainda
+% assim, vale ler a discussão a respeito na seção "Limitações do LaTeX"
+% deste modelo.
+
+% Fração da página que pode ser ocupada por floats no topo. Default: 0.7
+\renewcommand{\topfraction}{.8}
+% Idem para documentos em colunas e floats que tomam as 2 colunas. Default: 0.7
+%\renewcommand{\dbltopfraction}{.7}
+% Fração da página que pode ser ocupada por floats no pé. Default: 0.3
+%\renewcommand{\bottomfraction}{.3}
+% Fração mínima da página que deve conter texto. Default: 0.2
+%\renewcommand{\textfraction}{.2}
+% Numa página só de floats, fração mínima que deve ser ocupada. Default: 0.5
+% floatpagefraction *deve* ser menor que topfraction.
+\renewcommand{\floatpagefraction}{.66}
+% Idem para documentos em colunas e floats que tomam as 2 colunas. Default: 0.5
+\renewcommand{\dblfloatpagefraction}{.66}
+% Máximo de floats no topo da página. Default: 2
+\setcounter{topnumber}{3}
+% Idem para documentos em colunas e floats que tomam as 2 colunas. Default: 2
+%\setcounter{dbltopnumber}{2}
+% Máximo de floats no pé da página. Default: 1
+\setcounter{bottomnumber}{2}
+% Máximo de floats por página. Default: 3
+\setcounter{totalnumber}{5}
+
+% A package float é amplamente utilizada; ela permite definir novos tipos
+% de float e também acrescenta a possibilidade de definir "H" como opção de
+% posicionamento do float, que significa "aqui, incondicionalmente". No
+% entanto, ela tem algumas fragilidades e não é atualizada desde 2001.
+% floatrow é uma versão aprimorada e com mais recursos da package "float",
+% mas também não é atualizada desde 2009. Aqui utilizamos alguns recursos
+% disponibilizados por ambas e é possível escolher qual delas utilizar.
+% Um dos principais recursos dessas packages é permitir a criação de novos
+% tipos de float; veja o arquivo source-code.tex para um exemplo.
+%\RequirePackage{float}
+\RequirePackage{floatrow}
+
+% Por padrão, LaTeX prefere colocar floats no topo da página que
+% onde eles foram definidos; vamos mudar isso. Este comando depende
+% do pacote "floatrow", carregado logo acima.
+\floatplacement{table}{htbp}
+\floatplacement{figure}{htbp}
+
+% Em alguns casos, um float pode aparecer antes do local do texto em que
+% foi definido (ou seja, no topo da página ao invés do meio da página).
+% Esta package garante que floats (tabelas e figuras) só apareçam após
+% o local no texto em que foram definidos; veja os detalhes em
+% https://tex.stackexchange.com/a/297580 . Note que, se o float tem a
+% opção "h", normalmente LaTeX *não* coloca o float no topo da página
+% atual: se o float não pode ser colocado "here", ele é delegado para
+% a página seguinte. Portanto, com a opção "h" flafter em geral não faz
+% diferença.
+\RequirePackage{flafter}
+
+% Em documentos com duas colunas, floats normalmente são colocados como
+% parte de uma das colunas. No entanto, é possível usar "\begin{figure*}"
+% ou "\begin{table*}" para criar floats que ocupam as duas colunas. Floats
+% "duplos" desse tipo têm algumas limitações:
+%
+% 1. Mesmo que haja espaço disponível na página atual, eles são sempre
+%    inseridos na página seguinte ao lugar em que foram definidos (então
+%    é comum defini-los antes do lugar "certo" para compensar isso)
+%
+% 2. Eles só podem aparecer no topo da página ou em uma página de floats,
+%    ou seja, nunca "here" nem no pé da página.
+%
+% 3. Em alguns casos, eles podem aparecer fora da ordem em relação aos
+%    demais floats do mesmo tipo (o que não acontece com floats "normais")
+%
+% Esta package:
+%
+% 1. Soluciona parcialmente o primeiro problema: floats "duplos" podem
+%    aparecer na página em que são definidos se sua definição está contida
+%    no texto da coluna da esquerda;
+%
+% 2. Soluciona o segundo problema: floats "duplos" podem aparecer tanto no
+%    topo quanto no pé da página. Observe que eles *não* podem aparecer
+%    "here" porque isso não faz sentido: a figura interromperia o fluxo
+%    do texto da "outra" coluna (ainda assim, as packages midfloat e cuted
+%    permitem fazer isso).
+%
+% 3. Soluciona o terceiro problema.
+\RequirePackage{stfloats}
+
+% Permite importar figuras. LaTeX "tradicional" só é capaz de trabalhar com
+% figuras EPS; hoje em dia não há nenhuma boa razão para usar essa versão.
+% Já pdfTeX, XeTeX e LuaTeX podem usar figuras nos formatos PDF, JPG e PNG.
+% Em algumas instalações, essas versões conseguem converter automaticamente
+% arquivos EPS para PDF, mas não isso é garantido, então é melhor evitar o
+% formato EPS.
+\RequirePackage{graphicx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAFIA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Tradicionalmente, bibliografias no LaTeX são geradas com uma combinação entre
+% LaTeX (muitas vezes usando o pacote natbib) e um programa auxiliar chamado
+% bibtex. Nesse esquema, LaTeX e natbib são responsáveis por formatar as
+% referências ao longo do texto e a formatação da bibliografia fica por conta
+% do programa bibtex. A configuração dessa formatação é feita através de um
+% arquivo auxiliar de "estilo", com extensão ".bst". Vários journals etc.
+% fornecem o arquivo .bst que corresponde ao formato esperado da bibliografia.
+%
+% bibtex e natbib funcionam bem e, se você tiver alguma boa razão para usá-los,
+% obterá bons resultados. No entanto, bibtex tem dois problemas: não lida
+% corretamente com caracteres acentuados (embora, na prática, funcione com
+% os caracteres usados em português) e o formato .bst, que define a formatação
+% da bibliografia, é complexo e pouco flexível.
+%
+% Por conta disso, a comunidade está migrando para um novo sistema chamado
+% biblatex. No biblatex, as formatações da bibliografia e das citações são
+% feitas pelo próprio pacote biblatex, dentro do LaTeX. Assim, é bem mais fácil
+% modificar e personalizar o estilo da bibliografia. biblatex usa o mesmo
+% formato de arquivo de dados do bibtex (".bib") e, portanto, não é difícil
+% migrar de um para o outro. biblatex também usa um programa auxiliar (biber),
+% mas não para realizar a formatação da bibliografia. A maior desvantagem de
+% biblatex é que ele é significativamente mais lento que bibtex.
+%
+% Observe que biblatex pode criar bibliografias independentes por capítulo
+% ou outras divisões do texto. Normalmente é preciso indicar essas seções
+% manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
+% identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
+% No entanto, refsection e refsegment são incompatíveis com o pacote
+% titlesec, mencionado em imeusp-formatting.tex. Se você pretende criar
+% bibliografias independentes por seções, há duas soluções: (1) desabilitar
+% o pacote titlesec; (2) indicar as seções manualmente.
+%
+% Algumas dicas de configuração:
+% https://tex.stackexchange.com/q/12806
+% https://github.com/PaulStanley/biblatex-tutorial/releases
+
+\PassOptionsToPackage{
+  natbib=true, % Reconhece a sintaxe de natbib (\citet, \citep)
+  hyperref=true, % Ativa o suporte ao pacote hyperref
+  % Se um item da bibliografia tem língua definida (com langid), permite
+  % hifenizar com base na língua selecionada.
+  autolang=hyphen,
+  % Inclui, em cada item da bibliografia, links para as páginas onde o
+  % item foi citado
+  backref=true,
+}{biblatex}
+
+% Este arquivo é executado antes de carregarmos biblatex, então precisamos
+% adiar a execução deste comando. Não carregamos biblatex neste arquivo
+% porque o usuário pode querer modificar o estilo bibliográfico, que é
+% definido por um parâmetro na hora da carga da package.
+\AtEndPreamble{
+  % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
+  % Impede que um item da bibliografia seja dividido em duas páginas.
+  % À parte a estética, isso contorna este bug, que afeta links na
+  % úlima página do trabalho, ou seja, pode afetar a bibliografia
+  % (atenddvi pode ser carregada por hyperxmp):
+  % https://github.com/ho-tex/atenddvi/issues/1
+  \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
+}
+
+\AtEndPreamble{
+  % backrefs só fazem sentido com documentos grandes
+  \ifboolexpr{test {\@ifclassloaded{book}} or test {\@ifclassloaded{report}}}
+    {}
+    {\ExecuteBibliographyOptions{backref=false,}}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% HIPERLINKS E REFERÊNCIAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O comando \ref por padrão mostra apenas o número do elemento a que se
+% refere; assim, é preciso escrever "veja a Figura~\ref{grafico}" ou
+% "como visto na Seção~\ref{sec:introducao}". Usando o pacote hyperref
+% (carregado mais abaixo), esse número é transformado em um hiperlink.
+%
+% Se você quiser mudar esse comportamento, ative as packages varioref
+% e cleveref e também as linhas "labelformat" e "crefname" mais abaixo.
+% Nesse caso, você deve escrever apenas "veja a \ref{grafico}" ou
+% "como visto na \ref{sec:introducao}" etc. e o nome do elemento será
+% gerado automaticamente como hiperlink.
+%
+% Se, além dessa mudança, você quiser usar os recursos de varioref ou
+% cleveref, mantenha as linhas labelformat comentadas e use os comandos
+% \vref ou \cref, conforme sua preferência, também sem indicar o nome do
+% elemento, que é inserido automaticamente. Vale lembrar que o comando
+% \vref de varioref pode causar problemas com hyperref, impedindo a
+% geração do PDF final.
+%
+% ATENÇÃO: varioref, hyperref e cleveref devem ser carregadas nessa ordem!
+%\RequirePackage{varioref}
+
+%\labelformat{figure}{Figura~#1}
+%\labelformat{table}{Tabela~#1}
+%\labelformat{equation}{Equação~#1}
+%% Isto não funciona corretamente com os apêndices; o comando seguinte
+%% contorna esse problema
+%%\labelformat{chapter}{Capítulo~#1}
+%\labelformat{chapter}{\@chapapp~#1}
+%\labelformat{section}{Seção~#1}
+%\labelformat{subsection}{Seção~#1}
+%\labelformat{subsubsection}{Seção~#1}
+
+% Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
+\RequirePackage{hyperref}
+
+\providetoggle{IMEcolorlinks}
+\providetoggle{IMEhidelinks}
+\newcommand\hidelinks{\toggletrue{IMEhidelinks}}
+\newcommand\colorlinks{\toggletrue{IMEcolorlinks}}
+\newcommand\nocolorlinks{\togglefalse{IMEcolorlinks}}
+\colorlinks
+\AtEndPreamble{
+  \iftoggle{IMEhidelinks}
+    {\hypersetup{hidelinks}}
+    {
+      \iftoggle{IMEcolorlinks}{
+        \hypersetup{
+          colorlinks=true, % também desabilita pdfborderstyle
+          %citecolor=black,
+          %linkcolor=black,
+          %urlcolor=black,
+          %filecolor=black,
+          citecolor=DarkGreen,
+          linkcolor=NavyBlue,
+          urlcolor=DarkRed,
+          filecolor=green,
+          anchorcolor=black,
+        }
+      }{
+        \hypersetup{
+          colorlinks=false,
+          pdfborder={0 0 .6},
+          pdfborderstyle={/S/U/W .6},
+          urlbordercolor=DodgerBlue,
+          citebordercolor=green!30!white,
+          linkbordercolor=blue!30!white,
+          filebordercolor=green!30!white,
+        }
+      }
+    }
+}
+
+%\RequirePackage[nameinlink,noabbrev,capitalise]{cleveref}
+%% cleveref não tem tradução para o português
+%\crefname{figure}{Figura}{Figuras}
+%\crefname{table}{Tabela}{Tabelas}
+%\crefname{chapter}{Capítulo}{Capítulos}
+%\crefname{section}{Seção}{Seções}
+%\crefname{subsection}{Seção}{Seções}
+%\crefname{subsubsection}{Seção}{Seções}
+%\crefname{appendix}{Apêndice}{Apêndices}
+%\crefname{subappendix}{Apêndice}{Apêndices}
+%\crefname{subsubappendix}{Apêndice}{Apêndices}
+%\crefname{line}{Linha}{Linhas}
+%\crefname{subfigure}{Figura}{Figuras}
+%\crefname{equation}{Equação}{Equações}
+%\crefname{listing}{Código-fonte}{Códigos-fonte}
+%\crefname{lstlisting}{Código-fonte}{Códigos-fonte}
+%\crefname{lstnumber}{Linha}{Linhas}
+%\crefrangelabelformat{chapter}{#3#1#4~a~#5#2#6}
+%\crefrangelabelformat{section}{#3#1#4~a~#5#2#6}
+%\newcommand{\crefrangeconjunction}{ e }
+%\newcommand{\crefpairconjunction}{ e }
+%\newcommand{\crefmiddleconjunction}{, }
+%\newcommand{\creflastconjunction}{ e }
+%\crefmultiformat{type}{first}{second}{middle}{last}
+%\crefrangemultiformat{type}{first}{second}{middle}{last}
+
+% ao criar uma referência hyperref para um float, a referência aponta
+% para o final do caption do float, o que não é muito bom. Este pacote
+% faz a referência apontar para o início do float (é possível personalizar
+% também). Esta package é incompatível com a classe beamer (usada para
+% criar posters e apresentações), então testamos a compatibilidade antes
+% de carregá-la.
+\ifboolexpr{
+  test {\ifcsdef{figure}} and
+  test {\ifcsdef{figure*}} and
+  test {\ifcsdef{table}} and
+  test {\ifcsdef{table*}}
+}{\RequirePackage[all]{hypcap}}{}
+
+% hyperref detecta url's definidas com \url que começam com "http" e
+% "www" e cria links adequados. No entanto, quando a url não começa
+% com essas strings (por exemplo, "usp.br"), hyperref considera que
+% se trata de um link para um arquivo local. Isto força todas as
+% \url's que não tem esquema definido a serem do tipo http.
+\hyperbaseurl{http://}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% XMP (eXtensible Metadata Platform) é um mecanismo proposto pela Adobe
+% para a inclusão dos metadados de um documento no próprio documento.
+% Esta package se integra com hyperref e não depende de praticamente
+% nenhuma modificação em documentos que já utilizam os mecanismos de
+% hyperref para a definição de metadados PDF. Ela deve ser carregada
+% depois de hyperref mas antes de as opções relacionadas a metadados
+% de hyperref serem definidas.
+
+% HACK ALERT! As versões 5.5 e 5.6 de hyperxmp podem "confundir" latexmk,
+% fazendo a compilação do documento entrar em um laço infinito. Essas
+% versões, assim como a 5.7 que corrige o problema, foram incluídas no
+% TeXLive durante o ano de 2020, ou seja, nem a primeira versão nem a
+% última atualização de TeXLive 2020 são afetadas. Ainda assim, aqui
+% contornamos o problema desabilitando o recurso relacionado (o cálculo
+% automático de "byteCount", ou seja, do tamanho aproximado do documento).
+% TODO: remover esse código após 2024. Ao mesmo tempo, também podemos
+%       desabilitar a package letltxmacro, que é usada apenas aqui.
+\ifPDFTeX
+  \LetLtxMacro\HACKoldpdffilesize\pdffilesize
+  \renewcommand\pdffilesize[1]{}
+\fi
+\RequirePackage{hyperxmp}
+\ifPDFTeX
+  \LetLtxMacro\pdffilesize\HACKoldpdffilesize
+\fi
+
+% HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
+% https://github.com/ho-tex/atenddvi/issues/1 . Aparentemente, ele não
+% afeta xelatex (cf https://github.com/latex3/latex2e/issues/94 ), então
+% só precisamos nos preocupar com pdflatex e lualatex. Com pdflatex,
+% hyperxmp não deveria utilizar atenddvi, mas às vezes usa. Com lualatex,
+% atenddvi parece também não ser necessária, pois hyperxmp não usa
+% \special ou \write com lualatex. Então, vamos deixar hyperxmp carregar
+% atenddvi mas (1) vamos impedi-la de funcionar e (2) vamos garantir que
+% hyperxmp sempre use AtEndDocument com pdflatex e lualatex. Há ainda um
+% outro truque para contornar esse problema na configuração da bibliografia,
+% mas não podemos ter certeza de que apenas a bibliografia pode ser afetada
+% por este bug.
+
+% TODO: esse bug foi resolvido com o lançamento do LaTeX 2020-10-01, que
+%       deve ser incluído no TeXlive 2021. Assim, provavelmente podemos
+%       remover isto em abril/2025 (veja o comentário em \NeedsTeXFormat)
+\ifXeTeX
+\else
+  \let\AtEndDvi@AtBeginShipout\relax
+  \let\AtEndDvi@CheckImpl\relax
+  \let\hyxmp@at@end\AtEndDocument
+\fi
+
+% Às vezes é necessário forçar quebras de linha no título para a capa, mas
+% essas quebras não devem aparecer em outros lugares (especialmente nos
+% metadados XMP). hyperref e hyperxmp removem essas quebras automaticamente,
+% mas isso pode fazer duas palavras ficarem grudadas. Estas macros "apagam"
+% esses comandos de maneira mais cuidadosa. Elas são utilizadas aqui e em
+% imeusp-thesis.
+
+\ExplSyntaxOn
+
+% Primeiro definimos a regex que vamos usar. O que estamos fazendo aqui é
+% "(regex1)|(regex2)|(regex3)|(regex4)"
+\regex_const:Nn \@IMEbreakRegex
+  {
+    ( \c{break} ) % Encontra "\break"
+    |
+    ( \c{newline} ) % Encontra "\newline"
+    |
+      % Isto encontra:
+      % 1. A control sequence "\linebreak" -> "\c{linebreak}"
+      % 2. Opcionalmente seguida de "[NÚMERO]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
+    ( \c{linebreak} (\s*\x{5B}\s*\d\s*\x{5D})? )
+    |
+      % Isto encontra:
+      % 1. A control sequence "\\" (quebra de linha) -> "\c{\\}"
+      % 2. Optionalmente seguida de "[...]" -> "( \s*\x{5B}\s*...\s*\x{5D} )?"
+      % 3. Onde "..." é qualquer dimensão TeX válida
+      %    (veja o exemplo de regex em texdoc interface3)
+    ( \c{\\}
+      ( \s*\x{5B}\s*
+          [\+\-]?(\d+|\d*\.\d+)\s*((?i)pt|in|[cem]m|ex|[bs]p|[dn]d|[pcn]c)
+        \s*\x{5D}
+      )?
+    )
+  }
+
+\newcommand{\@IMEremoveLinebreaksEtc}[1]{
+    % Primeiro, substitui todas as quebras de linha por espaços
+    \regex_replace_all:NnN \@IMEbreakRegex {\ } #1
+
+    % Depois elimina eventuais notas de rodapé
+    \regex_replace_all:nnN {\s*\c{footnote}} {\c{@gobble}} #1
+    \regex_replace_all:nnN {\s*\c{thanks}} {\c{@gobble}} #1
+
+    % Depois transforma URLs em texto simples
+    \regex_replace_all:nnN {\c{url}} {\c{@firstofone}} #1
+    \regex_replace_all:nnN {\c{href}} {\c{@secondoftwo}} #1
+
+    % Substitui \par (ou uma linha em branco) por um caractere de nova linha
+    \regex_replace_all:nnN {\c{par}} {\n} #1
+
+    % Depois elimina espaços repetidos
+    \regex_replace_all:nnN {\h+} {\ } #1
+    \regex_replace_all:nnN {\ \n} {\n} #1
+    \regex_replace_all:nnN {\n+} {\n} #1
+}
+
+\ExplSyntaxOff
+
+% Agora inserimos de fato os metadados essenciais XMP no arquivo PDF. Se
+% o documento é uma tese/dissertação no formato do IME, outros metadados
+% são definidos em imeusp-thesis e sobrescrevem o que está definido aqui.
+\let\@cleantitle\@title
+\let\@cleanauthor\@author
+\@IMEremoveLinebreaksEtc{\@cleantitle}
+\@IMEremoveLinebreaksEtc{\@cleanauthor} % pode incluir \thanks
+
+\hypersetup{
+  pdfauthor={\@cleanauthor},
+  pdftitle={\@cleantitle},
+}
+
+
+% Você provavelmente vai querer ler a documentação de alguns destes pacotes
+% para personalizar algum aspecto do trabalho ou usar algum recurso específico.
+
+% Mais recursos para trechos de texto "puro" (texto em que tabs, quebras de
+% linha etc. não são modificados), e também o ambiente "\begin{comment}".
+\RequirePackage{verbatim}
+
+% Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
+\RequirePackage{setspace}
+
+% Às vezes um float pode ser adiado por muitas páginas; é possível forçar
+% LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
+% para isso, o usuário deve identificar os casos problemáticos e inserir
+% \clearpage manualmente. Esta package acrescenta o comando \FloatBarrier,
+% que executa \clearpage apenas se necessário no local em que é chamado.
+% "above" e "below" desabilitam a barreira quando os floats estão na mesma
+% página. A desvantagem de placeins é que, para funcionar, ela gera quebras
+% de página que muitas vezes são inesperadas; em muitos casos, é melhor
+% fazer ajustes manualmente.
+%\RequirePackage[above,below]{placeins}
+
+% Às vezes é interessante utilizar uma imagem mais larga que o texto.
+% Por padrão, \centering *não* vai centralizar a imagem corretamente
+% nesse caso. Com esta package, podemos acrescentar a opção "center"
+% ao comando \includegraphics para resolver esse problema:
+% \noindent\includegraphics[width=1.2\textwidth,center]{imagem}.
+% A package tem muitos outros recursos também.
+\RequirePackage[export]{adjustbox}
+
+% Define o ambiente "\begin{landscape} -- \end{landscape}"; o texto entre
+% esses comandos é impresso em modo paisagem, podendo se estender por
+% várias páginas. A rotação não inclui os cabeçalhos e rodapés das páginas.
+% O principal uso desta package é em conjunto com a package longtable: se
+% você precisa mostrar uma tabela muito larga (que precisa ser impressa em
+% modo paisagem) e longa (que se estende por várias páginas), use
+% "\begin{landscape}" e "\begin{longtable}" em conjunto. Note que o modo
+% landscape entra em ação imediatamente, ou seja, "\begin{landscape}" gera
+% uma quebra de página no local em que é chamado. Na maioria dos casos, o
+% que se quer não é isso, mas sim um "float paisagem"; isso é o que a
+% package rotating oferece (veja abaixo).
+\RequirePackage{pdflscape}
+
+% Define dois novos tipos de float: sidewaystable e sidewaysfigure, que
+% imprimem a figura ou tabela sozinha em uma página em modo paisagem. Além
+% disso, permite girar elementos na página de diversas outras maneiras.
+\RequirePackage[figuresright,clockwise]{rotating}
+
+% Sub-figuras (e seus captions) - observe que existe uma package chamada
+% "subfigure", mas ela é obsoleta; use esta no seu lugar.
+\RequirePackage{subcaption}
+
+% Permite criar imagens com texto ao redor.
+%\RequirePackage{wrapfig}
+% Esta é similar, mas me parece uma opção melhor:
+%\RequirePackage{cutwin}
+
+% Permite incorporar um arquivo PDF como uma página adicional. Útil se
+% for necessário importar uma imagem ou tabela muito grande ou ainda
+% para definir uma capa personalizada.
+\RequirePackage{pdfpages}
+
+% Caixas de texto coloridas
+%\RequirePackage{tcolorbox}
+
+% LaTeX por padrão não permite notas de rodapé dentro de tabelas. De maneira
+% geral, notas de rodapé em tabelas são consideradas "ruins" em termos de
+% tipografia, mas às vezes são necessárias. Se esse é o caso, o recomendado
+% é que as notas de rodapé apareçam no "rodapé" da tabela, com numeração
+% própria, e não no rodapé da página. Você pode fazer isso com esta package:
+\RequirePackage{threeparttable}
+% Formatação personalizada das notas de threeparttable:
+\appto{\TPTnoteSettings}{\footnotesize\itshape}
+\def\TPTtagStyle{\textit}
+% Outra opção é a package ctable, que ainda oferece vários outros
+% recursos mas usa uma sintaxe diferente.
+%\RequirePackage{ctable}
+
+% Se você realmente quer notas de rodapé em tabelas que aparecem como as
+% demais notas de rodapé (no final da página e mantendo a sequência numérica),
+% você pode usar a package abaixo. No entanto, ela não funciona com floats
+% duplos (floats que ocupam toda a largura da página em um documento de duas
+% colunas) e, em alguns casos, a nota pode desaparecer ou aparecer em uma
+% página diferente da tabela (mova o lugar do texto em que ela é definida
+% para resolver esse problema).
+\RequirePackage{tablefootnote}
+
+% Por padrão, cada coluna de uma tabela tem a largura do maior texto contido
+% nela, ou seja, se uma coluna contém uma célula muito larga, LaTeX não
+% força nenhuma quebra de linha e a tabela "estoura" a largura do papel. A
+% solução simples, nesses casos, é inserir uma ou mais quebras de linha
+% manualmente, o que além de deselegante não é totalmente trivial (é preciso
+% usar \makecell).
+% Esta package estende o ambiente tabular para permitir definir um tamanho
+% fixo para uma ou mais colunas; nesse caso, LaTeX quebra as linhas se uma
+% célula é larga demais para a largura definida. Encontrar valores "bons"
+% para as larguras das colunas, no entanto, também é um trabalho manual
+% um tanto penoso. As packages tabularx e tabulary permitem configurar
+% algumas colunas como "largura automática", evitando a necessidade da
+% definição manual. Finalmente, ltxtable permite utilizar tabularx e
+% longtable juntas. Neste modelo, não usamos tabularx/tabulary, mas você
+% pode carregá-las se quiser.
+\RequirePackage{array}
+
+% Permite alinhar os elementos de uma coluna pelo ponto decimal; dê
+% preferência à package siunitx (carregada mais abaixo), que também
+% oferece esse recurso e muitos outros.
+%\RequirePackage{dcolumn}
+
+% Define tabelas do tipo "longtable", similares a "tabular" mas que podem ser
+% divididas em várias páginas. "longtable" também funciona corretamente com
+% notas de rodapé. Note que, como uma longtable pode se estender por várias
+% páginas, não faz sentido colocá-las em um float "table". Por conta disso,
+% longtable define o comando "\caption" internamente.
+\RequirePackage{longtable}
+
+% Permite agregar linhas de tabelas, fazendo colunas "compridas".
+\RequirePackage{multirow}
+
+% Cria comando adicional para possibilitar a inserção de quebras de linha
+% em uma célula de tabela, entre outros.
+\RequirePackage{makecell}
+
+% Modifica (melhora) o layout default das tabelas e acrescenta os comandos
+% \toprule, \bottomrule, \midrule e \cmidrule. Vale muito a pena ler a
+% documentação desta package!
+\RequirePackage{booktabs}
+
+% Permite colorir linhas, colunas ou células de uma tabela.
+\RequirePackage{colortbl}
+
+% Ao invés de digitar os dados de uma tabela dentro do seu documento,
+% você pode fazer LaTeX ler os dados de um arquivo CSV e criar uma
+% tabela automaticamente com uma destas duas packages:
+%\RequirePackage{csvsimple}     % mais simples
+%\RequirePackage{pgfplotstable} % mais complexa
+
+% Você também pode se interessar pelo ambiente "tabbing", que permite
+% criar tabelas simples com algumas vantagens em relação a "tabular",
+% ou por esta package, que permite criar tabulações.
+%\RequirePackage{tabto}
+
+% melhorias e recursos adicionais para o modo matemático; leia a documentação
+\RequirePackage{mathtools}
+
+% Permite mostrar itens "cancelados" em fórmulas matemáticas, como:
+% 2a = 2(b+1)
+% \cancel{2}a = \cancel{2}(b+1)
+% a = b+1
+\RequirePackage{cancel}
+
+% Para inserir separações no texto que não correspondem a seções com um nome
+% definido, é comum usar um ornamento ou florão (em inglês e francês: fleuron).
+% Esta package define o comando \froufrou que insere um florão desse tipo.
+\RequirePackage{froufrou}
+
+% Símbolos adicionais: \degree, \celsius, \ohm, \micro, \perthousand.
+% Provavelmente é melhor usar os recursos da package siunitx.
+%\RequirePackage{gensymb}
+
+% Permite criar listas como glossários, listas de abreviaturas etc.
+% https://en.wikibooks.org/wiki/LaTeX/Glossary
+%\RequirePackage{glossaries}
+
+% Permite formatar um trecho de texto em colunas.
+\RequirePackage{multicol}
+
+% O formato pdf permite anexar arquivos ao documento, que aparecem
+% na página como ícones "clicáveis"; esta package implementa esse
+% recurso em LaTeX.
+%\RequirePackage{attachfile}
+
+% Citações melhores; se você pretende fazer citações de textos
+% relativamente extensos, vale a pena ler a documentação. biblatex
+% utiliza recursos deste pacote.
+\RequirePackage{csquotes}
+
+% Sublinhado e outras formas de realce de texto.
+\RequirePackage{soul}
+\RequirePackage{soulutf8}
+
+% Melhorias e personalização do sublinhado com soul (comando \ul)
+
+% Distância e largura do sublinhado
+\setul{1.4pt}{.5pt}
+
+% btul -> "Better Underline" (https://alexwlchan.net/2017/10/latex-underlines/ )
+% Sublinhado sem cruzar as linhas descendentes dos caracteres
+\RequirePackage[outline]{contour}
+\contourlength{1.1pt}
+\newcommand{\btul}[2][white]{%
+  \contourlength{1.1pt}%
+  \setul{1.4pt}{.5pt}%
+  \ul{{\phantom{#2}}}% Faz o sublinhado; precisa das chaves adicionais!
+  \llap{\contour{#1}{#2}}% Escreve o texto com fundo branco/colorido
+}
+
+% Formatação personalizada das listas "itemize", "enumerate" e
+% "description", além de permitir criar novos tipos de listas.
+% Com a opção "inline", a package define os novos ambientes "itemize*",
+% "description*" e "enumerate*", que fazem os itens da lista como
+% parte de um único parágrafo. Como ela causa problemas com
+% beamer, apenas a carregamos se não estivermos usando beamer.
+\@ifclassloaded{beamer}
+  {}
+  {\RequirePackage[inline]{enumitem}}
+
+% TODO: siunitx removed option "binary-units" in 2021;
+%       we can remove this option here after, say, 2025.
+% Vários recursos para apresentação de números e grandezas (unidades, notação
+% científica, melhor apresentação de números longos etc.), além de permitir
+% alinhar números em tabelas pelo ponto decimal (como a package dcolumn)
+% através do tipo de coluna "S". Por exemplo, \si{\ohm}, \si{\celsius},
+% \si{\milli\litre} (apenas as unidades) ou \SI{10}{\hertz} (a grandeza e a
+% unidade), ou \num[round-mode=places,round-precision=4]{3.1415926} -> 3,1416.
+
+\RequirePackage[binary-units]{siunitx}
+\sisetup{
+  mode=text,
+  round-mode=places,
+}
+
+% siunitx usa a package translator para apresentar estas expressões na
+% língua do documento; vamos fornecer as traduções para o português.
+\providetranslation[to=Portuguese]{to (numerical range)}{a}
+\providetranslation[to=Portuguese]{and}{e}
+\addto\extrasbrazil{\sisetup{output-decimal-marker = {,}}}
+\addto\extrasbrazilian{\sisetup{output-decimal-marker = {,}}}
+
+\RequirePackage{url}
+% URL com fonte sem serifa ao invés de teletype
+\urlstyle{sf}
+
+% Permite inserir comentários, muito bom durante a escrita do texto;
+% você também pode se interessar pela package pdfcomment.
+\RequirePackage[textsize=scriptsize,colorinlistoftodos,textwidth=2.5cm]{todonotes}
+\presetkeys{todonotes}{color=orange!40!white}{}
+
+% Comando para fazer notas com highlight no texto correspondente:
+% \hltodo[texto][opções]{comentário}
+\if@todonotes@disabled
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{#1}
+\else
+  \NewDocumentCommand{\hltodo}{O{} O{} +m}{
+    \ifstrempty{#1}{}{\texthl{#1}}%
+    \todo[#2]{#3}{}%
+  }
+\fi
+
+% Vamos reduzir o espaçamento entre linhas nas notas/comentários
+\xpatchcmd{\@todo}
+  {\renewcommand{\@todonotes@text}{#2}}
+  {\renewcommand{\@todonotes@text}{\begin{spacing}{0.5}#2\end{spacing}}}
+  {}
+  {}
+
+% Outras ferramentas que podem ser úteis durante a preparação do texto:
+
+% Faz LaTeX mostrar um traço ao lado de linhas "overfull".
+%\overfullrule=1mm
+
+% Faz LaTeX mostrar labels e referências bibliográficas:
+%\RequirePackage{showkeys}
+
+% Faz LaTeX mostrar linhas e traços indicando espaçamento, kerning etc.
+% Funciona apenas com lualatex.
+%\RequirePackage{lua-visual-debug}
+
+% Além disso, o programa checkcites, instalado juntamente com LaTeX,
+% indica problemas com citações bibliográficas.
+
+% Gantt charts; útil para fazer o cronograma para o exame de
+% qualificação, por exemplo.
+\RequirePackage{pgfgantt}
+
+% Estes parâmetros definem a aparência das gantt charts e variam
+% em função da fonte do documento.
+\ganttset{
+    vgrid,
+    x unit=1.7em,
+    y unit title=3ex,
+    y unit chart=4ex,
+    % O "strut" é necessário para alinhar o baseline dos nomes dos meses
+    title label font=\strut\footnotesize,
+    group label font=\footnotesize\bfseries,
+    bar label font=\footnotesize,
+    milestone label font=\footnotesize\itshape,
+    % "align=right" é necessário para \ganttalignnewline funcionar
+    group label node/.append style={align=right},
+    bar label node/.append style={align=right},
+    milestone label node/.append style={align=right},
+    group incomplete/.append style={fill=black!50},
+    bar/.append style={fill=black!25,draw=black},
+    bar incomplete/.append style={fill=white,draw=black},
+    % Não é preciso imprimir "0%"
+    progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
+    % Formato e tamanho dos elementos
+    title height=.9,
+    group top shift=.4,
+    group left shift=0,
+    group right shift=0,
+    group peaks tip position=0,
+    group peaks width=.2,
+    group peaks height=.3,
+    milestone height=.4,
+    milestone top shift=.4,
+    milestone left shift=.8,
+    milestone right shift=.2,
+}
+
+% Em inglês, tanto o nome completo quanto a abreviação do mês de maio
+% são "May"; por conta disso, na tradução em português LaTeX erra a
+% abreviação. Como talvez usemos o nome inteiro do mês em outro lugar,
+% ao invés de forçar a tradução para "Mai" globalmente, fazemos isso
+% apenas em ganttchart.
+\AtBeginEnvironment{ganttchart}{\deftranslation[to=Portuguese]{May}{Mai}}
+
+% Ilustrações, diagramas, gráficos etc. criados diretamente em LaTeX.
+% Também é útil se você quiser importar gráficos gerados com GnuPlot.
+\RequirePackage{tikz}
+
+% Gráficos gerados diretamente em LaTeX; é possível usar tikz para
+% isso também.
+\RequirePackage{pgfplots}
+% sobre níveis de compatibilidade do pgfplots, veja
+% https://tex.stackexchange.com/a/81912
+%\pgfplotsset{compat=1.14} % TeXLive 2016
+%\pgfplotsset{compat=1.15} % TeXLive 2017
+%\pgfplotsset{compat=1.16} % TeXLive 2019
+\pgfplotsset{compat=newest}
+
+% Importação direta de arquivos gerados por gnuplot com o
+% driver/terminal "lua tikz"; esta package não faz parte da
+% instalação padrão do LaTeX, mas sim do gnuplot.
+%\RequirePackage{gnuplot-lua-tikz}
+
+% Notas de rodapé "órfãs", ou seja, textos que aparecem junto
+% das notas de rodapé mas que não têm referência em nenhum lugar.
+% "0" desabilita o marcador porque não existe o 0-ésimo símbolo.
+\newcommand\detachedfootnote[1]{%
+    \bgroup
+    \renewcommand\thefootnote{\fnsymbol{footnote}}%
+    \renewcommand\thempfootnote{\fnsymbol{mpfootnote}}%
+    \footnotetext[0]{#1}%
+    \egroup
+}
+
+% Os comandos \TeX e \LaTeX são nativos do LaTeX; esta package acrescenta
+% comandos para vários outros logos da família TeX. Você provavelmente não
+% precisa desse recurso e, portanto, pode removê-la.
+\RequirePackage{hologo}
+\providecommand{\XeLaTeX}{\hologo{XeLaTeX}}

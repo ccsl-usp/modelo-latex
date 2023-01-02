@@ -2,6 +2,7 @@
 %%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO, CABEÇALHOS, SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\makeatletter
 % Formatação personalizada do sumário, lista de tabelas/figuras etc.
 %\usepackage{titletoc}
 
@@ -17,10 +18,167 @@
 %\usepackage{zref-lastpage,zref-user}
 
 % Permite definir cabeçalhos e rodapés
-%\usepackage{fancyhdr}
+\usepackage{fancyhdr}
 
-% Personalização de cabeçalhos e rodapés com o estilo deste modelo
-\usepackage{imeusp-headers} % carregado do diretório extras (veja basics.tex)
+% A formatação dos cabeçalhos/rodapés envolve duas coisas:
+%
+% 1. Definir qual texto deve ser impresso em cada página (nome
+%    do capítulo ou seção, nome do autor, número da página etc.)
+%
+% 2. Imprimir esse texto no lugar correto (esquerda, direita ou
+%    centro, cabeçalho ou rodapé)
+%
+% A definição do texto a imprimir é complexa, pois a preparação dos
+% cabeçalhos/rodapés acontece de maneira independente da construção do
+% restante da página. Textos fixos como, digamos, o nome do livro ou
+% do seu autor, não trazem dificuldades. Já textos variáveis, como o
+% nome do capítulo ou seção, o número da página etc. envolvem a
+% passagem de informações sobre a página atual para o mecanismo de
+% construção dos cabeçalhos.
+%
+% Isso é feito através de "variáveis" especiais chamadas "marks". O uso
+% mais comum das marks é armazenar o nome do capítulo e da seção atuais:
+% a cada novo capítulo ou seção, os comandos \chaptermark e \sectionmark
+% são executados (isso é automático, você não precisa fazer nada); esses
+% comandos definem uma "mark" com o nome do capítulo/seção a ser usado
+% nos cabeçalhos/rodapés. Assim, modificando a definição dos comandos
+% \chaptermark e \sectionmark, é possível modificar o texto a ser
+% incluído nos cabeçalhos/rodapés.
+%
+% Definido o conteúdo das marks, o lugar em que cada texto é impresso
+% é definido com os comandos \fancyhead e \fancyfoot. "RO" significa
+% "Right side of Odd pages"; "LE" significa "Left side of Even pages" etc.
+%
+% LaTeX por padrão tem duas "marks": "\leftmark" e "\rightmark". Elas
+% têm esses nomes porque originalmente eram usadas para armazenar o
+% conteúdo a ser impresso nas páginas pares e ímpares. Isso, no entanto,
+% não é obrigatório; a escolha desses nomes foi bastante infeliz. Para
+% definir o conteúdo dessas marks, usam-se os comandos \markboth{A}{B}
+% (define \leftmark como A e \rightmark como B) e \markright{C} (define
+% \rightmark como C). Não há o comando \markleft.
+%
+% O procedimento de definição dos cabeçalhos e rodapés, portanto, envolve:
+%
+% 1. Redefinir \chaptermark e \sectionmark (ambas recebem um parâmetro,
+%    que é o nome do capítulo/seção) para fazê-los executar \markboth e
+%    \markright, inserindo o conteúdo desejado nas marks;
+%
+% 2. Usar \fancyhead e \fancyfoot para definir os cabeçalhos e rodapés
+%    usando o conteúdo de \leftmark e \rightmark.
+%
+% Além das marks, é possível usar também as variáveis \thepage (número
+% da página), \thechapter (número do capítulo) e \thesection (número da
+% seção).
+%
+% Neste modelo, modificamos chaptermark e sectionmark para armazenar
+% o número e nome do capítulo em leftmark e o número e nome da seção
+% em rightmark. MAS imprimimos rightmark nas páginas pares (esquerda)
+% e leftmark nas páginas ímpares (direita)!
+
+
+%%%%%%%%%%
+
+% Sem linha separando o cabeçalho
+\renewcommand{\headrulewidth}{0pt}
+
+% Queremos colocar o número da página mais próximo da borda do papel (na
+% horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
+% margem direita -10mm" (o número vai ficar a 10mm da borda).
+%
+% Observe que a package geometry define \evensidemargin, mas seu valor não
+% necessariamente corresponde ao que queremos aqui (não sei bem como nem
+% por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+% manualmente.
+%
+% A distância entre a borda esquerda/interna do papel e o início do texto
+% é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+% é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+\dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
+\addtolength{\headwidth}{\othermargin}
+\addtolength{\headwidth}{-10mm}
+
+\newcommand{\formataNumPaginas}{
+  \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+  \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+}
+
+\newcommand{\formataCabecalhosDinamicos}{
+  \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+  \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
+}
+
+\fancypagestyle{mainmatter}{
+  % Número e nome do capítulo no cabeçalho das páginas pares
+  % (e nas ímpares quando não há seções)
+  \renewcommand{\chaptermark}[1]{
+    \markboth
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+  }
+
+  % Número e nome da seção no cabeçalho das páginas ímpares
+  \renewcommand{\sectionmark}[1]{
+    \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
+  }
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% Formato para capítulos não-numerados mas que devem
+% aparecer no sumário (tipicamente, a introdução):
+\fancypagestyle{onlynames}{
+  % Só o nome do capítulo/seção, sem numeração
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markright{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+\fancypagestyle{appendix}{
+  \renewcommand{\chaptermark}[1]{%
+    \markboth{%
+      % Páginas ímpares: "Apêndice/Anexo X"
+      \@chapapp\ \thechapter%
+    }{%
+      % Páginas pares: "X | nome do apêndice/anexo"
+      \thechapter\hskip 0.3em |\hskip 0.3em ##1%
+    }
+  }
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% Na frontmatter e backmatter, não há números de capítulos e (em geral)
+% não há subdivisões (capítulos/seções/subseções), apenas um nível.
+% O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
+% sem número) nas páginas pares ou ímpares.
+%
+% Normalmente, a bibliografia e o índice remissivo não definem os
+% cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
+% isso manualmente (em bibconfig.tex e index.tex).
+\fancypagestyle{backmatter}{
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% A página inicial de cada capítulo é automaticamente configurada para o estilo
+% "plain", então vamos definir esse estilo (colocando o número de página no
+% mesmo lugar das demais). As páginas iniciais também usam esse estilo.
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \formataNumPaginas{}
+}
+
 
 % biblatex pode ser configurado para inserir a bibliografia no sumário;
 % bibtex não oferece essa possibilidade. Com esta package, resolvemos
@@ -168,7 +326,7 @@
 % \footnotesep não é um espaço adicional, mas sim um strut que
 % existe no começo de cada nota. É por isso que o valor é "grande"
 % (\baselineskip) mas a separação de fato é pequena.
-\makeatletter
+
 \renewcommand\@makefntext[1]{%
     \setlength{\footnotesep}{1\baselineskip}%
     \@setpar{%
@@ -182,7 +340,6 @@
     \parskip .3\baselineskip
     \hbox to \z@{\hss\@makefnmark\,}#1%
 }
-\makeatother
 
 % \maketitle redefine as notas de rodapé (\thanks) para usar símbolos
 % ao invés de números, mas essa não é a única mudança. \maketitle
@@ -195,7 +352,7 @@
 % para que esse efeito aconteça apenas na lista de autores e não na
 % nota em si. Assim, como criamos um novo formato para as notas de
 % rodapé, precisamos mudar o formato em \maketitle também.
-\makeatletter
+
 \newcommand\@maketitlemakefntext[1]{%
     \setlength{\footnotesep}{1\baselineskip}%
     \@setpar{%
@@ -214,5 +371,222 @@
   {\long\def\@makefntext}
   {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
   {}{}
+
+% Algumas packages mais novas que tratam de fontes funcionam corretamente
+% tanto com fontspec (LuaLaTeX/XeLaTeX) quanto com NFSS (qualquer versão
+% de LaTeX, mas menos poderoso que fontspec). No entanto, muitas funcionam
+% apenas com NFSS. Nesse caso, em LuaLaTeX/XeLaTeX é melhor usar os
+% comandos de fontspec, como exemplificado mais abaixo.
+
+% É possível mudar apenas uma das fontes. Em particular, a fonte
+% teletype da família Computer Modern foi criada para simular
+% as impressoras dos anos 1970/1980. Sendo assim, ela é uma fonte (1)
+% com serifas e (2) de espaçamento fixo. Hoje em dia, é mais comum usar
+% fontes sem serifa para representar código-fonte. Além disso, ao imprimir,
+% é comum adotar fontes que não são de espaçamento fixo para fazer caber
+% mais caracteres em uma linha de texto. Algumas opções de fontes para
+% esse fim:
+%\usepackage{newtxtt} % Não funciona com fontspec (lualatex / xelatex)
+%\usepackage{DejaVuSansMono}
+% inconsolata é uma boa fonte, mas não tem variante itálico
+%\ifPDFTeX
+%  \usepackage[narrow]{inconsolata}
+%\else
+%  \setmonofont{inconsolatan}
+%\fi
+\usepackage[scale=.85]{sourcecodepro}
+
+% Ao invés da família Computer Modern, é possível usar outras como padrão.
+% Uma ótima opção é a libertine, similar (mas não igual) à Times mas com
+% suporte a Small Caps e outras qualidades. A fonte teletype da família
+% é serifada, então é melhor definir outra; a opção "mono=false" faz
+% o pacote não carregar sua própria fonte, mantendo a escolha anterior.
+% Versões mais novas de LaTeX oferecem um fork desta fonte, libertinus.
+% As packages libertine/libertinus funcionam corretamente com pdfLaTeX,
+% LuaLaTeX e XeLaTeX.
+% TODO: remover suporte a Libertine no final de 2022
+
+\IfFileExists{libertinus.sty}
+    {
+      \usepackage[mono=false]{libertinus}
+      % Com LuaLaTeX/XeLaTeX, Libertinus configura também
+      % a fonte matemática; aqui só precisamos corrigir \mathit
+      \ifLuaTeX
+        \setmathfontface\mathit{Libertinus Serif Italic}
+      \fi
+      \ifXeTeX
+        % O nome de arquivo da fonte mudou na versão 2019-04-04
+        \@ifpackagelater{libertinus-otf}{2019/04/03}
+            {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+            {\setmathfontface\mathit{libertinusserif-italic.otf}}
+      \fi
+    }
+    {
+      % Libertinus não está disponível; vamos usar libertine
+      \usepackage[mono=false]{libertine}
+
+      % Com Libertine, é preciso modificar também a fonte
+      % matemática, além de \mathit
+      \ifLuaTeX
+        \setmathfont{Libertinus Math}
+        \setmathfontface\mathit{Linux Libertine O Italic}
+      \fi
+
+      \ifXeTeX
+        \setmathfont{libertinusmath-regular.otf}
+        \setmathfontface\mathit{LinLibertine_RI.otf}
+      \fi
+    }
+
+\ifPDFTeX
+  % A família libertine por padrão não define uma fonte matemática
+  % específica para pdfLaTeX; uma opção que funciona bem com ela:
+  %\usepackage[libertine]{newtxmath}
+  % Outra, provavelmente melhor:
+  \usepackage{libertinust1math}
+\fi
+
+% Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
+%\IfFileExists{libertinus.sty}
+%  \usepackage[sans]{libertinus}
+%\else
+%  \usepackage{biolinum}
+%\fi
+
+% Também é possível usar a Times como padrão; nesse caso, a fonte
+% sem serifa usualmente é a Helvetica. Mas provavelmente libertine
+% é uma opção melhor.
+%\ifPDFTeX
+%  \usepackage[helvratio=0.95,largesc]{newtxtext}
+%  \usepackage{newtxtt} % Fonte teletype
+%  \usepackage{newtxmath}
+%\else
+%  % Clone da fonte Times como fonte principal
+%  \setmainfont{TeX Gyre Termes}
+%  \setmathfont[Scale=MatchLowercase]{TeX Gyre Termes Math}
+%  % TeX Gyre Termes Math tem um bug e não define o caracter
+%  % \setminus; Vamos contornar esse problema usando apenas
+%  % esse caracter da fonte STIX Two Math
+%  \setmathfont[range=\setminus]{STIX Two Math}
+%  % Clone da fonte Helvetica como fonte sem serifa
+%  \setsansfont{TeX Gyre Heros}
+%  % Clone da Courier como fonte teletype, mas provavelmente
+%  % é melhor utilizar sourcecodepro
+%  %\setmonofont{TeX Gyre Cursor}
+%\fi
+
+% Cochineal é outra opção de qualidade; ela define apenas a fonte
+% com serifa.
+%
+% Com NFSS (recomendado no caso de cochineal):
+%\usepackage{cochineal}
+%\usepackage[cochineal,vvarbb]{newtxmath}
+%\usepackage[cal=boondoxo]{mathalfa}
+%
+% Com fontspec (até a linha "setmathfontface..."):
+%
+%\setmainfont{Cochineal}[
+%  Extension=.otf,
+%  UprightFont=*-Roman,
+%  ItalicFont=*-Italic,
+%  BoldFont=*-Bold,
+%  BoldItalicFont=*-BoldItalic,
+%  %Numbers={Proportional,OldStyle},
+%]
+%
+%\DeclareRobustCommand{\lfstyle}{\addfontfeatures{Numbers=Lining}}
+%\DeclareTextFontCommand{\textlf}{\lfstyle}
+%\DeclareRobustCommand{\tlfstyle}{\addfontfeatures{Numbers={Tabular,Lining}}}
+%\DeclareTextFontCommand{\texttlf}{\tlfstyle}
+%
+%% Cochineal não tem uma fonte matemática; com fontspec, provavelmente
+%% o melhor a fazer é usar libertinus.
+%\setmathfont{Libertinus Math}
+%\setmathfontface\mathit{Cochineal-Italic.otf}
+
+% gentium inclui apenas uma fonte serifada, similar a Garamond, que busca
+% cobrir todos os caracteres unicode
+%\usepackage{gentium}
+
+% LaTeX normalmente funciona com fontes que foram adaptadas para ele, ou
+% seja, ele não usa as fontes padrão instaladas no sistema: para usar
+% uma fonte é preciso ativar o pacote correspondente, como visto acima.
+% É possível escapar dessa limitação e acessar as fontes padrão do sistema
+% com XeTeX ou LuaTeX. Com eles, além dos pacotes de fontes "tradicionais",
+% pode-se usar o pacote fontspec para usar fontes do sistema.
+%\usepackage{fontspec}
+%\setmainfont{DejaVu Serif}
+%\setmainfont{Charis SIL}
+%\setsansfont{DejaVu Sans}
+%\setsansfont{Libertinus Sans}[Scale=1.1]
+%\setmonofont{DejaVu Sans Mono}
+
+% fontspec oferece vários recursos interessantes para manipular fontes.
+% Por exemplo, Garamond é uma fonte clássica; a versão EBGaramond é muito
+% boa, mas não possui versões bold e bold-italic; aqui, usamos
+% CormorantGaramond ou Gentium para simular a versão bold.
+%\setmainfont{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+%
+%\newfontfamily\garamond{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+
+% Crimson tem Small Caps, mas o recurso é considerado "em construção".
+% Vamos utilizar Gentium para Small Caps
+%\setmainfont{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+%
+%\newfontfamily\crimson{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+
+% Com o pacote fontspec, também é possível usar o comando "\fontspec" para
+% selecionar uma fonte temporariamente, sem alterar as fontes-padrão do
+% documento.
+
+% Captions com fonte menor, indentação normal, corpo do texto
+% negrito e nome do caption itálico
+\usepackage[
+  font=small,
+  format=plain,
+  labelfont={bf,up},
+  textfont={normalfont,it}]{caption}
+
+% Em geral, a package caption é capaz de "adivinhar" se o caption
+% está acima ou abaixo da figura/tabela, mas isso não funciona
+% corretamente com longtable. Aqui, forçamos a package a considerar
+% que os captions ficam abaixo das tabelas.
+\captionsetup*[longtable]{position=bottom}
 
 \makeatother
