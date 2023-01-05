@@ -480,6 +480,32 @@
 % Remove ícones de navegação
 \beamertemplatenavigationsymbolsempty
 
+
+\RequirePackage[scale=.85]{sourcecodepro}
+
+\RequirePackage[mono=false]{libertinus}
+% Com LuaLaTeX/XeLaTeX, Libertinus configura também
+% a fonte matemática; aqui só precisamos corrigir \mathit
+\ifLuaTeX
+  \setmathfontface\mathit{Libertinus Serif Italic}
+\fi
+
+\ifXeTeX
+  % O nome de arquivo da fonte mudou na versão 2019-04-04
+  \@ifpackagelater{libertinus-otf}{2019/04/03}
+      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+      {\setmathfontface\mathit{libertinusserif-italic.otf}}
+\fi
+    
+\ifPDFTeX
+  % A família libertine por padrão não define uma fonte matemática
+  % específica para pdfLaTeX; uma opção que funciona bem com ela:
+  %\usepackage[libertine]{newtxmath}
+  % Outra, provavelmente melhor:
+  \usepackage{libertinust1math}
+\fi
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CORES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Generic colors

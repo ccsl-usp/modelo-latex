@@ -1,4 +1,293 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO, CABEÇALHOS, SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+
+% Permite saber o número total de páginas; útil para colocar no
+% rodapé algo como "página 3 de 10" com "\thepage\ de \zpageref{LastPage}"
+%\usepackage{zref-lastpage,zref-user}
+
+% Permite definir cabeçalhos e rodapés
+\usepackage{fancyhdr}
+
+% A formatação dos cabeçalhos/rodapés envolve duas coisas:
+%
+% 1. Definir qual texto deve ser impresso em cada página (nome
+%    do capítulo ou seção, nome do autor, número da página etc.)
+%
+% 2. Imprimir esse texto no lugar correto (esquerda, direita ou
+%    centro, cabeçalho ou rodapé)
+%
+% A definição do texto a imprimir é complexa, pois a preparação dos
+% cabeçalhos/rodapés acontece de maneira independente da construção do
+% restante da página. Textos fixos como, digamos, o nome do livro ou
+% do seu autor, não trazem dificuldades. Já textos variáveis, como o
+% nome do capítulo ou seção, o número da página etc. envolvem a
+% passagem de informações sobre a página atual para o mecanismo de
+% construção dos cabeçalhos.
+%
+% Isso é feito através de "variáveis" especiais chamadas "marks". O uso
+% mais comum das marks é armazenar o nome do capítulo e da seção atuais:
+% a cada novo capítulo ou seção, os comandos \chaptermark e \sectionmark
+% são executados (isso é automático, você não precisa fazer nada); esses
+% comandos definem uma "mark" com o nome do capítulo/seção a ser usado
+% nos cabeçalhos/rodapés. Assim, modificando a definição dos comandos
+% \chaptermark e \sectionmark, é possível modificar o texto a ser
+% incluído nos cabeçalhos/rodapés.
+%
+% Definido o conteúdo das marks, o lugar em que cada texto é impresso
+% é definido com os comandos \fancyhead e \fancyfoot. "RO" significa
+% "Right side of Odd pages"; "LE" significa "Left side of Even pages" etc.
+%
+% LaTeX por padrão tem duas "marks": "\leftmark" e "\rightmark". Elas
+% têm esses nomes porque originalmente eram usadas para armazenar o
+% conteúdo a ser impresso nas páginas pares e ímpares. Isso, no entanto,
+% não é obrigatório; a escolha desses nomes foi bastante infeliz. Para
+% definir o conteúdo dessas marks, usam-se os comandos \markboth{A}{B}
+% (define \leftmark como A e \rightmark como B) e \markright{C} (define
+% \rightmark como C). Não há o comando \markleft.
+%
+% O procedimento de definição dos cabeçalhos e rodapés, portanto, envolve:
+%
+% 1. Redefinir \chaptermark e \sectionmark (ambas recebem um parâmetro,
+%    que é o nome do capítulo/seção) para fazê-los executar \markboth e
+%    \markright, inserindo o conteúdo desejado nas marks;
+%
+% 2. Usar \fancyhead e \fancyfoot para definir os cabeçalhos e rodapés
+%    usando o conteúdo de \leftmark e \rightmark.
+%
+% Além das marks, é possível usar também as variáveis \thepage (número
+% da página), \thechapter (número do capítulo) e \thesection (número da
+% seção).
+%
+% Neste modelo, modificamos chaptermark e sectionmark para armazenar
+% o número e nome do capítulo em leftmark e o número e nome da seção
+% em rightmark. MAS imprimimos rightmark nas páginas pares (esquerda)
+% e leftmark nas páginas ímpares (direita)!
+
+
+%%%%%%%%%%
+
+% Sem linha separando o cabeçalho
+\renewcommand{\headrulewidth}{0pt}
+
+% Queremos colocar o número da página mais próximo da borda do papel (na
+% horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
+% margem direita -10mm" (o número vai ficar a 10mm da borda).
+%
+% Observe que a package geometry define \evensidemargin, mas seu valor não
+% necessariamente corresponde ao que queremos aqui (não sei bem como nem
+% por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+% manualmente.
+%
+% A distância entre a borda esquerda/interna do papel e o início do texto
+% é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+% é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+\dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
+\addtolength{\headwidth}{\othermargin}
+\addtolength{\headwidth}{-10mm}
+
+\newcommand{\formataNumPaginas}{
+  \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+  \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+}
+
+\newcommand{\formataCabecalhosDinamicos}{
+  \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+  \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
+}
+
+\fancypagestyle{mainmatter}{
+  % Número e nome do capítulo no cabeçalho das páginas pares
+  % (e nas ímpares quando não há seções)
+  \renewcommand{\chaptermark}[1]{
+    \markboth
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+      {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+  }
+
+  % Número e nome da seção no cabeçalho das páginas ímpares
+  \renewcommand{\sectionmark}[1]{
+    \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
+  }
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% Formato para capítulos não-numerados mas que devem
+% aparecer no sumário (tipicamente, a introdução):
+\fancypagestyle{onlynames}{
+  % Só o nome do capítulo/seção, sem numeração
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markright{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+\fancypagestyle{appendix}{
+  \renewcommand{\chaptermark}[1]{%
+    \markboth{%
+      % Páginas ímpares: "Apêndice/Anexo X"
+      \@chapapp\ \thechapter%
+    }{%
+      % Páginas pares: "X | nome do apêndice/anexo"
+      \thechapter\hskip 0.3em |\hskip 0.3em ##1%
+    }
+  }
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% Na frontmatter e backmatter, não há números de capítulos e (em geral)
+% não há subdivisões (capítulos/seções/subseções), apenas um nível.
+% O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
+% sem número) nas páginas pares ou ímpares.
+%
+% Normalmente, a bibliografia e o índice remissivo não definem os
+% cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
+% isso manualmente (em bibconfig.tex e index.tex).
+\fancypagestyle{backmatter}{
+  \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+  \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
+
+  \fancyhf{}
+  \formataNumPaginas{}
+  \formataCabecalhosDinamicos{}
+}
+
+% A página inicial de cada capítulo é automaticamente configurada para o estilo
+% "plain", então vamos definir esse estilo (colocando o número de página no
+% mesmo lugar das demais). As páginas iniciais também usam esse estilo.
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \formataNumPaginas{}
+}
+
+
+% biblatex pode ser configurado para inserir a bibliografia no sumário;
+% bibtex não oferece essa possibilidade. Com esta package, resolvemos
+% esse problema.
+\usepackage[nottoc,notlot,notlof]{tocbibind}
+
+% Só olha até o nível 2 (subseções) para gerar o sumário e os
+% cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
+% no sumário nem nos cabeçalhos.
+\setcounter{tocdepth}{2}
+
+% Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
+% sub-subseções (como 2.3.1.1). Veja que isso afeta referências
+% cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
+% numerada, a referência vai apontar para a seção um nível acima.
+\setcounter{secnumdepth}{2}
+
+% Normalmente, o capítulo de introdução não deve ser numerado, mas
+% deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
+% para isso, então criamos aqui os comandos \unnumberedchapter,
+% \unnumberedsection e \unnumberedsubsection.
+\newcommand{\unnumberedchapter}[2][]{
+  \ifblank{#1}
+    {
+      \chapter*{#2}
+      \phantomsection
+      \addcontentsline{toc}{chapter}{#2}
+      \chaptermark{#2}
+    }
+    {
+      \chapter*{#2}
+      \phantomsection
+      \addcontentsline{toc}{chapter}{#1}
+      \chaptermark{#1}
+    }
+}
+
+\newcommand{\unnumberedsection}[2][]{
+  \ifblank{#1}
+    {
+      \section*{#2}
+      \phantomsection
+      \addcontentsline{toc}{section}{#2}
+      \sectionmark{#2}
+    }
+    {
+      \section*{#2}
+      \phantomsection
+      \addcontentsline{toc}{section}{#1}
+      \sectionmark{#1}
+    }
+}
+
+\newcommand{\unnumberedsubsection}[2][]{
+  \ifblank{#1}
+    {
+      \subsection*{#2}
+      \phantomsection
+      \addcontentsline{toc}{subsection}{#2}
+    }
+    {
+      \subsection*{#2}
+      \phantomsection
+      \addcontentsline{toc}{subsection}{#1}
+    }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% EPÍGRAFE E NOTAS DE RODAPÉ %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O formato padrão do pacote epigraph é bem feinho...
+% Outra opção para epígrafes é o pacote quotchap
+\usepackage{epigraph}
+
+\setlength\epigraphwidth{.85\textwidth}
+
+% Sem linha entre o texto e o autor
+\setlength{\epigraphrule}{0pt}
+
+% Ambiente auxiliar para colocar margem à direita da epígrafe
+% (como sempre, o modo mais simples de mudar as margens de um
+% pagrágrafo é fazer de conta que é uma lista)
+\newenvironment{epShiftLeft}
+  {
+    \par\begin{list}{}
+      {
+        \leftmargin 0pt
+        \labelwidth 0pt
+        \labelsep 0pt
+        \itemsep 0pt
+        \topsep 0pt
+        \partopsep 0pt
+        \rightmargin 2em
+      }
+    \item\FlushRight
+  }
+  {
+    \end{list}
+    % O espaço padrão que epigraph coloca entre a citação
+    % e o autor é muito pequeno; vamos aumentar um pouco
+    \vspace*{.3\baselineskip}
+  }
+
+\renewcommand\textflush{epShiftLeft}
+\renewcommand\sourceflush{epShiftLeft}
+
+\newcommand{\epigrafe}[2] {%
+  \ifstrempty{#2}{
+    \epigraph{\itshape #1}{}
+  }{
+    \epigraph{\itshape #1}{--- #2}
+  }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%% CAPA E PÁGINAS PRELIMINARES (TESE/DISSERTAÇÃO)  %%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -9,8 +298,6 @@
   \renewcommand*{\DTMdisplaydate}[4]{##2,\space##1}%
   \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
 }
-
-\makeatletter
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1227,8 +1514,6 @@
     \@IMEorigAppendix
 }
 
-\makeatother
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ÍNDICE REMISSIVO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1292,3 +1577,5 @@ heading_suffix "}\\nopagebreak\n"
   % Com makeindex (o default), quem precisa criar os hyperlinks é hyperref.
   %hyperindex=false,
 }{hyperref}
+
+\makeatother

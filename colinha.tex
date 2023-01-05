@@ -48,10 +48,56 @@
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique estes arquivos.
 \usepackage{imegoodies}
-\input{extras/imeusp-formatting}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% ESPAÇAMENTO E ALINHAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% LaTeX por default segue o estilo americano e não faz a indentação da
+% primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
+% indentação, como é o estilo brasileiro
+\usepackage{indentfirst}
+
+% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
+% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
+% possível colocar um espaço em branco entre um parágrafo e outro. Esta
+% package coloca o espaço em branco e desabilita o recuo; como queremos
+% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
+% redefini-lo depois de carregar a package.
+% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
+%       as linhas "oldparindent" e carregar a package com a opção "indent".
+\newlength\oldparindent
+\setlength\oldparindent\parindent
+\usepackage[parfill]{parskip}
+\setlength\parindent\oldparindent
+
+\usepackage[scale=.85]{sourcecodepro}
+
+\usepackage[mono=false]{libertinus}
+% Com LuaLaTeX/XeLaTeX, Libertinus configura também
+% a fonte matemática; aqui só precisamos corrigir \mathit
+\ifLuaTeX
+  \setmathfontface\mathit{Libertinus Serif Italic}
+\fi
+\makeatletter
+\ifXeTeX
+  % O nome de arquivo da fonte mudou na versão 2019-04-04
+  \@ifpackagelater{libertinus-otf}{2019/04/03}
+      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+      {\setmathfontface\mathit{libertinusserif-italic.otf}}
+\fi
+\makeatother
+
+\ifPDFTeX
+  % A família libertine por padrão não define uma fonte matemática
+  % específica para pdfLaTeX; uma opção que funciona bem com ela:
+  %\usepackage[libertine]{newtxmath}
+  % Outra, provavelmente melhor:
+  \usepackage{libertinust1math}
+\fi
+
 %\nocolorlinks % para impressão em P&B
 \input{extras/source-code}
-
 
 % Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
 % completo em \includegraphics (e nem a extensão).
