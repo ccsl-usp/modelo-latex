@@ -1,4 +1,13 @@
-\NeedsTeXFormat{LaTeX2e}[2015/01/01]
+% 2017/01/01 -> fontenc TU and mandatory e-TeX support
+%
+% TODO: After ubuntu 18.04 EOL (April/2023), we should switch to
+%       2018/12/01 (kernel uses utf8 by default) and remove inputenc
+%       and the "@combinedblfloats" bugfix below. After ubuntu 20.04
+%       EOL (April/2025), check whether arxiv uses at least version
+%       2021 of TeXLive; if so, change this to version 2020/10/01,
+%       which includes file hooks, and make the corresponding
+%       adjustments (in particular, the AtEndDvi fix further below).
+\NeedsTeXFormat{LaTeX2e}[2017/01/01]
 \ProvidesPackage{imegoodies}[2022/11/13 1.0 Load several common
                                             and useful packages]
 
@@ -71,8 +80,8 @@
 % TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
 \patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{}
 
-% Arithmetic expressions in \set{length,counter} & \addto{length,counter};
-% commands \widthof, \heightof, \depthof, \totalheightof, \settototalheight
+% Expressões aritméticas em \set{length,counter} & \addto{length,counter};
+% comandos \widthof, \heightof, \depthof, \totalheightof, \settototalheight
 \RequirePackage{calc}
 
 % Algumas packages "padrão" da AMS, que são praticamente obrigatórias.
@@ -82,271 +91,6 @@
 \RequirePackage{amssymb}
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
-
-% "fontenc" é um parâmetro do NFSS (sistema de gestão de fontes do
-% LaTeX; consulte "texdoc fntguide" e "texdoc fontenc"). O default
-% é OT1, mas ele tem algumas limitações; a mais importante é que,
-% com ele, palavras acentuadas não podem ser hifenizadas. Por
-% conta disso, quase todos os documentos LaTeX utilizam o fontenc
-% T1. A escolha do fontenc tem consequências para as fontes que
-% podem ser usadas com NFSS; hoje em dia T1 tem mais opções de
-% qualidade, então não se perde nada em usá-lo. A package fontspec
-% (para gestão de fontes usando outro mecanismo, compatível apenas
-% com lualatex e xelatex) carrega fontenc automaticamente, mas
-% usando outra codificação ("TU" e não "T1"). Ainda assim, é útil
-% carregar o fontenc T1 (antes de carregar fontspec!) para o caso
-% de alguma fonte "antiga" ser utilizada no documento (embora isso
-% não seja recomendado: lualatex e xelatex só são capazes de
-% hifenizar palavras acentuadas com o fontenc TU).
-\RequirePackage[T1]{fontenc}
-
-\ifPDFTeX
-  % O texto está escrito em utf8.
-  \RequirePackage[utf8]{inputenc}
-
-  % Várias packages que definem as fontes do documento carregam fontaxes,
-  % mas carregamos aqui porque, com qualquer fonte, ela permite utilizar
-  % small caps + itálico. Algumas raras packages de fontes podem causar
-  % conflitos com fontaxes, em geral por utilizarem a package "concorrente"
-  % nfssext-cfr.
-  %
-  % TODO A funcionalidade pela qual faz sentido carregar fontaxes aqui
-  %      (small caps + itálico) foi incorporada ao kernel do LaTeX na
-  %      versão 2020-02-02, então está em TeXLive 2021. Remover isto
-  %      quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
-  %      descontinuada (abril de 2025). As packages que precisam de
-  %      fontaxes podem continuar a carregá-la sem problemas.
-  \RequirePackage{fontaxes}
-
-  % LaTeX substitui algumas sequências de caracteres, como
-  % "fi", "fl" e outras, por caracteres especiais ("ligaduras").
-  % Para que seja possível fazer copiar/colar ou buscas por
-  % textos contendo essas ligaduras, o arquivo PDF precisa
-  % conter uma tabela indicando quais são elas. Com fontes
-  % OTF (LuaLaTeX ou XeLaTeX) isso não costuma ser um problema,
-  % mas com pdfLaTeX pode ser. Estes dois comandos (que só
-  % existem no pdfLaTeX) incluem uma tabela genérica que
-  % funciona para a maioria das fontes. Veja a seção 5 de
-  % http://www.tug.org/TUGboat/Articles/tb29-1/tb91thanh-fonts.pdf
-  % Note que alguns visualizadores de PDF tentam "adivinhar"
-  % o conteúdo da tabela quando ela está incompleta ou não
-  % existe, então copiar/colar e buscas podem funcionar em
-  % alguns visualizadores e em outros não.
-  %
-  % TODO Isto foi incluído no kernel do LaTeX versão 2021-06-01,
-  %      então está em TeXLive 2022. Remover isto quando arxiv
-  %      usar TeXLive >= 2022 e ubuntu 22.04 (jammy) for
-  %      descontinuada (abril de 2027).
-  \input glyphtounicode.tex
-  \pdfgentounicode=1
-\else
-  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
-  % com eles utf8 é obrigatório.
-  \RequirePackage{fontspec}
-
-  % Ao invés de usar o sistema tradicional de LaTeX para gerir
-  % as fontes matemáticas, utiliza as extensões matemáticas do
-  % formato otf definidas pela microsoft. Ao ativar esta package
-  % o mecanismo tradicional não funciona mais! Há poucas fontes
-  % com suporte a unicode-math.
-  \RequirePackage{unicode-math}
-\fi
-
-% A maioria das packages que tratam de fontes funcionam corretamente
-% tanto com fontspec (LuaLaTeX/XeLaTeX) quanto com NFSS (qualquer versão
-% de LaTeX, mas menos poderoso que fontspec). No entanto, algumas funcionam
-% apenas com NFSS. Nesse caso, em LuaLaTeX/XeLaTeX é melhor usar os
-% comandos de fontspec, como exemplificado mais abaixo.
-
-% É possível mudar apenas uma das fontes. Em particular, a fonte
-% teletype da família Computer Modern foi criada para simular
-% as impressoras dos anos 1970/1980. Sendo assim, ela é uma fonte (1)
-% com serifas e (2) de espaçamento fixo. Hoje em dia, é mais comum usar
-% fontes sem serifa para representar código-fonte. Além disso, ao imprimir,
-% é comum adotar fontes que não são de espaçamento fixo para fazer caber
-% mais caracteres em uma linha de texto. Algumas opções de fontes para
-% esse fim:
-%\usepackage{newtxtt} % Não funciona com fontspec (lualatex / xelatex)
-%\usepackage{DejaVuSansMono}
-% inconsolata é uma boa fonte, mas não tem variante itálico
-%\ifPDFTeX
-%  \usepackage[narrow]{inconsolata}
-%\else
-%  \setmonofont{inconsolatan}
-%\fi
-%\usepackage[scale=.85]{sourcecodepro}
-
-% Ao invés da família Computer Modern, é possível usar outras como padrão.
-% Uma ótima opção é a libertinus, similar (mas não igual) à Times mas com
-% suporte a Small Caps e outras qualidades. A fonte teletype da família
-% é serifada, então é melhor definir outra; a opção "mono=false" faz
-% o pacote não carregar sua própria fonte, mantendo a escolha anterior.
-
-%\usepackage[mono=false]{libertinus}
-%% Com LuaLaTeX/XeLaTeX, Libertinus configura também
-%% a fonte matemática; aqui só precisamos corrigir \mathit
-%\ifLuaTeX
-%  \setmathfontface\mathit{Libertinus Serif Italic}
-%\fi
-%\ifXeTeX
-%  % O nome de arquivo da fonte mudou na versão 2019-04-04
-%  \@ifpackagelater{libertinus-otf}{2019/04/03}
-%      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
-%      {\setmathfontface\mathit{libertinusserif-italic.otf}}
-%\fi
-%
-%\ifPDFTeX
-%  % A família libertine por padrão não define uma fonte matemática
-%  % específica para pdfLaTeX; uma opção que funciona bem com ela:
-%  %\usepackage[libertine]{newtxmath}
-%  % Outra, provavelmente melhor:
-%  \usepackage{libertinust1math}
-%\fi
-
-% Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
-%\IfFileExists{libertinus.sty}
-%  \usepackage[sans]{libertinus}
-%\else
-%  \usepackage{biolinum}
-%\fi
-
-% Também é possível usar a Times como padrão; nesse caso, a fonte
-% sem serifa usualmente é a Helvetica. Mas provavelmente libertine
-% é uma opção melhor.
-%\ifPDFTeX
-%  \usepackage[helvratio=0.95,largesc]{newtxtext}
-%  \usepackage{newtxtt} % Fonte teletype
-%  \usepackage{newtxmath}
-%\else
-%  % Clone da fonte Times como fonte principal
-%  \setmainfont{TeX Gyre Termes}
-%  \setmathfont[Scale=MatchLowercase]{TeX Gyre Termes Math}
-%  % TeX Gyre Termes Math tem um bug e não define o caracter
-%  % \setminus; Vamos contornar esse problema usando apenas
-%  % esse caracter da fonte STIX Two Math
-%  \setmathfont[range=\setminus]{STIX Two Math}
-%  % Clone da fonte Helvetica como fonte sem serifa
-%  \setsansfont{TeX Gyre Heros}
-%  % Clone da Courier como fonte teletype, mas provavelmente
-%  % é melhor utilizar sourcecodepro
-%  %\setmonofont{TeX Gyre Cursor}
-%\fi
-
-% Cochineal é outra opção de qualidade; ela define apenas a fonte
-% com serifa.
-%
-% Com NFSS (recomendado no caso de cochineal):
-%\usepackage{cochineal}
-%\usepackage[cochineal,vvarbb]{newtxmath}
-%\usepackage[cal=boondoxo]{mathalfa}
-%
-% Com fontspec (até a linha "setmathfontface..."):
-%
-%\setmainfont{Cochineal}[
-%  Extension=.otf,
-%  UprightFont=*-Roman,
-%  ItalicFont=*-Italic,
-%  BoldFont=*-Bold,
-%  BoldItalicFont=*-BoldItalic,
-%  %Numbers={Proportional,OldStyle},
-%]
-%
-%\DeclareRobustCommand{\lfstyle}{\addfontfeatures{Numbers=Lining}}
-%\DeclareTextFontCommand{\textlf}{\lfstyle}
-%\DeclareRobustCommand{\tlfstyle}{\addfontfeatures{Numbers={Tabular,Lining}}}
-%\DeclareTextFontCommand{\texttlf}{\tlfstyle}
-%
-%% Cochineal não tem uma fonte matemática; com fontspec, provavelmente
-%% o melhor a fazer é usar libertinus.
-%\setmathfont{Libertinus Math}
-%\setmathfontface\mathit{Cochineal-Italic.otf}
-
-% gentium inclui apenas uma fonte serifada, similar a Garamond, que busca
-% cobrir todos os caracteres unicode
-%\usepackage{gentium}
-
-% LaTeX normalmente funciona com fontes que foram adaptadas para ele, ou
-% seja, ele não usa as fontes padrão instaladas no sistema: para usar
-% uma fonte é preciso ativar o pacote correspondente, como visto acima.
-% É possível escapar dessa limitação e acessar as fontes padrão do sistema
-% com XeTeX ou LuaTeX. Com eles, além dos pacotes de fontes "tradicionais",
-% pode-se usar o pacote fontspec para usar fontes do sistema.
-%\usepackage{fontspec}
-%\setmainfont{DejaVu Serif}
-%\setmainfont{Charis SIL}
-%\setsansfont{DejaVu Sans}
-%\setsansfont{Libertinus Sans}[Scale=1.1]
-%\setmonofont{DejaVu Sans Mono}
-
-% fontspec oferece vários recursos interessantes para manipular fontes.
-% Por exemplo, Garamond é uma fonte clássica; a versão EBGaramond é muito
-% boa, mas não possui versões bold e bold-italic; aqui, usamos
-% CormorantGaramond ou Gentium para simular a versão bold.
-%\setmainfont{EBGaramond12}[
-%  Numbers        = {Lining,} ,
-%  Scale          = MatchLowercase ,
-%  UprightFont    = *-Regular ,
-%  ItalicFont     = *-Italic ,
-%  BoldFont       = gentiumbasic-bold ,
-%  BoldItalicFont = gentiumbasic-bolditalic ,
-%%  BoldFont       = CormorantGaramond Bold ,
-%%  BoldItalicFont = CormorantGaramond Bold Italic ,
-%]
-%
-%\newfontfamily\garamond{EBGaramond12}[
-%  Numbers        = {Lining,} ,
-%  Scale          = MatchLowercase ,
-%  UprightFont    = *-Regular ,
-%  ItalicFont     = *-Italic ,
-%  BoldFont       = gentiumbasic-bold ,
-%  BoldItalicFont = gentiumbasic-bolditalic ,
-%%  BoldFont       = CormorantGaramond Bold ,
-%%  BoldItalicFont = CormorantGaramond Bold Italic ,
-%]
-
-% Crimson tem Small Caps, mas o recurso é considerado "em construção".
-% Vamos utilizar Gentium para Small Caps
-%\setmainfont{Crimson}[
-%  Numbers           = {Lining,} ,
-%  Scale             = MatchLowercase ,
-%  UprightFont       = *-Roman ,
-%  ItalicFont        = *-Italic ,
-%  BoldFont          = *-Bold ,
-%  BoldItalicFont    = *-Bold Italic ,
-%  SmallCapsFont     = Gentium Plus ,
-%  SmallCapsFeatures = {Letters=SmallCaps} ,
-%]
-%
-%\newfontfamily\crimson{Crimson}[
-%  Numbers           = {Lining,} ,
-%  Scale             = MatchLowercase ,
-%  UprightFont       = *-Roman ,
-%  ItalicFont        = *-Italic ,
-%  BoldFont          = *-Bold ,
-%  BoldItalicFont    = *-Bold Italic ,
-%  SmallCapsFont     = Gentium Plus ,
-%  SmallCapsFeatures = {Letters=SmallCaps} ,
-%]
-
-% Com o pacote fontspec, também é possível usar o comando "\fontspec" para
-% selecionar uma fonte temporariamente, sem alterar as fontes-padrão do
-% documento.
-
-
-% Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
-% disponíveis na maioria das fontes através do fontenc TS1 ou mudando
-% momentaneamente para computer modern/latin modern. Raramente útil
-% com lualatex/xelatex, mas não causa problemas. Várias packages de
-% fontes carregam textcomp, às vezes com opções específicas; assim,
-% para evitar problemas, vamos carregá-la no final do preâmbulo para
-% o caso de ela não ter sido carregada antes.
-%
-% TODO A funcionalidade oferecida por textcomp foi incorporada ao kernel
-%      do LaTeX na versão 2020-02-02, então está em TeXLive 2021. Remover
-%      isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
-%      descontinuada (abril de 2025). As packages que precisam de textcomp
-%      podem continuar a carregá-la sem problemas.
-\AtBeginDocument{\usepackage{textcomp}}
 
 % TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
 % 1.07 de luatex. Essa combinação faz aparecer um bug:
@@ -500,6 +244,9 @@
 \gappto{\FlushRight}{\hbadness=\@M}
 \gappto{\Center}{\hbadness=\@M} % not \center
 
+% Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
+\RequirePackage{setspace}
+
 % LaTeX às vezes coloca notas de rodapé logo após o final do texto da
 % página ao invés de no final da página; este pacote evita isso e faz
 % notas de rodapé funcionarem corretamente em títulos de seções.
@@ -521,7 +268,7 @@
   bookmarksopen=true,
   breaklinks=true,
   %hyperfootnotes=false, % polui desnecessariamente com bordercolor
-  hyperindex=false, % Vamos cuidar disso "manualmente"
+  hyperindex=false, % Vamos cuidar disso "manualmente" TODO: ou voltar atrás
 }{hyperref}
 
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
@@ -707,10 +454,12 @@
 
 \ExplSyntaxOff
 
+
 % Babel permite definir a língua ou línguas usadas no documento e deve
 % ser um dos primeiros pacotes a serem carregados. É possível definir
-% as línguas como parâmetro aqui, mas já fizemos isso ao carregar a
-% classe, no início do documento.
+% as línguas como parâmetro aqui ou ao carregar a classe, no início do
+% documento. A definição ao carregar a classe é uma opção melhor, pois
+% algumas outras packages além de babel também utilizam essa informação.
 %
 % A escolha da língua afeta quatro coisas:
 %
@@ -760,9 +509,8 @@
 %      (este é o mais comum)
 %
 % Esses métodos valem também para a bibliografia, mas apenas se você
-% estiver usando bibtex; com biblatex, que é o padrão neste modelo, é
-% melhor usar o comando "\DefineBibliographyStrings" (veja a documentação
-% de biblatex).
+% estiver usando bibtex; com biblatex, é melhor usar o comando
+% "\DefineBibliographyStrings" (veja a documentação de biblatex).
 %
 % Quando babel faz uma troca de língua, ele executa \extraslíngua e, se for
 % necessário trocar os "captions", \captionslíngua (ou seja, os comandos
@@ -789,37 +537,228 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FONTE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% LaTeX normalmente usa quatro tipos de fonte:
+% É possível usar várias famílias tipográficas diferentes em um único
+% documento LaTeX, mas isso não é trivial. Algumas (poucas) packages
+% fornecem comandos prontos para ativar uma família tipográfica a partir
+% de seu nome, como "\carlito", mas esse tipo de recurso raramente é
+% utilizado. Ao invés disso, LaTeX considera que, em geral, um documento
+% precisa de apenas três estilos de letras genéricos, acionados pelos
+% comandos abaixo:
 %
-% * uma fonte serifada, para o corpo do texto;
-% * uma fonte com design similar à anterior, para modo matemático;
-% * uma fonte sem serifa, para títulos ou "entidades". Por exemplo, "a classe
-%   \textsf{TimeManager} é responsável..." ou "chamamos \textsf{primos} os
-%   números que...". Observe que em quase todos os casos desse tipo é mais
-%   adequado usar negrito ou itálico;
-% * uma fonte "teletype", para trechos de programas.
+% * \rmfamily e \textrm -> letras serifadas, para o corpo do texto. É o
+%   padrão inicial do documento;
 %
-% A escolha de uma família de fontes para o documento normalmente é feita
-% carregando uma package específica que, em geral, seleciona as quatro fontes
-% de uma vez.
+% * \sffamily e \textsf -> letras sem serifa, para títulos ou "entidades".
+%   Por exemplo, "a classe \textsf{TimeManager} é responsável..." ou
+%   "chamamos \textsf{primos} os números que...". Observe que em quase
+%   todos os casos desse tipo é mais adequado usar negrito ou itálico;
 %
+% * \ttfamily e \texttt -> letras "teletype", para trechos de programas.
+%
+% LaTeX também carrega uma fonte específica, visualmente similar à fonte
+% serifada, ao ativar o modo matemático.
+%
+% Por padrão, esses comandos selecionam fontes da família "Computer Modern"
+% (veja abaixo), mas diversas packages os redefinem para carregar outras.
+% Algumas dessas packages alteram apenas uma das quatro fontes, mas a
+% maioria altera todas de uma vez, de maneira que o conjunto seja coerente.
+% Então, se você quer simplesmente experimentar alguns tipos diferentes
+% de letra para seu documento, consulte https://tug.org/FontCatalogue/ e
+% utilize as packages correspondentes a cada uma. Se o sítio informa que
+% a fonte está disponível *apenas* em formato OTF, use lualatex; se *não*
+% está disponível em formato OTF, use pdflatex. Se está disponível em
+% formato OTF e algum outro, você pode usar qualquer um dos dois. Para
+% usar alguma outra fonte instalada em seu computador, use lualatex e
+% leia a documentação da package fontspec.
+%
+% Você normalmente não precisa lidar com isso, mas pode ser útil saber:
+% O mecanismo usado por LaTeX para gerir fontes é o NFSS (veja "texdoc
+% fntguide"). NFSS funciona com todas as versões de LaTeX, mas só com fontes
+% que foram adaptadas para funcionar com ele. LuaLaTeX e XeLaTeX estendem o
+% NFSS: através da package fontspec, eles podem utilizar quaisquer fontes
+% instaladas no computador e acessar diversos recursos tipográficos com mais
+% facilidade. De maneira geral, se quiser fazer algo especial com as fontes
+% do seu documento, atualmente não é mais necessário entender o NFSS; basta
+% usar lualatex e seguir a documentação da package fontspec.
+
+
+%%%%%%%%%% TUDO QUE VOCÊ NÃO QUERIA SABER SOBRE FONTENC %%%%%%%%%%
+%
+% Você só precisa ler este trecho se estiver curioso sobre isto :)
+%
+% Primeiro, terminologia: os diferentes tipos de letras (como Times, Arial,
+% Comic Sans etc.) são chamados famílias tipográficas. Os arquivos que contêm
+% as informações necessárias para o computador manipular os caracteres de
+% uma família são chamados de fontes. É comum usar "fonte" para se referir
+% à família tipográfica, mas aqui esta distinção é importante, como veremos
+% a seguir.
+%
+% Fontes "tradicionais" (tanto as fontes originais de TeX quanto fontes
+% PostScript Type 1 ou TrueType) são capazes de armazenar no máximo 256
+% caracteres diferentes. Isso é um problema por duas razões:
+%
+%  1. Uma família tipográfica completa deve incluir, além dos caracteres em
+%     sua forma "normal", versões em itálico, negrito, negrito + itálico,
+%     versalete, versalete + itálico, versalete + negrito etc.
+%
+%  2. Existem muito mais de 256 caracteres: além dos números, letras latinas
+%     maiúsculas e minúsculas, há caracteres gregos, cirílicos, árabes etc.
+%
+% Os dois problemas são resolvidos da mesma forma: usamos vários arquivos
+% (fontes) para uma mesma família tipográfica. Para o primeiro problema,
+% criamos uma fonte separada para cada variação no formato dos caracteres;
+% Para o segundo problema, criamos uma fonte separada para cada subconjunto
+% de caracteres que atendem um determinado sistema de escrita (por exemplo,
+% o alfabeto latino). Note que isso significa que alguns caracteres, como
+% os números arábicos, são repetidos em algumas fontes por serem usados em
+% mais de um sistema de escrita. Note também que uma dada família pode
+% não incluir caracteres em negrito e, portanto, não incluir a fonte
+% correspondente. Da mesma forma, uma família pode não incluir caracteres
+% cirílicos e, portanto, não incluir a fonte correspondente (na prática,
+% a maioria das famílias tipográficas incluem suporte a apenas um sistema
+% de escrita).
+%
+% Há um conjunto de padrões que determinam quais são os caracteres que
+% devem ser incluídos em cada fonte de acordo com o sistema de escrita
+% desejado: são os "character encodings". Por exemplo, as fontes com o
+% alfabeto latino (as mais usadas no Brasil, EUA e Europa ocidental)
+% usam o "character encoding" ISO-8859-1 (ou similares, como "latin1",
+% "Windows-1252" e "ECMA-94"); outras línguas e regiões utilizam outros
+% padrões. Mas TeX nasceu antes que esses padrões fossem definidos e,
+% portanto, criou seus próprios padrões (encodings). O resultado é que,
+% obviamente, os encodings de LaTeX são incompatíveis com os demais.
+% Por essa razão, LaTeX tradicionalmente não era capaz de usar fontes
+% "comuns"; elas precisavam ser adaptadas para funcionar com LaTeX (como
+% veremos abaixo, isso mudou com XeLaTeX/luaLaTeX).
+%
+% LaTeX chama de "fontenc" os "character encodings" de cada fonte. As
+% fontes mais comumente usadas hoje para o alfabeto latino usam o fontenc
+% "T1". Por padrão, LaTeX "entende" os fontenc's T1 e OT1, mas é possível
+% carregar outros (para línguas como cirílico ou árabe) com a package
+% fontenc. Além de acrescentar fontenc's, a package também define qual
+% deles é o padrão (o último da lista). Diferentemente de outras, essa
+% package pode ser chamada mais de uma vez com parâmetros diferentes para
+% carregar mais fontenc's ou para alterar o fontenc default. Esse default
+% é importante porque, quando uma família tipográfica oferece fontes com
+% diferentes fontenc's, o default determina qual delas deverá ser usada no
+% documento. Sem a package fontenc, o default é OT1, mas esse fontenc não é
+% recomendado porque ele só dá suporte de fato a 128 caracteres; caracteres
+% acentuados são construídos sobrescrevendo um caracter "acento" sobre
+% o caracter da letra, com resultados visualmente pobres. Assim, quando
+% estiver usando pdflatex, sempre utilize o fontenc T1.
+%
+% "Character encodings" são usados para outros fins além da codificação
+% dos caracteres em fontes e são fundamentais para línguas diferentes do
+% inglês, mas acabam gerando problemas de compatibilidade. Por conta
+% disso, surgiram o UTF-8 (um "character encoding" capaz de representar
+% todos os caracteres possíveis) e o formato de fontes "OTF", capaz de
+% armazenar 65.536 caracteres. XeLaTeX e luaLaTeX foram criados para
+% tirar proveito desses avanços: ao usar uma fonte OTF, esses programas
+% usam o fontenc "TU", que nada mais é que uma "cópia" do encoding padrão
+% das fontes OTF que cobre todos os caracteres. Com isso, as fontes OTF
+% disponíveis no sistema podem ser usadas diretamente, sem a necessidade
+% de adaptações, e não é preciso carregar a package fontenc, porque
+% fontspec já faz isso.
+%
+% E por que isso tudo é importante? Porque cada versão de LaTeX só é capaz
+% de hifenizar palavras acentuadas corretamente com um fontenc específico:
+% pdflatex, com fontenc T1; luaLaTeX e XeLaTeX, com fontenc TU. Assim,
+% embora seja possível usar uma fonte com fontenc T1 e processar o documento
+% com luaLaTeX, isso não é recomendado porque palavras acentuadas não serão
+% hifenizadas (mas serão hifenizadas usando pdflatex). De maneira similar,
+% o fontenc OT1, embora seja o default, não é recomendado.
+
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc} % fontenc padrão recomendado para texto latino
+
+  % O texto está escrito em utf8.
+  % TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023),
+  %       veja o comentário em \NeedsTexFormat
+  \RequirePackage[utf8]{inputenc}
+
+  % Várias packages que definem as fontes do documento carregam fontaxes
+  % porque ela oferece diversos recursos para a criação da package, mas
+  % carregamos aqui porque, mesmo com fontes que não a usam diretamente,
+  % ela permite utilizar small caps + itálico. Algumas raras packages de
+  % fontes podem causar conflitos com fontaxes, em geral por utilizarem
+  % a package "concorrente" nfssext-cfr.
+  %
+  % TODO A funcionalidade pela qual faz sentido carregar fontaxes aqui
+  %      (small caps + itálico) foi incorporada ao kernel do LaTeX na
+  %      versão 2020-02-02, então está em TeXLive 2021. Remover isto
+  %      quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
+  %      descontinuada (abril de 2025). As packages que precisam de
+  %      fontaxes por outras razões podem continuar a carregá-la sem
+  %      problemas, mas não precisamos fazer isso aqui.
+  \RequirePackage{fontaxes}
+
+  % LaTeX substitui algumas sequências de caracteres, como "fi", "fl" e
+  % outras, por caracteres especiais ("ligaduras"). Para que seja possível
+  % fazer copiar/colar ou buscas por textos contendo essas ligaduras, o
+  % arquivo PDF precisa conter uma tabela indicando quais são elas. Com
+  % fontes OTF (LuaLaTeX ou XeLaTeX) isso não costuma ser um problema, mas
+  % com pdfLaTeX pode ser. Estes dois comandos (que só existem no pdfLaTeX)
+  % incluem uma tabela genérica que funciona para a maioria das fontes. Veja
+  % a seção 5 de http://www.tug.org/TUGboat/Articles/tb29-1/tb91thanh-fonts.pdf
+  % Note que alguns visualizadores de PDF tentam "adivinhar" o conteúdo da
+  % tabela quando ela está incompleta ou não existe, então copiar/colar e
+  % buscas podem funcionar em alguns visualizadores (não todos) mesmo sem
+  % estes comandos.
+  %
+  % TODO Isto foi incluído no kernel do LaTeX versão 2021-06-01,
+  %      então está em TeXLive 2022. Remover isto quando arxiv
+  %      usar TeXLive >= 2022 e ubuntu 22.04 (jammy) for
+  %      descontinuada (abril de 2027).
+  \input glyphtounicode.tex
+  \pdfgentounicode=1
+\else
+  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
+  % com eles utf8 é obrigatório.
+  % TODO: remover este comentário ao remover inputenc acima
+
+  % Com XeLaTeX e luaLaTeX, não é preciso usar a package fontenc; a package
+  % fontspec carrega o fontenc TU (mencionado acima) automaticamente.
+  \RequirePackage{fontspec}
+
+  % Ao invés de usar o sistema tradicional de LaTeX para gerir as fontes
+  % matemáticas, esta package faz LaTeX utilizar as extensões matemáticas
+  % do formato otf definidas pela microsoft. Ao ativar esta package, o
+  % mecanismo tradicional não funciona mais! Há poucas fontes com suporte
+  % a unicode-math, então provavelmente *não* é uma boa ideia carregar
+  % esta package aqui; melhor deixar que a package de fontes com suporte
+  % a unicode-math faça isso, como é o caso da package libertinus. Mas
+  % pode ser interessante ler a documentação desta package, já que ela
+  % oferece algumas melhorias em relação ao sistema "tradicional" de LaTeX.
+  %\RequirePackage{unicode-math}
+\fi
+
+% Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
+% disponíveis na maioria das fontes através do fontenc TS1 ou mudando
+% momentaneamente para computer modern/latin modern. Raramente útil
+% com lualatex/xelatex, mas não causa problemas. Várias packages de
+% fontes carregam textcomp, às vezes com opções específicas; assim,
+% para evitar problemas, vamos carregá-la no final do preâmbulo para
+% o caso de ela não ter sido carregada antes.
+%
+% TODO A funcionalidade oferecida por textcomp foi incorporada ao kernel
+%      do LaTeX na versão 2020-02-02, então está em TeXLive 2021. Remover
+%      isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
+%      descontinuada (abril de 2025). As packages que precisam de textcomp
+%      podem continuar a carregá-la sem problemas, mas não precisamos fazer
+%      isso aqui.
+\AtBeginDocument{\usepackage{textcomp}}
+
+
 % LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
 % precisaram ser re-criadas diversas vezes em formatos diferentes, então há
-% diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX), a
-% versão usada é a BlueSky Computer Modern, que é de boa qualidade, mas com
-% os problemas do OT1. Com fontenc T1 (padrão deste modelo e recomendado), o
-% LaTeX usa o conjunto "cm-super". Com fontspec (ou seja, com LuaLaTeX e
-% XeLaTeX), LaTeX utiliza a versão "Latin Modern". Ao longo do tempo, versões
-% diferentes dessas fontes foram recomendadas como "a melhor"; atualmente, a
-% melhor opção para usar a família Computer Modern é a versão "Latin Modern".
-%
-% Você normalmente não precisa lidar com isso, mas pode ser útil saber: O
-% mecanismo tradicionalmente usado por LaTeX para gerir fontes é o NFSS
-% (veja "texdoc fntguide"). Ele funciona com todas as versões de LaTeX,
-% mas só com fontes que foram adaptadas para funcionar com LaTeX. LuaLaTeX
-% e XeLaTeX podem usar NFSS mas também são capazes de utilizar um outro
-% mecanismo (através da package fontspec), que permite utilizar quaisquer
-% fontes instaladas no computador.
+% diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX, como
+% explicado mais acima), a versão usada é a BlueSky Computer Modern, que é
+% de boa qualidade, mas com os problemas do OT1. Com fontenc T1 (padrão deste
+% modelo e recomendado com pdfLaTeX), LaTeX usa o conjunto "cm-super". Com
+% fontspec (ou seja, com LuaLaTeX e XeLaTeX), LaTeX utiliza a versão "Latin
+% Modern". Versões diferentes dessas fontes foram recomendadas como sendo
+% "a melhor" ao longo do tempo; atualmente, a recomendada é "Latin Modern",
+% mesmo com pdflatex.
 
 \ifPDFTeX
     % Usando pdfLaTeX
@@ -916,6 +855,175 @@
     \fi
 \fi
 
+% É possível mudar apenas uma das fontes. Em particular, a fonte teletype
+% da família Computer Modern foi criada para simular as impressoras dos
+% anos 1970/1980. Sendo assim, ela é uma fonte (1) com serifas e (2) de
+% espaçamento fixo. Hoje em dia, é mais comum usar fontes sem serifa para
+% representar código-fonte. Além disso, ao imprimir, é comum adotar fontes
+% que não são de espaçamento fixo para fazer caber mais caracteres em uma
+% linha de texto. Algumas opções de fontes para esse fim:
+%\usepackage{newtxtt} % Não funciona com fontspec (lualatex / xelatex)
+%\usepackage{DejaVuSansMono}
+% inconsolata é uma boa fonte, mas não tem variante itálico
+%\ifPDFTeX
+%  \usepackage[narrow]{inconsolata}
+%\else
+%  \setmonofont{inconsolatan}
+%\fi
+%\usepackage[scale=.85]{sourcecodepro}
+
+% Ao invés da família Computer Modern, é possível usar outras como padrão.
+% Uma ótima opção é a libertinus, similar (mas não igual) à Times mas com
+% suporte a Small Caps e outras qualidades. A fonte teletype da família é
+% serifada, então é melhor definir outra; a opção "mono=false" faz o pacote
+% não carregar sua própria fonte, mantendo a escolha anterior.
+
+%\usepackage[mono=false]{libertinus}
+%% Com LuaLaTeX/XeLaTeX, Libertinus configura também
+%% a fonte matemática; aqui só precisamos corrigir \mathit
+%\ifLuaTeX
+%  \setmathfontface\mathit{Libertinus Serif Italic}
+%\fi
+%\ifXeTeX
+%  % O nome de arquivo da fonte mudou na versão 2019-04-04
+%  \@ifpackagelater{libertinus-otf}{2019/04/03}
+%      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+%      {\setmathfontface\mathit{libertinusserif-italic.otf}}
+%\fi
+%
+%\ifPDFTeX
+%  % A família libertinus por padrão não define uma fonte matemática
+%  % específica para pdfLaTeX; uma opção que funciona bem com ela:
+%  %\usepackage[libertine]{newtxmath}
+%  % Outra, provavelmente melhor:
+%  \usepackage{libertinust1math}
+%\fi
+
+% Ativa apenas a fonte biolinum, que é a fonte sem serifa da família.
+%\usepackage[sans]{libertinus}
+
+% Também é possível usar a Times como padrão; nesse caso, a fonte
+% sem serifa usualmente é a Helvetica. Mas provavelmente libertinus
+% é uma opção melhor.
+%\ifPDFTeX
+%  \usepackage[helvratio=0.95,largesc]{newtxtext}
+%  \usepackage{newtxtt} % Fonte teletype
+%  \usepackage{newtxmath}
+%\else
+%  % Clone da fonte Times como fonte principal
+%  \setmainfont{TeX Gyre Termes}
+%  \setmathfont[Scale=MatchLowercase]{TeX Gyre Termes Math}
+%  % TeX Gyre Termes Math tem um bug e não define o caracter
+%  % \setminus; Vamos contornar esse problema usando apenas
+%  % esse caracter da fonte STIX Two Math
+%  \setmathfont[range=\setminus]{STIX Two Math}
+%  % Clone da fonte Helvetica como fonte sem serifa
+%  \setsansfont{TeX Gyre Heros}
+%  % Clone da Courier como fonte teletype, mas provavelmente
+%  % é melhor utilizar sourcecodepro
+%  %\setmonofont{TeX Gyre Cursor}
+%\fi
+
+% Cochineal é outra opção de qualidade; ela define apenas a fonte
+% com serifa.
+%
+% Com NFSS (recomendado no caso de cochineal):
+%\usepackage{cochineal}
+%\usepackage[cochineal,vvarbb]{newtxmath}
+%\usepackage[cal=boondoxo]{mathalfa}
+%
+% Com fontspec (até a linha "setmathfontface..."):
+%
+%\setmainfont{Cochineal}[
+%  Extension=.otf,
+%  UprightFont=*-Roman,
+%  ItalicFont=*-Italic,
+%  BoldFont=*-Bold,
+%  BoldItalicFont=*-BoldItalic,
+%  %Numbers={Proportional,OldStyle},
+%]
+%
+%\DeclareRobustCommand{\lfstyle}{\addfontfeatures{Numbers=Lining}}
+%\DeclareTextFontCommand{\textlf}{\lfstyle}
+%\DeclareRobustCommand{\tlfstyle}{\addfontfeatures{Numbers={Tabular,Lining}}}
+%\DeclareTextFontCommand{\texttlf}{\tlfstyle}
+%
+%% Cochineal não tem uma fonte matemática; com fontspec, provavelmente
+%% o melhor a fazer é usar libertinus.
+%\setmathfont{Libertinus Math}
+%\setmathfontface\mathit{Cochineal-Italic.otf}
+
+% gentium inclui apenas uma fonte serifada, similar a Garamond, que busca
+% cobrir todos os caracteres unicode
+%\usepackage{gentium}
+
+% LaTeX normalmente funciona com fontes que foram adaptadas para ele, ou
+% seja, ele não usa as fontes padrão instaladas no sistema: para usar
+% uma fonte é preciso ativar o pacote correspondente, como visto acima.
+% É possível escapar dessa limitação e acessar as fontes padrão do sistema
+% com XeTeX ou LuaTeX. Com eles, além dos pacotes de fontes "tradicionais",
+% pode-se usar o pacote fontspec para usar fontes do sistema.
+%\usepackage{fontspec}
+%\setmainfont{DejaVu Serif}
+%\setmainfont{Charis SIL}
+%\setsansfont{DejaVu Sans}
+%\setsansfont{Libertinus Sans}[Scale=1.1]
+%\setmonofont{DejaVu Sans Mono}
+
+% fontspec oferece vários recursos interessantes para manipular fontes.
+% Por exemplo, Garamond é uma fonte clássica; a versão EBGaramond é muito
+% boa, mas não possui versões bold e bold-italic; aqui, usamos
+% CormorantGaramond ou Gentium para simular a versão bold.
+%\setmainfont{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+%
+%\newfontfamily\garamond{EBGaramond12}[
+%  Numbers        = {Lining,} ,
+%  Scale          = MatchLowercase ,
+%  UprightFont    = *-Regular ,
+%  ItalicFont     = *-Italic ,
+%  BoldFont       = gentiumbasic-bold ,
+%  BoldItalicFont = gentiumbasic-bolditalic ,
+%%  BoldFont       = CormorantGaramond Bold ,
+%%  BoldItalicFont = CormorantGaramond Bold Italic ,
+%]
+
+% Crimson tem Small Caps, mas o recurso é considerado "em construção".
+% Vamos utilizar Gentium para Small Caps
+%\setmainfont{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+%
+%\newfontfamily\crimson{Crimson}[
+%  Numbers           = {Lining,} ,
+%  Scale             = MatchLowercase ,
+%  UprightFont       = *-Roman ,
+%  ItalicFont        = *-Italic ,
+%  BoldFont          = *-Bold ,
+%  BoldItalicFont    = *-Bold Italic ,
+%  SmallCapsFont     = Gentium Plus ,
+%  SmallCapsFeatures = {Letters=SmallCaps} ,
+%]
+
+% Com o pacote fontspec, também é possível usar o comando "\fontspec" para
+% selecionar uma fonte temporariamente, sem alterar as fontes-padrão do
+% documento.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% FIGURAS / FLOATS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -929,9 +1037,12 @@
 % posicionamento: "tp", por exemplo, instrui LaTeX a considerar apenas
 % o topo da página ou uma página só de floats (ignorando o pé da página),
 % e "htbp" o instrui para tentar "aqui" como a primeira opção. A ordem
-% dessas opções não é relevante: dentre as opções disponíveis, LaTeX
-% sempre tenta "aqui, topo, pé, página". Os pacotes "float" e "floatrow"
-% acrescentam a opção "H", que significa "aqui, incondicionalmente".
+% dessas opções não é relevante: dentre as opções disponíveis, LaTeX sempre
+% tenta a ordem "aqui, topo, pé, página". Os pacotes "float" e "floatrow"
+% acrescentam a opção "H", que significa "aqui, incondicionalmente". Nesse
+% caso, a figura/tabela não é mais um float "de verdade" (já que o seu lugar
+% é fixo) e seria possível carregar a imagem sem usar o float; a diferença
+% é que, com floats, a numeração das figuras/tabelas funciona corretamente.
 %
 % A escolha do "melhor" lugar leva em conta os parâmetros abaixo, mas é
 % possível ignorá-los com a opção de posicionamento "!". Dado que os
@@ -1284,8 +1395,7 @@
 % essas quebras não devem aparecer em outros lugares (especialmente nos
 % metadados XMP). hyperref e hyperxmp removem essas quebras automaticamente,
 % mas isso pode fazer duas palavras ficarem grudadas. Estas macros "apagam"
-% esses comandos de maneira mais cuidadosa. Elas são utilizadas aqui e em
-% imeusp-thesis.
+% esses comandos de maneira mais cuidadosa.
 
 \ExplSyntaxOn
 
@@ -1358,9 +1468,7 @@
 % Mais recursos para trechos de texto "puro" (texto em que tabs, quebras de
 % linha etc. não são modificados), e também o ambiente "\begin{comment}".
 \RequirePackage{verbatim}
-
-% Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
-\RequirePackage{setspace}
+%\RequirePackage{fvextra} % Ainda mais recursos adicionais para texto "puro"
 
 % Às vezes um float pode ser adiado por muitas páginas; é possível forçar
 % LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
@@ -1446,9 +1554,11 @@
 % usar \makecell).
 % Esta package estende o ambiente tabular para permitir definir um tamanho
 % fixo para uma ou mais colunas; nesse caso, LaTeX quebra as linhas se uma
-% célula é larga demais para a largura definida. Encontrar valores "bons"
-% para as larguras das colunas, no entanto, também é um trabalho manual
-% um tanto penoso. As packages tabularx e tabulary permitem configurar
+% célula é larga demais para a largura definida. array também traz algumas
+% outras melhorias para tabelas e é praticamente obrigatória.
+%
+% Encontrar valores "bons" % para as larguras das colunas é um trabalho
+% manual um tanto penoso. As packages tabularx e tabulary permitem configurar
 % algumas colunas como "largura automática", evitando a necessidade da
 % definição manual. Finalmente, ltxtable permite utilizar tabularx e
 % longtable juntas. Neste modelo, não usamos tabularx/tabulary, mas você
@@ -1476,8 +1586,10 @@
 
 % Modifica (melhora) o layout default das tabelas e acrescenta os comandos
 % \toprule, \bottomrule, \midrule e \cmidrule. Vale muito a pena ler a
-% documentação desta package!
-\RequirePackage{booktabs}
+% documentação desta package! Como ela realiza medições usando o tamanho
+% da fonte do documento, carregamos ao final do preâmbulo, quando a fonte
+% correta já foi configurada.
+\AtEndPreamble{\RequirePackage{booktabs}}
 
 % Permite colorir linhas, colunas ou células de uma tabela.
 \RequirePackage{colortbl}
