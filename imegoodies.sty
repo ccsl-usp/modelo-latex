@@ -27,6 +27,32 @@
 \RequirePackage{expl3}
 \RequirePackage{xparse}
 
+%%%% Opções
+\newtoggle{IMEguaranteeBrazilian}
+\newtoggle{IMEappearance}
+\newtoggle{IMEbeamer}
+\newtoggle{IMEthesis}
+
+\DeclareOption{beamer}{
+    \toggletrue{IMEguaranteeBrazilian}
+    \toggletrue{IMEappearance}
+    \toggletrue{IMEbeamer}
+}
+
+\DeclareOption{thesis}{
+    \toggletrue{IMEguaranteeBrazilian}
+    \toggletrue{IMEappearance}
+    \toggletrue{IMEthesis}
+}
+
+\DeclareOption{brazilian}{\toggletrue{IMEguaranteeBrazilian}}
+\DeclareOption{nobrazilian}{\togglefalse{IMEguaranteeBrazilian}}
+\DeclareOption{imestyle}{\toggletrue{IMEappearance}}
+\DeclareOption{noimestyle}{\togglefalse{IMEappearance}}
+
+\ExecuteOptions{brazilian,imestyle}
+\ProcessOptions\relax
+
 %\RequirePackage{filehook}
 
 % Detecta se estamos usando pdftex, luatex, xetex etc.
@@ -305,6 +331,7 @@
 % "id est" (i.e.) e "exempli gratia" (e.g.)
 \frenchspacing
 
+% AAAAA FIXME
 % Durante o processamento, LaTeX procura por arquivos adicionais necessários
 % (tanto componentes do próprio LaTeX, como packages e fontes, quanto partes
 % do conteúdo em si, como imagens carregadas com \includegraphics ou arquivos
@@ -348,16 +375,15 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FORCE BRAZILIAN %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ExplSyntaxOn
-
-% We need to have at least some variant of Portuguese and of English
-% loaded to generate the abstract/resumo, palavras-chave/keywords etc.
-% We will make sure that both languages are present in the class options
-% list by adding them if needed. With this, these options become global
-% and therefore are seen by all packages (among them, babel).
+% For theses, we need to have at least some variant of Portuguese and of
+% English loaded to generate the abstract/resumo, palavras-chave/keywords
+% etc. For other documents, they might come in handy too. Here we make sure
+% that both languages are present in the class options list by adding them
+% if needed. With this, these options become global and therefore are seen
+% by all packages (among them, babel).
 %
 % babel traditionally uses "portuguese", "brazilian", "portuges", or
 % "brazil" to support the Portuguese language, using .ldf files. babel
@@ -369,6 +395,7 @@
 % compatibility problems, let's stick with "brazilian" or "portuguese"
 % by substituting portuges and brazil if necessary.
 
+\ExplSyntaxOn
 \NewDocumentCommand\@IMEportugueseAndEnglish{m}{
 
   % Make sure any instances of "portuges" and "brazil" are replaced
@@ -433,27 +460,33 @@
 
   \exp_args:Nc \xdef {#1} {\seq_use:Nn \l_tmpb_seq {,}}
 }
-
-
-% https://tex.stackexchange.com/a/43541
-% This message is part of a larger thread that discusses some
-% limitations of this method, but it is enough for us here.
-\def\@getcl@ss#1.cls#2\relax{\def\@currentclass{#1}}
-\def\@getclass{\expandafter\@getcl@ss\@filelist\relax}
-\@getclass
-
-% The three class option lists we need to update: \@unusedoptionlist,
-% \@classoptionslist and one of \opt@book.cls, \opt@article.cls etc.
-% according to the current class. Note that beamer.cls (and maybe
-% others) does not use \@unusedoptionlist; with it, we incorrectly
-% add "english,brazilian" to \@unusedoptionlist, but that does not
-% cause problems.
-\@IMEportugueseAndEnglish{@unusedoptionlist}
-\@IMEportugueseAndEnglish{@classoptionslist}
-\@IMEportugueseAndEnglish{opt@\@currentclass .cls}
-
 \ExplSyntaxOff
 
+\iftoggle{IMEguaranteeBrazilian}
+  {
+    % https://tex.stackexchange.com/a/43541
+    % This message is part of a larger thread that discusses some
+    % limitations of this method, but it is enough for us here.
+    \def\@getcl@ss#1.cls#2\relax{\def\@currentclass{#1}}
+    \def\@getclass{\expandafter\@getcl@ss\@filelist\relax}
+    \@getclass
+
+    % The three class option lists we need to update: \@unusedoptionlist,
+    % \@classoptionslist and one of \opt@book.cls, \opt@article.cls etc.
+    % according to the current class. Note that beamer.cls (and maybe
+    % others) does not use \@unusedoptionlist; with it, we incorrectly
+    % add "english,brazilian" to \@unusedoptionlist, but that does not
+    % cause problems.
+    \@IMEportugueseAndEnglish{@unusedoptionlist}
+    \@IMEportugueseAndEnglish{@classoptionslist}
+    \@IMEportugueseAndEnglish{opt@\@currentclass .cls}
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Babel permite definir a língua ou línguas usadas no documento e deve
 % ser um dos primeiros pacotes a serem carregados. É possível definir
@@ -566,10 +599,11 @@
 % de letra para seu documento, consulte https://tug.org/FontCatalogue/ e
 % utilize as packages correspondentes a cada uma. Se o sítio informa que
 % a fonte está disponível *apenas* em formato OTF, use lualatex; se *não*
-% está disponível em formato OTF, use pdflatex. Se está disponível em
-% formato OTF e algum outro, você pode usar qualquer um dos dois. Para
-% usar alguma outra fonte instalada em seu computador, use lualatex e
-% leia a documentação da package fontspec.
+% está disponível em formato OTF, use pdflatex (lualatex também funciona,
+% mas o resultado será inferior). Se está disponível em formato OTF e algum
+% outro, você pode usar qualquer um dos dois. Para usar alguma outra fonte
+% instalada em seu computador, use lualatex e leia a documentação da package
+% fontspec.
 %
 % Você normalmente não precisa lidar com isso, mas pode ser útil saber:
 % O mecanismo usado por LaTeX para gerir fontes é o NFSS (veja "texdoc
@@ -1307,18 +1341,14 @@
 %\crefmultiformat{type}{first}{second}{middle}{last}
 %\crefrangemultiformat{type}{first}{second}{middle}{last}
 
-% ao criar uma referência hyperref para um float, a referência aponta
+% Ao criar uma referência hyperref para um float, a referência aponta
 % para o final do caption do float, o que não é muito bom. Este pacote
 % faz a referência apontar para o início do float (é possível personalizar
 % também). Esta package é incompatível com a classe beamer (usada para
-% criar posters e apresentações), então testamos a compatibilidade antes
-% de carregá-la.
-\ifboolexpr{
-  test {\ifcsdef{figure}} and
-  test {\ifcsdef{figure*}} and
-  test {\ifcsdef{table}} and
-  test {\ifcsdef{table*}}
-}{\RequirePackage[all]{hypcap}}{}
+% criar posters e apresentações).
+\iftoggle{IMEbeamer}
+  {}
+  {\RequirePackage[all]{hypcap}}
 
 % hyperref detecta url's definidas com \url que começam com "http" e
 % "www" e cria links adequados. No entanto, quando a url não começa
@@ -1440,7 +1470,7 @@
 
 % Agora inserimos de fato os metadados essenciais XMP no arquivo PDF. Se
 % o documento é uma tese/dissertação no formato do IME, outros metadados
-% são definidos em imeusp-thesis e sobrescrevem o que está definido aqui.
+% são definidos mais à frente e sobrescrevem o que está definido aqui.
 \let\@cleantitle\@title
 \let\@cleanauthor\@author
 \@IMEremoveLinebreaksEtc{\@cleantitle}
@@ -1451,6 +1481,10 @@
   pdftitle={\@cleantitle},
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% UTILS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Você provavelmente vai querer ler a documentação de alguns destes pacotes
 % para personalizar algum aspecto do trabalho ou usar algum recurso específico.
@@ -1596,59 +1630,64 @@
 %\RequirePackage{tabto}
 
 
-% Formato personalizado para as notas de rodapé. Copiado quase
-% literalmente do exemplo na documentação das classes-padrão de
-% LaTeX2e (texdoc classes). Seria possível fazer algo similar
-% usando list{} com um único item usando \@thefnmark como label.
+\iftoggle{IMEappearance}
+  {
+    % Formato personalizado para as notas de rodapé. Copiado quase
+    % literalmente do exemplo na documentação das classes-padrão de
+    % LaTeX2e (texdoc classes). Seria possível fazer algo similar
+    % usando list{} com um único item usando \@thefnmark como label.
 
-% \footnotesep não é um espaço adicional, mas sim um strut que
-% existe no começo de cada nota. É por isso que o valor é "grande"
-% (\baselineskip) mas a separação de fato é pequena.
+    % \footnotesep não é um espaço adicional, mas sim um strut que
+    % existe no começo de cada nota. É por isso que o valor é "grande"
+    % (\baselineskip) mas a separação de fato é pequena.
 
-\renewcommand\@makefntext[1]{%
-    \setlength{\footnotesep}{1\baselineskip}%
-    \@setpar{%
-        \@@par
-        \@tempdima = \hsize
-        \advance\@tempdima-4pt\relax
-        \parshape \@ne 4pt \@tempdima
-    }%
-    \par
-    \parindent 1em\noindent
-    \parskip .3\baselineskip
-    \hbox to \z@{\hss\@makefnmark\,}#1%
-}
+    \renewcommand\@makefntext[1]{%
+        \setlength{\footnotesep}{1\baselineskip}%
+        \@setpar{%
+            \@@par
+            \@tempdima = \hsize
+            \advance\@tempdima-4pt\relax
+            \parshape \@ne 4pt \@tempdima
+        }%
+        \par
+        \parindent 1em\noindent
+        \parskip .3\baselineskip
+        \hbox to \z@{\hss\@makefnmark\,}#1%
+    }
 
-% \maketitle redefine as notas de rodapé (\thanks) para usar símbolos
-% ao invés de números, mas essa não é a única mudança. \maketitle
-% também muda \@makefnmark para que a indicação de nota de rodapé
-% não ocupe espaço horizontal (isso é feito com \rlap). Isso é feito
-% porque a lista de autores em geral é similar a
-% \author{Fulano\thanks{instituição 1}, Ciclano\thanks{instituição 2}}.
-% Com essa mudança, a nota aparece acima da vírgula entre os autores.
-% Mas isso significa que\maketitle precisa também modificar \@makefntext
-% para que esse efeito aconteça apenas na lista de autores e não na
-% nota em si. Assim, como criamos um novo formato para as notas de
-% rodapé, precisamos mudar o formato em \maketitle também.
+    % \maketitle redefine as notas de rodapé (\thanks) para usar símbolos
+    % ao invés de números, mas essa não é a única mudança. \maketitle
+    % também muda \@makefnmark para que a indicação de nota de rodapé
+    % não ocupe espaço horizontal (isso é feito com \rlap). Isso é feito
+    % porque a lista de autores em geral é similar a
+    % \author{Fulano\thanks{instituição 1}, Ciclano\thanks{instituição 2}}.
+    % Com essa mudança, a nota aparece acima da vírgula entre os autores.
+    % Mas isso significa que\maketitle precisa também modificar \@makefntext
+    % para que esse efeito aconteça apenas na lista de autores e não na
+    % nota em si. Assim, como criamos um novo formato para as notas de
+    % rodapé, precisamos mudar o formato em \maketitle também.
 
-\newcommand\@maketitlemakefntext[1]{%
-    \setlength{\footnotesep}{1\baselineskip}%
-    \@setpar{%
-        \@@par
-        \@tempdima = \hsize
-        \advance\@tempdima-4pt\relax
-        \parshape \@ne 4pt \@tempdima
-    }%
-    \par
-    \parindent 1em\noindent
-    \parskip .3\baselineskip
-    \hbox to \z@{\hss\@textsuperscript{\normalfont\@thefnmark}\,}#1%
-}
+    \newcommand\@maketitlemakefntext[1]{%
+        \setlength{\footnotesep}{1\baselineskip}%
+        \@setpar{%
+            \@@par
+            \@tempdima = \hsize
+            \advance\@tempdima-4pt\relax
+            \parshape \@ne 4pt \@tempdima
+        }%
+        \par
+        \parindent 1em\noindent
+        \parskip .3\baselineskip
+        \hbox to \z@{\hss\@textsuperscript{\normalfont\@thefnmark}\,}#1%
+    }
 
-\patchcmd\maketitle
-  {\long\def\@makefntext}
-  {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
-  {}{}
+    \patchcmd\maketitle
+      {\long\def\@makefntext}
+      {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
+      {}{}
+
+  }
+  {}
 
 % melhorias e recursos adicionais para o modo matemático; leia a documentação
 \RequirePackage{mathtools}
@@ -1711,7 +1750,7 @@
 % "description*" e "enumerate*", que fazem os itens da lista como
 % parte de um único parágrafo. Como ela causa problemas com
 % beamer, apenas a carregamos se não estivermos usando beamer.
-\@ifclassloaded{beamer}
+\iftoggle{IMEbeamer}
   {}
   {\RequirePackage[inline]{enumitem}}
 
@@ -1739,7 +1778,9 @@
 
 % Este comando é definido pela package url, que é carregada automaticamente
 % por hyperref; ele faz URLs com fonte sem serifa ao invés de teletype
-\urlstyle{sf}
+\iftoggle{IMEappearance}
+  {\urlstyle{sf}}
+  {}
 
 % Permite inserir comentários, muito bom durante a escrita do texto;
 % você também pode se interessar pela package pdfcomment.
@@ -1785,38 +1826,42 @@
 
 % Estes parâmetros definem a aparência das gantt charts e variam
 % em função da fonte do documento.
-\ganttset{
-    vgrid,
-    x unit=1.7em,
-    y unit title=3ex,
-    y unit chart=4ex,
-    % O "strut" é necessário para alinhar o baseline dos nomes dos meses
-    title label font=\strut\footnotesize,
-    group label font=\footnotesize\bfseries,
-    bar label font=\footnotesize,
-    milestone label font=\footnotesize\itshape,
-    % "align=right" é necessário para \ganttalignnewline funcionar
-    group label node/.append style={align=right},
-    bar label node/.append style={align=right},
-    milestone label node/.append style={align=right},
-    group incomplete/.append style={fill=black!50},
-    bar/.append style={fill=black!25,draw=black},
-    bar incomplete/.append style={fill=white,draw=black},
-    % Não é preciso imprimir "0%"
-    progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
-    % Formato e tamanho dos elementos
-    title height=.9,
-    group top shift=.4,
-    group left shift=0,
-    group right shift=0,
-    group peaks tip position=0,
-    group peaks width=.2,
-    group peaks height=.3,
-    milestone height=.4,
-    milestone top shift=.4,
-    milestone left shift=.8,
-    milestone right shift=.2,
-}
+\iftoggle{IMEappearance}
+  {
+    \ganttset{
+        vgrid,
+        x unit=1.7em,
+        y unit title=3ex,
+        y unit chart=4ex,
+        % O "strut" é necessário para alinhar o baseline dos nomes dos meses
+        title label font=\strut\footnotesize,
+        group label font=\footnotesize\bfseries,
+        bar label font=\footnotesize,
+        milestone label font=\footnotesize\itshape,
+        % "align=right" é necessário para \ganttalignnewline funcionar
+        group label node/.append style={align=right},
+        bar label node/.append style={align=right},
+        milestone label node/.append style={align=right},
+        group incomplete/.append style={fill=black!50},
+        bar/.append style={fill=black!25,draw=black},
+        bar incomplete/.append style={fill=white,draw=black},
+        % Não é preciso imprimir "0%"
+        progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
+        % Formato e tamanho dos elementos
+        title height=.9,
+        group top shift=.4,
+        group left shift=0,
+        group right shift=0,
+        group peaks tip position=0,
+        group peaks width=.2,
+        group peaks height=.3,
+        milestone height=.4,
+        milestone top shift=.4,
+        milestone left shift=.8,
+        milestone right shift=.2,
+    }
+  }
+  {}
 
 % Em inglês, tanto o nome completo quanto a abreviação do mês de maio
 % são "May"; por conta disso, na tradução em português LaTeX erra a
@@ -1860,3 +1905,1622 @@
 % precisa desse recurso e, portanto, pode removê-la.
 \RequirePackage{hologo}
 \providecommand{\XeLaTeX}{\hologo{XeLaTeX}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%% CABEÇALHOS E RODAPÉS (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % Permite saber o número total de páginas; útil para colocar no
+    % rodapé algo como "página 3 de 10" com "\thepage\ de \zpageref{LastPage}"
+    %\usepackage{zref-lastpage,zref-user}
+
+    % Permite definir cabeçalhos e rodapés
+    \usepackage{fancyhdr}
+
+    % A formatação dos cabeçalhos/rodapés envolve duas coisas:
+    %
+    % 1. Definir qual texto deve ser impresso em cada página (nome
+    %    do capítulo ou seção, nome do autor, número da página etc.)
+    %
+    % 2. Imprimir esse texto no lugar correto (esquerda, direita ou
+    %    centro, cabeçalho ou rodapé)
+    %
+    % A definição do texto a imprimir é complexa, pois a preparação dos
+    % cabeçalhos/rodapés acontece de maneira independente da construção do
+    % restante da página. Textos fixos como, digamos, o nome do livro ou
+    % do seu autor, não trazem dificuldades. Já textos variáveis, como o
+    % nome do capítulo ou seção, o número da página etc. envolvem a
+    % passagem de informações sobre a página atual para o mecanismo de
+    % construção dos cabeçalhos.
+    %
+    % Isso é feito através de "variáveis" especiais chamadas "marks". O uso
+    % mais comum das marks é armazenar o nome do capítulo e da seção atuais:
+    % a cada novo capítulo ou seção, os comandos \chaptermark e \sectionmark
+    % são executados (isso é automático, você não precisa fazer nada); esses
+    % comandos definem uma "mark" com o nome do capítulo/seção a ser usado
+    % nos cabeçalhos/rodapés. Assim, modificando a definição dos comandos
+    % \chaptermark e \sectionmark, é possível modificar o texto a ser
+    % incluído nos cabeçalhos/rodapés.
+    %
+    % Definido o conteúdo das marks, o lugar em que cada texto é impresso
+    % é definido com os comandos \fancyhead e \fancyfoot. "RO" significa
+    % "Right side of Odd pages"; "LE" significa "Left side of Even pages" etc.
+    %
+    % LaTeX por padrão tem duas "marks": "\leftmark" e "\rightmark". Elas
+    % têm esses nomes porque originalmente eram usadas para armazenar o
+    % conteúdo a ser impresso nas páginas pares e ímpares. Isso, no entanto,
+    % não é obrigatório; a escolha desses nomes foi bastante infeliz. Para
+    % definir o conteúdo dessas marks, usam-se os comandos \markboth{A}{B}
+    % (define \leftmark como A e \rightmark como B) e \markright{C} (define
+    % \rightmark como C). Não há o comando \markleft.
+    %
+    % O procedimento de definição dos cabeçalhos e rodapés, portanto, envolve:
+    %
+    % 1. Redefinir \chaptermark e \sectionmark (ambas recebem um parâmetro,
+    %    que é o nome do capítulo/seção) para fazê-los executar \markboth e
+    %    \markright, inserindo o conteúdo desejado nas marks;
+    %
+    % 2. Usar \fancyhead e \fancyfoot para definir os cabeçalhos e rodapés
+    %    usando o conteúdo de \leftmark e \rightmark.
+    %
+    % Além das marks, é possível usar também as variáveis \thepage (número
+    % da página), \thechapter (número do capítulo) e \thesection (número da
+    % seção).
+    %
+    % Neste modelo, modificamos chaptermark e sectionmark para armazenar
+    % o número e nome do capítulo em leftmark e o número e nome da seção
+    % em rightmark. MAS imprimimos rightmark nas páginas pares (esquerda)
+    % e leftmark nas páginas ímpares (direita)!
+    %%%%%%%%%%
+
+    % Sem linha separando o cabeçalho
+    \renewcommand{\headrulewidth}{0pt}
+
+    % Queremos colocar o número da página mais próximo da borda do papel (na
+    % horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
+    % margem direita -10mm" (o número vai ficar a 10mm da borda).
+    %
+    % Observe que a package geometry define \evensidemargin, mas seu valor não
+    % necessariamente corresponde ao que queremos aqui (não sei bem como nem
+    % por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+    % manualmente.
+    %
+    % A distância entre a borda esquerda/interna do papel e o início do texto
+    % é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+    % é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+    \dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
+    \addtolength{\headwidth}{\othermargin}
+    \addtolength{\headwidth}{-10mm}
+
+    \newcommand{\formataNumPaginas}{
+      \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+      \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+    }
+
+    \newcommand{\formataCabecalhosDinamicos}{
+      \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+      \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
+    }
+
+    \fancypagestyle{mainmatter}{
+      % Número e nome do capítulo no cabeçalho das páginas pares
+      % (e nas ímpares quando não há seções)
+      \renewcommand{\chaptermark}[1]{
+        \markboth
+          {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+          {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+      }
+
+      % Número e nome da seção no cabeçalho das páginas ímpares
+      \renewcommand{\sectionmark}[1]{
+        \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
+      }
+
+      \fancyhf{}
+      \formataNumPaginas{}
+      \formataCabecalhosDinamicos{}
+    }
+
+    % Formato para capítulos não-numerados mas que devem
+    % aparecer no sumário (tipicamente, a introdução):
+    \fancypagestyle{onlynames}{
+      % Só o nome do capítulo/seção, sem numeração
+      \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+      \renewcommand{\sectionmark}[1]{\markright{##1}}
+
+      \fancyhf{}
+      \formataNumPaginas{}
+      \formataCabecalhosDinamicos{}
+    }
+
+    \fancypagestyle{appendix}{
+      \renewcommand{\chaptermark}[1]{%
+        \markboth{%
+          % Páginas ímpares: "Apêndice/Anexo X"
+          \@chapapp\ \thechapter%
+        }{%
+          % Páginas pares: "X | nome do apêndice/anexo"
+          \thechapter\hskip 0.3em |\hskip 0.3em ##1%
+        }
+      }
+
+      \fancyhf{}
+      \formataNumPaginas{}
+      \formataCabecalhosDinamicos{}
+    }
+
+    % Na frontmatter e backmatter, não há números de capítulos e (em geral)
+    % não há subdivisões (capítulos/seções/subseções), apenas um nível.
+    % O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
+    % sem número) nas páginas pares ou ímpares.
+    %
+    % Normalmente, a bibliografia e o índice remissivo não definem os
+    % cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
+    % isso manualmente (em bibconfig.tex e index.tex).
+    \fancypagestyle{backmatter}{
+      \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+      \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
+
+      \fancyhf{}
+      \formataNumPaginas{}
+      \formataCabecalhosDinamicos{}
+    }
+
+    % A página inicial de cada capítulo é automaticamente configurada para o estilo
+    % "plain", então vamos definir esse estilo (colocando o número de página no
+    % mesmo lugar das demais). As páginas iniciais também usam esse estilo.
+    \fancypagestyle{plain}{
+      \fancyhf{}
+      \formataNumPaginas{}
+    }
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % biblatex pode ser configurado para inserir a bibliografia no sumário;
+    % bibtex não oferece essa possibilidade. Com esta package, resolvemos
+    % esse problema.
+    \usepackage[nottoc,notlot,notlof]{tocbibind}
+
+    % Só olha até o nível 2 (subseções) para gerar o sumário e os
+    % cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
+    % no sumário nem nos cabeçalhos.
+    \setcounter{tocdepth}{2}
+
+    % Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
+    % sub-subseções (como 2.3.1.1). Veja que isso afeta referências
+    % cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
+    % numerada, a referência vai apontar para a seção um nível acima.
+    \setcounter{secnumdepth}{2}
+
+    % Normalmente, o capítulo de introdução não deve ser numerado, mas
+    % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
+    % para isso, então criamos aqui os comandos \unnumberedchapter,
+    % \unnumberedsection e \unnumberedsubsection.
+    \newcommand{\unnumberedchapter}[2][]{
+      \ifblank{#1}
+        {
+          \chapter*{#2}
+          \phantomsection
+          \addcontentsline{toc}{chapter}{#2}
+          \chaptermark{#2}
+        }
+        {
+          \chapter*{#2}
+          \phantomsection
+          \addcontentsline{toc}{chapter}{#1}
+          \chaptermark{#1}
+        }
+    }
+
+    \newcommand{\unnumberedsection}[2][]{
+      \ifblank{#1}
+        {
+          \section*{#2}
+          \phantomsection
+          \addcontentsline{toc}{section}{#2}
+          \sectionmark{#2}
+        }
+        {
+          \section*{#2}
+          \phantomsection
+          \addcontentsline{toc}{section}{#1}
+          \sectionmark{#1}
+        }
+    }
+
+    \newcommand{\unnumberedsubsection}[2][]{
+      \ifblank{#1}
+        {
+          \subsection*{#2}
+          \phantomsection
+          \addcontentsline{toc}{subsection}{#2}
+        }
+        {
+          \subsection*{#2}
+          \phantomsection
+          \addcontentsline{toc}{subsection}{#1}
+        }
+    }
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%% EPÍGRAFE (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % O formato padrão do pacote epigraph é bem feinho...
+    % Outra opção para epígrafes é o pacote quotchap
+    \usepackage{epigraph}
+
+    \setlength\epigraphwidth{.85\textwidth}
+
+    % Sem linha entre o texto e o autor
+    \setlength{\epigraphrule}{0pt}
+
+    % Ambiente auxiliar para colocar margem à direita da epígrafe
+    % (como sempre, o modo mais simples de mudar as margens de um
+    % pagrágrafo é fazer de conta que é uma lista)
+    \newenvironment{epShiftLeft}
+      {
+        \par\begin{list}{}
+          {
+            \leftmargin 0pt
+            \labelwidth 0pt
+            \labelsep 0pt
+            \itemsep 0pt
+            \topsep 0pt
+            \partopsep 0pt
+            \rightmargin 2em
+          }
+        \item\FlushRight
+      }
+      {
+        \end{list}
+        % O espaço padrão que epigraph coloca entre a citação
+        % e o autor é muito pequeno; vamos aumentar um pouco
+        \vspace*{.3\baselineskip}
+      }
+
+    \renewcommand\textflush{epShiftLeft}
+    \renewcommand\sourceflush{epShiftLeft}
+
+    \newcommand{\epigrafe}[2] {%
+      \ifstrempty{#2}{
+        \epigraph{\itshape #1}{}
+      }{
+        \epigraph{\itshape #1}{--- #2}
+      }
+    }
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%% DEDICATÓRIA (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% A dedicatória vai em uma página separada, sem numeração,
+% com o texto alinhado à direita e margens esquerda e
+% superior muito grandes. Vamos fazer isso com uma minipage.
+\newenvironment{dedicatoria} {
+  \hypersetup{pageanchor=false} % Veja comentário em \maketitle
+
+  \if@openright\cleardoublepage\else\clearpage\fi
+
+  \thispagestyle{empty}
+  \vspace*{140mm plus 0mm minus 100mm}
+  \noindent
+  \begin{FlushRight}
+     \begin{minipage}[b][100mm][b]{100mm}
+       \begin{FlushRight}
+         \itshape
+} {
+       \end{FlushRight}
+     \end{minipage}\hspace*{3em}
+  \end{FlushRight}
+  \vspace*{50mm plus 0mm minus 10mm}
+  \if@openright\cleardoublepage\else\clearpage\fi
+
+  \hypersetup{pageanchor=true}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% RESUMO (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % A página de resumo deve existir em português e inglês; ambas as versões
+    % utilizam o mesmo environment.
+
+    \NewDocumentCommand{\resumo}{+m}{%
+      \long\gdef\@resumo{#1}%
+
+      \bgroup
+      \@IMEremoveLinebreaksEtc{\@resumo}
+      \IfLanguagePatterns{brazilian}
+        {
+          \hypersetup{
+            pdfsubject={\@resumo},
+            pdfkeywords={\@commakeywordspt},
+          }
+        }
+        {
+          \XMPLangAlt{pt}{pdfsubject={\@resumo}}
+          % o item "keywords" não pode ser traduzido
+
+          % XMPLangAlt undefines "\do"; this may cause
+          % problems with biblatex, but we do not need
+          % to worry here because we are in a group.
+          % https://github.com/plk/biblatex/issues/1105
+        }
+      \egroup
+
+      \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
+      \expandafter\selectlanguage\expandafter{\@IMEpt}
+      \begin{IMEabstract}\@resumo\end{IMEabstract}
+      \egroup\egroup
+    }
+
+    \DeclareDocumentCommand{\abstract}{+m}{%
+      \long\gdef\@abstract{#1}%
+
+      \bgroup
+      \@IMEremoveLinebreaksEtc{\@abstract}
+      \IfLanguagePatterns{brazilian}
+        {
+          \XMPLangAlt{en}{pdfsubject={\@abstract}}
+          % o item "keywords" não pode ser traduzido
+
+          % XMPLangAlt undefines "\do"; this may cause
+          % problems with biblatex, but we do not need
+          % to worry here because we are in a group.
+          % https://github.com/plk/biblatex/issues/1105
+        }
+        {
+          \hypersetup{
+            pdfsubject={\@abstract},
+            pdfkeywords={\@commakeywordsen},
+          }
+        }
+      \egroup
+
+      \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
+      \expandafter\selectlanguage\expandafter{\@IMEen}
+      \begin{IMEabstract}\@abstract\end{IMEabstract}
+      \egroup\egroup
+    }
+  }
+  {}
+
+\NewDocumentEnvironment{IMEabstract}{} {
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \thispagestyle{empty}
+
+    \begin{center}\Large\bfseries\abstractname\end{center}
+
+  \vspace*{2em plus 1em minus 1em}
+
+  \footnotesize
+
+  % Esse é o jeito mais simples de mudar as margens de um parágrafo:
+  % faz de conta que é uma lista
+  \begin{list}{}{\rightmargin 4em \leftmargin 4em}
+    \item\@selfReference
+  \end{list}
+
+  \vspace*{1em plus 1em minus 0em}
+} {
+  % Impede uma quebra de página entre esta linha e a próxima, ou seja,
+  % entre a última linha do resumo/abstract e as palavras-chave.
+  \@afterheading
+
+  \vspace*{1em plus 1em minus .5em}
+
+  \begingroup
+
+      \setlength{\leftmargini}{\widthof{\textbf{\keywordsname:}\quad}}
+      \setlength{\labelwidth}{\widthof{\textbf{\keywordsname:}}}
+      \setlength{\labelsep}{\widthof{\quad}}
+
+      \begin{description}
+        \item[\keywordsname:]\IfLanguagePatterns{brazilian}
+                             {\@keywordspt}
+                             {\@keywordsen}%
+      \end{description}
+
+  \endgroup
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%% TEXTOS PADRÃO PARA A CAPA (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % Formatação de datas de acordo com a língua
+    \usepackage[useregional]{datetime2}
+    \DTMusemodule{brazilian}{portuges}
+    \DTMnewdatestyle{month-year}{%
+      \renewcommand*{\DTMdisplaydate}[4]{##2,\space##1}%
+      \renewcommand*{\DTMDisplaydate}{\DTMdisplaydate}%
+    }
+
+    % \extrasLANGUAGE vs \captionsLANGUAGE: https://tex.stackexchange.com/a/354197
+
+    % Palavras fixas a serem traduzidas
+    \providecommand\keywordsname{} % Keywords / Palavras-chave
+    \providecommand\programname{} % Program / Programa
+    \providecommand\committeename{} % Examining committee / Comissão julgadora
+    \providecommand\advisorname{} % Advisor / Orientador(a)
+    \providecommand\coadvisorname{} % Co-advisor / Coorientador(a)
+    \providecommand\workname{} % Report, Thesis / Tese, Dissertação, Monografia
+    \providecommand\degreename{} % Masters, Doctorate, Bachelor / Mestrado, Doutorado, Bacharelado
+    \providecommand\titlename{} % Master, Doctor, Bachelor / Mestre(a), Doutor(a), Bacharel
+    \providecommand\@assembleLicenseText[1]{O conteúdo deste trabalho
+                                            é publicado sob a licença #1}
+
+    % Textos longos a serem traduzidos
+    \providecommand\@coverTCCText{}
+    \providecommand\@coverQualiText{}
+    \providecommand\@coverThesisText{}
+    \providecommand\@institutionBlockText{} % Só para TCC
+    \providecommand\@provisionalFrontmatterText{}
+    \providecommand\@finalFrontmatterText{}
+    \providecommand\@institution{}
+
+    % Este não precisa ser traduzido, o texto em inglês não utiliza
+    \providecommand\@bywhom{%
+      \ifdefstring{\@authorGender}{masc}
+        {pelo candidato \@author}
+        {pela candidata \@author}%
+    }
+
+    %%%%%%%%%% PORTUGUÊS %%%%%%%%%%
+    \expandafter\addto\csname captions\@IMEpt\endcsname{%
+      \DTMrenewdatestyle{month-year}{%
+        \renewcommand*{\DTMdisplaydate}[4]
+          {\DTMportugesmonthname{##2}\space de\space##1}%
+      }%
+      \renewcommand\keywordsname{Palavras-chave}%
+      \renewcommand\programname{Programa}%
+      \renewcommand\committeename{Comissão julgadora}%
+      \renewcommand\advisorname{%
+        \iftoggle{@tcc}{%
+          \ifdefstring{\@advisorGender}{masc}
+            {Supervisor}
+            {Supervisora}%
+        }{%
+          \ifdefstring{\@advisorGender}{masc}
+            {Orientador}
+            {Orientadora}%
+        }%
+      }%
+      \renewcommand\coadvisorname[1]{%
+        \iftoggle{@tcc}{%
+          \ifcsstring{@coadvisor#1Gender}{masc}
+            {Cossupervisor}
+            {Cossupervisora}%
+        }{%
+          \ifcsstring{@coadvisor#1Gender}{masc}
+            {Coorientador}
+            {Coorientadora}%
+        }%
+      }%
+      \renewcommand\workname{%
+        \iftoggle{@tcc}
+          {Monografia}
+          {\iftoggle{@qualificacao}
+            {Exame de Qualificação}
+            {\iftoggle{@doutorado}
+              {Tese}
+              {Dissertação}%
+            }%
+          }%
+      }%
+      \renewcommand\degreename{%
+        \iftoggle{@doutorado}
+          {Doutorado}
+          {\iftoggle{@mestrado}
+            {Mestrado}
+            {\iftoggle{@tcc}
+              {Bacharelado}
+              {Nível não definido!}%
+            }%
+          }%
+      }%
+      \renewcommand\titlename{%
+        \iftoggle{@doutorado}
+          {\ifdefstring{\@authorGender}{masc}{Doutor}{Doutora}}
+          {\iftoggle{@mestrado}
+            {\ifdefstring{\@authorGender}{masc}{Mestre}{Mestra}}
+            {\iftoggle{@tcc}
+              {Bacharel}{Nível não definido!}%
+            }%
+          }%
+      }%
+      %
+      %
+      \renewcommand\@coverTCCText{%
+        Monografia Final\vspace{.5\baselineskip}\\
+        \@macCDXCIX{} --- Trabalho de\\
+        Formatura Supervisionado%
+      }%
+      \renewcommand\@coverQualiText{%
+        Relatório apresentado ao\\
+        Instituto de Matemática e Estatística\\
+        da Universidade de São Paulo\\
+        para exame de qualificação de\\
+        \degreename{} em Ciências%
+      }%
+      \renewcommand\@coverThesisText{%
+        \workname{} apresentada ao\\
+        Instituto de Matemática e Estatística\\
+        da Universidade de São Paulo\\
+        para obtenção do título de\\
+        \titlename{} em Ciências%
+      }%
+      \renewcommand\@institutionBlockText{%
+        Universidade de São Paulo\\
+        Instituto de Matemática e Estatística\\
+        Bacharelado em Ciência da Computação%
+      }%
+      \renewcommand\@provisionalFrontmatterText{%
+        \iftoggle{@qualificacao}{%
+          Esta é a versão original do texto de qualificação elaborado
+          \@bywhom{}, tal como submetido à Comissão Julgadora.%
+        }{%
+          Esta é a versão original da \MakeTextLowercase{\workname} elaborada
+          \@bywhom{}, tal como submetida à Comissão Julgadora.%
+        }%
+      }%
+      \renewcommand\@finalFrontmatterText{%
+        Esta versão da \MakeTextLowercase{\workname} contém as correções e alterações
+        sugeridas pela Comissão Julgadora durante a defesa da versão
+        original do trabalho, realizada em \DTMusedate{@defensedate}.\\[1\baselineskip]
+        Uma cópia da versão original está disponível no Instituto de
+        Matemática e Estatística da Universidade de São Paulo.%
+      }%
+      \renewcommand\@institution{%
+        Instituto de Matemática e Estatística,
+        Universidade de São Paulo%
+      }%
+      \renewcommand{\@assembleLicenseText}[1]{O conteúdo deste trabalho
+                                              é publicado sob a licença #1}%
+    }
+
+
+    %%%%%%%%%% INGLÊS %%%%%%%%%%
+    \expandafter\addto\csname captions\@IMEen\endcsname{%
+      \DTMrenewdatestyle{month-year}{%
+        \renewcommand*{\DTMdisplaydate}[4]
+          {\DTMenglishmonthname{##2},\space##1}%
+      }%
+      \renewcommand\keywordsname{Keywords}%
+      \renewcommand\programname{Program}%
+      \renewcommand\committeename{Examining Committee}
+      \renewcommand\advisorname{%
+        \iftoggle{@tcc}{Supervisor}{Advisor}%
+      }%
+      \renewcommand\coadvisorname[1]{%
+        \iftoggle{@tcc}{Co-supervisor}{Coadvisor}%
+      }%
+      % "Tese" e "dissertação" têm sentido contrário em língua inglesa:
+      % http://guides.lib.berkeley.edu/dissertations_theses
+      % https://www.grad.ubc.ca/handbook-graduate-supervision/graduate-thesis
+      % Como "Thesis" é o nome genérico, vamos usar para mestrado e doutorado
+      %
+      %%%%%
+      %
+      % Nomes possíveis para o TCC em inglês:
+      %
+      % * monograph/monography
+      %     usado para trabalho de alto nível de um autor "senior",
+      %     então não faz sentido para um trabalho de graduação.
+      %
+      % * undergraduate thesis / bachelor's thesis
+      %     plausível, mas no nosso caso report parece melhor.
+      %
+      % * senior project / senior thesis / honor thesis
+      %     usado para "TCCs" de caráter fortemente acadêmico;
+      %     não é o caso aqui.
+      %
+      % * essay / report
+      %     razoável, porque trata-se de um texto/relato
+      %     sobre o projeto de TCC.
+      \renewcommand\workname{%
+        \iftoggle{@tcc}
+          {Capstone Project Report}
+          {\iftoggle{@qualificacao}
+            {Qualifying Exam}
+            {Thesis}%
+          }%
+      }%
+      \renewcommand\degreename{%
+        \iftoggle{@doutorado}
+          {Doctorate}
+          {\iftoggle{@mestrado}
+            {Master's}
+            {\iftoggle{@tcc}
+              {Bachelor}
+              {Nível não definido!}%
+            }%
+          }%
+      }%
+      \renewcommand\titlename{%
+        \iftoggle{@doutorado}
+          {Doctor}
+          {\iftoggle{@mestrado}
+            {Master}
+            {\iftoggle{@tcc}
+              {Bachelor}%
+              {Nível não definido!}%
+            }%
+          }%
+      }%
+      %
+      %
+      \renewcommand\@coverTCCText{%
+        Final Essay\vspace{.5\baselineskip}\\
+        \@macCDXCIX{} --- Capstone Project%
+      }%
+      \renewcommand\@coverQualiText{%
+        Report presented to the\\
+        Institute of Mathematics and Statistics\\
+        of the University of São Paulo\\
+        for the \titlename{} of Science\\
+        qualifying examination\\%
+      }%
+      \renewcommand\@coverThesisText{%
+        \workname{} presented to the\\
+        Institute of Mathematics and Statistics\\
+        of the University of São Paulo\\
+        in partial fulfillment\\
+        of the requirements\\
+        for the degree of\\
+        \titlename{} of Science%
+      }%
+      \renewcommand\@institutionBlockText{%
+        University of São Paulo\\
+        Institute of Mathematics and Statistics\\
+        Bachelor of Computer Science%
+      }%
+      \renewcommand\@provisionalFrontmatterText{%
+        \iftoggle{@qualificacao}{%
+          This is the original version of the qualifying text prepared
+          by candidate \@author, as submitted to the Examining Committee.%
+        }{%
+          This is the original version of the \MakeTextLowercase{\workname} prepared
+          by candidate \@author, as submitted to the Examining Committee.%
+        }%
+      }%
+      \renewcommand\@finalFrontmatterText{%
+        This version of the \MakeTextLowercase{\workname} includes the corrections
+        and modifications suggested by the Examining Committee during
+        the defense of the original version of the work, which took
+        place on \DTMusedate{@defensedate}.\\[1\baselineskip]
+        A copy of the original version is available at the Institute of
+        Mathematics and Statistics of the University of São Paulo.%
+      }%
+      \renewcommand\@institution{%
+        Institute of Mathematics and Statistics,
+        University of São Paulo%
+      }%
+      \renewcommand{\@assembleLicenseText}[1]{The content of this work is
+                                              published under the #1 license}%
+    }
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%% COLETA E DEFINIÇÃO DE METADADOS (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExplSyntaxOn
+% Mais de um coorientador é raro, mas pode acontecer
+\newcounter{numberOfCoadvisors}
+\NewDocumentCommand\coorientador{O{masc} m}{
+    \stepcounter{numberOfCoadvisors}
+    \tl_gclear_new:c {@coadvisor\Roman{numberOfCoadvisors}}
+    \tl_gclear_new:c {@coadvisor\Roman{numberOfCoadvisors}Gender}
+
+    \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}} {#2}
+    \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}Gender} {#1}
+}
+
+\seq_gclear_new:N \@committeeMembers
+
+\newtoggle{@mestrado}
+\newtoggle{@doutorado}
+\newtoggle{@tcc}
+\newtoggle{@qualificacao}
+\newtoggle{@finalversion}
+
+% Opções usando LaTeX3 (veja texdoc l3keys).
+\keys_define:nn { IME / defense }
+  {
+    % Chaves à esquerda definem as variáveis à direita
+    data .code:n= {\DTMsavedate{@defensedate}{#1}},
+    data .value_required:n = true,
+    nivel .choice:,
+    nivel / mestrado .code:n = {\@mestrado},
+    nivel / masters .code:n = {\@mestrado},
+    nivel / dissertacao .code:n = {\@mestrado},
+    nivel / doutorado .code:n = {\@doutorado},
+    nivel / phd .code:n = {\@doutorado},
+    nivel / tese .code:n = {\@doutorado},
+    nivel / graduacao .code:n = {\@tcc},
+    nivel / bachelor .code:n = {\@tcc},
+    nivel / tcc .code:n = {\@tcc},
+    nivel .value_required:n = true,
+    quali .code:n = {\ifstrequal{#1}{true}{\toggletrue{@qualificacao}}{\togglefalse{@qualificacao}}},
+    quali .default:n = {true},
+    definitiva .code:n = {\ifstrequal{#1}{true}{\toggletrue{@finalversion}}{\togglefalse{@finalversion}}},
+    definitiva .default:n = {true},
+    provisoria .code:n = {\ifstrequal{#1}{true}{\togglefalse{@finalversion}}{\toggletrue{@finalversion}}},
+    provisoria .default:n = {true},
+    programa .tl_gset:N = \@program,
+    program .value_required:n = true,
+    apoio .tl_gset:N = \@financing,
+    apoio .value_required:n = true,
+    local .tl_gset:N = \@defenselocation,
+    local .value_required:n = true,
+    direitos .tl_gset:N = \@license,
+    direitos .value_required:n = true,
+    fichacatalografica .tl_gset:N = \@catalogingData,
+    fichacatalografica .value_required:n = true,
+    membrobanca .code:n = {\seq_gput_right:Nn \@committeeMembers {#1}},
+    membrobanca .value_required:n = true,
+  }
+
+\NewDocumentCommand\defesa{+m}{%
+  \keys_set:nn {IME/defense}{#1}
+
+  \exp_args:NV \str_case:nnF \@license
+    {
+      {CC-BY}{\gdef\@license{\@assembleLicenseText{CC~BY~4.0}\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by/4.0/}{%
+        (Creative~Commons~Attribution~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by/4.0/}}
+      }
+
+      {CC-BY-NC}{\gdef\@license{\@assembleLicenseText{CC~BY-NC~4.0}\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nc/4.0/}{%
+        (Creative~Commons~Attribution-NonCommercial~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc/4.0/}}
+      }
+
+      {CC-BY-ND}{\gdef\@license{\@assembleLicenseText{CC~BY-ND~4.0}\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nd/4.0/}{%
+        (Creative~Commons~Attribution-NoDerivatives~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/}}
+      }
+
+      {CC-BY-SA}{\gdef\@license{\@assembleLicenseText{CC~BY-SA~4.0}\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-sa/4.0/}{%
+        (Creative~Commons~Attribution-ShareAlike~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0/}}
+      }
+
+      {CC-BY-NC-SA}{\gdef\@license{\@assembleLicenseText{CC~BY-NC-SA~4.0}\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nc-sa/4.0/}{%
+        (Creative~Commons~Attribution-NonCommercial-ShareAlike~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-sa/4.0/}}
+      }
+
+      {CC-BY-NC-ND}{\gdef\@license{\@assembleLicenseText{CC~BY-NC-ND~4.0}\\
+        \href{https\c_colon_str//creativecommons.org/licenses/by-nc-nd/4.0/}{%
+        (Creative~Commons~Attribution-NonCommercial-NoDerivatives~4.0~International~License)}}
+        \hypersetup{pdflicenseurl={https://creativecommons.org/licenses/by-nc-nd/4.0/}}
+      }
+    }
+    % If there is no match, use the user-supplied text
+    {}
+}
+\ExplSyntaxOff
+
+\ExplSyntaxOn
+% Dentro deste "if" porque não queremos mexer com \keyword
+% indevidamente, talvez alguma classe defina essa macro.
+\iftoggle{IMEthesis}
+  {
+    \seq_gclear_new:N \@seqkeywordspt
+    \seq_gclear_new:N \@seqkeywordsen
+    \newcommand*{\palavrachave}[1]{\seq_gput_right:Nn \@seqkeywordspt {#1}}
+    \newcommand*{\keyword}[1]{\seq_gput_right:Nn \@seqkeywordsen {#1}}
+
+    % Na impressão, as palavras-chave são separadas por pontos
+    \newcommand*{\@keywordspt}{\seq_use:Nn \@seqkeywordspt {.\space}.}
+    \newcommand*{\@keywordsen}{\seq_use:Nn \@seqkeywordsen {.\space}.}
+
+    % Para inclusão nos metadados com hyperxmp, são separadas por vírgulas
+    \newcommand*{\@commakeywordspt}{\seq_use:Nn \@seqkeywordspt {,}}
+    \newcommand*{\@commakeywordsen}{\seq_use:Nn \@seqkeywordsen {,}}
+  }
+  {}
+\ExplSyntaxOff
+
+\NewDocumentCommand{\orientador}{O{masc} m}{
+  \gdef\@advisor{#2}
+  \gdef\@advisorGender{#1}
+}
+
+\NewDocumentCommand{\@doutorado}{}{
+  \toggletrue{@doutorado}
+  \togglefalse{@mestrado}
+  \togglefalse{@tcc}
+}
+
+\NewDocumentCommand{\@mestrado}{}{
+  \togglefalse{@doutorado}
+  \toggletrue{@mestrado}
+  \togglefalse{@tcc}
+}
+
+\NewDocumentCommand{\@tcc}{}{
+  \togglefalse{@mestrado}
+  \togglefalse{@doutorado}
+  \toggletrue{@tcc}
+}
+
+\ExplSyntaxOn
+% Opções usando LaTeX3 (veja texdoc l3keys).
+\keys_define:nn { IME / title }
+  {
+    % Chaves à esquerda definem as variáveis à direita
+    titlept .tl_gset:N = \@titlept,
+    titlept .value_required:n = true,
+    titleen .tl_gset:N = \@titleen,
+    titleen .value_required:n = true,
+    subtitlept .tl_gset:N = \@subtitlept,
+    subtitlept .value_required:n = true,
+    subtitleen .tl_gset:N = \@subtitleen,
+    subtitleen .value_required:n = true,
+  }
+\ExplSyntaxOff
+
+\ExplSyntaxOn
+\iftoggle{IMEthesis}
+  {
+    \renewcommand\author[2][masc]{
+      \gdef\@author{#2}
+      \gdef\@authorGender{#1}
+      \hypersetup{pdfauthor={\@author}}
+    }
+
+    \RenewDocumentCommand\title{m}{
+      \keys_set:nn {IME/title}{#1}
+
+      \bgroup
+      % O título deve existir nas duas línguas; o subtítulo é opcional,
+      % mas se houver também deve existir nas duas línguas.
+      \IfLanguagePatterns{brazilian}
+        {
+          \global\let\@title\@titlept
+          \ifdefvoid{\@subtitlept}
+            {}
+            {\global\let\@subtitle\@subtitlept}
+
+          \let\@mainlangtitle\@titlept
+          \let\@mainlangsubtitle\@subtitlept
+          \let\@otherlangtitle\@titleen
+          \let\@otherlangsubtitle\@subtitleen
+          \def\@otherlangname{en}
+        }
+        {
+          \global\let\@title\@titleen
+          \ifdefvoid{\@subtitleen}
+            {}
+            {\global\let\@subtitle\@subtitleen}
+
+          \let\@mainlangtitle\@titleen
+          \let\@mainlangsubtitle\@subtitleen
+          \let\@otherlangtitle\@titlept
+          \let\@otherlangsubtitle\@subtitlept
+          \def\@otherlangname{pt}
+        }
+
+      % Insere os metadados XMP no arquivo PDF final.
+      % \@IMEremoveLinebreaksEtc está definida em hyperlinks.tex.
+
+      \@IMEremoveLinebreaksEtc{\@mainlangtitle}
+      \@IMEremoveLinebreaksEtc{\@mainlangsubtitle}
+      \@IMEremoveLinebreaksEtc{\@otherlangtitle}
+      \@IMEremoveLinebreaksEtc{\@otherlangsubtitle}
+
+      \hypersetup{
+        pdftitle={\@mainlangtitle
+                  \ifdefvoid{\@mainlangsubtitle}{}{:~\@mainlangsubtitle}%
+                 },
+      }
+
+      \XMPLangAlt{\@otherlangname}{
+          pdftitle={\@otherlangtitle
+                    \ifdefvoid{\@otherlangsubtitle}{}{:~\@otherlangsubtitle}%
+                   },
+      }
+
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, but we do not need
+      % to worry here because we are in a group.
+      % https://github.com/plk/biblatex/issues/1105
+      \egroup
+    }
+  }
+  {}
+\ExplSyntaxOff
+
+\iftoggle{IMEthesis}
+  {
+    % Defaults quando o usuário não define alguma dessas variáveis.
+    % Não podemos usar \title ou \author aqui porque esses comandos
+    % dependem de hyperref, que ainda não foi carregada.
+    \providecommand\@author{Autor não definido!}
+    \orientador{Orientador não definido!}
+    \DTMsavedate{@defensedate}{1970-01-01}
+    \providecommand\@program{Programa não definido!}
+    \providecommand\@financing{}
+    \providecommand\@defenselocation{Local não definido!}
+    \providecommand\@license{Direitos não definidos!}
+    \providecommand\@title{Título não definido!}
+    \providecommand\@titlept{Título em português não definido!}
+    \providecommand\@titleen{Título em inglês não definido!}
+    \providecommand\@resumo{Resumo não definido!}
+    \providecommand\@abstract{Abstract não definido!}
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% IMPRIME A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    \RenewDocumentCommand\maketitle{}{
+      % Embora as páginas iniciais *pareçam* não ter numeração, a numeração
+      % existe, só não é impressa. Os comandos \frontmatter, \mainmatter,
+      % \pagenumbering etc. reiniciam a contagem de páginas quando os números
+      % passam a ser impressos. Isso significa que há mais de uma página com
+      % o número "1". O pacote hyperref não lida bem com essa situação, então
+      % vamos desabilitar hyperlinks para números de páginas aqui.
+      \hypersetup{pageanchor=false}
+      \bgroup
+      \onehalfspacing
+
+      \@IMEcover
+      \iftoggle{@tcc}{}{\@IMEtitlePage}
+      \@IMEversoPage
+
+      \egroup
+      \if@openright\cleardoublepage\else\clearpage\fi
+      \hypersetup{pageanchor=true}
+    }
+  }
+  {}
+
+% Layout da capa
+\NewDocumentCommand{\@IMEcover}{} {
+  \cleardoublepage
+  \thispagestyle{empty}
+
+  \begin{hyphenrules}{nohyphenation}
+      \iftoggle{@tcc}{\@institutionBlock}{}
+      \@titleBlock
+      \vspace*{\fill}
+      \@detailsBlock
+  \end{hyphenrules}
+}
+
+% Layout para a página de rosto (duas versões, de acordo
+% com a Resolução CoPGr 6018 de 13/10/2011)
+\NewDocumentCommand{\@IMEtitlePage}{} {
+  \if@openright\cleardoublepage\else\clearpage\fi
+  \thispagestyle{empty}
+
+  \begin{hyphenrules}{nohyphenation}
+      \@titleBlock
+      \vspace*{2cm plus 2cm minus 1cm}
+      \@versionInfoBlock
+      \vspace*{3.5cm plus 3cm minus 3.5cm}
+      \iftoggle{@finalversion}{\@committeeBlock}{}
+      \vspace*{2cm plus 2cm minus 2cm}
+  \end{hyphenrules}
+}
+
+\NewDocumentCommand{\@IMEversoPage}{}{
+  \clearpage
+  \thispagestyle{empty}
+  \ifcsvoid{@catalogingData}
+    {\vspace*{4cm}}
+    {\vspace*{2cm}}
+
+  \begin{list}{}{\rightmargin 3em \leftmargin 3em}
+    \onehalfspacing\centering\footnotesize\itshape
+    \item\@license
+  \end{list}
+
+  \ifcsvoid{@catalogingData} {} {\vspace{\fill}\@catalogingData}
+
+  \vspace{1cm minus 1cm}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% POSIÇÃO DOS ELEMENTOS NA CAPA %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% O IME usa uma capa padrão de cartolina para todas as teses/dissertações.
+% Essa capa tem uma janela recortada por onde se vê o título e o autor do
+% trabalho. Ela fica centralizada na página, tem 100m de largura, 60mm de
+% altura e começa 47mm abaixo do topo da página. Como o documento já tem
+% margens definidas pelo usuário, precisamos calcular quanto precisamos
+% acrescentar ou subtrair dessas margens para colocar o título e autor
+% na posição exata (na verdade, com uma pequena folga: 49mm abaixo do topo
+% da página, 96mm de largura e 56mm de altura).
+%
+% Para centralizar horizontalmente, poderíamos pensar em usar "\center",
+% mas isso não funciona porque ele centraliza o texto em relação à coluna
+% de texto, não à página. Assim, como as margens esquerda e direita do
+% documento podem ser diferentes, a janela não ficaria na posição correta.
+% O que faremos, então, é colocar essa janela em uma minipage e calcular
+% a margem esquerda para que essa minipage fique centralizada.
+%
+% Além disso, outros elementos da capa também não podem ser centralizados
+% com "\center", porque eles ficariam desalinhados em relação à janela
+% com o título e autor. Vamos colocar esses outros elementos em uma
+% minipage também, mas de tamanho diferente da anterior.
+%
+% Então, precisamos calcular três valores: a margem adicional em relação ao
+% topo da página, a margem esquerda da janela com título e autor e a margem
+% esquerda para os demais elementos centralizados da página.
+
+\AtEndPreamble{
+  % Calcula o valor das margens (após geometry ser carregada)
+
+  % A distância entre o topo da página e o início do texto (fora o cabeçalho)
+  % é dada por (1in + \voffset + \headsep + \topmargin + \headheight).
+  % Queremos colocar a caixa com o título 49mm abaixo do topo, então:
+  \dimgdef\@topTitleBlockMargin{49mm - (1in + \voffset + \headsep + \topmargin + \headheight)}
+
+  % Quando \vspace é usado no início da página, ele não tem efeito; como
+  % não é isso que queremos, vamos usar \vspace*. No entanto, \vspace*
+  % é implementado inserindo uma \hrule de espessura zero e depois
+  % acrescentando o espaço solicitado. O resultado não é exatamente
+  % o esperado, pois \topskip, \parskip e \baselineskip interagem com
+  % \vspace* de maneira um tanto complexa:
+  % https://tex.stackexchange.com/a/247516
+  %
+  % Aqui, vamos compensar essa diferença. Note que, se a primeira linha
+  % da página tivesse um tamanho de fonte especial, seria necessário
+  % usar o valor de \baselineskip correspondente a essa fonte. Além
+  % disso, definimos espaçamento simples porque o \vspace* mencionado
+  % acima é executado com espaçamento simples.
+  \bgroup
+  \setstretch {\setspace@singlespace}% \singlespacing adds \baselineskip
+  \dimgdef\@topTitleBlockMargin{\@topTitleBlockMargin - \baselineskip - \parskip}
+  \egroup
+
+  % Queremos colocar a caixa com o título centralizada na página. "\center"
+  % centraliza em função da área de texto, não da página inteira, então
+  % não podemos usá-lo, pois as margens esquerda e direita podem ser
+  % diferentes. A distância entre a borda esquerda/interna do papel e o
+  % início do texto é dada por (1in + \hoffset + \oddsidemargin), então:
+  \dimgdef\@leftTitleBlockMargin{(\paperwidth - 96mm)/2 - (1in + \hoffset + \oddsidemargin)}
+  \dimgdef\@coverLeftMargin{(\paperwidth - 160mm)/2 - (1in + \hoffset + \oddsidemargin)}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% OS ELEMENTOS QUE COMPÕEM A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Com fontspec (ou seja, lualatex/xelatex), o comando \oldstylenums funciona
+% com qualquer fonte que tenha suporte a números old-style. Já com pdflatex,
+% o comando para escolher números old style depende da fonte em uso. Nesse
+% caso, se não soubermos qual a fonte atual (ou seja, não é libertinus), vamos
+% usar latin modern e torcer para o resultado não ser % muito discrepante do
+% restante do texto.
+
+% 499 = CDXCIX
+\@ifpackageloaded{fontspec}
+  {\providecommand{\@macCDXCIX}{mac~\oldstylenums{499}}}
+  {
+    \providecommand{\@macCDXCIX}{{\fontfamily{lmr}\selectfont mac~\oldstylenums{499}}}
+
+    \@ifpackageloaded{libertinus}
+      {\renewcommand{\@macCDXCIX}{{\LibertinusSerifOsF mac~499}}}
+      {}
+  }
+
+\newcommand{\@coverText}{
+  \bgroup
+  \setstretch{.9}
+
+  \iftoggle{@tcc}
+    {\@coverTCCText}
+    {\iftoggle{@qualificacao}{\@coverQualiText}{\@coverThesisText}}
+  \par
+  \egroup
+}
+
+\ExplSyntaxOn
+\newcounter{@IMEtmpcnt}
+\newcommand*{\@coverPeople} {%
+  \begin{tabular}{rl}
+    \iftoggle{@tcc}{}{\programname : & \@program \tabularnewline}
+    \advisorname : & \@advisor \tabularnewline
+    \setcounter{@IMEtmpcnt}{0}%
+    \int_while_do:nNnn {\value{@IMEtmpcnt}} < {\value{numberOfCoadvisors}} {%
+      \stepcounter{@IMEtmpcnt}%
+      \coadvisorname{\Roman{@IMEtmpcnt}}: & \csuse{@coadvisor\Roman{@IMEtmpcnt}} \tabularnewline
+    }%
+  \end{tabular}
+}
+
+\ExplSyntaxOff
+
+\newcommand{\@selfReference} {%
+  \bgroup
+  \IfLanguagePatterns{brazilian}
+    {%
+      \let\@currlangtitle\@titlept
+      \let\@currlangsubtitle\@subtitlept
+    }
+    {%
+      \let\@currlangtitle\@titleen
+      \let\@currlangsubtitle\@subtitleen
+    }%
+  \@IMEremoveLinebreaksEtc{\@currlangtitle}%
+  \@IMEremoveLinebreaksEtc{\@currlangsubtitle}%
+  \@author.
+  \textbf{\@currlangtitle\ifdefvoid{\@currlangsubtitle}{}{: \textit{\@currlangsubtitle}}}.
+  \workname{} (\degreename).
+  \@institution,
+  São Paulo, \DTMfetchyear{@defensedate}.%
+  \egroup
+}
+
+% Só para TCC
+\newcommand{\@institutionBlock}{
+
+    % A posição do quadro de título é fixa em relação à página;
+    % a posição deste quadro é definida em função da posição do
+    % quadro de título. Assim, primeiro vamos encontrar onde
+    % deve começar o quadro do título. Veja os comentários em
+    % \@titleBlock para entender o mecanismo.
+    \bgroup
+    \hfuzz=60pt % Não precisa avisar que estamos invadindo a margem direita aqui
+
+    \setstretch {\setspace@singlespace}% \singlespacing adds \baselineskip
+
+    \vspace*{\@topTitleBlockMargin}
+    \ifdeflength{\@normalstrutheight}
+      {}
+      {\newlength{\@normalstrutheight}}
+    \settoheight{\@normalstrutheight}{\strut}
+    \vspace{-\@normalstrutheight}
+
+    % Estamos alinhados com o quadro do título do trabalho,
+    % mas não é isso que queremos: a parte inferior deste
+    % quadro deve ficar 15mm acima do quadro de título e
+    % este quadro tem 20mm de altura, então precisamos subir:
+    \vspace{-20mm} % Espaço ocupado por este quadro
+    \vspace{-15mm} % Espaço entre este quadro e o quadro de título
+
+    \noindent\strut%
+    \hspace*{\@coverLeftMargin}%
+%    \fbox{%
+      \begin{minipage}[t][20mm][s]{160mm}
+        \vspace{0pt plus 20mm}
+
+        \centering\large
+
+        \textsc{\@institutionBlockText}
+
+        \vspace{0pt plus 20mm}
+      \end{minipage}
+%    }% fbox
+    \par
+
+    % Agora precisamos voltar o "cursor" para o começo da página
+    % para que o quadro de título seja inserido no lugar certo.
+    % Para isso, vamos:
+    %
+    % 1. Chegar novamente ao início do quadro de título e
+    %
+    % 2. Retroceder o tamanho da margem superior
+
+    % compensa o espaço inserido por \par logo acima
+    \vspace{-\parskip}
+    \egroup
+
+    % A altura da minipage já compensou o \vspace{-20mm} acima;
+    % ainda precisamos compensar o \vspace{-15mm}
+    \vspace{15mm}
+
+    % Agora estamos no início do quadro de título, então
+    % podemos recuar exatamente o tamanho da margem superior.
+    \vspace{-\@topTitleBlockMargin}
+}
+
+% O quadro com o título e o autor que deve ser visível
+% através da janela na capa.
+\NewDocumentCommand{\@titleBlock}{} {
+
+    \bgroup
+    \setstretch {\setspace@singlespace}% \singlespacing adds \baselineskip
+
+    % Este espaço coloca o topo da próxima linha
+    % na posição que queremos:
+    \vspace*{\@topTitleBlockMargin}
+
+    % No entanto, a próxima linha contém apenas
+    % uma minipage, e definir o topo de uma linha
+    % desse tipo é complicado. Assim, vamos:
+    %
+    % 1. Acrescentar um \strut a essa linha;
+    %
+    % 2. mover o baseline dessa linha para o topo do \strut;
+    %
+    % 3. Alinhar o topo da minipage ao baseline da linha.
+    %
+    % Sobre alinhamento de minipages:
+    % https://en.wikibooks.org/wiki/LaTeX/Boxes
+
+    \ifdeflength{\@normalstrutheight}
+      {}
+      {\newlength{\@normalstrutheight}}
+    \settoheight{\@normalstrutheight}{\strut}
+    \vspace{-\@normalstrutheight}
+
+    \noindent\strut
+    \hspace*{\@leftTitleBlockMargin}%
+%    \fbox{%
+      \begin{minipage}[t][56mm][s]{96mm}
+          \vspace*{2cm plus 1.5cm minus 1.8cm}
+
+          \centering\large
+
+          \textbf{\@title}
+
+          \vspace{0.3cm plus 0.2cm minus 0.1cm}
+
+          \ifdefvoid{\@subtitle}{}{\textbf{\textit{\@subtitle}}}
+
+          \vspace{1cm plus 1cm minus 0.6cm}
+
+          \@author
+
+          \vspace*{2cm plus 1.5cm minus 1.8cm}
+      \end{minipage}%
+%    }% fbox
+    \par
+    \egroup
+}
+
+% As demais informações da capa
+\NewDocumentCommand{\@detailsBlock}{} {
+
+  \bgroup
+  \hfuzz=60pt % Não precisa avisar que estamos invadindo a margem direita aqui
+  \onehalfspacing
+  \noindent
+  \hspace*{\@coverLeftMargin}%
+%  \fbox{%
+    \begin{minipage}[t][130mm][s]{160mm}
+      \begin{center}
+        \Large
+
+        \vspace*{0.3cm plus 0.5cm minus 0.3cm}
+
+        \textsc{\@coverText}
+
+        \vspace*{1.5cm plus 0.5cm minus 0.5cm}
+
+        \large\@coverPeople
+
+        \vspace*{2.5cm plus 1cm minus 1cm}
+
+        \normalsize
+
+        \bgroup
+        \singlespacing
+        \@financing\par
+        \egroup
+
+        \vspace*{1cm plus 1cm minus 0.3cm}
+
+        \@defenselocation
+
+        \iftoggle{@tcc}
+          {\DTMfetchyear{@defensedate}}
+          {\DTMsetdatestyle{month-year}\DTMusedate{@defensedate}}
+
+      \end{center}
+    \end{minipage}%
+%  }% fbox
+  \par
+  \egroup
+}
+
+% As informações da banca que vão apenas na versão definitiva
+% da página de rosto
+\ExplSyntaxOn
+\NewDocumentCommand{\@committeeBlock}{} {
+    \bgroup
+    \onehalfspacing
+    \begin{minipage}[t][][t]{\textwidth}
+      \begin{quote}
+        \normalsize\noindent\committeename :\par
+        \begin{list}{}
+        {
+          \setlength{\leftmargin}{0pt}
+          \setlength{\itemsep}{.1\baselineskip}
+          \setlength{\topsep}{\baselineskip}
+        }
+          \item[] \seq_use:Nn \@committeeMembers {\item[]}
+        \end{list}
+      \end{quote}
+    \end{minipage}
+    \par
+    \egroup
+}
+\ExplSyntaxOff
+
+% A informação sobre a versão provisória ou definitiva
+\NewDocumentCommand{\@versionInfoBlock}{} {%
+  % As diretrizes dizem que "A natureza do trabalho, o grau pretendido, o
+  % nome da instituição a que é submetido e a área de concentração devem
+  % ser alinhados a partir do meio da parte impressa da página para a
+  % margem direita, tanto na folha de rosto como na folha de avaliação."
+  %
+  % Assim, queremos alinhar o texto à direita com uma grande margem
+  % à esquerda. Uma solução simples é alinhar o texto à direita
+  % e inserir uma minipage. Dentro dela, definimos o texto
+  % também alinhado à direita.
+
+  \bgroup
+  \onehalfspacing
+  \begin{FlushRight}
+    %\fbox{
+      % Margem direita + 80mm de largura significa que a minipage
+      % começa mais ou menos no meio da página.
+      \begin{minipage}[t][50mm][s]{80mm}
+        \begin{FlushRight}
+          \normalsize
+          \iftoggle{@finalversion}{%
+            \@finalFrontmatterText%
+          } {%
+            \@provisionalFrontmatterText%
+          }%
+        \end{FlushRight}
+        \vspace*{0pt plus 50mm}
+      \end{minipage}
+      \par
+    %} % fbox
+  \end{FlushRight}
+  \egroup
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% TODO: Com versões recentes de hyperxmp (final de 2020), não é
+%       recomendado definir pdflang; no futuro, isto deve ser mudado.
+\AtEndPreamble{
+\IfLanguagePatterns{brazilian}
+  {
+    \hypersetup{
+      pdflang={pt},
+      pdfmetalang={pt},
+    }
+  }
+  {
+    \hypersetup{
+      pdflang={en},
+      pdfmetalang={en},
+    }
+  }
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEappearance}
+  {
+    % titlesec permite definir formatação personalizada de títulos, seções etc.
+    % Observe que titlesec é incompatível com os comandos refsection
+    % e refsegment do pacote biblatex!
+    \usepackage[raggedright]{titlesec}
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % A classe Book inclui o comando \appendix, que (obviamente) permite inserir
+    % apêndices no documento. No entanto, não há suporte similar para anexos. Esta
+    % package acrescenta alguns recursos adicionais para apêndices; vamos usá-la
+    % para permitir colocar a palavra "Apêndice" no sumário e também para definir
+    % o comando \annex.
+    \usepackage{appendix}
+    \noappendicestocpagenum
+
+    % Altera a formatação da palavra "Apêndice" no sumário
+    %
+    % Não queremos a linha "Apêndice" como a última da página no sumário;
+    % para isso:
+    %
+    % 1. Acrescentamos um pouco de espaço elástico logo antes dela
+    %
+    % 2. Colocamos uma sugestão de quebra de página
+    %
+    % 3. Usamos \@afterheading
+    %
+    % 1 e 2 incentivam (mas não forçam) LaTeX a realizar a quebra antes
+    % dela e 3 força LaTeX a mantê-la na mesma página que a próxima linha.
+    %
+    % \addtocontents pode pregar peças se usamos \include; contornamos
+    % com \immediate: https://tex.stackexchange.com/a/13926
+    \renewcommand\addappheadtotoc{%
+      \begingroup
+        \let\origwrite\write
+        \def\write{\immediate\origwrite}%
+        \addtocontents{toc}{{\large\vspace{0pt plus 2\baselineskip minus 0pt}}}%
+        \addtocontents{toc}{\protect\pagebreak[2]}%
+        \addtocontents{toc}{\vspace{.8\baselineskip}}%
+        \addtocontents{toc}{{\large\bfseries\hspace{-1.3em}\appendixtocname\par}}%
+        \addtocontents{toc}{\protect\@afterheading}%
+      \endgroup
+    }
+
+    \let\@IMErealAppendixname\appendixname
+    \let\@IMErealAppendixtocname\appendixtocname
+    \let\@IMErealAppendixpagename\appendixpagename
+    \def\appendixname{\@IMErealAppendixname}
+    \def\appendixtocname{\@IMErealAppendixtocname}
+    \def\appendixpagename{\@IMErealAppendixpagename}
+
+    \providecommand\annexname{Annex}
+    \providecommand\annextocname{Annexes}
+    \providecommand\annexpagename{Annexes}
+
+    \addto\captionsbrazil{%
+      \renewcommand\annexname{Anexo}%
+      \renewcommand\annextocname{Anexos}%
+      \renewcommand\annexpagename{Anexos}%
+      \renewcommand\@IMErealAppendixname{Apêndice}%
+      \renewcommand\@IMErealAppendixtocname{Apêndices}%
+      \renewcommand\@IMErealAppendixpagename{Apêndices}%
+    }
+
+    \addto\captionsbrazilian{%
+      \renewcommand\annexname{Anexo}%
+      \renewcommand\annextocname{Anexos}%
+      \renewcommand\annexpagename{Anexos}%
+      \renewcommand\@IMErealAppendixname{Apêndice}%
+      \renewcommand\@IMErealAppendixtocname{Apêndices}%
+      \renewcommand\@IMErealAppendixpagename{Apêndices}%
+    }
+
+    \addto\captionsenglish{%
+      \renewcommand\annexname{Annex}%
+      \renewcommand\annextocname{Annexes}%
+      \renewcommand\annexpagename{Annexes}%
+      \renewcommand\@IMErealAppendixname{Appendix}%
+      \renewcommand\@IMErealAppendixtocname{Appendixes}%
+      \renewcommand\@IMErealAppendixpagename{Appendixes}%
+    }
+
+    \let\@IMEorigAppendix\appendix
+    \renewcommand\appendix{%
+        \def\appendixname{\@IMErealAppendixname}
+        \def\appendixtocname{\@IMErealAppendixtocname}
+        \def\appendixpagename{\@IMErealAppendixpagename}
+        \def\Hy@appendixstring{appendix}%
+        \@IMEorigAppendix
+    }
+
+    \newcommand\annex{%
+        \def\Hy@appendixstring{annex}
+        \def\appendixname{\annexname}
+        \def\appendixtocname{\annextocname}
+        \def\appendixpagename{\annexpagename}
+        \@IMEorigAppendix
+    }
+  }
+  {}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ÍNDICE REMISSIVO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEthesis}
+  {
+    % A criação do índice remissivo depende de um programa auxiliar, que pode ser
+    % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
+    % línguas diferentes e caracteres acentuados, mas o programa não está mais
+    % sendo mantido.
+    %\usepackage[xindy]{imakeidx} % usando xindy
+    \usepackage{imakeidx} % usando makeindex
+
+    % Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
+    % vamos mudar isso e deixar fancyhdr definir a formatação
+    \indexsetup{
+      othercode={\chaptermark{\indexname}},
+    }
+
+    \makeindex[
+      noautomatic,
+      intoc,
+      % Estas opções são usadas por xindy
+      % "-C utf8" ou "-M lang/latin/utf8.xdy" são truques para contornar este
+      % bug, que existe em outras distribuições tambem:
+      % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
+      % Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
+      %options=-C utf8 -M hyperxindy.xdy,
+      %options=-M lang/latin/utf8.xdy -M hyperxindy.xdy,
+      % Estas opções são usadas por makeindex
+      options=-s mkidxhead.ist -l -c,
+    ]
+  }
+  {}
+
+% Índices criados com xindy não funcionam em conjunto com hyperref; os criados
+% com makeindex podem funcionar, mas apenas se hyperref for carregada após
+% imakeidx. Para contornar esse problema, configuramos hyperref para *não*
+% gerar hyperlinks no índice (mais abaixo) e configuramos xindy/makeindex
+% para que eles gerem esses hyperlinks por conta própria (a configuração de
+% makeindex foi copiada da documentação de hyperref).
+
+% Cria o arquivo de configuração para xindy lidar corretamente com hyperlinks.
+\begin{filecontents*}{hyperxindy.xdy}
+(define-attributes ("emph"))
+(markup-locref :open "\hyperpage{" :close "}" :attr "default")
+(markup-locref :open "\textbf{\hyperpage{" :close "}}" :attr "textbf")
+(markup-locref :open "\textit{\hyperpage{" :close "}}" :attr "textit")
+(markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
+\end{filecontents*}
+
+% Cria o arquivo de configuração para makeindex lidar corretamente com
+% hyperlinks e colocar um cabeçalho para cada letra do índice.
+\begin{filecontents*}{mkidxhead.ist}
+delim_0 ", \\hyperpage{"
+delim_1 ", \\hyperpage{"
+delim_2 ", \\hyperpage{"
+delim_n "}, \\hyperpage{"
+delim_t "}"
+encap_prefix "}\\"
+encap_infix "{\\hyperpage{"
+encap_suffix "}"
+headings_flag 1
+heading_prefix "{\\bfseries "
+heading_suffix "}\\nopagebreak\n"
+\end{filecontents*}
+
