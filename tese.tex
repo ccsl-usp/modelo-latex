@@ -47,15 +47,11 @@
 
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique estes arquivos.
-\usepackage[thesis]{imegoodies}
+\usepackage{imegoodies}
+\usepackage[thesis]{imestyle}
 % Formatação personalizada do sumário, lista de tabelas/figuras etc.
 %\usepackage{titletoc}
 
-% titlesec permite definir formatação personalizada de títulos, seções etc.
-% Observe que titlesec é incompatível com os comandos refsection
-% e refsegment do pacote biblatex! Vamos usar titlesec apenas para fazer
-% títulos, seções etc. não serem justificados.
-\usepackage[raggedright]{titlesec}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% ESPAÇAMENTO E ALINHAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -92,31 +88,6 @@
 % corretamente com longtable. Aqui, forçamos a package a considerar
 % que os captions ficam abaixo das tabelas.
 \captionsetup*[longtable]{position=bottom}
-
-\usepackage[scale=.85]{sourcecodepro}
-
-\usepackage[mono=false]{libertinus}
-% Com LuaLaTeX/XeLaTeX, Libertinus configura também
-% a fonte matemática; aqui só precisamos corrigir \mathit
-\ifLuaTeX
-  \setmathfontface\mathit{Libertinus Serif Italic}
-\fi
-\makeatletter
-\ifXeTeX
-  % O nome de arquivo da fonte mudou na versão 2019-04-04
-  \@ifpackagelater{libertinus-otf}{2019/04/03}
-      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
-      {\setmathfontface\mathit{libertinusserif-italic.otf}}
-\fi
-\makeatother
-
-\ifPDFTeX
-  % A família libertine por padrão não define uma fonte matemática
-  % específica para pdfLaTeX; uma opção que funciona bem com ela:
-  %\usepackage[libertine]{newtxmath}
-  % Outra, provavelmente melhor:
-  \usepackage{libertinust1math}
-\fi
 
 %\nocolorlinks % para impressão em P&B
 \input{extras/source-code}
