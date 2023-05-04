@@ -30,72 +30,12 @@
 %\documentclass[a4paper,12pt,twoside,brazilian,english]{book}
 \documentclass[a4paper,12pt,twoside,english,brazilian]{book}
 
-% Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
-% texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
-% o tamanho das margens em função do tamanho do papel. Assim, obtemos o
-% mesmo resultado impresso, mas com margens diferentes, se o tamanho do
-% papel for diferente.
-\usepackage{geometry}
-
-\geometry{
-  textwidth=152mm,
-  hmarginratio=12:17, % 24:34 -> com papel A4, 24mm + 152mm + 34mm = 210mm
-  textheight=237mm,
-  vmarginratio=8:7, % 32:28 -> com papel A4, 32mm + 237mm + 28mm = 297mm
-  headsep=11mm, % distância entre a base do cabeçalho e o texto
-  headheight=21mm, % qualquer medida grande o suficiente, p.ex., top - headsep
-  footskip=10mm,
-  marginpar=20mm,
-  marginparsep=5mm,
-}
-
 % Vários pacotes e opções de configuração genéricos; para personalizar o
 % resultado, modifique estes arquivos.
 \usepackage{imegoodies}
 \usepackage[thesis]{imelooks}
-% Formatação personalizada do sumário, lista de tabelas/figuras etc.
-%\usepackage{titletoc}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% ESPAÇAMENTO E ALINHAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% LaTeX por default segue o estilo americano e não faz a indentação da
-% primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
-% indentação, como é o estilo brasileiro
-\usepackage{indentfirst}
-
-% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
-% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
-% possível colocar um espaço em branco entre um parágrafo e outro. Esta
-% package coloca o espaço em branco e desabilita o recuo; como queremos
-% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
-% redefini-lo depois de carregar a package.
-% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
-%       as linhas "oldparindent" e carregar a package com a opção "indent".
-\newlength\oldparindent
-\setlength\oldparindent\parindent
-\usepackage[parfill]{parskip}
-\setlength\parindent\oldparindent
-
-% Captions com fonte menor, indentação normal, corpo do texto
-% negrito e nome do caption itálico
-\usepackage[
-  font=small,
-  format=plain,
-  labelfont={bf,up},
-  textfont={normalfont,it}]{caption}
-
-% Em geral, a package caption é capaz de "adivinhar" se o caption
-% está acima ou abaixo da figura/tabela, mas isso não funciona
-% corretamente com longtable. Aqui, forçamos a package a considerar
-% que os captions ficam abaixo das tabelas.
-\captionsetup*[longtable]{position=bottom}
 
 %\nocolorlinks % para impressão em P&B
-\input{extras/source-code}
-
 
 % Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
 % completo em \includegraphics (e nem a extensão).
@@ -108,19 +48,7 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
 
-% Bibliografia
-\usepackage[
-  style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
-  %style=alphabetic, % similar a alpha
-  %style=numeric, % comum em artigos
-  %style=authoryear-comp, % autor-data "padrão" do biblatex
-  %style=apa, % variante de autor-data, muito usado
-  %style=abnt,
-  % Inclui, em cada item da bibliografia, links para as páginas onde o
-  % item foi citado
-  backref=true,
-]{biblatex}
-
+\input{extras/source-code}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -423,9 +351,7 @@ texto texto texto texto. Texto opcional.
 
 %%%% Apêndices %%%%
 
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+\clearpage
 
 \pagestyle{appendix}
 
@@ -440,9 +366,7 @@ texto texto texto texto. Texto opcional.
 
 %%%% Anexos %%%%
 
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+\clearpage
 
 \pagestyle{appendix} % repete o anterior, caso você não use apêndices
 

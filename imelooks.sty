@@ -222,27 +222,45 @@
 % https://tex.stackexchange.com/q/12806
 % https://github.com/PaulStanley/biblatex-tutorial/releases
 
-\PassOptionsToPackage{
+\iftoggle{IMEthesis}
+  {
+    \PassOptionsToPackage{
+      % variante de autor-data, similar a plainnat
+      style=extras/plainnat-ime,
+      % Inclui, em cada item da bibliografia, links
+      % para as páginas onde o item foi citado
+      backref=true 
+    }{biblatex}
+  }
+  {
+    \iftoggle{IMEbeamer}
+      {\PassOptionsToPackage{style=extras/beamer-ime}{biblatex}}
+      {
+        \PassOptionsToPackage{
+          style=numeric, % comum em artigos
+          %style=alphabetic, % similar a alpha
+          %style=authoryear-comp, % autor-data "padrão" do biblatex
+          %style=apa, % variante de autor-data, muito usado
+          %style=abnt,
+        }{biblatex}
+      }
+  }
+
+\RequirePackage[
   natbib=true, % Reconhece a sintaxe de natbib (\citet, \citep)
   hyperref=true, % Ativa o suporte ao pacote hyperref
   % Se um item da bibliografia tem língua definida (com langid), permite
   % hifenizar com base na língua selecionada.
   autolang=hyphen,
-}{biblatex}
+]{biblatex}
 
-% Este arquivo é executado antes de carregarmos biblatex, então precisamos
-% adiar a execução deste comando. Não carregamos biblatex neste arquivo
-% porque o usuário pode querer modificar o estilo bibliográfico, que é
-% definido por um parâmetro na hora da carga da package.
-\AtEndPreamble{
-  % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
-  % Impede que um item da bibliografia seja dividido em duas páginas.
-  % À parte a estética, isso contorna este bug, que afeta links na
-  % úlima página do trabalho, ou seja, pode afetar a bibliografia
-  % (atenddvi pode ser carregada por hyperxmp):
-  % https://github.com/ho-tex/atenddvi/issues/1
-  \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
-}
+% TODO: remover menção ao bug de atendvi/hyperxmp em 2024
+% Impede que um item da bibliografia seja dividido em duas páginas.
+% À parte a estética, isso contorna este bug, que afeta links na
+% úlima página do trabalho, ou seja, pode afetar a bibliografia
+% (atenddvi pode ser carregada por hyperxmp):
+% https://github.com/ho-tex/atenddvi/issues/1
+\AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
 
 \providetoggle{IMEcolorlinks}
 \providetoggle{IMEhidelinks}
@@ -411,6 +429,59 @@
 % apenas em ganttchart.
 \AtBeginEnvironment{ganttchart}{\deftranslation[to=Portuguese]{May}{Mai}}
 
+% LaTeX por default segue o estilo americano e não faz a indentação da
+% primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
+% indentação, como é o estilo brasileiro
+\usepackage{indentfirst}
+
+% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
+% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
+% possível colocar um espaço em branco entre um parágrafo e outro. Esta
+% package coloca o espaço em branco e desabilita o recuo; como queremos
+% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
+% redefini-lo depois de carregar a package.
+% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
+%       as linhas "oldparindent" e carregar a package com a opção "indent".
+\newlength\oldparindent
+\setlength\oldparindent\parindent
+\usepackage[parfill]{parskip}
+\setlength\parindent\oldparindent
+
+% Captions com fonte menor, indentação normal, corpo do texto
+% negrito e nome do caption itálico
+\usepackage[
+  font=small,
+  format=plain,
+  labelfont={bf,up},
+  textfont={normalfont,it}]{caption}
+
+% Em geral, a package caption é capaz de "adivinhar" se o caption
+% está acima ou abaixo da figura/tabela, mas isso não funciona
+% corretamente com longtable. Aqui, forçamos a package a considerar
+% que os captions ficam abaixo das tabelas.
+\captionsetup*[longtable]{position=bottom}
+
+\iftoggle{IMEbeamer}
+  {}
+  {
+    % Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
+    % texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
+    % o tamanho das margens em função do tamanho do papel. Assim, obtemos o
+    % mesmo resultado impresso, mas com margens diferentes, se o tamanho do
+    % papel for diferente.
+    \geometry{
+      textwidth=152mm,
+      hmarginratio=12:17, % 24:34 -> com papel A4, 24mm + 152mm + 34mm = 210mm
+      textheight=237mm,
+      vmarginratio=8:7, % 32:28 -> com papel A4, 32mm + 237mm + 28mm = 297mm
+      headsep=11mm, % distância entre a base do cabeçalho e o texto
+      headheight=21mm, % qualquer medida grande o suficiente, p.ex., top - headsep
+      footskip=10mm,
+      marginpar=20mm,
+      marginparsep=5mm,
+    }
+  }
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% CABEÇALHOS E RODAPÉS (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%
@@ -496,6 +567,7 @@
     % A distância entre a borda esquerda/interna do papel e o início do texto
     % é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
     % é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+    %
     \dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
     \addtolength{\headwidth}{\othermargin}
     \addtolength{\headwidth}{-10mm}
@@ -591,6 +663,10 @@
 
 \iftoggle{IMEthesis}
   {
+    % Formatação personalizada do sumário, lista de tabelas/figuras etc.
+    % Não utilizado neste modelo.
+    %\usepackage{titletoc}
+
     % biblatex pode ser configurado para inserir a bibliografia no sumário;
     % bibtex não oferece essa possibilidade. Com esta package, resolvemos
     % esse problema.
