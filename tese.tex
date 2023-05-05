@@ -30,15 +30,31 @@
 %\documentclass[a4paper,12pt,twoside,brazilian,english]{book}
 \documentclass[a4paper,12pt,twoside,english,brazilian]{book}
 
-% Vários pacotes e opções de configuração genéricos; para personalizar o
-% resultado, modifique estes arquivos.
+% O preâmbulo de um documento LaTeX pode ser razoavelmente longo. Neste
+% modelo, optamos por reduzi-lo, colocando praticamente tudo do preâmbulo
+% nas packages "imegoodies" e "imelooks".
+%
+% imegoodies carrega diversas packages muito úteis e populares (algumas
+% são praticamente obrigatórias, como amsmath, babel, array etc.). É
+% uma boa ideia usá-la com outros documentos também. Ela inclui vários
+% comentários explicativos e dicas de uso; não tenha medo de alterá-la
+% conforme a necessidade.
+%
+% imelooks carrega algumas packages e configurações que definem a
+% aparência do documento; você também pode querer usá-la (ou partes
+% dela) com outros documentos para obter as mesmas fontes, margens
+% etc. Tal como "imegoodies", pode valer a pena ler os comentários
+% e fazer modificações nessa package. Com a opção "thesis", imelooks
+% também define os comandos para capa, folha de rosto etc. Para uso
+% com a package beamer, a opção "beamer" define o estilo de pôsteres
+% e apresentações.
 \usepackage{imegoodies}
 \usepackage[thesis]{imelooks}
 
 %\nocolorlinks % para impressão em P&B
 
-% Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
-% completo em \includegraphics (e nem a extensão).
+% Diretórios onde estão as figuras; com isso, não é preciso colocar
+% o caminho completo em \includegraphics (e nem a extensão).
 \graphicspath{{figuras/},{logos/}}
 
 % Comandos rápidos para mudar de língua:
@@ -47,12 +63,6 @@
 % \texten{blah} -> o texto "blah" é em inglês
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
-
-\input{extras/source-code}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % O arquivo com os dados bibliográficos para biblatex; você pode usar
 % este comando mais de uma vez para acrescentar múltiplos arquivos
@@ -70,6 +80,13 @@
 \babelhyphenation{documentclass latexmk soft-ware clsguide} % todas as línguas
 \babelhyphenation[brazilian]{Fu-la-no}
 \babelhyphenation[english]{what-ever}
+
+\input{extras/source-code}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa, também são
@@ -211,9 +228,7 @@ texto texto texto texto. Texto opcional.
 
 % Como as listas que se seguem podem não incluir uma quebra de página
 % obrigatória, inserimos uma quebra manualmente aqui.
-\makeatletter
-\if@openright\cleardoublepage\else\clearpage\fi
-\makeatother
+\cleardoublepage
 
 % Todas as listas são opcionais; Usando "\chapter*" elas não são incluídas
 % no sumário. As listas geradas automaticamente também não são incluídas por
@@ -316,6 +331,7 @@ texto texto texto texto. Texto opcional.
 % Espaçamento simples
 \singlespacing
 
+% A introdução não tem número de capítulo, então os cabeçalhos também não
 \pagestyle{onlynames}
 \input{conteudo/00-exemplo-introducao}
 \pagestyle{mainmatter}
@@ -351,7 +367,7 @@ texto texto texto texto. Texto opcional.
 
 %%%% Apêndices %%%%
 
-\clearpage
+\cleardoublepage
 
 \pagestyle{appendix}
 
@@ -366,7 +382,7 @@ texto texto texto texto. Texto opcional.
 
 %%%% Anexos %%%%
 
-\clearpage
+\cleardoublepage
 
 \pagestyle{appendix} % repete o anterior, caso você não use apêndices
 
