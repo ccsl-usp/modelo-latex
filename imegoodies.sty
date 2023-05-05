@@ -305,6 +305,8 @@
 % "id est" (i.e.) e "exempli gratia" (e.g.)
 \frenchspacing
 
+\usepackage{geometry} % Permite definir o tamanho do papel, margens etc.
+
 % FIXME: should we remove this?
 % Durante o processamento, LaTeX procura por arquivos adicionais necessários
 % (tanto componentes do próprio LaTeX, como packages e fontes, quanto partes
@@ -346,8 +348,6 @@
 % com poucos arquivos e com máquinas modernas) isso não é um problema. Veja
 % https://tex.stackexchange.com/questions/241828/define-path-for-packages-in-the-latex-file-analog-of-inputpath-or-graphicspa#comment705011_241832
 \csappto{input@path}{{extras/}}
-
-\usepackage{geometry}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
