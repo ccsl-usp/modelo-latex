@@ -28,106 +28,39 @@
 %
 % Aqui também definimos a língua padrão do documento
 % (a última da lista) e línguas adicionais.
-%\documentclass[12pt,twoside,brazilian,english]{article}
-\documentclass[12pt,twoside,english,brazilian]{article}
+%\documentclass[a4paper,12pt,twoside,brazilian,english]{article}
+\documentclass[a4paper,12pt,twoside,english,brazilian]{article}
 
-% Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
-% texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
-% o tamanho das margens em função do tamanho do papel. Assim, obtemos o
-% mesmo resultado impresso, mas com margens diferentes, se o tamanho do
-% papel for diferente.
-\usepackage[a4paper]{geometry}
-
-\geometry{
-  textwidth=152mm,
-  hmarginratio=12:17, % 24:34 -> com papel A4, 24mm + 152mm + 34mm = 210mm
-  textheight=237mm,
-  vmarginratio=8:7, % 32:28 -> com papel A4, 32mm + 237mm + 28mm = 297mm
-  headsep=11mm, % distância entre a base do cabeçalho e o texto
-  headheight=21mm, % qualquer medida grande o suficiente, p.ex., top - headsep
-  footskip=10mm,
-  marginpar=20mm,
-  marginparsep=5mm,
-}
-
-% Vários pacotes e opções de configuração genéricos; para personalizar o
-% resultado, modifique estes arquivos.
+% O preâmbulo de um documento LaTeX pode ser razoavelmente longo. Neste
+% modelo, optamos por reduzi-lo, colocando praticamente tudo do preâmbulo
+% nas packages "imegoodies" e "imelooks".
+%
+% imegoodies carrega diversas packages muito úteis e populares (algumas
+% são praticamente obrigatórias, como amsmath, babel, array etc.). É
+% uma boa ideia usá-la com outros documentos também. Ela inclui vários
+% comentários explicativos e dicas de uso; não tenha medo de alterá-la
+% conforme a necessidade.
+%
+% imelooks carrega algumas packages e configurações que definem a
+% aparência do documento; você também pode querer usá-la (ou partes
+% dela) com outros documentos para obter as mesmas fontes, margens
+% etc. Tal como "imegoodies", pode valer a pena ler os comentários
+% e fazer modificações nessa package. Com a opção "thesis", imelooks
+% também define os comandos para capa, folha de rosto etc. Para uso
+% com a package beamer, a opção "beamer" define o estilo de pôsteres
+% e apresentações.
 \usepackage{imegoodies}
-
-% titlesec permite definir formatação personalizada de títulos, seções etc.
-% Observe que titlesec é incompatível com os comandos refsection
-% e refsegment do pacote biblatex! Vamos usar titlesec apenas para fazer
-% títulos, seções etc. não serem justificados.
-\usepackage[raggedright]{titlesec}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% ESPAÇAMENTO E ALINHAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% LaTeX por default segue o estilo americano e não faz a indentação da
-% primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
-% indentação, como é o estilo brasileiro
-\usepackage{indentfirst}
-
-% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
-% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
-% possível colocar um espaço em branco entre um parágrafo e outro. Esta
-% package coloca o espaço em branco e desabilita o recuo; como queremos
-% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
-% redefini-lo depois de carregar a package.
-% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
-%       as linhas "oldparindent" e carregar a package com a opção "indent".
-\newlength\oldparindent
-\setlength\oldparindent\parindent
-\usepackage[parfill]{parskip}
-\setlength\parindent\oldparindent
-
-% Captions com fonte menor, indentação normal, corpo do texto
-% negrito e nome do caption itálico
-\usepackage[
-  font=small,
-  format=plain,
-  labelfont={bf,up},
-  textfont={normalfont,it}]{caption}
-
-% Em geral, a package caption é capaz de "adivinhar" se o caption
-% está acima ou abaixo da figura/tabela, mas isso não funciona
-% corretamente com longtable. Aqui, forçamos a package a considerar
-% que os captions ficam abaixo das tabelas.
-\captionsetup*[longtable]{position=bottom}
-
-\usepackage[scale=.85]{sourcecodepro}
-
-\usepackage[mono=false]{libertinus}
-% Com LuaLaTeX/XeLaTeX, Libertinus configura também
-% a fonte matemática; aqui só precisamos corrigir \mathit
-\ifLuaTeX
-  \setmathfontface\mathit{Libertinus Serif Italic}
-\fi
-\makeatletter
-\ifXeTeX
-  % O nome de arquivo da fonte mudou na versão 2019-04-04
-  \@ifpackagelater{libertinus-otf}{2019/04/03}
-      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
-      {\setmathfontface\mathit{libertinusserif-italic.otf}}
-\fi
-\makeatother
-
-\ifPDFTeX
-  % A família libertine por padrão não define uma fonte matemática
-  % específica para pdfLaTeX; uma opção que funciona bem com ela:
-  %\usepackage[libertine]{newtxmath}
-  % Outra, provavelmente melhor:
-  \usepackage{libertinust1math}
-\fi
+\usepackage{imelooks}
 
 %\nocolorlinks % para impressão em P&B
-\input{extras/source-code}
 
-
-% Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
-% completo em \includegraphics (e nem a extensão).
-\graphicspath{{figuras/},{logos/}}
+% Diretórios onde estão as figuras; com isso, não é necessário (mas
+% é permitido) colocar o caminho completo em \includegraphics. Note
+% que a extensão nunca é necessária (mas é permitida), ou seja, o
+% resultado é o mesmo com "\includegraphics{figuras/foto.jpeg}",
+% "\includegraphics{foto.jpeg}", "\includegraphics{figuras/foto}"
+% ou "\includegraphics{foto}".
+\graphicspath{{figuras/},{fig/},{logos/},{img/},{images/},{imagens/}}
 
 % Comandos rápidos para mudar de língua:
 % \en -> muda para o inglês
@@ -136,18 +69,7 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
 
-% Espaçamento simples
-\singlespacing
-
-% Bibliografia
-\usepackage[
-  style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
-  %style=alphabetic, % similar a alpha
-  %style=numeric, % comum em artigos
-  %style=authoryear-comp, % autor-data "padrão" do biblatex
-  %style=apa, % variante de autor-data, muito usado
-  %style=abnt,
-]{biblatex}
+\input{extras/source-code}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -164,6 +86,12 @@
 % Com este comando, todos os itens do arquivo .bib são incluídos na lista
 % de referências
 %\nocite{*}
+
+% É possível definir como determinadas palavras podem (ou não) ser
+% hifenizadas; no entanto, a hifenização automática geralmente funciona bem
+\babelhyphenation{documentclass latexmk soft-ware clsguide} % todas as línguas
+\babelhyphenation[brazilian]{Fu-la-no}
+\babelhyphenation[english]{what-ever}
 
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa (com o comando
@@ -182,12 +110,6 @@
   pdfkeywords={LaTeX, artigo},
   pdfsubject={Uma variante do arquivo tese.tex usando a classe article.},
 }
-
-% É possível definir como determinadas palavras podem (ou não) ser
-% hifenizadas; no entanto, a hifenização automática geralmente funciona bem
-\babelhyphenation{documentclass latexmk soft-ware} % todas as línguas
-\babelhyphenation[brazilian]{Fu-la-no}
-\babelhyphenation[english]{what-ever}
 
 % Por padrão, article inclui a data atual; com este comando, você pode
 % definir uma data específica, inserir algum outro texto ou, deixando o

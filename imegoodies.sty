@@ -595,7 +595,6 @@
 %      isso aqui.
 \AtBeginDocument{\usepackage{textcomp}}
 
-
 % LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
 % precisaram ser re-criadas diversas vezes em formatos diferentes, então há
 % diversas variantes dela. Com o fontenc OT1 (default "ruim" do LaTeX, como
@@ -1065,10 +1064,23 @@
 
 % Modifica (melhora) o layout default das tabelas e acrescenta os comandos
 % \toprule, \bottomrule, \midrule e \cmidrule. Vale muito a pena ler a
-% documentação desta package! Como ela realiza medições usando o tamanho
-% da fonte do documento, carregamos ao final do preâmbulo, quando a fonte
-% correta já foi configurada.
-\AtEndPreamble{\RequirePackage{booktabs}}
+% documentação desta package!
+\RequirePackage{booktabs}
+% booktabs define algumas medidas em função da fonte padrão do documento.
+% Como a fonte pode ser modificada mais adiante, redefinimos as medidas
+% ao final do preâmbulo.
+\AtEndPreamble{
+  \heavyrulewidth=.08em
+  \lightrulewidth=.05em
+  \cmidrulewidth=.03em
+  \belowrulesep=.65ex
+  \belowbottomsep=0pt
+  \aboverulesep=.4ex
+  \abovetopsep=0pt
+  \cmidrulesep=\doublerulesep
+  \cmidrulekern=.5em
+  \defaultaddspace=.5em
+}
 
 % Permite colorir linhas, colunas ou células de uma tabela.
 \RequirePackage{colortbl}
@@ -1219,9 +1231,6 @@
 \RequirePackage{pgfplots}
 % sobre níveis de compatibilidade do pgfplots, veja
 % https://tex.stackexchange.com/a/81912
-%\pgfplotsset{compat=1.14} % TeXLive 2016
-%\pgfplotsset{compat=1.15} % TeXLive 2017
-%\pgfplotsset{compat=1.16} % TeXLive 2019
 \pgfplotsset{compat=newest}
 
 % Importação direta de arquivos gerados por gnuplot com o

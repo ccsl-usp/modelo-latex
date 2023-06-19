@@ -5,55 +5,122 @@
 \RequirePackage{imegoodies}
 
 %%%% Opções
-\newtoggle{IMEnobrazilian}
+\newtoggle{IMEbrazilian}
+\DeclareOption{brazilian}{\toggletrue{IMEbrazilian}}
+\DeclareOption{nobrazilian}{\togglefalse{IMEbrazilian}}
+
 \newtoggle{IMEbeamer}
+\newtoggle{IMEslides}
+\newtoggle{IMEposter}
+\DeclareOption{presentation}{
+    \toggletrue{IMEbeamer}
+    \toggletrue{IMEslides}
+    \togglefalse{IMEreport}
+    \togglefalse{IMEthesis}
+}
+\DeclareOption{slides}{
+    \toggletrue{IMEbeamer}
+    \toggletrue{IMEslides}
+    \togglefalse{IMEreport}
+    \togglefalse{IMEthesis}
+}
+\DeclareOption{poster}{
+    \togglefalse{IMEbeamer}
+    \toggletrue{IMEposter}
+    \togglefalse{IMEreport}
+    \togglefalse{IMEthesis}
+}
+
+\newtoggle{IMEfonts}
+\DeclareOption{fonts}{\toggletrue{IMEfonts}}
+\DeclareOption{nofonts}{\togglefalse{IMEfonts}}
+
+\newtoggle{IMEreport}
+\DeclareOption{report}{
+    \toggletrue{IMEreport}
+    \togglefalse{IMEbeamer}
+    \togglefalse{IMEslides}
+    \togglefalse{IMEposter}
+}
+
+\newtoggle{IMEbiblatex}
+\DeclareOption{usebiblatex}{\toggletrue{IMEbiblatex}}
+\DeclareOption{nousebiblatex}{\togglefalse{IMEbiblatex}}
+
+\newtoggle{IMEspacing}
+\DeclareOption{spacing}{\toggletrue{IMEspacing}}
+\DeclareOption{nospacing}{\togglefalse{IMEspacing}}
+
 \newtoggle{IMEthesis}
-\DeclareOption{nobrazilian}{\toggletrue{IMEnobrazilian}}
-\DeclareOption{beamer}{\toggletrue{IMEbeamer}}
-\DeclareOption{thesis}{\toggletrue{IMEthesis}}
+\DeclareOption{thesis}{
+    \toggletrue{IMEthesis}
+    \toggletrue{IMEreport}
+    \togglefalse{IMEbeamer}
+    \togglefalse{IMEslides}
+    \togglefalse{IMEposter}
+}
+
+\ExecuteOptions{brazilian,fonts,usebiblatex,spacing}
 \ProcessOptions\relax
 
 \ExplSyntaxOn
-\iftoggle{IMEnobrazilian}
-  {}
-  {
-    \newtoggle{IMEfoundBR}
-    
-    \seq_gclear_new:N \l_tmpa_seq
-    \seq_gset_from_clist:Nc \l_tmpa_seq {@classoptionslist}
-    
-    \seq_map_inline:Nn \l_tmpa_seq{
-      \ifstrequal{brazilian}{#1}
-        {\toggletrue{IMEfoundBR}}
-        {}
-    }
-    
-    \iftoggle{IMEfoundBR}
+\iftoggle{IMEbrazilian}{
+  \newtoggle{IMEfoundBR}
+
+  \seq_gclear_new:N \l_tmpa_seq
+  \seq_gset_from_clist:Nc \l_tmpa_seq {@classoptionslist}
+
+  \seq_map_inline:Nn \l_tmpa_seq{
+    \ifstrequal{brazilian}{#1}
+      {\toggletrue{IMEfoundBR}}
       {}
-      {
-        \PackageError{imelooks}{Language~"brazilian"~not~loaded!}
-        {This~package~expects~"brazilian"~to~be~set~as~a~language\MessageBreak
-         in~the~class~options~list~(in~general,~"brazilian"~and\MessageBreak
-         "portuguese"~are~preferred~over~"brazil"~and~"portuges").\MessageBreak
-         If~you~really~do~not~want~it,~add~option~"nobrazilian"~to\MessageBreak
-         this~package~options,~but~that~is~not~guaranteed~to~work.}
-      }
   }
+
+  \iftoggle{IMEfoundBR}
+    {
+      % Por padrão, LaTeX utiliza maiúsculas no início de cada palavra
+      % nestas expressões ("Lista de Figuras"); vamos usar maiúsculas
+      % apenas na primeira palavra.
+      \addto\captionsbrazilian{%
+        \renewcommand\listfigurename{Lista de figuras}%
+        \renewcommand\listtablename{Lista de tabelas}%
+        \renewcommand\indexname{Índice remissivo}%
+      }
+    }
+    {
+      \PackageError{imelooks}{Language~"brazilian"~not~loaded!}
+      {This~package~expects~"brazilian"~to~be~set~as~a~language\MessageBreak
+       in~the~class~options~list~(in~general,~"brazilian"~and\MessageBreak
+       "portuguese"~are~preferred~over~"brazil"~and~"portuges").\MessageBreak
+       If~you~really~do~not~want~it,~add~option~"nobrazilian"~to\MessageBreak
+       this~package~options,~but~that~is~not~guaranteed~to~work.}
+    }
+}{}
 \ExplSyntaxOff
 
-% Por padrão, LaTeX utiliza maiúsculas no início de cada palavra nestas
-% expressões ("Lista de Figuras"); vamos usar maiúsculas apenas na primeira
-% palavra.
-\addto\captionsbrazilian{%
-  \renewcommand\listfigurename{Lista de figuras}%
-  \renewcommand\listtablename{Lista de tabelas}%
-  \renewcommand\indexname{Índice remissivo}%
-}
+
+\iftoggle{IMEslides}{
+  \usetheme{imeusp} % baseado no tema metropolis
+  % Desabilita a cor de rodapé
+  \setbeamercolor{footline}{fg=,bg=}
+}{}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FONTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Se você está lendo isto, é porque gostaria de modificar os tipos de
+% letra do seu documento. A maneira mais simples de fazer isso é consultar
+% o sítio https://tug.org/FontCatalogue/ e utilizar as packages indicadas.
+% Se o sítio informa que a fonte está disponível *apenas* em formato OTF,
+% use lualatex; se *não* está disponível em formato OTF, use pdflatex
+% (lualatex também funciona, mas o resultado será inferior). Se está
+% disponível em formato OTF e também algum outro, você pode usar qualquer
+% um dos dois. Para usar alguma outra fonte instalada em seu computador
+% que não foi adaptada especificamente para LaTeX, use lualatex e leia
+% a documentação da package fontspec. O que segue são mais detalhes que
+% você provavelmente não precisa ler.
 
 % Você normalmente não precisa lidar com isso, mas pode ser útil saber:
 % O mecanismo usado por LaTeX para gerir fontes é o NFSS (veja "texdoc
@@ -89,16 +156,7 @@
 % Por padrão, esses comandos selecionam fontes da família "Computer Modern",
 % mas diversas packages os redefinem para carregar outras. Algumas dessas
 % packages alteram apenas uma das quatro fontes, enquanto outras alteram
-% todas de uma vez de maneira que o conjunto seja coerente. Então, se
-% quiser experimentar alguns tipos diferentes de letra para seu documento,
-% consulte https://tug.org/FontCatalogue/ e utilize as packages indicadas
-% para cada uma. Se o sítio informa que a fonte está disponível *apenas* em
-% formato OTF, use lualatex; se *não* está disponível em formato OTF, use
-% pdflatex (lualatex também funciona, mas o resultado será inferior). Se
-% está disponível em formato OTF e algum outro, você pode usar qualquer um
-% dos dois. Para usar alguma outra fonte instalada em seu computador, use
-% lualatex e leia a documentação da package fontspec.
-
+% todas de uma vez de maneira que o conjunto seja coerente.
 
 % Como dito acima, é possível mudar apenas uma das fontes. Em particular,
 % a fonte teletype da família Computer Modern foi criada para simular as
@@ -116,39 +174,9 @@
 %\else
 %  \setmonofont{inconsolatan}
 %\fi
-\usepackage[scale=.85]{sourcecodepro}
-
-% Ao invés da família Computer Modern, é possível usar outras como padrão.
-% Uma ótima opção é a libertinus, similar (mas não igual) à Times mas com
-% suporte a Small Caps e outras qualidades. A fonte teletype da família é
-% serifada, então é melhor definir outra; a opção "mono=false" faz o pacote
-% não carregar sua própria fonte, mantendo a escolha anterior.
-
-\usepackage[mono=false]{libertinus}
-%% Com LuaLaTeX/XeLaTeX, Libertinus configura também
-%% a fonte matemática; aqui só precisamos corrigir \mathit
-\ifLuaTeX
-  \setmathfontface\mathit{Libertinus Serif Italic}
-\fi
-\ifXeTeX
-  % O nome de arquivo da fonte mudou na versão 2019-04-04
-  \@ifpackagelater{libertinus-otf}{2019/04/03}
-      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
-      {\setmathfontface\mathit{libertinusserif-italic.otf}}
-\fi
-
-\ifPDFTeX
-  % A família libertinus por padrão não define uma fonte matemática
-  % específica para pdfLaTeX; uma opção que funciona bem com ela:
-  %\usepackage[libertine]{newtxmath}
-  % Outra, provavelmente melhor:
-  \usepackage{libertinust1math}
-\fi
-
-
-% Também é possível usar a Times como padrão; nesse caso, a fonte
-% sem serifa usualmente é a Helvetica. Mas provavelmente libertinus
-% é uma opção melhor.
+%
+% Também é possível usar Times como padrão; nesse caso, a fonte sem
+% serifa usualmente é Helvetica e a fonte teletype em geral é Courier:
 %\ifPDFTeX
 %  \usepackage[helvratio=0.95,largesc]{newtxtext}
 %  \usepackage{newtxtt} % Fonte teletype
@@ -163,23 +191,56 @@
 %  \setmathfont[range=\setminus]{STIX Two Math}
 %  % Clone da fonte Helvetica como fonte sem serifa
 %  \setsansfont{TeX Gyre Heros}
-%  % Clone da Courier como fonte teletype, mas provavelmente
-%  % é melhor utilizar sourcecodepro
+%  % Clone da Courier como fonte teletype
 %  %\setmonofont{TeX Gyre Cursor}
 %\fi
 
+\iftoggle{IMEfonts}{
 
-% LaTeX normalmente funciona com fontes que foram adaptadas para ele, ou
-% seja, ele não usa as fontes padrão instaladas no sistema: para usar
-% uma fonte é preciso ativar o pacote correspondente, como visto acima.
-% É possível escapar dessa limitação e acessar as fontes padrão do sistema
-% com XeTeX ou LuaTeX através do pacote fontspec.
-%\setmainfont{DejaVu Serif}
-%\setmainfont{Charis SIL}
-%\setsansfont{DejaVu Sans}
-%\setsansfont{Libertinus Sans}[Scale=1.1]
-%\setmonofont{DejaVu Sans Mono}
+  % Uma boa fonte teletype
+  \RequirePackage[scale=.85]{sourcecodepro}
 
+  % Uma ótima opção de família para o corpo do texto é a libertinus,
+  % similar (mas não igual) à Times, mas com suporte a Small Caps e
+  % outras qualidades. A fonte teletype da família é serifada, então
+  % é melhor definir outra; a opção "mono=false" faz o pacote não
+  % carregá-la, mantendo a escolha anterior.
+  \RequirePackage[mono=false]{libertinus}
+
+  \ifPDFTeX
+    % A família libertinus por padrão não define uma fonte matemática
+    % específica para pdfLaTeX; uma opção que funciona bem com ela:
+    %\RequirePackage[libertine]{newtxmath}
+    % Outra, provavelmente melhor:
+    \RequirePackage{libertinust1math}
+  \fi
+
+  % Com LuaLaTeX/XeLaTeX, Libertinus configura também
+  % a fonte matemática; aqui só precisamos corrigir \mathit
+  \ifLuaTeX
+    \setmathfontface\mathit{Libertinus Serif Italic}
+  \fi
+  \ifXeTeX
+    % O nome de arquivo da fonte mudou na versão 2019-04-04
+    \@ifpackagelater{libertinus-otf}{2019/04/03}
+        {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
+        {\setmathfontface\mathit{libertinusserif-italic.otf}}
+  \fi
+
+}{} % \iftoggle{IMEfonts}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% PÔSTERES E APRESENTAÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\iftoggle{IMEposter}
+%  {}
+%  {}
+
+\iftoggle{IMEbeamer}
+  {\RequirePackage{appendixnumberbeamer}}
+  {}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -212,55 +273,67 @@
 % Observe que biblatex pode criar bibliografias independentes por capítulo
 % ou outras divisões do texto. Normalmente é preciso indicar essas seções
 % manualmente, mas as opções "refsection" e "refsegment" fazem biblatex
-% identificar cada capítulo/seção/etc como uma nova divisão desse tipo.
-% No entanto, refsection e refsegment são incompatíveis com o pacote
-% titlesec, mencionado em imeusp-formatting.tex. Se você pretende criar
-% bibliografias independentes por seções, há duas soluções: (1) desabilitar
-% o pacote titlesec; (2) indicar as seções manualmente.
+% identificar cada capítulo/seção/etc como uma nova divisão desse tipo. No
+% entanto, refsection e refsegment são incompatíveis com o pacote titlesec.
+% Se você pretende criar bibliografias independentes por seções, há duas
+% soluções: (1) desabilitar o pacote titlesec; (2) indicar as seções
+% manualmente.
 %
 % Algumas dicas de configuração:
 % https://tex.stackexchange.com/q/12806
 % https://github.com/PaulStanley/biblatex-tutorial/releases
 
-\iftoggle{IMEthesis}
-  {
+%%%%%%%%%%%%%%%%%%%
+%%%% ATENÇÃO!! %%%%
+%%%%%%%%%%%%%%%%%%%
+%
+% Com beamer, apenas estilos bibliográficos derivados de authortitle,
+% numeric, alphabetic ou authoryear (como beamer-ime) vão funcionar
+% corretamente! Outros estilos, como abnt ou apa, vão gerar problemas
+% de layout que você vai precisar ajustar manualmente. Observe que, num
+% poster ou apresentação, provavelmente é uma boa ideia usar apenas
+% \nocite e não \cite.
+
+\iftoggle{IMEbiblatex}{
+
+  \iftoggle{IMEreport}{
     \PassOptionsToPackage{
       % variante de autor-data, similar a plainnat
       style=extras/plainnat-ime,
       % Inclui, em cada item da bibliografia, links
       % para as páginas onde o item foi citado
-      backref=true 
+      backref=true
     }{biblatex}
   }
   {
-    \iftoggle{IMEbeamer}
+    \ifboolexpr{togl {IMEbeamer} or togl {IMEposter}}
       {\PassOptionsToPackage{style=extras/beamer-ime}{biblatex}}
-      {
-        \PassOptionsToPackage{
-          style=numeric, % comum em artigos
-          %style=alphabetic, % similar a alpha
-          %style=authoryear-comp, % autor-data "padrão" do biblatex
-          %style=apa, % variante de autor-data, muito usado
-          %style=abnt,
-        }{biblatex}
-      }
+      {\PassOptionsToPackage{style=numeric}{biblatex}}
+      % TODO: allow the user to set the style
   }
 
-\RequirePackage[
-  natbib=true, % Reconhece a sintaxe de natbib (\citet, \citep)
-  hyperref=true, % Ativa o suporte ao pacote hyperref
-  % Se um item da bibliografia tem língua definida (com langid), permite
-  % hifenizar com base na língua selecionada.
-  autolang=hyphen,
-]{biblatex}
+  \RequirePackage[
+    natbib=true, % Reconhece a sintaxe de natbib (\citet, \citep)
+    hyperref=true, % Ativa o suporte ao pacote hyperref
+    % Se um item da bibliografia tem língua definida (com langid), permite
+    % hifenizar com base na língua selecionada.
+    autolang=hyphen,
+  ]{biblatex}
 
-% TODO: remover menção ao bug de atendvi/hyperxmp em 2024
-% Impede que um item da bibliografia seja dividido em duas páginas.
-% À parte a estética, isso contorna este bug, que afeta links na
-% úlima página do trabalho, ou seja, pode afetar a bibliografia
-% (atenddvi pode ser carregada por hyperxmp):
-% https://github.com/ho-tex/atenddvi/issues/1
-\AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
+  % Numa apresentação/poster, a bibliografia pode usar fonte menor
+  \iftoggle{IMEbeamer}
+    {\renewcommand*{\bibfont}{\footnotesize}}
+    {}
+
+  % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
+  % Impede que um item da bibliografia seja dividido em duas páginas.
+  % À parte a estética, isso contorna este bug, que afeta links na
+  % úlima página do trabalho, ou seja, pode afetar a bibliografia
+  % (atenddvi pode ser carregada por hyperxmp):
+  % https://github.com/ho-tex/atenddvi/issues/1
+  \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
+
+}{} % \iftoggle{IMEbiblatex}
 
 \providetoggle{IMEcolorlinks}
 \providetoggle{IMEhidelinks}
@@ -385,408 +458,417 @@
 
 % Este comando é definido pela package url, que é carregada automaticamente
 % por hyperref; ele faz URLs com fonte sem serifa ao invés de teletype
-\urlstyle{sf}
-
-% Estes parâmetros definem a aparência das gantt charts e variam
-% em função da fonte do documento.
-\ganttset{
-    vgrid,
-    x unit=1.7em,
-    y unit title=3ex,
-    y unit chart=4ex,
-    % O "strut" é necessário para alinhar o baseline dos nomes dos meses
-    title label font=\strut\footnotesize,
-    group label font=\footnotesize\bfseries,
-    bar label font=\footnotesize,
-    milestone label font=\footnotesize\itshape,
-    % "align=right" é necessário para \ganttalignnewline funcionar
-    group label node/.append style={align=right},
-    bar label node/.append style={align=right},
-    milestone label node/.append style={align=right},
-    group incomplete/.append style={fill=black!50},
-    bar/.append style={fill=black!25,draw=black},
-    bar incomplete/.append style={fill=white,draw=black},
-    % Não é preciso imprimir "0%"
-    progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
-    % Formato e tamanho dos elementos
-    title height=.9,
-    group top shift=.4,
-    group left shift=0,
-    group right shift=0,
-    group peaks tip position=0,
-    group peaks width=.2,
-    group peaks height=.3,
-    milestone height=.4,
-    milestone top shift=.4,
-    milestone left shift=.8,
-    milestone right shift=.2,
-}
-
-% Em inglês, tanto o nome completo quanto a abreviação do mês de maio
-% são "May"; por conta disso, na tradução em português LaTeX erra a
-% abreviação. Como talvez usemos o nome inteiro do mês em outro lugar,
-% ao invés de forçar a tradução para "Mai" globalmente, fazemos isso
-% apenas em ganttchart.
-\AtBeginEnvironment{ganttchart}{\deftranslation[to=Portuguese]{May}{Mai}}
-
-% LaTeX por default segue o estilo americano e não faz a indentação da
-% primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
-% indentação, como é o estilo brasileiro
-\usepackage{indentfirst}
-
-% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
-% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
-% possível colocar um espaço em branco entre um parágrafo e outro. Esta
-% package coloca o espaço em branco e desabilita o recuo; como queremos
-% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
-% redefini-lo depois de carregar a package.
-% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
-%       as linhas "oldparindent" e carregar a package com a opção "indent".
-\newlength\oldparindent
-\setlength\oldparindent\parindent
-\usepackage[parfill]{parskip}
-\setlength\parindent\oldparindent
-
-% Captions com fonte menor, indentação normal, corpo do texto
-% negrito e nome do caption itálico
-\usepackage[
-  font=small,
-  format=plain,
-  labelfont={bf,up},
-  textfont={normalfont,it}]{caption}
-
-% Em geral, a package caption é capaz de "adivinhar" se o caption
-% está acima ou abaixo da figura/tabela, mas isso não funciona
-% corretamente com longtable. Aqui, forçamos a package a considerar
-% que os captions ficam abaixo das tabelas.
-\captionsetup*[longtable]{position=bottom}
-
-\iftoggle{IMEbeamer}
+\iftoggle{IMEfonts}
+  {\urlstyle{sf}}
   {}
-  {
-    % Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
-    % texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
-    % o tamanho das margens em função do tamanho do papel. Assim, obtemos o
-    % mesmo resultado impresso, mas com margens diferentes, se o tamanho do
-    % papel for diferente.
-    \geometry{
-      textwidth=152mm,
-      hmarginratio=12:17, % 24:34 -> com papel A4, 24mm + 152mm + 34mm = 210mm
-      textheight=237mm,
-      vmarginratio=8:7, % 32:28 -> com papel A4, 32mm + 237mm + 28mm = 297mm
-      headsep=11mm, % distância entre a base do cabeçalho e o texto
-      headheight=21mm, % qualquer medida grande o suficiente, p.ex., top - headsep
-      footskip=10mm,
-      marginpar=20mm,
-      marginparsep=5mm,
-    }
+
+\iftoggle{IMEthesis}{
+  % Estes parâmetros definem a aparência das gantt charts e variam
+  % em função da fonte do documento.
+  \ganttset{
+      vgrid,
+      x unit=1.7em,
+      y unit title=3ex,
+      y unit chart=4ex,
+      % O "strut" é necessário para alinhar o baseline dos nomes dos meses
+      title label font=\strut\footnotesize,
+      group label font=\footnotesize\bfseries,
+      bar label font=\footnotesize,
+      milestone label font=\footnotesize\itshape,
+      % "align=right" é necessário para \ganttalignnewline funcionar
+      group label node/.append style={align=right},
+      bar label node/.append style={align=right},
+      milestone label node/.append style={align=right},
+      group incomplete/.append style={fill=black!50},
+      bar/.append style={fill=black!25,draw=black},
+      bar incomplete/.append style={fill=white,draw=black},
+      % Não é preciso imprimir "0%"
+      progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
+      % Formato e tamanho dos elementos
+      title height=.9,
+      group top shift=.4,
+      group left shift=0,
+      group right shift=0,
+      group peaks tip position=0,
+      group peaks width=.2,
+      group peaks height=.3,
+      milestone height=.4,
+      milestone top shift=.4,
+      milestone left shift=.8,
+      milestone right shift=.2,
   }
+
+}{} % \iftoggle{IMEthesis}
+
+\iftoggle{IMEspacing}{
+  
+  % LaTeX por default segue o estilo americano e não faz a indentação da
+  % primeira linha do primeiro parágrafo de uma seção; este pacote ativa
+  % essa indentação, como é o estilo brasileiro
+  \RequirePackage{indentfirst}
+  
+  % A primeira linha de cada parágrafo costuma ter um pequeno recuo para
+  % tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
+  % possível colocar um espaço em branco entre um parágrafo e outro. Esta
+  % package coloca o espaço em branco e desabilita o recuo; como queremos
+  % o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
+  % redefini-lo depois de carregar a package.
+  % TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
+  %       as linhas "oldparindent" e carregar a package com a opção "indent".
+  \iftoggle{IMEbeamer}
+    {}
+    {
+      \newlength\oldparindent
+      \setlength\oldparindent\parindent
+      \RequirePackage[parfill]{parskip}
+      \setlength\parindent\oldparindent
+    }
+  
+  % Captions com fonte menor, indentação normal, corpo do texto
+  % negrito e nome do caption itálico
+  \RequirePackage[
+    font=small,
+    format=plain,
+    labelfont={bf,up},
+    textfont={normalfont,it}]{caption}
+  
+  % Em geral, a package caption é capaz de "adivinhar" se o caption
+  % está acima ou abaixo da figura/tabela, mas isso não funciona
+  % corretamente com longtable. Aqui, forçamos a package a considerar
+  % que os captions ficam abaixo das tabelas.
+  \captionsetup*[longtable]{position=bottom}
+  
+  \iftoggle{IMEbeamer}
+    {}
+    {
+      % Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
+      % texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
+      % o tamanho das margens em função do tamanho do papel. Assim, obtemos o
+      % mesmo resultado impresso, mas com margens diferentes, se o tamanho do
+      % papel for diferente.
+      \geometry{
+        textwidth=152mm,
+        hmarginratio=12:17, % 24:34 -> com A4: 24mm + 152mm + 34mm = 210mm
+        textheight=237mm,
+        vmarginratio=8:7, % 32:28 -> com A4: 32mm + 237mm + 28mm = 297mm
+        headsep=11mm, % distância entre a base do cabeçalho e o texto
+        headheight=21mm, % qquer medida grande o suficiente, ex: top - headsep
+        footskip=10mm,
+        marginpar=20mm,
+        marginparsep=5mm,
+      }
+    }
+
+}{} % \iftoggle{IMEspacing}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%% CABEÇALHOS E RODAPÉS (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
-    % Permite saber o número total de páginas; útil para colocar no
-    % rodapé algo como "página 3 de 10" com "\thepage\ de \zpageref{LastPage}"
-    %\usepackage{zref-lastpage,zref-user}
+\iftoggle{IMEthesis}{
 
-    % Permite definir cabeçalhos e rodapés
-    \usepackage{fancyhdr}
+  % Permite saber o número total de páginas; útil para colocar no
+  % rodapé algo como "página 3 de 10" com "\thepage\ de \zpageref{LastPage}"
+  %\RequirePackage{zref-lastpage,zref-user}
 
-    % A formatação dos cabeçalhos/rodapés envolve duas coisas:
-    %
-    % 1. Definir qual texto deve ser impresso em cada página (nome
-    %    do capítulo ou seção, nome do autor, número da página etc.)
-    %
-    % 2. Imprimir esse texto no lugar correto (esquerda, direita ou
-    %    centro, cabeçalho ou rodapé)
-    %
-    % A definição do texto a imprimir é complexa, pois a preparação dos
-    % cabeçalhos/rodapés acontece de maneira independente da construção do
-    % restante da página. Textos fixos como, digamos, o nome do livro ou
-    % do seu autor, não trazem dificuldades. Já textos variáveis, como o
-    % nome do capítulo ou seção, o número da página etc. envolvem a
-    % passagem de informações sobre a página atual para o mecanismo de
-    % construção dos cabeçalhos.
-    %
-    % Isso é feito através de "variáveis" especiais chamadas "marks". O uso
-    % mais comum das marks é armazenar o nome do capítulo e da seção atuais:
-    % a cada novo capítulo ou seção, os comandos \chaptermark e \sectionmark
-    % são executados (isso é automático, você não precisa fazer nada); esses
-    % comandos definem uma "mark" com o nome do capítulo/seção a ser usado
-    % nos cabeçalhos/rodapés. Assim, modificando a definição dos comandos
-    % \chaptermark e \sectionmark, é possível modificar o texto a ser
-    % incluído nos cabeçalhos/rodapés.
-    %
-    % Definido o conteúdo das marks, o lugar em que cada texto é impresso
-    % é definido com os comandos \fancyhead e \fancyfoot. "RO" significa
-    % "Right side of Odd pages"; "LE" significa "Left side of Even pages" etc.
-    %
-    % LaTeX por padrão tem duas "marks": "\leftmark" e "\rightmark". Elas
-    % têm esses nomes porque originalmente eram usadas para armazenar o
-    % conteúdo a ser impresso nas páginas pares e ímpares. Isso, no entanto,
-    % não é obrigatório; a escolha desses nomes foi bastante infeliz. Para
-    % definir o conteúdo dessas marks, usam-se os comandos \markboth{A}{B}
-    % (define \leftmark como A e \rightmark como B) e \markright{C} (define
-    % \rightmark como C). Não há o comando \markleft.
-    %
-    % O procedimento de definição dos cabeçalhos e rodapés, portanto, envolve:
-    %
-    % 1. Redefinir \chaptermark e \sectionmark (ambas recebem um parâmetro,
-    %    que é o nome do capítulo/seção) para fazê-los executar \markboth e
-    %    \markright, inserindo o conteúdo desejado nas marks;
-    %
-    % 2. Usar \fancyhead e \fancyfoot para definir os cabeçalhos e rodapés
-    %    usando o conteúdo de \leftmark e \rightmark.
-    %
-    % Além das marks, é possível usar também as variáveis \thepage (número
-    % da página), \thechapter (número do capítulo) e \thesection (número da
-    % seção).
-    %
-    % Neste modelo, modificamos chaptermark e sectionmark para armazenar
-    % o número e nome do capítulo em leftmark e o número e nome da seção
-    % em rightmark. MAS imprimimos rightmark nas páginas pares (esquerda)
-    % e leftmark nas páginas ímpares (direita)!
-    %%%%%%%%%%
+  % Permite definir cabeçalhos e rodapés
+  \RequirePackage{fancyhdr}
 
-    % Sem linha separando o cabeçalho
-    \renewcommand{\headrulewidth}{0pt}
+  % A formatação dos cabeçalhos/rodapés envolve duas coisas:
+  %
+  % 1. Definir qual texto deve ser impresso em cada página (nome
+  %    do capítulo ou seção, nome do autor, número da página etc.)
+  %
+  % 2. Imprimir esse texto no lugar correto (esquerda, direita ou
+  %    centro, cabeçalho ou rodapé)
+  %
+  % A definição do texto a imprimir é complexa, pois a preparação dos
+  % cabeçalhos/rodapés acontece de maneira independente da construção do
+  % restante da página. Textos fixos como, digamos, o nome do livro ou
+  % do seu autor, não trazem dificuldades. Já textos variáveis, como o
+  % nome do capítulo ou seção, o número da página etc. envolvem a
+  % passagem de informações sobre a página atual para o mecanismo de
+  % construção dos cabeçalhos.
+  %
+  % Isso é feito através de "variáveis" especiais chamadas "marks". O uso
+  % mais comum das marks é armazenar o nome do capítulo e da seção atuais:
+  % a cada novo capítulo ou seção, os comandos \chaptermark e \sectionmark
+  % são executados (isso é automático, você não precisa fazer nada); esses
+  % comandos definem uma "mark" com o nome do capítulo/seção a ser usado
+  % nos cabeçalhos/rodapés. Assim, modificando a definição dos comandos
+  % \chaptermark e \sectionmark, é possível modificar o texto a ser
+  % incluído nos cabeçalhos/rodapés.
+  %
+  % Definido o conteúdo das marks, o lugar em que cada texto é impresso
+  % é definido com os comandos \fancyhead e \fancyfoot. "RO" significa
+  % "Right side of Odd pages"; "LE" significa "Left side of Even pages" etc.
+  %
+  % LaTeX por padrão tem duas "marks": "\leftmark" e "\rightmark". Elas
+  % têm esses nomes porque originalmente eram usadas para armazenar o
+  % conteúdo a ser impresso nas páginas pares e ímpares. Isso, no entanto,
+  % não é obrigatório; a escolha desses nomes foi bastante infeliz. Para
+  % definir o conteúdo dessas marks, usam-se os comandos \markboth{A}{B}
+  % (define \leftmark como A e \rightmark como B) e \markright{C} (define
+  % \rightmark como C). Não há o comando \markleft.
+  %
+  % O procedimento de definição dos cabeçalhos e rodapés, portanto, envolve:
+  %
+  % 1. Redefinir \chaptermark e \sectionmark (ambas recebem um parâmetro,
+  %    que é o nome do capítulo/seção) para fazê-los executar \markboth e
+  %    \markright, inserindo o conteúdo desejado nas marks;
+  %
+  % 2. Usar \fancyhead e \fancyfoot para definir os cabeçalhos e rodapés
+  %    usando o conteúdo de \leftmark e \rightmark.
+  %
+  % Além das marks, é possível usar também as variáveis \thepage (número
+  % da página), \thechapter (número do capítulo) e \thesection (número da
+  % seção).
+  %
+  % Neste modelo, modificamos chaptermark e sectionmark para armazenar
+  % o número e nome do capítulo em leftmark e o número e nome da seção
+  % em rightmark. MAS imprimimos rightmark nas páginas pares (esquerda)
+  % e leftmark nas páginas ímpares (direita)!
+  %%%%%%%%%%
 
-    % Queremos colocar o número da página mais próximo da borda do papel (na
-    % horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
-    % margem direita -10mm" (o número vai ficar a 10mm da borda).
-    %
-    % Observe que a package geometry define \evensidemargin, mas seu valor não
-    % necessariamente corresponde ao que queremos aqui (não sei bem como nem
-    % por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
-    % manualmente.
-    %
-    % A distância entre a borda esquerda/interna do papel e o início do texto
-    % é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
-    % é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
-    %
-    \dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
-    \addtolength{\headwidth}{\othermargin}
-    \addtolength{\headwidth}{-10mm}
+  % Sem linha separando o cabeçalho
+  \renewcommand{\headrulewidth}{0pt}
 
-    \newcommand{\formataNumPaginas}{
-      \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
-      \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
-    }
+  % Queremos colocar o número da página mais próximo da borda do papel (na
+  % horizontal). Para isso, vamos aumentar \headwidth, somando "tamanho da
+  % margem direita -10mm" (o número vai ficar a 10mm da borda).
+  %
+  % Observe que a package geometry define \evensidemargin, mas seu valor não
+  % necessariamente corresponde ao que queremos aqui (não sei bem como nem
+  % por que geometry define esse valor). Ao invés de usá-lo, vamos calcular
+  % manualmente.
+  %
+  % A distância entre a borda esquerda/interna do papel e o início do texto
+  % é dada por (1in + \hoffset + \oddsidemargin); a margem direita, portanto,
+  % é dada por (\paperwidth - (1in + \hoffset + \oddsidemargin + \textwidth)).
+  %
+  \dimdef{\othermargin}{\paperwidth - 1in - \hoffset - \oddsidemargin - \textwidth}
+  \addtolength{\headwidth}{\othermargin}
+  \addtolength{\headwidth}{-10mm}
 
-    \newcommand{\formataCabecalhosDinamicos}{
-      \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
-      \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
-    }
-
-    \fancypagestyle{mainmatter}{
-      % Número e nome do capítulo no cabeçalho das páginas pares
-      % (e nas ímpares quando não há seções)
-      \renewcommand{\chaptermark}[1]{
-        \markboth
-          {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
-          {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
-      }
-
-      % Número e nome da seção no cabeçalho das páginas ímpares
-      \renewcommand{\sectionmark}[1]{
-        \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
-      }
-
-      \fancyhf{}
-      \formataNumPaginas{}
-      \formataCabecalhosDinamicos{}
-    }
-
-    % Formato para capítulos não-numerados mas que devem
-    % aparecer no sumário (tipicamente, a introdução):
-    \fancypagestyle{onlynames}{
-      % Só o nome do capítulo/seção, sem numeração
-      \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
-      \renewcommand{\sectionmark}[1]{\markright{##1}}
-
-      \fancyhf{}
-      \formataNumPaginas{}
-      \formataCabecalhosDinamicos{}
-    }
-
-    \fancypagestyle{appendix}{
-      \renewcommand{\chaptermark}[1]{%
-        \markboth{%
-          % Páginas ímpares: "Apêndice/Anexo X"
-          \@chapapp\ \thechapter%
-        }{%
-          % Páginas pares: "X | nome do apêndice/anexo"
-          \thechapter\hskip 0.3em |\hskip 0.3em ##1%
-        }
-      }
-
-      \fancyhf{}
-      \formataNumPaginas{}
-      \formataCabecalhosDinamicos{}
-    }
-
-    % Na frontmatter e backmatter, não há números de capítulos e (em geral)
-    % não há subdivisões (capítulos/seções/subseções), apenas um nível.
-    % O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
-    % sem número) nas páginas pares ou ímpares.
-    %
-    % Normalmente, a bibliografia e o índice remissivo não definem os
-    % cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
-    % isso manualmente (em bibconfig.tex e index.tex).
-    \fancypagestyle{backmatter}{
-      \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
-      \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
-
-      \fancyhf{}
-      \formataNumPaginas{}
-      \formataCabecalhosDinamicos{}
-    }
-
-    % A página inicial de cada capítulo é automaticamente configurada para o estilo
-    % "plain", então vamos definir esse estilo (colocando o número de página no
-    % mesmo lugar das demais). As páginas iniciais também usam esse estilo.
-    \fancypagestyle{plain}{
-      \fancyhf{}
-      \formataNumPaginas{}
-    }
+  \newcommand{\formataNumPaginas}{
+    \fancyhead[RO]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
+    \fancyhead[LE]{\raisebox{8mm}{\footnotesize\bfseries\thepage}}
   }
-  {}
+
+  \newcommand{\formataCabecalhosDinamicos}{
+    \fancyhead[LO]{\scriptsize\MakeTextUppercase{\rightmark}}
+    \fancyhead[RE]{\scriptsize\MakeTextUppercase{\leftmark}}
+  }
+
+  \fancypagestyle{mainmatter}{
+    % Número e nome do capítulo no cabeçalho das páginas pares
+    % (e nas ímpares quando não há seções)
+    \renewcommand{\chaptermark}[1]{
+      \markboth
+        {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+        {\thechapter\hskip 0.3em |\hskip 0.3em ##1}
+    }
+
+    % Número e nome da seção no cabeçalho das páginas ímpares
+    \renewcommand{\sectionmark}[1]{
+      \markright{\thesection\hskip 0.3em |\hskip 0.3em ##1}
+    }
+
+    \fancyhf{}
+    \formataNumPaginas{}
+    \formataCabecalhosDinamicos{}
+  }
+
+  % Formato para capítulos não-numerados mas que devem
+  % aparecer no sumário (tipicamente, a introdução):
+  \fancypagestyle{onlynames}{
+    % Só o nome do capítulo/seção, sem numeração
+    \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+    \renewcommand{\sectionmark}[1]{\markright{##1}}
+
+    \fancyhf{}
+    \formataNumPaginas{}
+    \formataCabecalhosDinamicos{}
+  }
+
+  \fancypagestyle{appendix}{
+    \renewcommand{\chaptermark}[1]{%
+      \markboth{%
+        % Páginas ímpares: "Apêndice/Anexo X"
+        \@chapapp\ \thechapter%
+      }{%
+        % Páginas pares: "X | nome do apêndice/anexo"
+        \thechapter\hskip 0.3em |\hskip 0.3em ##1%
+      }
+    }
+
+    \fancyhf{}
+    \formataNumPaginas{}
+    \formataCabecalhosDinamicos{}
+  }
+
+  % Na frontmatter e backmatter, não há números de capítulos e (em geral)
+  % não há subdivisões (capítulos/seções/subseções), apenas um nível.
+  % O correto, então, é usar o mesmo texto (nome do capítulo ou seção,
+  % sem número) nas páginas pares ou ímpares.
+  %
+  % Normalmente, a bibliografia e o índice remissivo não definem os
+  % cabeçalhos (não executam "chaptermark/sectionmark"), mas "forçamos"
+  % isso manualmente (em bibconfig.tex e index.tex).
+  \fancypagestyle{backmatter}{
+    \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
+    \renewcommand{\sectionmark}[1]{\markboth{##1}{##1}}
+
+    \fancyhf{}
+    \formataNumPaginas{}
+    \formataCabecalhosDinamicos{}
+  }
+
+  % A página inicial de cada capítulo é automaticamente configurada para
+  % o estilo "plain", então vamos definir esse estilo (colocando o número
+  % de página no mesmo lugar das demais). As páginas iniciais também usam
+  % esse estilo.
+  \fancypagestyle{plain}{
+    \fancyhf{}
+    \formataNumPaginas{}
+  }
+
+}{} % \iftoggle{IMEthesis}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
-    % Formatação personalizada do sumário, lista de tabelas/figuras etc.
-    % Não utilizado neste modelo.
-    %\usepackage{titletoc}
+\iftoggle{IMEthesis}{
+  % Formatação personalizada do sumário, lista de tabelas/figuras etc.
+  % Não utilizado neste modelo.
+  %\RequirePackage{titletoc}
 
-    % biblatex pode ser configurado para inserir a bibliografia no sumário;
-    % bibtex não oferece essa possibilidade. Com esta package, resolvemos
-    % esse problema.
-    \usepackage[nottoc,notlot,notlof]{tocbibind}
+  % biblatex pode ser configurado para inserir a bibliografia no sumário;
+  % bibtex não oferece essa possibilidade. Com esta package, resolvemos
+  % esse problema.
+  \RequirePackage[nottoc,notlot,notlof]{tocbibind}
 
-    % Só olha até o nível 2 (subseções) para gerar o sumário e os
-    % cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
-    % no sumário nem nos cabeçalhos.
-    \setcounter{tocdepth}{2}
+  % Só olha até o nível 2 (subseções) para gerar o sumário e os
+  % cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
+  % no sumário nem nos cabeçalhos.
+  \setcounter{tocdepth}{2}
 
-    % Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
-    % sub-subseções (como 2.3.1.1). Veja que isso afeta referências
-    % cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
-    % numerada, a referência vai apontar para a seção um nível acima.
-    \setcounter{secnumdepth}{2}
+  % Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
+  % sub-subseções (como 2.3.1.1). Veja que isso afeta referências
+  % cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
+  % numerada, a referência vai apontar para a seção um nível acima.
+  \setcounter{secnumdepth}{2}
+}{}
 
-    % Normalmente, o capítulo de introdução não deve ser numerado, mas
-    % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
-    % para isso, então criamos aqui os comandos \unnumberedchapter,
-    % \unnumberedsection e \unnumberedsubsection.
-    \newcommand{\unnumberedchapter}[2][]{
-      \ifblank{#1}
-        {
-          \chapter*{#2}
-          \phantomsection
-          \addcontentsline{toc}{chapter}{#2}
-          \chaptermark{#2}
-        }
-        {
-          \chapter*{#2}
-          \phantomsection
-          \addcontentsline{toc}{chapter}{#1}
-          \chaptermark{#1}
-        }
-    }
+\iftoggle{IMEreport}{
 
-    \newcommand{\unnumberedsection}[2][]{
-      \ifblank{#1}
-        {
-          \section*{#2}
-          \phantomsection
-          \addcontentsline{toc}{section}{#2}
-          \sectionmark{#2}
-        }
-        {
-          \section*{#2}
-          \phantomsection
-          \addcontentsline{toc}{section}{#1}
-          \sectionmark{#1}
-        }
-    }
-
-    \newcommand{\unnumberedsubsection}[2][]{
-      \ifblank{#1}
-        {
-          \subsection*{#2}
-          \phantomsection
-          \addcontentsline{toc}{subsection}{#2}
-        }
-        {
-          \subsection*{#2}
-          \phantomsection
-          \addcontentsline{toc}{subsection}{#1}
-        }
-    }
+  % Normalmente, o capítulo de introdução não deve ser numerado, mas
+  % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
+  % para isso, então criamos aqui os comandos \unnumberedchapter,
+  % \unnumberedsection e \unnumberedsubsection.
+  \newcommand{\unnumberedchapter}[2][]{
+    \ifblank{#1}
+      {
+        \chapter*{#2}
+        \phantomsection
+        \addcontentsline{toc}{chapter}{#2}
+        \chaptermark{#2}
+      }
+      {
+        \chapter*{#2}
+        \phantomsection
+        \addcontentsline{toc}{chapter}{#1}
+        \chaptermark{#1}
+      }
   }
-  {}
+
+  \newcommand{\unnumberedsection}[2][]{
+    \ifblank{#1}
+      {
+        \section*{#2}
+        \phantomsection
+        \addcontentsline{toc}{section}{#2}
+        \sectionmark{#2}
+      }
+      {
+        \section*{#2}
+        \phantomsection
+        \addcontentsline{toc}{section}{#1}
+        \sectionmark{#1}
+      }
+  }
+
+  \newcommand{\unnumberedsubsection}[2][]{
+    \ifblank{#1}
+      {
+        \subsection*{#2}
+        \phantomsection
+        \addcontentsline{toc}{subsection}{#2}
+      }
+      {
+        \subsection*{#2}
+        \phantomsection
+        \addcontentsline{toc}{subsection}{#1}
+      }
+  }
+
+}{} % \iftoggle{IMEreport}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%% EPÍGRAFE (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
-    % O formato padrão do pacote epigraph é bem feinho...
-    % Outra opção para epígrafes é o pacote quotchap
-    \usepackage{epigraph}
+\iftoggle{IMEthesis}{
 
-    \setlength\epigraphwidth{.85\textwidth}
+  % O formato padrão do pacote epigraph é bem feinho...
+  % Outra opção para epígrafes é o pacote quotchap
+  \RequirePackage{epigraph}
 
-    % Sem linha entre o texto e o autor
-    \setlength{\epigraphrule}{0pt}
+  \setlength\epigraphwidth{.85\textwidth}
 
-    % Ambiente auxiliar para colocar margem à direita da epígrafe
-    % (como sempre, o modo mais simples de mudar as margens de um
-    % pagrágrafo é fazer de conta que é uma lista)
-    \newenvironment{epShiftLeft}
-      {
-        \par\begin{list}{}
-          {
-            \leftmargin 0pt
-            \labelwidth 0pt
-            \labelsep 0pt
-            \itemsep 0pt
-            \topsep 0pt
-            \partopsep 0pt
-            \rightmargin 2em
-          }
-        \item\FlushRight
-      }
-      {
-        \end{list}
-        % O espaço padrão que epigraph coloca entre a citação
-        % e o autor é muito pequeno; vamos aumentar um pouco
-        \vspace*{.3\baselineskip}
-      }
+  % Sem linha entre o texto e o autor
+  \setlength{\epigraphrule}{0pt}
 
-    \renewcommand\textflush{epShiftLeft}
-    \renewcommand\sourceflush{epShiftLeft}
+  % Ambiente auxiliar para colocar margem à direita da epígrafe
+  % (como sempre, o modo mais simples de mudar as margens de um
+  % pagrágrafo é fazer de conta que é uma lista)
+  \newenvironment{epShiftLeft}
+    {
+      \par\begin{list}{}
+        {
+          \leftmargin 0pt
+          \labelwidth 0pt
+          \labelsep 0pt
+          \itemsep 0pt
+          \topsep 0pt
+          \partopsep 0pt
+          \rightmargin 2em
+        }
+      \item\FlushRight
+    }
+    {
+      \end{list}
+      % O espaço padrão que epigraph coloca entre a citação
+      % e o autor é muito pequeno; vamos aumentar um pouco
+      \vspace*{.3\baselineskip}
+    }
 
-    \newcommand{\epigrafe}[2] {%
-      \ifstrempty{#2}{
-        \epigraph{\itshape #1}{}
-      }{
-        \epigraph{\itshape #1}{--- #2}
-      }
+  \renewcommand\textflush{epShiftLeft}
+  \renewcommand\sourceflush{epShiftLeft}
+
+  \newcommand{\epigrafe}[2] {%
+    \ifstrempty{#2}{
+      \epigraph{\itshape #1}{}
+    }{
+      \epigraph{\itshape #1}{--- #2}
     }
   }
-  {}
+
+}{} % \iftoggle{IMEthesis}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -823,8 +905,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%% RESUMO (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
+\iftoggle{IMEthesis}{
     % A página de resumo deve existir em português e inglês; ambas as versões
     % utilizam o mesmo environment.
 
@@ -885,8 +966,6 @@
       \begin{IMEabstract}\@abstract\end{IMEabstract}
       \egroup\egroup
     }
-  }
-  {}
 
 \NewDocumentEnvironment{IMEabstract}{} {
   \if@openright\cleardoublepage\else\clearpage\fi
@@ -927,15 +1006,15 @@
   \endgroup
 }
 
+}{} % \iftoggle{IMEthesis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% TEXTOS PADRÃO PARA A CAPA (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
+\iftoggle{IMEthesis}{
     % Formatação de datas de acordo com a língua
-    \usepackage[useregional]{datetime2}
+    \RequirePackage[useregional]{datetime2}
     \DTMusemodule{brazilian}{portuges}
     \DTMnewdatestyle{month-year}{%
       \renewcommand*{\DTMdisplaydate}[4]{##2,\space##1}%
@@ -1205,8 +1284,7 @@
       \renewcommand{\@assembleLicenseText}[1]{The content of this work is
                                               published under the #1 license}%
     }
-  }
-  {}
+}{} % \iftoggle{IMEthesis}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1214,27 +1292,30 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \ExplSyntaxOn
-% Mais de um coorientador é raro, mas pode acontecer
-\newcounter{numberOfCoadvisors}
-\NewDocumentCommand\coorientador{O{masc} m}{
+
+\iftoggle{IMEthesis}{
+
+  % Mais de um coorientador é raro, mas pode acontecer
+  \newcounter{numberOfCoadvisors}
+  \NewDocumentCommand\coorientador{O{masc} m}{
     \stepcounter{numberOfCoadvisors}
     \tl_gclear_new:c {@coadvisor\Roman{numberOfCoadvisors}}
     \tl_gclear_new:c {@coadvisor\Roman{numberOfCoadvisors}Gender}
 
     \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}} {#2}
     \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}Gender} {#1}
-}
+  }
 
-\seq_gclear_new:N \@committeeMembers
+  \seq_gclear_new:N \@committeeMembers
 
-\newtoggle{@mestrado}
-\newtoggle{@doutorado}
-\newtoggle{@tcc}
-\newtoggle{@qualificacao}
-\newtoggle{@finalversion}
+  \newtoggle{@mestrado}
+  \newtoggle{@doutorado}
+  \newtoggle{@tcc}
+  \newtoggle{@qualificacao}
+  \newtoggle{@finalversion}
 
-% Opções usando LaTeX3 (veja texdoc l3keys).
-\keys_define:nn { IME / defense }
+  % Opções usando LaTeX3 (veja texdoc l3keys).
+  \keys_define:nn { IME / defense }
   {
     % Chaves à esquerda definem as variáveis à direita
     data .code:n= {\DTMsavedate{@defensedate}{#1}},
@@ -1270,10 +1351,10 @@
     membrobanca .value_required:n = true,
   }
 
-\NewDocumentCommand\defesa{+m}{%
-  \keys_set:nn {IME/defense}{#1}
+  \NewDocumentCommand\defesa{+m}{%
+    \keys_set:nn {IME/defense}{#1}
 
-  \exp_args:NV \str_case:nnF \@license
+    \exp_args:NV \str_case:nnF \@license
     {
       {CC-BY}{\gdef\@license{\@assembleLicenseText{CC~BY~4.0}\\
         \href{https\c_colon_str//creativecommons.org/licenses/by/4.0/}{%
@@ -1313,48 +1394,46 @@
     }
     % If there is no match, use the user-supplied text
     {}
-}
+  }
 
-\seq_gclear_new:N \@seqkeywordspt
-\seq_gclear_new:N \@seqkeywordsen
-\newcommand*{\palavrachave}[1]{\seq_gput_right:Nn \@seqkeywordspt {#1}}
-\newcommand*{\keyword}[1]{\seq_gput_right:Nn \@seqkeywordsen {#1}}
+  \seq_gclear_new:N \@seqkeywordspt
+  \seq_gclear_new:N \@seqkeywordsen
+  \newcommand*{\palavrachave}[1]{\seq_gput_right:Nn \@seqkeywordspt {#1}}
+  \newcommand*{\keyword}[1]{\seq_gput_right:Nn \@seqkeywordsen {#1}}
 
-% Na impressão, as palavras-chave são separadas por pontos
-\newcommand*{\@keywordspt}{\seq_use:Nn \@seqkeywordspt {.\space}.}
-\newcommand*{\@keywordsen}{\seq_use:Nn \@seqkeywordsen {.\space}.}
+  % Na impressão, as palavras-chave são separadas por pontos
+  \newcommand*{\@keywordspt}{\seq_use:Nn \@seqkeywordspt {.\space}.}
+  \newcommand*{\@keywordsen}{\seq_use:Nn \@seqkeywordsen {.\space}.}
 
-% Para inclusão nos metadados com hyperxmp, são separadas por vírgulas
-\newcommand*{\@commakeywordspt}{\seq_use:Nn \@seqkeywordspt {,}}
-\newcommand*{\@commakeywordsen}{\seq_use:Nn \@seqkeywordsen {,}}
-\ExplSyntaxOff
+  % Para inclusão nos metadados com hyperxmp, são separadas por vírgulas
+  \newcommand*{\@commakeywordspt}{\seq_use:Nn \@seqkeywordspt {,}}
+  \newcommand*{\@commakeywordsen}{\seq_use:Nn \@seqkeywordsen {,}}
 
-\NewDocumentCommand{\orientador}{O{masc} m}{
-  \gdef\@advisor{#2}
-  \gdef\@advisorGender{#1}
-}
+  \NewDocumentCommand{\orientador}{O{masc} m}{
+    \gdef\@advisor{#2}
+    \gdef\@advisorGender{#1}
+  }
 
-\NewDocumentCommand{\@doutorado}{}{
-  \toggletrue{@doutorado}
-  \togglefalse{@mestrado}
-  \togglefalse{@tcc}
-}
+  \NewDocumentCommand{\@doutorado}{}{
+    \toggletrue{@doutorado}
+    \togglefalse{@mestrado}
+    \togglefalse{@tcc}
+  }
 
-\NewDocumentCommand{\@mestrado}{}{
-  \togglefalse{@doutorado}
-  \toggletrue{@mestrado}
-  \togglefalse{@tcc}
-}
+  \NewDocumentCommand{\@mestrado}{}{
+    \togglefalse{@doutorado}
+    \toggletrue{@mestrado}
+    \togglefalse{@tcc}
+  }
 
-\NewDocumentCommand{\@tcc}{}{
-  \togglefalse{@mestrado}
-  \togglefalse{@doutorado}
-  \toggletrue{@tcc}
-}
+  \NewDocumentCommand{\@tcc}{}{
+    \togglefalse{@mestrado}
+    \togglefalse{@doutorado}
+    \toggletrue{@tcc}
+  }
 
-\ExplSyntaxOn
-% Opções usando LaTeX3 (veja texdoc l3keys).
-\keys_define:nn { IME / title }
+  % Opções usando LaTeX3 (veja texdoc l3keys).
+  \keys_define:nn { IME / title }
   {
     % Chaves à esquerda definem as variáveis à direita
     titlept .tl_gset:N = \@titlept,
@@ -1366,6 +1445,9 @@
     subtitleen .tl_gset:N = \@subtitleen,
     subtitleen .value_required:n = true,
   }
+
+}{} % \iftoggle{IMEthesis}
+
 \ExplSyntaxOff
 
 % Às vezes é necessário forçar quebras de linha no título para a capa, mas
@@ -1980,143 +2062,144 @@
 % Observe que titlesec é incompatível com os comandos refsection
 % e refsegment do pacote biblatex! Aqui, carregamos a package apenas para
 % fazer os títulos alinhados à esquerda.
-\usepackage[raggedright]{titlesec}
+\iftoggle{IMEbeamer}
+  {}
+  {\RequirePackage[raggedright]{titlesec}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
-    % A classe Book inclui o comando \appendix, que (obviamente) permite inserir
-    % apêndices no documento. No entanto, não há suporte similar para anexos. Esta
-    % package acrescenta alguns recursos adicionais para apêndices; vamos usá-la
-    % para permitir colocar a palavra "Apêndice" no sumário e também para definir
-    % o comando \annex.
-    \usepackage{appendix}
-    \noappendicestocpagenum
+\iftoggle{IMEthesis}{
+  % A classe Book inclui o comando \appendix, que (obviamente) permite inserir
+  % apêndices no documento. No entanto, não há suporte similar para anexos. Esta
+  % package acrescenta alguns recursos adicionais para apêndices; vamos usá-la
+  % para permitir colocar a palavra "Apêndice" no sumário e também para definir
+  % o comando \annex.
+  \RequirePackage{appendix}
+  \noappendicestocpagenum
 
-    % Altera a formatação da palavra "Apêndice" no sumário
-    %
-    % Não queremos a linha "Apêndice" como a última da página no sumário;
-    % para isso:
-    %
-    % 1. Acrescentamos um pouco de espaço elástico logo antes dela
-    %
-    % 2. Colocamos uma sugestão de quebra de página
-    %
-    % 3. Usamos \@afterheading
-    %
-    % 1 e 2 incentivam (mas não forçam) LaTeX a realizar a quebra antes
-    % dela e 3 força LaTeX a mantê-la na mesma página que a próxima linha.
-    %
-    % \addtocontents pode pregar peças se usamos \include; contornamos
-    % com \immediate: https://tex.stackexchange.com/a/13926
-    \renewcommand\addappheadtotoc{%
-      \begingroup
-        \let\origwrite\write
-        \def\write{\immediate\origwrite}%
-        \addtocontents{toc}{{\large\vspace{0pt plus 2\baselineskip minus 0pt}}}%
-        \addtocontents{toc}{\protect\pagebreak[2]}%
-        \addtocontents{toc}{\vspace{.8\baselineskip}}%
-        \addtocontents{toc}{{\large\bfseries\hspace{-1.3em}\appendixtocname\par}}%
-        \addtocontents{toc}{\protect\@afterheading}%
-      \endgroup
-    }
-
-    \let\@IMErealAppendixname\appendixname
-    \let\@IMErealAppendixtocname\appendixtocname
-    \let\@IMErealAppendixpagename\appendixpagename
-    \def\appendixname{\@IMErealAppendixname}
-    \def\appendixtocname{\@IMErealAppendixtocname}
-    \def\appendixpagename{\@IMErealAppendixpagename}
-
-    \providecommand\annexname{Annex}
-    \providecommand\annextocname{Annexes}
-    \providecommand\annexpagename{Annexes}
-
-    \addto\captionsbrazil{%
-      \renewcommand\annexname{Anexo}%
-      \renewcommand\annextocname{Anexos}%
-      \renewcommand\annexpagename{Anexos}%
-      \renewcommand\@IMErealAppendixname{Apêndice}%
-      \renewcommand\@IMErealAppendixtocname{Apêndices}%
-      \renewcommand\@IMErealAppendixpagename{Apêndices}%
-    }
-
-    \addto\captionsbrazilian{%
-      \renewcommand\annexname{Anexo}%
-      \renewcommand\annextocname{Anexos}%
-      \renewcommand\annexpagename{Anexos}%
-      \renewcommand\@IMErealAppendixname{Apêndice}%
-      \renewcommand\@IMErealAppendixtocname{Apêndices}%
-      \renewcommand\@IMErealAppendixpagename{Apêndices}%
-    }
-
-    \addto\captionsenglish{%
-      \renewcommand\annexname{Annex}%
-      \renewcommand\annextocname{Annexes}%
-      \renewcommand\annexpagename{Annexes}%
-      \renewcommand\@IMErealAppendixname{Appendix}%
-      \renewcommand\@IMErealAppendixtocname{Appendixes}%
-      \renewcommand\@IMErealAppendixpagename{Appendixes}%
-    }
-
-    \let\@IMEorigAppendix\appendix
-    \renewcommand\appendix{%
-        \def\appendixname{\@IMErealAppendixname}
-        \def\appendixtocname{\@IMErealAppendixtocname}
-        \def\appendixpagename{\@IMErealAppendixpagename}
-        \def\Hy@appendixstring{appendix}%
-        \@IMEorigAppendix
-    }
-
-    \newcommand\annex{%
-        \def\Hy@appendixstring{annex}
-        \def\appendixname{\annexname}
-        \def\appendixtocname{\annextocname}
-        \def\appendixpagename{\annexpagename}
-        \@IMEorigAppendix
-    }
+  % Altera a formatação da palavra "Apêndice" no sumário
+  %
+  % Não queremos a linha "Apêndice" como a última da página no sumário;
+  % para isso:
+  %
+  % 1. Acrescentamos um pouco de espaço elástico logo antes dela
+  %
+  % 2. Colocamos uma sugestão de quebra de página
+  %
+  % 3. Usamos \@afterheading
+  %
+  % 1 e 2 incentivam (mas não forçam) LaTeX a realizar a quebra antes
+  % dela e 3 força LaTeX a mantê-la na mesma página que a próxima linha.
+  %
+  % \addtocontents pode pregar peças se usamos \include; contornamos
+  % com \immediate: https://tex.stackexchange.com/a/13926
+  \renewcommand\addappheadtotoc{%
+    \begingroup
+      \let\origwrite\write
+      \def\write{\immediate\origwrite}%
+      \addtocontents{toc}{{\large\vspace{0pt plus 2\baselineskip minus 0pt}}}%
+      \addtocontents{toc}{\protect\pagebreak[2]}%
+      \addtocontents{toc}{\vspace{.8\baselineskip}}%
+      \addtocontents{toc}{{\large\bfseries\hspace{-1.3em}\appendixtocname\par}}%
+      \addtocontents{toc}{\protect\@afterheading}%
+    \endgroup
   }
-  {}
+
+  \let\@IMErealAppendixname\appendixname
+  \let\@IMErealAppendixtocname\appendixtocname
+  \let\@IMErealAppendixpagename\appendixpagename
+  \def\appendixname{\@IMErealAppendixname}
+  \def\appendixtocname{\@IMErealAppendixtocname}
+  \def\appendixpagename{\@IMErealAppendixpagename}
+
+  \providecommand\annexname{Annex}
+  \providecommand\annextocname{Annexes}
+  \providecommand\annexpagename{Annexes}
+
+  \addto\captionsbrazil{%
+    \renewcommand\annexname{Anexo}%
+    \renewcommand\annextocname{Anexos}%
+    \renewcommand\annexpagename{Anexos}%
+    \renewcommand\@IMErealAppendixname{Apêndice}%
+    \renewcommand\@IMErealAppendixtocname{Apêndices}%
+    \renewcommand\@IMErealAppendixpagename{Apêndices}%
+  }
+
+  \addto\captionsbrazilian{%
+    \renewcommand\annexname{Anexo}%
+    \renewcommand\annextocname{Anexos}%
+    \renewcommand\annexpagename{Anexos}%
+    \renewcommand\@IMErealAppendixname{Apêndice}%
+    \renewcommand\@IMErealAppendixtocname{Apêndices}%
+    \renewcommand\@IMErealAppendixpagename{Apêndices}%
+  }
+
+  \addto\captionsenglish{%
+    \renewcommand\annexname{Annex}%
+    \renewcommand\annextocname{Annexes}%
+    \renewcommand\annexpagename{Annexes}%
+    \renewcommand\@IMErealAppendixname{Appendix}%
+    \renewcommand\@IMErealAppendixtocname{Appendixes}%
+    \renewcommand\@IMErealAppendixpagename{Appendixes}%
+  }
+
+  \let\@IMEorigAppendix\appendix
+  \renewcommand\appendix{%
+      \def\appendixname{\@IMErealAppendixname}
+      \def\appendixtocname{\@IMErealAppendixtocname}
+      \def\appendixpagename{\@IMErealAppendixpagename}
+      \def\Hy@appendixstring{appendix}%
+      \@IMEorigAppendix
+  }
+
+  \newcommand\annex{%
+      \def\Hy@appendixstring{annex}
+      \def\appendixname{\annexname}
+      \def\appendixtocname{\annextocname}
+      \def\appendixpagename{\annexpagename}
+      \@IMEorigAppendix
+  }
+
+}{} % \iftoggle{IMEthesis}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ÍNDICE REMISSIVO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
-    % A criação do índice remissivo depende de um programa auxiliar, que pode ser
-    % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
-    % línguas diferentes e caracteres acentuados, mas o programa não está mais
-    % sendo mantido.
-    %\usepackage[xindy]{imakeidx} % usando xindy
-    \usepackage{imakeidx} % usando makeindex
+\iftoggle{IMEthesis}{
+  % A criação do índice remissivo depende de um programa auxiliar, que pode ser
+  % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
+  % línguas diferentes e caracteres acentuados, mas o programa não está mais
+  % sendo mantido.
+  %\RequirePackage[xindy]{imakeidx} % usando xindy
+  \RequirePackage{imakeidx} % usando makeindex
 
-    % Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
-    % vamos mudar isso e deixar fancyhdr definir a formatação
-    \indexsetup{
-      othercode={\chaptermark{\indexname}},
-    }
-
-    \makeindex[
-      noautomatic,
-      intoc,
-      % Estas opções são usadas por xindy
-      % "-C utf8" ou "-M lang/latin/utf8.xdy" são truques para contornar este
-      % bug, que existe em outras distribuições tambem:
-      % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
-      % Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
-      %options=-C utf8 -M hyperxindy.xdy,
-      %options=-M lang/latin/utf8.xdy -M hyperxindy.xdy,
-      % Estas opções são usadas por makeindex
-      options=-s mkidxhead.ist -l -c,
-    ]
+  % Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
+  % vamos mudar isso e deixar fancyhdr definir a formatação
+  \indexsetup{
+    othercode={\chaptermark{\indexname}},
   }
-  {}
+
+  \makeindex[
+    noautomatic,
+    intoc,
+    % Estas opções são usadas por xindy
+    % "-C utf8" ou "-M lang/latin/utf8.xdy" são truques para contornar este
+    % bug, que existe em outras distribuições tambem:
+    % https://bugs.launchpad.net/ubuntu/+source/xindy/+bug/1735439
+    % Se "-C utf8" não funcionar, tente "-M lang/latin/utf8.xdy"
+    %options=-C utf8 -M hyperxindy.xdy,
+    %options=-M lang/latin/utf8.xdy -M hyperxindy.xdy,
+    % Estas opções são usadas por makeindex
+    options=-s mkidxhead.ist -l -c,
+  ]
+}{} % \iftoggle{IMEthesis}
+
+% filecontents não funciona dentro de iftoggle...
 
 % Índices criados com xindy não funcionam em conjunto com hyperref; os criados
 % com makeindex podem funcionar, mas apenas se hyperref for carregada após

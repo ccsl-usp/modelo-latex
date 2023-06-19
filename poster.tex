@@ -7,35 +7,24 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % A língua padrão é a última citada
-\documentclass[
-  xcolor={hyperref,svgnames,x11names,table},
-  hyperref={pdfencoding=unicode,plainpages=false,pdfpagelabels=true,breaklinks=true},
-  brazilian,english,
-]{beamer}
+\documentclass[brazilian,english]{article}
 
 % Vários pacotes e opções de configuração genéricos
 \usepackage{imegoodies}
-
-% Captions com fonte menor, indentação normal, corpo do texto
-% negrito e nome do caption itálico
-\usepackage[
-  font=small,
-  format=plain,
-  labelfont={bf,up},
-  textfont={normalfont,it}]{caption}
-
-% Em geral, a package caption é capaz de "adivinhar" se o caption
-% está acima ou abaixo da figura/tabela, mas isso não funciona
-% corretamente com longtable. Aqui, forçamos a package a considerar
-% que os captions ficam abaixo das tabelas.
-\captionsetup*[longtable]{position=bottom}
+\usepackage[poster]{imelooks}
+\usepackage[poster,skins]{tcolorbox}
+\usepackage{evenragged}
+\evenRaggedRight
 
 \hidelinks % desabilita cor/sublinhado dos links (URLs, refs etc.)
-\input{extras/source-code}
 
-% Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
-% completo em \includegraphics (e nem a extensão).
-\graphicspath{{figuras/},{logos/}}
+% Diretórios onde estão as figuras; com isso, não é necessário (mas
+% é permitido) colocar o caminho completo em \includegraphics. Note
+% que a extensão nunca é necessária (mas é permitida), ou seja, o
+% resultado é o mesmo com "\includegraphics{figuras/foto.jpeg}",
+% "\includegraphics{foto.jpeg}", "\includegraphics{figuras/foto}"
+% ou "\includegraphics{foto}".
+\graphicspath{{figuras/},{fig/},{logos/},{img/},{images/},{imagens/}}
 
 % Comandos rápidos para mudar de língua:
 % \en -> muda para o inglês
@@ -44,60 +33,9 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
 
-% Espaçamento simples
-\singlespacing
+\input{extras/source-code}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% APARÊNCIA DO BEAMER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Possible paper sizes: a0, a0b, a1, a2, a3, a4.
-%% Possible orientations: portrait, landscape
-%% Font sizes can be changed using the scale option.
-\usepackage[size=a1,orientation=portrait,scale=1.8]{beamerposter}
-
-\usetheme[poster]{imeusp} % carregado do diretório extras (veja basics.tex)
-
-%Remove ícones de navegação
-\beamertemplatenavigationsymbolsempty
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Medidas feitas "a olho"
-\newcommand\singlecol{\column{.963\textwidth}}
-\newcommand\halfcol{\column{.46\textwidth}}
-\newcommand\onethirdcol{\column{.2922\textwidth}}
-\newcommand\twothirdscol{\column{.626\textwidth}}
-\newcommand\onefourthcol{\column{.2084\textwidth}}
-
-% Blocos de cor personalizada
-\newenvironment{coloredblock}[2]%
-  {
-    \setbeamercolor{block title}{fg=white,bg=#1!80!white}
-    \setbeamercolor{block body}{fg=darkgray,bg=#1!20!white}
-    \setbeamercolor{local structure}{fg=darkgray,bg=#1!20!white}
-    \begin{block}{#2}
-  }
-  {\end{block}}
-
-% Bibliografia. Apenas estilos bibliográficos derivados de numeric,
-% alphabetic, authortitle e authoryear (como beamer-ime) vão funcionar
-% bem aqui! Outros estilos, como abnt ou apa, vão gerar problemas de
-% layout que você vai precisar ajustar manualmente. Observe que, num
-% poster ou apresentação, provavelmente é uma boa ideia usar apenas
-% \nocite e não \cite.
-\usepackage[
-  %style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
-  %style=alphabetic, % similar a alpha
-  %style=numeric, % comum em artigos
-  %style=authoryear-comp, % autor-data "padrão" do biblatex
-  %style=apa, % variante de autor-data, muito usado
-  %style=abnt,
-  style=extras/beamer-ime,
-]{biblatex}
-
-% Num poster, a bibliografia pode ficar em tamanho menor
-\renewcommand*{\bibfont}{\footnotesize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -115,184 +53,271 @@
 % de referências
 %\nocite{*}
 
-\title[CCSL]{An example poster using \LaTeX{}\\by CCSL-IME/USP}
-
-\institute{Department of Computer Science --- University of São Paulo}
-
-\author[ccsl@ime.usp.br]{\textbf{ccsl.ime.usp.br}}
-
-\date{Month and day, year}
-
-% Optional foot image
-\footimage{\includegraphics[width=13cm]{ccsl-logo}}
-
+%\title[CCSL]{An example poster using \LaTeX{}\\by CCSL-IME/USP}
+%
+%\institute{Department of Computer Science --- University of São Paulo}
+%
+%\author[ccsl@ime.usp.br]{\textbf{ccsl.ime.usp.br}}
+%
+%\date{Month and day, year}
+%
+%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INÍCIO DO POSTER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\geometry{a1paper,left=1.5cm,right=1.5cm,top=0cm,bottom=0cm}
+\renewcommand*\familydefault{\sfdefault}
+\definecolor{InterSCity}{HTML}{00998C}
+\definecolor{DarkInterSCity}{HTML}{0D6D65}
+\definecolor{PastelGreen}{HTML}{73937E}
+
+\definecolor{imeblue}{RGB}{20,45,105}
+\definecolor{imeyellow}{RGB}{230,175,60}
+\definecolor{imered}{RGB}{130,20,60}
+\definecolor{imesoftblue}{RGB}{0,100,160}
+
+\definecolor{DarkRed}{HTML}{872718}
+\definecolor{Blackish}{HTML}{232830}
+\definecolor{SandyPaper}{HTML}{FFFCE2}
+
+\makeatletter
+% Os triângulos ficam de tamanhos diferentes com pdflatex e lualatex;
+% para contornar isso, vamos (1) redimensionar para o tamanho do
+% \strut e (2) redimensionar para o tamanho desejado.
+\newcommand\@IMEcharscale[2]{%
+    \bgroup
+    \scalebox{#1}{\resizebox*{!}{\totalheightof{\strut}}{#2}}%
+    \egroup
+}
+
+\newcommand{\footimage}[1]{\def\footim@ge{#1}}
+\def\insertfootimage{
+    \ifdefined\footim@ge
+    \tikz[overlay,remember picture]
+    \node[anchor=south east,inner sep=12pt] at (current page.south east)
+    {\footim@ge};
+  \fi
+}
+
+
+\setlist{
+}
+
+\setlist[itemize,1]{
+    left = 0pt .. .8em,
+    label={\color{imeblue}\raisebox{.1em}{\@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}}
+}
+\setlist[itemize,2]{
+    before*={\footnotesize},
+    left = -5pt .. .8em,
+    label={\color{imeblue}\raisebox{-.1em}{\@IMEcharscale{.4}{\ensuremath{\bullet}}}}
+}
+\setlist[itemize,3]{
+    before*={\footnotesize\itshape},
+    left = -1pt .. .95em,
+    label={\color{imeblue}\raisebox{.05em}{\@IMEcharscale{.3}{\normalfont\textbf{\guillemotright}}}}
+}
+\makeatother
+
+%% Optional foot image
+\footimage{\includegraphics[width=13cm]{ccsl-logo}}
+
+\setstretch{1.1}
+\renewcommand\bibfont{\scriptsize}
+\parindent=0pt
+
 \begin{document}
 
 % Em um poster não há \maketitle
 
-\begin{frame}[fragile]\centering
+\begin{tcbposter}[
+  no coverage,
+  fontsize = 32pt,
+  poster = {
+    %showframe,
+    rows = 6,
+    % Queremos ter algumas coisas divididas em 1, 2, 3 e 4 colunas;
+    % o mínimo múltiplo comum é 12.
+    columns = 12,
+    colspacing = 1.2cm,
+    rowspacing = .8cm,
+  },
+  boxes = {
+    colframe = imesoftblue,
+    colback = SandyPaper,
+    fonttitle = \large,
+    top=.3\baselineskip,
+    bottom=.3\baselineskip,
+    toptitle=.1\baselineskip,
+    bottomtitle=.1\baselineskip,
+    left=.4\baselineskip,
+    right=.6\baselineskip,
+    valign=center,
+    skin=enhanced,
+  }
+]
 
-\vspace{-.5\baselineskip}
+\tcbsubskin{titlebox}{enhanced}{colback=imeblue, coltext=white, borderline south={15pt}{0pt}{imeyellow}, boxsep=10mm, grow sidewards by = 2.3cm}
+\tcbsubskin{footer}{enhanced}{colback=imesoftblue, coltext=white, boxsep=4mm, left=30pt, borderline north={15pt}{0pt}{imeyellow}, grow sidewards by = 2.3cm}
 
-%%%%%%%% Uma coluna %%%%%%%%
-% (precisamos usar columns para alinhar com os demais blocos)
-\begin{columns}[T]
+\posterbox[skin=titlebox]
+          {name=title, column=1, row=1, span=12, rowspan=.5, below = top}{
 
-  \singlecol
-
-  \begin{block}{The CCSL logo (full width)}
+    \huge
+    \rmfamily\bfseries
     \centering
-    \vspace{2\baselineskip} % Espaço adicional dentro do bloco (cor de fundo)
-    \includegraphics[width=.9\textwidth]{ccsl-logo}
-    \vspace{1\baselineskip}
-  \end{block}
+    An example poster using \LaTeX{}\\
+    by CCSL-IME/USP
+}
 
-\end{columns}
+\posterbox[skin=footer]{name=footer, column=1, above=bottom, span=12}{
+    \rmfamily\bfseries\large
+    ccsl.ime.usp.br\par
+    \vspace{4pt}
+    \small\ttfamily
+    ccsl@ime.usp.br\par
+    \vspace{4pt}
+    \footnotesize\rmfamily
+    \textcolor{imesoftblue!30!white}{Department of Computer Science --- University of São Paulo}\relax
+    \insertfootimage\par
+    \vspace{-.4\baselineskip}
+}
 
-    \vspace{1\baselineskip} % espaço adicional entre os blocos (branco)
+
+
+
+\posterbox[adjusted title = {The CCSL logo (full width)}, left*=.8\baselineskip, right*=.8\baselineskip, top=.8\baselineskip, bottom=.8\baselineskip]
+          {name=widelogo, column = 1, below=title, span = 12}{
+
+    \centering
+    \includegraphics[width=.95\textwidth]{ccsl-logo}
+}
 
 %%%%%%%% Quatro colunas %%%%%%%%
-\begin{columns}[T]
+\posterbox[adjusted title = One fourth width]
+          {name=quarterlogo, column=1, below=widelogo, span=3}{
 
-  \onefourthcol
-
-  \begin{block}{One fourth width}
     \centering
-    \vspace{.5\baselineskip}
     \includegraphics[width=.9\textwidth]{ccsl-logo}
-    \vspace{.5\baselineskip}
-  \end{block}
+}
 
-  \onefourthcol
+\posterbox[adjusted title = One fourth width]
+          {column=4, below=widelogo, span=3}{
 
-  \begin{block}{One fourth width}
     \centering
-    \vspace{.5\baselineskip}
     \includegraphics[width=.9\textwidth]{ccsl-logo}
-    \vspace{.5\baselineskip}
-  \end{block}
+}
 
-  \onefourthcol
+\posterbox[adjusted title = One fourth width]
+          {column=7, below=widelogo, span=3}{
 
-  \begin{block}{One fourth width}
     \centering
-    \vspace{.5\baselineskip}
     \includegraphics[width=.9\textwidth]{ccsl-logo}
-    \vspace{.5\baselineskip}
-  \end{block}
+}
 
-  \onefourthcol
+\posterbox[adjusted title = One fourth width]
+          {column=10, below=widelogo, span=3}{
 
-  \begin{block}{One fourth width}
     \centering
-    \vspace{.5\baselineskip}
     \includegraphics[width=.9\textwidth]{ccsl-logo}
-    \vspace{.5\baselineskip}
-  \end{block}
+}
 
-\end{columns}
+\posterbox[adjusted title = Pangrams (half width)]
+          {name=pangramdef,column=1, below=quarterlogo,span=6, rowspan=.9}{
 
-\vspace{.5\baselineskip}
-
-%%%%%%% Duas colunas %%%%%%%%
-\begin{columns}[T]
-
-  \halfcol
-
-  \begin{block}{Pangrams (half width)}
     \begin{itemize}
-      \item A \alert{pangram} is a sentence using every letter of a given
+      \item A \textbf{pangram} is a sentence using every letter of a given
             alphabet at least once.
       \item Pangrams have been used to:
+
       \begin{itemize}
         \item display typefaces
         \item test equipment
         \item develop skills in handwriting, calligraphy, and keyboarding
       \end{itemize}
-    \end{itemize}
-  \end{block}
 
-  \begin{block}{Examples of pangrams (half width)}
+    \end{itemize}
+}
+
+\posterbox[adjusted title = Examples of pangrams (half width)]
+          {name=pangramexamples,below=pangramdef,column=1,span=6, rowspan=1.2}{
+
     \begin{itemize}
       \item In English
+
       \begin{itemize}
         \item The quick brown fox jumps over the lazy dog
         \item Sphinx of black quartz, judge my vow
         \item How vexingly quick daft zebras jump
         \item Pack my box with five dozen liquor jugs
       \end{itemize}
+
       \item In Portuguese
+
       \begin{itemize}
         \item Vejo xá gritando que fez show sem playback
         \item Já fiz vinho com toque de kiwi para belga sexy
         \item Dê já multa ao punk sexy que fez viação chegar à web
         \item Vejo galã sexy pôr quinze kiwis à força em baú achatado
       \end{itemize}
+
     \end{itemize}
-  \end{block}
+}
 
-  \halfcol
+\posterbox[adjusted title = The IME/USP logo (half width)]
+          {name=halflogo,column=7, below=quarterlogo,span=6, rowspan=2.1}{
 
-  \begin{block}{The IME/USP logo (half width)}
     \centering
-    % Ajustando o tamanho para alinhar o final com a coluna ao lado
-    \vspace{.8\baselineskip}
-    \includegraphics[width=.75\textwidth,trim=0 0 70 0,clip]{ime-logo}\par
-    \vspace{.5\baselineskip}
-  \end{block}
-
-\end{columns}
-
-\vspace{.5\baselineskip}
+    \includegraphics[width=.9\textwidth,trim=0 0 70 0,clip]{ime-logo}\par
+}
 
 %%%%%%% Colunas assimétricas %%%%%%%%
-  \begin{columns}[T]
 
-  \twothirdscol
+\makeatletter
+\defbibenvironment{bibliography}
+{\list
+{\color{imeblue}\raisebox{.1em}{\@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}}
+{\setlength{\leftmargin}{\bibhang}%
+\setlength{\itemindent}{0pt}%
+\setlength{\itemsep}{\bibitemsep}%
+\setlength{\parsep}{\bibparsep}}}
+{\endlist}
+{\item}
+\makeatother
 
-  \begin{block}{Bibliography (assimetrical columns -- two thirds width)}
-    % "Estica" ligeiramente o bloco para alinhar com o final da outra coluna
-    \vspace{.26\baselineskip}
+
+\posterbox[adjusted title = Bibliography (assimetrical columns -- two thirds width), equal height group = bib-and-table]
+          {name=bibliography,column=1, below=halflogo,span=8}{
+
     \nocite{FSF:GNU-GPL, MenaChalco08, biblatex}
-    \printbibliography
-    \vspace{.26\baselineskip}
-  \end{block}
+    \printbibliography[heading=none]
+}
 
-  \onethirdcol
+\posterbox[adjusted title = A Table (one third width), equal height group = bib-and-table]
+          {column=9, below=halflogo,span=4}{
 
-  \begin{block}{A Table (one third width)}
-  \begin{table}[H] % [H] é obrigatório com beamer!
-    \centering
-    \begin{tabular}{ccl}
-      \toprule
-      Code      & Abbreviation  & Name \\
-      \midrule
-      \texttt{A}  & Ala          & Alanine \\
-      \texttt{C}  & Cys          & Cysteine \\
-      \texttt{W}  & Trp          & Tryptophan \\
-      \texttt{Y}  & Tyr          & Tyrosine \\
-      \bottomrule
-    \end{tabular}
-  \end{table}
-
-  \end{block}
-
-\end{columns}
-
-\vspace{.5\baselineskip}
+    \begin{table}[H] % [H] é obrigatório com beamer!
+      \centering
+      \singlespacing\vspace{-\baselineskip}
+      \begin{tabular}{ccl}
+        \toprule
+        Code        & Abbreviation & Name       \\
+        \midrule
+        \texttt{A}  & Ala          & Alanine    \\
+        \texttt{C}  & Cys          & Cysteine   \\
+        \texttt{W}  & Trp          & Tryptophan \\
+        \texttt{Y}  & Tyr          & Tyrosine   \\
+        \bottomrule
+      \end{tabular}
+    \end{table}
+}
 
 %%%%%%%% Três colunas %%%%%%%%
-\begin{columns}[T]
+\posterbox[adjusted title = Sponsors (one third width)]
+          {name=sponsors,column=1, between=bibliography and footer,span=4}{
 
-  \onethirdcol
-
-    \begin{block}{Sponsors (one third width)}
-    \vspace{.5\baselineskip}
     \centering
     \begin{figure}[H] % [H] é obrigatório com beamer!
       \begin{subfigure}[c]{.3\textwidth}
@@ -311,12 +336,11 @@
         \includegraphics[width=.9\textwidth]{ccsl-logo}
       \end{subfigure}
     \end{figure}
-  \end{block}
+}
 
-  \onethirdcol
+\posterbox[adjusted title = Sponsors (one third width)]
+          {column=5, between=bibliography and footer,span=4}{
 
-  \begin{block}{Sponsors (one third width)}
-    \vspace{.5\baselineskip}
     \centering
     \begin{figure}[H] % [H] é obrigatório com beamer!
       \begin{subfigure}[c]{.3\textwidth}
@@ -335,12 +359,11 @@
         \includegraphics[width=.9\textwidth]{ccsl-logo}
       \end{subfigure}
     \end{figure}
-  \end{block}
+}
 
-  \onethirdcol
+\posterbox[adjusted title = Sponsors (one third width)]
+          {column=9, between=bibliography and footer,span=4}{
 
-  \begin{block}{Sponsors (one third width)}
-    \vspace{.5\baselineskip}
     \centering
     \begin{figure}[H] % [H] é obrigatório com beamer!
       \begin{subfigure}[c]{.3\textwidth}
@@ -359,10 +382,8 @@
         \includegraphics[width=.9\textwidth]{ccsl-logo}
       \end{subfigure}
     \end{figure}
-  \end{block}
+}
 
-\end{columns}
-
-\end{frame}
+\end{tcbposter}
 
 \end{document}

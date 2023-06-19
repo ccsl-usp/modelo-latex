@@ -16,28 +16,18 @@
 
 % Vários pacotes e opções de configuração genéricos
 \usepackage{imegoodies}
-
-% Captions com fonte menor, indentação normal, corpo do texto
-% negrito e nome do caption itálico
-\usepackage[
-  font=small,
-  format=plain,
-  labelfont={bf,up},
-  textfont={normalfont,it}]{caption}
-
-% Em geral, a package caption é capaz de "adivinhar" se o caption
-% está acima ou abaixo da figura/tabela, mas isso não funciona
-% corretamente com longtable. Aqui, forçamos a package a considerar
-% que os captions ficam abaixo das tabelas.
-\captionsetup*[longtable]{position=bottom}
+\usepackage[slides]{imelooks}
+\usepackage{evenragged}
 
 \hidelinks % desabilita cor/sublinhado dos links (URLs, refs etc.)
-\input{extras/source-code}
 
-
-% Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
-% completo em \includegraphics (e nem a extensão).
-\graphicspath{{figuras/},{logos/}}
+% Diretórios onde estão as figuras; com isso, não é necessário (mas
+% é permitido) colocar o caminho completo em \includegraphics. Note
+% que a extensão nunca é necessária (mas é permitida), ou seja, o
+% resultado é o mesmo com "\includegraphics{figuras/foto.jpeg}",
+% "\includegraphics{foto.jpeg}", "\includegraphics{figuras/foto}"
+% ou "\includegraphics{foto}".
+\graphicspath{{figuras/},{fig/},{logos/},{img/},{images/},{imagens/}}
 
 % Comandos rápidos para mudar de língua:
 % \en -> muda para o inglês
@@ -46,19 +36,7 @@
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
 
-% Espaçamento simples
-\singlespacing
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%% APARÊNCIA DO BEAMER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\usepackage{appendixnumberbeamer}
-
-% Tema metropolis com algumas modificações
-\usetheme{imeusp} % carregado do diretório extras (veja basics.tex)
-
-% Desabilita a cor de rodapé
-\setbeamercolor{footline}{fg=,bg=}
+\input{extras/source-code}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -82,25 +60,6 @@
     \begin{block}{#2}
   }
   {\end{block}}
-
-% Bibliografia. Apenas estilos bibliográficos derivados de numeric,
-% alphabetic, authortitle e authoryear (como beamer-ime) vão funcionar
-% bem aqui! Outros estilos, como abnt ou apa, vão gerar problemas de
-% layout que você vai precisar ajustar manualmente. Observe que, num
-% poster ou apresentação, provavelmente é uma boa ideia usar apenas
-% \nocite e não \cite.
-\usepackage[
-  %style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
-  %style=alphabetic, % similar a alpha
-  %style=numeric, % comum em artigos
-  %style=authoryear-comp, % autor-data "padrão" do biblatex
-  %style=apa, % variante de autor-data, muito usado
-  %style=abnt,
-  style=extras/beamer-ime,
-]{biblatex}
-
-% Numa apresentação, a bibliografia pode ficar em tamanho menor
-\renewcommand*{\bibfont}{\footnotesize}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -303,6 +262,7 @@ but it is nonetheless useful. The entry on Pangrams states:
 
   \begin{table}[H] % [H] é obrigatório com beamer!
     \centering
+    \singlespacing\vspace{-\baselineskip}
     \begin{tabular}{ccl}
       \toprule
       Code      & Abbreviation  & \makecell{Full\\Name} \\
@@ -347,7 +307,9 @@ but it is nonetheless useful. The entry on Pangrams states:
   \printbibliography
 \end{frame}
 
-% Recapitulando
+% Slides do tipo "Fim" ou "Perguntas?" não são muito úteis; ao invés
+% disso, é mais interessante definir um slide final recapitulando o
+% que foi visto.
 \begin{frame}[t]{\insertshorttitle}
   \overview
 
@@ -363,7 +325,7 @@ but it is nonetheless useful. The entry on Pangrams states:
 
 \showqrcode
 
-\appendix
+\appendix % Whatever follows is not counted in the total number of pages
 
 \begin{frame}{Extra info}
   \begin{itemize}

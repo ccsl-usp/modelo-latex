@@ -53,9 +53,13 @@
 
 %\nocolorlinks % para impressão em P&B
 
-% Diretórios onde estão as figuras; com isso, não é preciso colocar
-% o caminho completo em \includegraphics (e nem a extensão).
-\graphicspath{{figuras/},{logos/}}
+% Diretórios onde estão as figuras; com isso, não é necessário (mas
+% é permitido) colocar o caminho completo em \includegraphics. Note
+% que a extensão nunca é necessária (mas é permitida), ou seja, o
+% resultado é o mesmo com "\includegraphics{figuras/foto.jpeg}",
+% "\includegraphics{foto.jpeg}", "\includegraphics{figuras/foto}"
+% ou "\includegraphics{foto}".
+\graphicspath{{figuras/},{fig/},{logos/},{img/},{images/},{imagens/}}
 
 % Comandos rápidos para mudar de língua:
 % \en -> muda para o inglês
@@ -63,6 +67,13 @@
 % \texten{blah} -> o texto "blah" é em inglês
 % \textbr{blah} -> o texto "blah" é em português
 \babeltags{br = brazilian, en = english}
+
+\input{extras/source-code}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % O arquivo com os dados bibliográficos para biblatex; você pode usar
 % este comando mais de uma vez para acrescentar múltiplos arquivos
@@ -81,12 +92,6 @@
 \babelhyphenation[brazilian]{Fu-la-no}
 \babelhyphenation[english]{what-ever}
 
-\input{extras/source-code}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa, também são
