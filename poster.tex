@@ -14,7 +14,6 @@
 \usepackage[poster]{imelooks}
 \usepackage[poster,skins]{tcolorbox}
 \usepackage{evenragged}
-\evenRaggedRight
 
 \hidelinks % desabilita cor/sublinhado dos links (URLs, refs etc.)
 
@@ -106,16 +105,19 @@
 }
 
 \setlist[itemize,1]{
+    first={\evenRaggedRight},
     left = 0pt .. .8em,
     label={\color{imeblue}\raisebox{.1em}{\@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}}
 }
 \setlist[itemize,2]{
     before*={\footnotesize},
+    first={\evenRaggedRight},
     left = -5pt .. .8em,
     label={\color{imeblue}\raisebox{-.1em}{\@IMEcharscale{.4}{\ensuremath{\bullet}}}}
 }
 \setlist[itemize,3]{
     before*={\footnotesize\itshape},
+    first={\evenRaggedRight},
     left = -1pt .. .95em,
     label={\color{imeblue}\raisebox{.05em}{\@IMEcharscale{.3}{\normalfont\textbf{\guillemotright}}}}
 }
@@ -145,6 +147,7 @@
     rowspacing = .8cm,
   },
   boxes = {
+    before upper = \evenRaggedRight,
     colframe = imesoftblue,
     colback = SandyPaper,
     fonttitle = \large,
