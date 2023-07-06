@@ -337,7 +337,7 @@ texto texto texto texto. Texto opcional.
 \singlespacing
 
 % A introdução não tem número de capítulo, então os cabeçalhos também não
-\pagestyle{onlynames}
+\pagestyle{unnumberedchapter}
 \input{conteudo/00-exemplo-introducao}
 \pagestyle{mainmatter}
 \input{conteudo/01-exemplo-normas-ime}
@@ -414,8 +414,8 @@ texto texto texto texto. Texto opcional.
 % A bibliografia é obrigatória
 
 \printbibliography[
-  title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
-  %title=\bibname\label{bibliografia}, % "Bibliografia"
+  title=\refname\label{sec:bib}, % "Referências", recomendado pela ABNT
+  %title=\bibname\label{sec:bib}, % "Bibliografia"
   heading=bibintoc, % Inclui a bibliografia no sumário
 ]
 

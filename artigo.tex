@@ -126,6 +126,7 @@
 % Gera a "capa" do artigo (geralmente, título, autor etc. sem que haja uma
 % quebra de página para o restante do conteúdo)
 \maketitle
+\thispagestyle{empty} % não inclui o número da página na primeira página
 
 \begin{abstract}
   Uma variante do arquivo \texttt{tese.tex} usando a classe \textsf{article}.
@@ -146,8 +147,8 @@ caracteres acentuados. Além disso, eles muito frequentemente utilizam
 bibtex ao invés de biblatex para a geração automática da bibliografia.
 
 \printbibliography[
-  title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
-  %title=\bibname\label{bibliografia}, % "Bibliografia"
+  title=\refname\label{sec:bib}, % "Referências", recomendado pela ABNT
+  %title=\bibname\label{sec:bib}, % "Bibliografia"
 ]
 
 \end{document}

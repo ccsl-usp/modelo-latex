@@ -215,3 +215,12 @@
        {}%
      \printdelim{andothersdelim}\bibstring[\mkbibetal]{andothers}}
     {}}
+
+% Add "http://" for URLs that do not include http/https/ftp prefix
+\ExplSyntaxOn
+\DeclareFieldFormat{url}{%
+  \regex_match:nnTF{^(ftp|https?|FTP|HTTPS?|Ftp|Https?)://}{#1}
+    {\mkbibacro{URL}\addcolon\space\url{#1}}
+    {\mkbibacro{URL}\addcolon\space\href{http\c_colon_str//#1}{#1}}%
+}
+\ExplSyntaxOff

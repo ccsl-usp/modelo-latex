@@ -7,12 +7,13 @@
 
 \LaTeX{} é, na verdade, um conjunto de programas. Ao invés de procurar e
 baixar cada um deles, o mais comum é baixar uma coleção com todos eles juntos.
-Há duas coleções desse tipo disponíveis: MiK\TeX{} (\url{miktex.org}) e
-\TeX{}Live (\url{www.tug.org/texlive}). Ambos funcionam em Linux, Windows e
-macOS. Em Linux, \TeX{}Live costuma estar disponível para instalação junto
-com os demais opcionais do sistema. Em macOS, o mais popular é o Mac\TeX{}
-(\url{www.tug.org/mactex/}), a versão do \TeX{}Live para macOS. Em Windows,
-o mais comumente usado é o MiK\TeX{}.
+Há duas coleções desse tipo disponíveis: MiK\TeX{} (\href{http://miktex.org}
+{miktex.org}) e \TeX{}Live (\href{http://www.tug.org/texlive}
+{www.tug.org/texlive}). Ambos funcionam em Linux, Windows e macOS. Em Linux,
+\TeX{}Live costuma estar disponível para instalação junto com os demais
+opcionais do sistema. Em macOS, o mais popular é o Mac\TeX{} (\href
+{http://www.tug.org/mactex/}{www.tug.org/mactex/}), a versão do \TeX{}Live
+para macOS. Em Windows, o mais comumente usado é o MiK\TeX{}.
 
 Por padrão, eles não instalam tudo que está disponível, mas sim apenas os
 componentes mais usados, e oferecem um gestor de pacotes que permite adicionar
@@ -24,10 +25,11 @@ que é necessário para este modelo, como indicado no arquivo README.md.
 Também é muito importante ter o \textsf{latexmk}. No Linux, a instalação
 é similar à de outros programas. No macOS e no Windows, \textsf{latexmk}
 pode ser instalado pelo gestor de pacotes do MiK\TeX{} ou \TeX{}Live.
-Observe que ele depende da linguagem \textsf{perl}. No macOS,
-\textsf{perl} já faz parte do sistema; no Windows, \TeX{}Live inclui
-uma versão básica de perl, mas se você estiver usando MiK\TeX{} será
-preciso instalar \textsf{perl} manualmente (\url{www.perl.org/get.html}).
+Observe que ele depende da linguagem \textsf{perl}. No macOS, \textsf{perl}
+já faz parte do sistema; no Windows, \TeX{}Live inclui uma versão básica
+de perl, mas se você estiver usando MiK\TeX{} será preciso instalar
+\textsf{perl} manualmente (\href{http://www.perl.org/get.html}
+{www.perl.org/get.html}).
 
 \section{Documentação sobre \LaTeX}
 \label{sec:docs}
@@ -55,9 +57,11 @@ textos introdutórios.
 
 Um possível caminho para o aprendizado é começar com o
 Capítulo~\ref{chap:tutorial} deste modelo e o conteúdo em
-\url{overleaf.com/learn}, que tem escopo similar mas também inclui várias
-páginas sobre como utilizar recursos específicos. Após esse contato inicial,
-o tutorial em \url{tug.org/twg/mactex/tutorials/ltxprimer-1.0.pdf} é
+\href{http://overleaf.com/learn}{overleaf.com/learn}, que tem escopo similar
+mas também inclui várias páginas sobre como utilizar recursos específicos.
+Após esse contato inicial, o tutorial em \href
+{http://tug.org/twg/mactex/tutorials/ltxprimer-1.0.pdf}
+{tug.org/twg/mactex/tutorials/ltxprimer-1.0.pdf} é
 bastante abrangente e detalhado. Não deixe de ver também o
 Capítulo~\ref{chap:exemplos} deste modelo (e seu código-fonte), que
 inclui várias dicas úteis. Para os principais comandos do modo matemático,
@@ -66,9 +70,9 @@ veja \textsf{texdoc beamer}.
 
 Depois que você estiver razoavelmente
 familiarizado com a linguagem, utilize o manual de referência que pode ser
-acessado em \url{latexref.xyz} ou com \textsf{texdoc latex2e} (disponível
-também em francês, com \textsf{texdoc latex2e-fr.pdf}, e em espanhol, com
-\textsf{texdoc latex2e-es.pdf}).
+acessado em \href{http://latexref.xyz}{latexref.xyz} ou com \textsf{texdoc
+latex2e} (disponível também em francês, com \textsf{texdoc latex2e-fr.pdf}
+e em espanhol, com \textsf{texdoc latex2e-es.pdf}).
 
 A documentação de referência mais importante sobre os recursos matemáticos
 é acessível com \textsf{texdoc amsmath}, \textsf{texdoc amsthm} e
@@ -82,11 +86,14 @@ tanto antigos), dos quais destacamos dois:
 
 \begin{enumerate}
 
+  % https://www.math.ucdavis.edu/~tracy/courses/math129/Guide_To_LaTeX.pdf
+  % https://archive.org/details/a-guide-to-la-te-x-and-electronic-publishing/page/n7/mode/2up
   \item A quarta edição de ``A Guide to \LaTeX'', de Helmut Kopka
         e Patrick W. Daly (publicada em 2003), além de uma ótima
         introdução, aborda vários tópicos relativamente avançados
         e úteis\footnote{Uma versão não-final está disponível em
-        \url{www2.mps.mpg.de/homes/daly/GTL/gtl_20030512.pdf}.}.
+        \href{http://www2.mps.mpg.de/homes/daly/GTL/gtl\_20030512.pdf}
+        {www2.mps.mpg.de/homes/daly/GTL/gtl\_20030512.pdf}.}.
   \item A segunda edição de ``The \LaTeX{} Companion'' (publicada em
         2004) é um livro quase obrigatório, pois discute em detalhes
         praticamente todos os recursos e \textit{packages} importantes
@@ -95,39 +102,47 @@ tanto antigos), dos quais destacamos dois:
 
 \end{enumerate}
 
-Para dúvidas pontuais, o sítio \url{tex.stackexchange.com} é um
-fórum de perguntas e respostas sobre \LaTeX{} muito útil, pois os
-principais desenvolvedores do sistema participam das discussões, e o
-sítio \url{texfaq.org} é bastante abrangente e atualizado.
+Para dúvidas pontuais, o sítio \href{http://tex.stackexchange.com}
+{tex.stackexchange.com} é um fórum de perguntas e respostas sobre
+\LaTeX{} muito útil, pois os principais desenvolvedores do sistema
+participam das discussões, e o sítio \href{http://texfaq.org}{texfaq.org}
+é bastante abrangente e atualizado.
 
 \froufrou
 
 Existem inúmeras alternativas aos materiais citados acima; outros exemplos de
-textos introdutórios são \url{www.maths.tcd.ie/~dwilkins/LaTeXPrimer/GSWLaTeX.pdf}
-e \url{www.andy-roberts.net/writing/latex}. Em português, você pode
-consultar \url{polignu.org/sites/polignu.org/files/latex/latex-fflch.pdf}
-e \url{git.febrace.org.br/material-latex/material-latex} (este precisa ser
-baixado e compilado). O canal \url{youtube.com/c/anteroneves} tem vários
-vídeos instrutivos em português. \textsf{texdoc/mthelp} incluem ainda
-opções como ``The Not So Short Introduction to \LaTeXe{}'' (\textsf{texdoc
-lshort-eng}; há uma versão em português, mas não está em dia com o
-original) e ``A Simplified Introduction to \LaTeX{}'' (\textsf{texdoc
-simplified-intro}). Versões recentes do \LaTeX{} incluem também o
-``\LaTeXe{} via exemplos'' (\textsf{texdoc latex-via-exemplos}), em português.
+textos introdutórios são \href
+{http://www.maths.tcd.ie/~dwilkins/LaTeXPrimer/GSWLaTeX.pdf}
+{www.maths.tcd.ie/\textasciitilde{}dwilkins/LaTeXPrimer/GSWLaTeX.pdf} e
+\href{http://www.andy-roberts.net/writing/latex}
+{www.andy-roberts.net/writing/latex}. Em português, você pode
+consultar \href
+{http://polignu.org/sites/polignu.org/files/latex/latex-fflch.pdf}
+{polignu.org/sites/polignu.org/files/latex/latex-fflch.pdf}
+e \href{http://git.febrace.org.br/material-latex/material-latex}
+{git.febrace.org.br/material-latex/material-latex} (este precisa ser
+baixado e compilado). O canal \href{http://youtube.com/c/anteroneves}
+{youtube.com/c/anteroneves} tem vários vídeos instrutivos em português.
+\textsf{texdoc/mthelp} incluem ainda opções como ``The Not So Short
+Introduction to \LaTeXe{}'' (\textsf{texdoc lshort-eng}; há uma versão
+em português, mas não está em dia com o original) e ``A Simplified
+Introduction to \LaTeX{}'' (\textsf{texdoc simplified-intro}). Versões
+recentes do \LaTeX{} incluem também o ``\LaTeXe{} via exemplos''
+(\textsf{texdoc latex-via-exemplos}), em português.
 
 \subsection{Outros recursos (avançados)}
 
-O sítio \url{ctan.org} é o repositório semi-oficial das \textit{packages}
-\LaTeX{} e sua documentação; \TeX{}Live e MiK\TeX{} são construídas a
-partir do que está nesse site, então a última versão estável de qualquer
-\textit{package} (e da documentação acessível com \textsf{texdoc/mthelp})
+O sítio \href{http://ctan.org}{ctan.org} é o repositório semi-oficial das
+\textit{packages} \LaTeX{} e sua documentação; \TeX{}Live e MiK\TeX{} são
+construídas a partir do que está nesse site, então a última versão estável de
+qualquer \textit{package} (e da documentação acessível com \textsf{texdoc/mthelp})
 em geral está ali.
 
 \textsf{texdoc fntguide} explica como funciona a gestão de fontes de
 \LaTeX{}, e você pode ver exemplos de fontes disponíveis para \LaTeX{}
-em \url{tug.org/FontCatalogue}. Lua\LaTeX{} e \XeLaTeX{} funcionam de
-outra maneira, permitindo também o uso das fontes comuns instaladas
-no seu sistema operacional (veja \textsf{texdoc fontspec}).
+em \href{http://tug.org/FontCatalogue}{tug.org/FontCatalogue}. Lua\LaTeX{}
+e \XeLaTeX{} funcionam de outra maneira, permitindo também o uso das fontes
+comuns instaladas no seu sistema operacional (veja \textsf{texdoc fontspec}).
 
 Minúcias sobre o funcionamento interno do sistema estão descritas em
 \textsf{texdoc source2e} e, sobre as classes padrão (\textsf{article, book}

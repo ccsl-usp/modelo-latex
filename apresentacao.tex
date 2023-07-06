@@ -16,10 +16,7 @@
 
 % Vários pacotes e opções de configuração genéricos
 \usepackage{imegoodies}
-\usepackage[slides]{imelooks}
-\usepackage{evenragged}
-
-\hidelinks % desabilita cor/sublinhado dos links (URLs, refs etc.)
+\usepackage[slides,hidelinks]{imelooks}
 
 % Diretórios onde estão as figuras; com isso, não é necessário (mas
 % é permitido) colocar o caminho completo em \includegraphics. Note
@@ -41,9 +38,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS PARA O USUÁRIO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand\col{\column{.5\textwidth}}
-
-% A cada nova seção, recapitula o sumário
+% A cada nova seção, recapitula o sumário.
 % Para desabilitar, é só comentar este trecho
 \AtBeginSection[]{
   \begin{frame}<beamer>[t]{Overview}
@@ -171,9 +166,15 @@
 \end{frame}
 
 \begin{frame}[plain]
-  \begin{figure}[H] % [H] é obrigatório com beamer!
+  % Em um poster ou apresentação, normalmente não é necessário usar
+  % \begin{figure} ou \begin{table}, basta usar \includegraphics ou
+  % \begin{tabular}. \begin{figure} e \begin{table} só são necessários
+  % se você quiser acrescentar legendas ou usar subfiguras. Nesses casos,
+  % [H] é obrigatório com beamer e com tcolorbox. Uma outra opção para
+  % inserir legendas é usar \captionof.
+  \begin{figure}[H]
     \includegraphics[width=.7\textwidth]{ccsl-logo}
-    \caption{The CCSL logo}
+    \caption*{The CCSL logo} % Com "*", suprime a numeração
   \end{figure}
 \end{frame}
 
@@ -207,7 +208,8 @@ but it is nonetheless useful. The entry on Pangrams states:
 
 \begin{frame}{Pangram -- examples}
   \begin{columns}[t]
-    \col
+
+    \column{.5\textwidth}
       \begin{coloredblock}{red!90!black}{Some pangrams in English}
         \begin{itemize}
           \item A quick brown fox jumps over the lazy dog
@@ -217,7 +219,7 @@ but it is nonetheless useful. The entry on Pangrams states:
         \end{itemize}
       \end{coloredblock}
 
-    \col
+    \column{.5\textwidth}
       \begin{coloredblock}{red!90!black}{Some pangrams in Portuguese}
         \begin{itemize}
           \item Vejo xá gritando que fez show sem playback
@@ -226,6 +228,7 @@ but it is nonetheless useful. The entry on Pangrams states:
           \item Vejo galã sexy pôr quinze kiwis à força em baú achatado
         \end{itemize}
       \end{coloredblock}
+
   \end{columns}
 \end{frame}
 
@@ -260,7 +263,7 @@ but it is nonetheless useful. The entry on Pangrams states:
 
 \begin{frame}{Related Works}
 
-  \begin{table}[H] % [H] é obrigatório com beamer!
+  \begin{table}[H] % Veja comentário mais acima sobre [H]
     \centering
     \singlespacing\vspace{-\baselineskip}
     \begin{tabular}{ccl}
@@ -274,7 +277,7 @@ but it is nonetheless useful. The entry on Pangrams states:
       \texttt{Y}  & Tyr          & Tyrosine \\
       \bottomrule
     \end{tabular}
-    \caption{A useless table.}
+    \caption*{A useless table.} % Com "*", suprime a numeração
   \end{table}
 
 \end{frame}

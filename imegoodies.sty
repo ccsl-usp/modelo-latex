@@ -244,6 +244,8 @@
 \gappto{\FlushRight}{\hbadness=\@M}
 \gappto{\Center}{\hbadness=\@M} % not \center
 
+\RequirePackage{evenragged}
+
 % Espaçamento entre linhas configurável (\singlespacing, \onehalfspacing etc.)
 \RequirePackage{setspace}
 
@@ -287,25 +289,7 @@
 %       expl3.
 \RequirePackage{textcase}
 
-% Em documentos frente-e-verso, LaTeX faz o final da página terminar sempre
-% no mesmo lugar (exceto no final dos capítulos). Esse comportamento pode ser
-% ativado explicitamente com o comando "\flushbottom". Mas se, por alguma
-% razão, o volume de texto na página é "pequeno", essa página vai ter espaços
-% verticais artificialmente grandes. Uma solução para esse problema é utilizar
-% "\raggedbottom" (padrão em documentos que não são frente-e-verso): com essa
-% opção, as páginas podem terminar em alturas ligeiramente diferentes. Outra
-% opção é corrigir manualmente cada página problemática, por exemplo com o
-% comando "\enlargethispage".
-%\raggedbottom
-\flushbottom
-
-% Por padrão, LaTeX coloca uma espaço aumentado após sinais de pontuação;
-% Isso não é tão bom quanto alguns TeX-eiros defendem :) .
-% Esta opção desabilita isso e, consequentemente, evita problemas com
-% "id est" (i.e.) e "exempli gratia" (e.g.)
-\frenchspacing
-
-\usepackage{geometry} % Permite definir o tamanho do papel, margens etc.
+\RequirePackage{geometry} % Permite definir o tamanho do papel, margens etc.
 
 % FIXME: should we remove this?
 % Durante o processamento, LaTeX procura por arquivos adicionais necessários
@@ -1035,12 +1019,12 @@
 % célula é larga demais para a largura definida. array também traz algumas
 % outras melhorias para tabelas e é praticamente obrigatória.
 %
-% Encontrar valores "bons" % para as larguras das colunas é um trabalho
-% manual um tanto penoso. As packages tabularx e tabulary permitem configurar
-% algumas colunas como "largura automática", evitando a necessidade da
-% definição manual. Finalmente, ltxtable permite utilizar tabularx e
-% longtable juntas. Neste modelo, não usamos tabularx/tabulary, mas você
-% pode carregá-las se quiser.
+% Encontrar valores "bons" para as larguras das colunas é um trabalho
+% manual um tanto penoso. As packages tabularx e tabulary permitem
+% configurar algumas colunas como "largura automática", evitando a
+% necessidade da definição manual. Finalmente, ltxtable permite utilizar
+% tabularx e longtable juntas. Neste modelo, não usamos tabularx/tabulary,
+% mas você pode carregá-las se quiser.
 \RequirePackage{array}
 
 % Permite alinhar os elementos de uma coluna pelo ponto decimal; dê

@@ -4,106 +4,163 @@
 
 \RequirePackage{imegoodies}
 
-%%%% Opções
+\newtoggle{IMEslides}
+\newtoggle{IMEbeamer} % Não carrega pacotes incompatíveis com beamer
+\newtoggle{IMEreport}
+\newtoggle{IMEthesis}
+\newtoggle{IMEposter}
+
+\DeclareOption{presentation}{
+    \toggletrue{IMEslides}
+    \toggletrue{IMEbeamer}
+    \togglefalse{IMEreport}
+    \togglefalse{IMEthesis}
+    \togglefalse{IMEposter}
+}
+\DeclareOption{slides}{
+    \toggletrue{IMEslides}
+    \toggletrue{IMEbeamer}
+    \togglefalse{IMEreport}
+    \togglefalse{IMEthesis}
+    \togglefalse{IMEposter}
+}
+\DeclareOption{poster}{
+    \togglefalse{IMEslides}
+    \togglefalse{IMEbeamer}
+    \togglefalse{IMEreport}
+    \togglefalse{IMEthesis}
+    \toggletrue{IMEposter}
+}
+\DeclareOption{report}{
+    \togglefalse{IMEslides}
+    \togglefalse{IMEbeamer}
+    \toggletrue{IMEreport}
+    \togglefalse{IMEposter}
+}
+\DeclareOption{thesis}{
+    \togglefalse{IMEslides}
+    \togglefalse{IMEbeamer}
+    \toggletrue{IMEreport}
+    \toggletrue{IMEthesis}
+    \togglefalse{IMEposter}
+    \toggletrue{IMEbrazilian}
+}
+
+% Isto deve vir *após* slides, report, thesis etc!
+% Veja o comentário junto a \ExecuteOptions
+\DeclareOption{beamer}{\toggletrue{IMEbeamer}}
+\DeclareOption{nobeamer}{\togglefalse{IMEbeamer}}
+
 \newtoggle{IMEbrazilian}
 \DeclareOption{brazilian}{\toggletrue{IMEbrazilian}}
 \DeclareOption{nobrazilian}{\togglefalse{IMEbrazilian}}
-
-\newtoggle{IMEbeamer}
-\newtoggle{IMEslides}
-\newtoggle{IMEposter}
-\DeclareOption{presentation}{
-    \toggletrue{IMEbeamer}
-    \toggletrue{IMEslides}
-    \togglefalse{IMEreport}
-    \togglefalse{IMEthesis}
-}
-\DeclareOption{slides}{
-    \toggletrue{IMEbeamer}
-    \toggletrue{IMEslides}
-    \togglefalse{IMEreport}
-    \togglefalse{IMEthesis}
-}
-\DeclareOption{poster}{
-    \togglefalse{IMEbeamer}
-    \toggletrue{IMEposter}
-    \togglefalse{IMEreport}
-    \togglefalse{IMEthesis}
-}
 
 \newtoggle{IMEfonts}
 \DeclareOption{fonts}{\toggletrue{IMEfonts}}
 \DeclareOption{nofonts}{\togglefalse{IMEfonts}}
 
-\newtoggle{IMEreport}
-\DeclareOption{report}{
-    \toggletrue{IMEreport}
-    \togglefalse{IMEbeamer}
-    \togglefalse{IMEslides}
-    \togglefalse{IMEposter}
-}
-
 \newtoggle{IMEbiblatex}
-\DeclareOption{usebiblatex}{\toggletrue{IMEbiblatex}}
-\DeclareOption{nousebiblatex}{\togglefalse{IMEbiblatex}}
+\DeclareOption{biblatex}{\toggletrue{IMEbiblatex}}
+\DeclareOption{nobiblatex}{\togglefalse{IMEbiblatex}}
 
 \newtoggle{IMEspacing}
 \DeclareOption{spacing}{\toggletrue{IMEspacing}}
 \DeclareOption{nospacing}{\togglefalse{IMEspacing}}
 
-\newtoggle{IMEthesis}
-\DeclareOption{thesis}{
-    \toggletrue{IMEthesis}
-    \toggletrue{IMEreport}
-    \togglefalse{IMEbeamer}
-    \togglefalse{IMEslides}
-    \togglefalse{IMEposter}
+\newtoggle{IMEcaptions}
+\DeclareOption{captions}{\toggletrue{IMEcaptions}}
+\DeclareOption{nocaptions}{\togglefalse{IMEcaptions}}
+
+\newtoggle{IMEfootnotes}
+\DeclareOption{footnotes}{\toggletrue{IMEfootnotes}}
+\DeclareOption{nofootnotes}{\togglefalse{IMEfootnotes}}
+
+\newtoggle{IMEhidelinks}
+\newtoggle{IMEcolorlinks}
+\newtoggle{IMEborderlinks}
+
+\DeclareOption{colorlinks}{
+    \togglefalse{IMEhidelinks}
+    \toggletrue{IMEcolorlinks}
+    \togglefalse{IMEborderlinks}
+}
+\DeclareOption{borderlinks}{
+    \togglefalse{IMEhidelinks}
+    \togglefalse{IMEcolorlinks}
+    \toggletrue{IMEborderlinks}
+}
+\DeclareOption{hidelinks}{
+    \toggletrue{IMEhidelinks}
+    \togglefalse{IMEcolorlinks}
+    \togglefalse{IMEborderlinks}
 }
 
-\ExecuteOptions{brazilian,fonts,usebiblatex,spacing}
+% Note que, com \ProcessOptions, as opções são processadas na ordem em
+% que foram declaradas acima e *não* na ordem em que aparecem na lista
+% de opções (\ProcessOptions* faz o processamento acontecer na ordem
+% em que elas aparecem na lista de opções). Veja "texdoc clsguide".
+% Isso é importante aqui por causa de IMEbeamer: definimos seu valor
+% para os diversos tipos de documento, mas o usuário pode redefini-lo.
+\ExecuteOptions{fonts,biblatex,spacing,colorlinks,captions,footnotes}
 \ProcessOptions\relax
 
-\ExplSyntaxOn
-\iftoggle{IMEbrazilian}{
-  \newtoggle{IMEfoundBR}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS (BRAZILIAN) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\ExplSyntaxOn
+\newtoggle{IMEfound}
+\NewDocumentCommand\IMEcheckLangLoaded{m m m}{
+  \togglefalse{IMEfound}
   \seq_gclear_new:N \l_tmpa_seq
   \seq_gset_from_clist:Nc \l_tmpa_seq {@classoptionslist}
 
   \seq_map_inline:Nn \l_tmpa_seq{
-    \ifstrequal{brazilian}{#1}
-      {\toggletrue{IMEfoundBR}}
-      {}
+      \ifstrequal{#1}{##1}
+        {\toggletrue{IMEfound}}
+        {}
   }
 
-  \iftoggle{IMEfoundBR}
+  \ifdefvoid{\bbl@loaded}
+    {}
     {
-      % Por padrão, LaTeX utiliza maiúsculas no início de cada palavra
-      % nestas expressões ("Lista de Figuras"); vamos usar maiúsculas
-      % apenas na primeira palavra.
-      \addto\captionsbrazilian{%
-        \renewcommand\listfigurename{Lista de figuras}%
-        \renewcommand\listtablename{Lista de tabelas}%
-        \renewcommand\indexname{Índice remissivo}%
+      \seq_gclear_new:N \l_tmpa_seq
+      \seq_gset_from_clist:Nc \l_tmpa_seq {bbl@loaded}
+
+      \seq_map_inline:Nn \l_tmpa_seq{
+          \ifstrequal{#1}{##1}
+            {\toggletrue{IMEfound}}
+            {}
       }
     }
-    {
-      \PackageError{imelooks}{Language~"brazilian"~not~loaded!}
-      {This~package~expects~"brazilian"~to~be~set~as~a~language\MessageBreak
-       in~the~class~options~list~(in~general,~"brazilian"~and\MessageBreak
-       "portuguese"~are~preferred~over~"brazil"~and~"portuges").\MessageBreak
-       If~you~really~do~not~want~it,~add~option~"nobrazilian"~to\MessageBreak
-       this~package~options,~but~that~is~not~guaranteed~to~work.}
-    }
-}{}
+
+  \iftoggle{IMEfound}{#2}{#3}
+}
 \ExplSyntaxOff
 
+\IMEcheckLangLoaded{brazilian}
+  {
+    % Por padrão, LaTeX utiliza maiúsculas no início de cada palavra
+    % nestas expressões ("Lista de Figuras"); vamos usar maiúsculas
+    % apenas na primeira palavra.
+    \addto\captionsbrazilian{%
+      \renewcommand\listfigurename{Lista de figuras}%
+      \renewcommand\listtablename{Lista de tabelas}%
+      \renewcommand\indexname{Índice remissivo}%
+    }
+  }
+  {
+    \iftoggle{IMEbrazilian}{
+        \PackageError{imelooks}{Language "brazilian" not loaded}
+        {IME theses expect "brazilian" to be set as a language\MessageBreak
+        in the class options list (in general, "brazilian" and\MessageBreak
+        "portuguese" are preferred over "brazil" and "portuges").\MessageBreak
+        If you really do not want it, add option "nobrazilian" to\MessageBreak
+        this package options, but that is not guaranteed to work.}
+    }{}
+  }
 
-\iftoggle{IMEslides}{
-  \usetheme{imeusp} % baseado no tema metropolis
-  % Desabilita a cor de rodapé
-  \setbeamercolor{footline}{fg=,bg=}
-}{}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -227,20 +284,188 @@
         {\setmathfontface\mathit{libertinusserif-italic.otf}}
   \fi
 
+  % Vamos lembrar destas configurações
+  \let\LibertinusSerifFont\rmdefault
+  \let\LibertinusSansFont\sfdefault
+  \let\SourceCodeProFont\ttdefault
+  \let\LibertinusMDDefault\mddefault
+  \let\LibertinusBFDefault\bfdefault
+  \let\LibertinusUPdefault\updefault
+  \let\LibertinusITdefault\itdefault
+  \let\LibertinusSCdefault\scdefault
+  \let\LibertinusFamily\familydefault
+  \let\LibertinusSeries\seriesdefault
+  \let\LibertinusShape\shapedefault
+  \let\LibertinusMDrm\mdseries@rm
+  \let\LibertinusMDsf\mdseries@sf
+  \let\LibertinusMDtt\mdseries@tt
+  \let\LibertinusBFrm\bfseries@rm
+  \let\LibertinusBFsf\bfseries@sf
+  \let\LibertinusBFtt\bfseries@tt
+
+  % Este comando é definido pela package url, que é carregada automaticamente
+  % por hyperref; ele faz URLs com fonte sem serifa ao invés de teletype
+  \urlstyle{sf}
+
 }{} % \iftoggle{IMEfonts}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% PÔSTERES E APRESENTAÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ESTRUTURA %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\iftoggle{IMEposter}
-%  {}
-%  {}
-
+% Packages úteis que são incompatíveis com beamer
 \iftoggle{IMEbeamer}
-  {\RequirePackage{appendixnumberbeamer}}
   {}
+  {
+    % Ao criar uma referência hyperref para um float, a referência
+    % aponta para o final do caption do float, o que não é muito bom.
+    % Este pacote faz a referência apontar para o início do float (é
+    % possível personalizar também).
+    \RequirePackage[all]{hypcap}
+
+    % Formatação personalizada das listas "itemize", "enumerate" e
+    % "description", além de permitir criar novos tipos de listas. Com
+    % a opção "inline", a package define os novos ambientes "itemize*",
+    % "description*" e "enumerate*", que fazem os itens da lista como
+    % parte de um único parágrafo.
+    \RequirePackage[inline]{enumitem}
+
+    % titlesec permite definir formatação personalizada de títulos,
+    % seções etc. Observe que titlesec é incompatível com os comandos
+    % refsection e refsegment do pacote biblatex! Aqui, carregamos a
+    % package apenas para fazer os títulos alinhados à esquerda.
+    \RequirePackage[raggedright]{titlesec}
+  }
+
+% Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
+% sub-subseções (como 2.3.1.1). Veja que isso afeta referências
+% cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
+% numerada, a referência vai apontar para a seção um nível acima.
+% Veja também tocdepth abaixo.
+\setcounter{secnumdepth}{2}
+
+\iftoggle{IMEreport}{
+  % Formatação personalizada do sumário, lista de tabelas/figuras etc.
+  % Não utilizado neste modelo.
+  %\RequirePackage{titletoc}
+
+  % biblatex pode ser configurado para inserir a bibliografia no sumário;
+  % bibtex não oferece essa possibilidade. Com esta package, resolvemos
+  % esse problema.
+  \RequirePackage[nottoc,notlot,notlof]{tocbibind}
+
+  % Só olha até o nível 2 (subseções) para gerar o sumário e os
+  % cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
+  % no sumário nem nos cabeçalhos. Veja também secnumdepth acima.
+  \setcounter{tocdepth}{2}
+
+  % Normalmente, o capítulo de introdução não deve ser numerado, mas
+  % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
+  % para isso, então criamos aqui os comandos \unnumberedchapter,
+  % \unnumberedsection e \unnumberedsubsection.
+  \newcommand{\unnumberedchapter}[2][]{
+    \ifblank{#1}
+      {
+        \chapter*{#2}
+        \phantomsection
+        \addcontentsline{toc}{chapter}{#2}
+        \chaptermark{#2}
+      }
+      {
+        \chapter*{#2}
+        \phantomsection
+        \addcontentsline{toc}{chapter}{#1}
+        \chaptermark{#1}
+      }
+  }
+
+  \newcommand{\unnumberedsection}[2][]{
+    \ifblank{#1}
+      {
+        \section*{#2}
+        \phantomsection
+        \addcontentsline{toc}{section}{#2}
+        \sectionmark{#2}
+      }
+      {
+        \section*{#2}
+        \phantomsection
+        \addcontentsline{toc}{section}{#1}
+        \sectionmark{#1}
+      }
+  }
+
+  \newcommand{\unnumberedsubsection}[2][]{
+    \ifblank{#1}
+      {
+        \subsection*{#2}
+        \phantomsection
+        \addcontentsline{toc}{subsection}{#2}
+      }
+      {
+        \subsection*{#2}
+        \phantomsection
+        \addcontentsline{toc}{subsection}{#1}
+      }
+  }
+
+}{} % \iftoggle{IMEreport}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% CORES E APARÊNCIA DOS LINKS %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%% CORES
+% Greeny colors (based on the InterSCity project main color)
+\definecolor{InterSCity}{HTML}{00998C}
+\definecolor{DarkInterSCity}{HTML}{0D6D65}
+\definecolor{PastelGreen}{HTML}{73937E}
+
+% Colors defined in the IME-USP visual identity manual
+\definecolor{imeblue}{RGB}{20,45,105}
+\definecolor{imeyellow}{RGB}{230,175,60}
+\definecolor{imered}{RGB}{130,20,60}
+\definecolor{imesoftblue}{RGB}{0,100,160}
+
+% Generic colors
+\definecolor{DarkRed}{HTML}{872718}
+\definecolor{Blackish}{HTML}{232830}
+\definecolor{SandyPaper}{HTML}{FFFCE2}
+\definecolor{BrownishGreen}{HTML}{5F603A}
+
+%%%%%% LINKS
+\iftoggle{IMEhidelinks}
+  {\hypersetup{hidelinks}}
+  {}
+
+\iftoggle{IMEcolorlinks}{
+    \hypersetup{
+      colorlinks=true, % também desabilita pdfborderstyle
+      %citecolor=black,
+      %linkcolor=black,
+      %urlcolor=black,
+      %filecolor=black,
+      citecolor=DarkGreen,
+      linkcolor=NavyBlue,
+      urlcolor=DarkRed,
+      filecolor=green,
+      anchorcolor=black,
+    }
+}{}
+
+\iftoggle{IMEborderlinks}{
+    \hypersetup{
+      colorlinks=false,
+      pdfborder={0 0 .6},
+      pdfborderstyle={/S/U/W .6},
+      urlbordercolor=DodgerBlue,
+      citebordercolor=green!30!white,
+      linkbordercolor=blue!30!white,
+      filebordercolor=green!30!white,
+    }
+}{}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -290,9 +515,9 @@
 % Com beamer, apenas estilos bibliográficos derivados de authortitle,
 % numeric, alphabetic ou authoryear (como beamer-ime) vão funcionar
 % corretamente! Outros estilos, como abnt ou apa, vão gerar problemas
-% de layout que você vai precisar ajustar manualmente. Observe que, num
-% poster ou apresentação, provavelmente é uma boa ideia usar apenas
-% \nocite e não \cite.
+% de layout que você vai precisar fazer ajustes manualmente. Observe
+% que, num poster ou apresentação, provavelmente é uma boa ideia usar
+% apenas \nocite e não \cite.
 
 \iftoggle{IMEbiblatex}{
 
@@ -306,7 +531,7 @@
     }{biblatex}
   }
   {
-    \ifboolexpr{togl {IMEbeamer} or togl {IMEposter}}
+    \ifboolexpr{togl {IMEslides} or togl {IMEposter}}
       {\PassOptionsToPackage{style=extras/beamer-ime}{biblatex}}
       {\PassOptionsToPackage{style=numeric}{biblatex}}
       % TODO: allow the user to set the style
@@ -321,9 +546,34 @@
   ]{biblatex}
 
   % Numa apresentação/poster, a bibliografia pode usar fonte menor
-  \iftoggle{IMEbeamer}
-    {\renewcommand*{\bibfont}{\footnotesize}}
+  \iftoggle{IMEslides}
+    {\renewcommand*\bibfont{\footnotesize}}
     {}
+
+  \iftoggle{IMEposter}
+    {\renewcommand*\bibfont{\scriptsize}}
+    {}
+
+  \iftoggle{IMEposter}{
+    \DeclarePrintbibliographyDefaults{heading=none}
+
+    \defbibenvironment{bibliography}
+      {%
+        \list
+          {%
+            \color{imeblue}\raisebox{.1em}{%
+            \@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}%
+          }
+          {%
+            \setlength{\leftmargin}{\bibhang}%
+            \setlength{\itemindent}{0pt}%
+            \setlength{\itemsep}{\bibitemsep}%
+            \setlength{\parsep}{\bibparsep}%
+          }%
+      }
+      {\endlist}
+      {\item}
+  }{}
 
   % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
   % Impede que um item da bibliografia seja dividido em duas páginas.
@@ -335,178 +585,109 @@
 
 }{} % \iftoggle{IMEbiblatex}
 
-\providetoggle{IMEcolorlinks}
-\providetoggle{IMEhidelinks}
-\newcommand\hidelinks{\toggletrue{IMEhidelinks}}
-\newcommand\colorlinks{\toggletrue{IMEcolorlinks}}
-\newcommand\nocolorlinks{\togglefalse{IMEcolorlinks}}
-\colorlinks
-\AtEndPreamble{
-  \iftoggle{IMEhidelinks}
-    {\hypersetup{hidelinks}}
-    {
-      \iftoggle{IMEcolorlinks}{
-        \hypersetup{
-          colorlinks=true, % também desabilita pdfborderstyle
-          %citecolor=black,
-          %linkcolor=black,
-          %urlcolor=black,
-          %filecolor=black,
-          citecolor=DarkGreen,
-          linkcolor=NavyBlue,
-          urlcolor=DarkRed,
-          filecolor=green,
-          anchorcolor=black,
-        }
-      }{
-        \hypersetup{
-          colorlinks=false,
-          pdfborder={0 0 .6},
-          pdfborderstyle={/S/U/W .6},
-          urlbordercolor=DodgerBlue,
-          citebordercolor=green!30!white,
-          linkbordercolor=blue!30!white,
-          filebordercolor=green!30!white,
-        }
-      }
-    }
-}
 
-% Ao criar uma referência hyperref para um float, a referência aponta
-% para o final do caption do float, o que não é muito bom. Este pacote
-% faz a referência apontar para o início do float (é possível personalizar
-% também). Esta package é incompatível com a classe beamer (usada para
-% criar posters e apresentações).
-\iftoggle{IMEbeamer}
-  {}
-  {\RequirePackage[all]{hypcap}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% DIVERSOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% hyperref detecta url's definidas com \url que começam com "http" e
-% "www" e cria links adequados. No entanto, quando a url não começa
-% com essas strings (por exemplo, "usp.br"), hyperref considera que
-% se trata de um link para um arquivo local. Isto força todas as
-% \url's que não tem esquema definido a serem do tipo http.
-\hyperbaseurl{http://}
+%%%%%%%%%%%%% FOOTNOTES
+\iftoggle{IMEfootnotes}{
+  % Formatação personalizada das notas de threeparttable:
+  \appto{\TPTnoteSettings}{\footnotesize\itshape}
+  \def\TPTtagStyle{\textit}
 
-% Formatação personalizada das notas de threeparttable:
-\appto{\TPTnoteSettings}{\footnotesize\itshape}
-\def\TPTtagStyle{\textit}
+  % Formato personalizado para as notas de rodapé. Copiado quase
+  % literalmente do exemplo na documentação das classes-padrão de
+  % LaTeX2e (texdoc classes). Seria possível fazer algo similar
+  % usando list{} com um único item usando \@thefnmark como label.
 
-% Formato personalizado para as notas de rodapé. Copiado quase
-% literalmente do exemplo na documentação das classes-padrão de
-% LaTeX2e (texdoc classes). Seria possível fazer algo similar
-% usando list{} com um único item usando \@thefnmark como label.
+  % \footnotesep não é um espaço adicional, mas sim um strut que
+  % existe no começo de cada nota. É por isso que o valor é "grande"
+  % (\baselineskip) mas a separação de fato é pequena.
 
-% \footnotesep não é um espaço adicional, mas sim um strut que
-% existe no começo de cada nota. É por isso que o valor é "grande"
-% (\baselineskip) mas a separação de fato é pequena.
-
-\renewcommand\@makefntext[1]{%
-    \setlength{\footnotesep}{1\baselineskip}%
-    \@setpar{%
-        \@@par
-        \@tempdima = \hsize
-        \advance\@tempdima-4pt\relax
-        \parshape \@ne 4pt \@tempdima
-    }%
-    \par
-    \parindent 1em\noindent
-    \parskip .3\baselineskip
-    \hbox to \z@{\hss\@makefnmark\,}#1%
-}
-
-% \maketitle redefine as notas de rodapé (\thanks) para usar símbolos
-% ao invés de números, mas essa não é a única mudança. \maketitle
-% também muda \@makefnmark para que a indicação de nota de rodapé
-% não ocupe espaço horizontal (isso é feito com \rlap). Isso é feito
-% porque a lista de autores em geral é similar a
-% \author{Fulano\thanks{instituição 1}, Ciclano\thanks{instituição 2}}.
-% Com essa mudança, a nota aparece acima da vírgula entre os autores.
-% Mas isso significa que\maketitle precisa também modificar \@makefntext
-% para que esse efeito aconteça apenas na lista de autores e não na
-% nota em si. Assim, como criamos um novo formato para as notas de
-% rodapé, precisamos mudar o formato em \maketitle também.
-
-\newcommand\@maketitlemakefntext[1]{%
-    \setlength{\footnotesep}{1\baselineskip}%
-    \@setpar{%
-        \@@par
-        \@tempdima = \hsize
-        \advance\@tempdima-4pt\relax
-        \parshape \@ne 4pt \@tempdima
-    }%
-    \par
-    \parindent 1em\noindent
-    \parskip .3\baselineskip
-    \hbox to \z@{\hss\@textsuperscript{\normalfont\@thefnmark}\,}#1%
-}
-
-\patchcmd\maketitle
-  {\long\def\@makefntext}
-  {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
-  {}{}
-
-% Formatação personalizada das listas "itemize", "enumerate" e
-% "description", além de permitir criar novos tipos de listas.
-% Com a opção "inline", a package define os novos ambientes "itemize*",
-% "description*" e "enumerate*", que fazem os itens da lista como
-% parte de um único parágrafo. Como ela causa problemas com
-% beamer, apenas a carregamos se não estivermos usando beamer.
-\iftoggle{IMEbeamer}
-  {}
-  {\RequirePackage[inline]{enumitem}}
-
-% Este comando é definido pela package url, que é carregada automaticamente
-% por hyperref; ele faz URLs com fonte sem serifa ao invés de teletype
-\iftoggle{IMEfonts}
-  {\urlstyle{sf}}
-  {}
-
-\iftoggle{IMEthesis}{
-  % Estes parâmetros definem a aparência das gantt charts e variam
-  % em função da fonte do documento.
-  \ganttset{
-      vgrid,
-      x unit=1.7em,
-      y unit title=3ex,
-      y unit chart=4ex,
-      % O "strut" é necessário para alinhar o baseline dos nomes dos meses
-      title label font=\strut\footnotesize,
-      group label font=\footnotesize\bfseries,
-      bar label font=\footnotesize,
-      milestone label font=\footnotesize\itshape,
-      % "align=right" é necessário para \ganttalignnewline funcionar
-      group label node/.append style={align=right},
-      bar label node/.append style={align=right},
-      milestone label node/.append style={align=right},
-      group incomplete/.append style={fill=black!50},
-      bar/.append style={fill=black!25,draw=black},
-      bar incomplete/.append style={fill=white,draw=black},
-      % Não é preciso imprimir "0%"
-      progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
-      % Formato e tamanho dos elementos
-      title height=.9,
-      group top shift=.4,
-      group left shift=0,
-      group right shift=0,
-      group peaks tip position=0,
-      group peaks width=.2,
-      group peaks height=.3,
-      milestone height=.4,
-      milestone top shift=.4,
-      milestone left shift=.8,
-      milestone right shift=.2,
+  \renewcommand\@makefntext[1]{%
+      \setlength{\footnotesep}{1\baselineskip}%
+      \@setpar{%
+          \@@par
+          \@tempdima = \hsize
+          \advance\@tempdima-4pt\relax
+          \parshape \@ne 4pt \@tempdima
+      }%
+      \par
+      \parindent 1em\noindent
+      \parskip .3\baselineskip
+      \hbox to \z@{\hss\@makefnmark\,}#1%
   }
 
-}{} % \iftoggle{IMEthesis}
+  % \maketitle redefine as notas de rodapé (\thanks) para usar símbolos
+  % ao invés de números, mas essa não é a única mudança. A versão de
+  % \maketitle da classe article também muda \@makefnmark para que a
+  % indicação de nota de rodapé não ocupe espaço horizontal (usando
+  % \rlap). Isso é feito porque a lista de autores em geral é similar a
+  % \author{Fulano\thanks{instituição 1}, Ciclano\thanks{instituição 2}}.
+  % Com essa mudança, a nota aparece acima da vírgula entre os autores.
+  % Mas isso significa que \maketitle precisa também modificar \@makefntext
+  % para que esse efeito aconteça apenas na lista de autores e não na
+  % nota em si. Assim, como criamos um novo formato para as notas de
+  % rodapé, precisamos mudar o formato em \maketitle também.
 
+  \newcommand\@maketitlemakefntext[1]{%
+      \setlength{\footnotesep}{1\baselineskip}%
+      \@setpar{%
+          \@@par
+          \@tempdima = \hsize
+          \advance\@tempdima-4pt\relax
+          \parshape \@ne 4pt \@tempdima
+      }%
+      \par
+      \parindent 1em\noindent
+      \parskip .3\baselineskip
+      \hbox to \z@{\hss\@textsuperscript{\normalfont\@thefnmark}\,}#1%
+  }
+
+  % Primeiro tentamos alterar a versão padrão de \maketitle, mas isso
+  % provavelmente vai falhar porque carregamos a package hyperref.
+  % Nesse caso, fazemos a alteração na versão modificada por ela. Se
+  % não estamos usando a classe article, nenhuma das duas alterações
+  % vai funcionar, mas isso não é um problema.
+  \patchcmd\maketitle
+    {\long\def\@makefntext}
+    {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
+    {}
+    {
+      \patchcmd\HyOrg@maketitle
+        {\long\def\@makefntext}
+        {\let\@makefntext\@maketitlemakefntext\long\def\@disabledmakefntext}
+        {}{}
+    }
+}{} % \iftoggle{IMEfootnotes}
+
+%%%%%%%%% SPACING
 \iftoggle{IMEspacing}{
-  
+
   % LaTeX por default segue o estilo americano e não faz a indentação da
   % primeira linha do primeiro parágrafo de uma seção; este pacote ativa
   % essa indentação, como é o estilo brasileiro
   \RequirePackage{indentfirst}
-  
+
+  % Em documentos frente-e-verso, LaTeX faz o final da página terminar sempre
+  % no mesmo lugar (exceto no final dos capítulos). Esse comportamento pode ser
+  % ativado explicitamente com o comando "\flushbottom". Mas se, por alguma
+  % razão, o volume de texto na página é "pequeno", essa página vai ter espaços
+  % verticais artificialmente grandes. Uma solução para esse problema é utilizar
+  % "\raggedbottom" (padrão em documentos que não são frente-e-verso): com essa
+  % opção, as páginas podem terminar em alturas ligeiramente diferentes. Outra
+  % opção é corrigir manualmente cada página problemática, por exemplo com o
+  % comando "\enlargethispage".
+  %\raggedbottom
+  \flushbottom
+
+  % Por padrão, LaTeX coloca uma espaço aumentado após sinais de pontuação;
+  % Isso não é tão bom quanto alguns TeX-eiros defendem :) .
+  % Esta opção desabilita isso e, consequentemente, evita problemas com
+  % "id est" (i.e.) e "exempli gratia" (e.g.)
+  \frenchspacing
+
   % A primeira linha de cada parágrafo costuma ter um pequeno recuo para
   % tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
   % possível colocar um espaço em branco entre um parágrafo e outro. Esta
@@ -515,7 +696,7 @@
   % redefini-lo depois de carregar a package.
   % TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
   %       as linhas "oldparindent" e carregar a package com a opção "indent".
-  \iftoggle{IMEbeamer}
+  \ifboolexpr{togl {IMEslides} or togl {IMEposter}}
     {}
     {
       \newlength\oldparindent
@@ -523,22 +704,9 @@
       \RequirePackage[parfill]{parskip}
       \setlength\parindent\oldparindent
     }
-  
-  % Captions com fonte menor, indentação normal, corpo do texto
-  % negrito e nome do caption itálico
-  \RequirePackage[
-    font=small,
-    format=plain,
-    labelfont={bf,up},
-    textfont={normalfont,it}]{caption}
-  
-  % Em geral, a package caption é capaz de "adivinhar" se o caption
-  % está acima ou abaixo da figura/tabela, mas isso não funciona
-  % corretamente com longtable. Aqui, forçamos a package a considerar
-  % que os captions ficam abaixo das tabelas.
-  \captionsetup*[longtable]{position=bottom}
-  
-  \iftoggle{IMEbeamer}
+
+
+  \ifboolexpr{togl {IMEbeamer} or togl {IMEposter}}
     {}
     {
       % Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
@@ -561,12 +729,259 @@
 
 }{} % \iftoggle{IMEspacing}
 
+%%%%%%%%%%%%% CAPTIONS
+\iftoggle{IMEcaptions}{
+  % Captions com fonte menor, indentação normal, corpo do texto
+  % negrito e nome do caption itálico
+  \RequirePackage[
+    font=small,
+    format=plain,
+    labelfont={bf,up},
+    textfont={normalfont,it}]{caption}
+
+  % Em geral, a package caption é capaz de "adivinhar" se o caption
+  % está acima ou abaixo da figura/tabela, mas isso não funciona
+  % corretamente com longtable. Aqui, forçamos a package a considerar
+  % que os captions ficam abaixo das tabelas.
+  \captionsetup*[longtable]{position=bottom}
+}{}
+
+%%%%%%%%%% PGFGANTT (GANTT CHARTS)
+% Estes parâmetros definem a aparência das gantt charts e variam
+% em função da fonte do documento.
+\ganttset{
+    vgrid,
+    x unit=1.7em,
+    y unit title=3ex,
+    y unit chart=4ex,
+    % O "strut" é necessário para alinhar o baseline dos nomes dos meses
+    title label font=\strut\footnotesize,
+    group label font=\footnotesize\bfseries,
+    bar label font=\footnotesize,
+    milestone label font=\footnotesize\itshape,
+    % "align=right" é necessário para \ganttalignnewline funcionar
+    group label node/.append style={align=right},
+    bar label node/.append style={align=right},
+    milestone label node/.append style={align=right},
+    group incomplete/.append style={fill=black!50},
+    bar/.append style={fill=black!25,draw=black},
+    bar incomplete/.append style={fill=white,draw=black},
+    % Não é preciso imprimir "0%"
+    progress label text=\ifnumequal{#1}{0}{}{(#1\%)},
+    % Formato e tamanho dos elementos
+    title height=.9,
+    group top shift=.4,
+    group left shift=0,
+    group right shift=0,
+    group peaks tip position=0,
+    group peaks width=.2,
+    group peaks height=.3,
+    milestone height=.4,
+    milestone top shift=.4,
+    milestone left shift=.8,
+    milestone right shift=.2,
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%% CABEÇALHOS E RODAPÉS (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}{
+% TODO: Com versões recentes de hyperxmp (final de 2020), não é
+%       recomendado definir pdflang; no futuro, isto deve ser mudado.
+\AtEndPreamble{
+\IfLanguagePatterns{brazilian}
+  {
+    \hypersetup{
+      pdflang={pt},
+      pdfmetalang={pt},
+    }
+  }
+  {
+    \hypersetup{
+      pdflang={en},
+      pdfmetalang={en},
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%% PÔSTERES E APRESENTAÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Nos pôsteres e apresentações, os triângulos às vezes ficam de tamanhos
+% diferentes com pdflatex e lualatex; para contornar isso, vamos (1)
+% redimensionar para o tamanho do \strut e (2) redimensionar para o
+% tamanho desejado.
+\newcommand\@IMEcharscale[2]{%
+    \bgroup
+    \scalebox{#1}{\resizebox*{!}{\totalheightof{\strut}}{#2}}%
+    \egroup
+}
+
+\iftoggle{IMEslides}{
+  \usetheme{imeusp} % baseado no tema metropolis
+  \usepackage{appendixnumberbeamer}
+  % Desabilita a cor de rodapé
+  \setbeamercolor{footline}{fg=,bg=}
+
+  % Com lualatex/xelatex, o tema metropolis usa a fonte Fira;
+  % aqui, voltamos à fonte libertinus, carregada anteriormente
+  \iftoggle{IMEfonts}{
+    \let\rmdefault\LibertinusSerifFont
+    \let\sfdefault\LibertinusSansFont
+    \let\ttdefault\SourceCodeProFont
+    \let\mddefault\LibertinusMDDefault
+    \let\bfdefault\LibertinusBFDefault
+    \let\updefault\LibertinusUPdefault
+    \let\itdefault\LibertinusITdefault
+    \let\scdefault\LibertinusSCdefault
+    \let\familydefault\LibertinusFamily
+    \let\seriesdefault\LibertinusSeries
+    \let\shapedefault\LibertinusShape
+    \let\mdseries@rm\LibertinusMDrm
+    \let\mdseries@sf\LibertinusMDsf
+    \let\mdseries@tt\LibertinusMDtt
+    \let\bfseries@rm\LibertinusBFrm
+    \let\bfseries@sf\LibertinusBFsf
+    \let\bfseries@tt\LibertinusBFtt
+  }{}
+
+}{} % \iftoggle{IMEslides}
+
+\iftoggle{IMEposter}{
+    % Coloca uma imagem no rodapé à direita
+    \newcommand{\footimage}[1]{%
+        \ifstrempty{#1}
+          {}
+          {%
+            \tikz[overlay,remember picture]
+            \node[anchor=south east,inner sep=12pt] at
+            (current page.south east) {#1};%
+          }%
+    }
+
+    \parindent=0pt
+    \parskip=0pt
+    \setstretch{1.1}
+
+    \renewcommand*\familydefault{\sfdefault}
+
+    \iftoggle{IMEspacing}
+        {\geometry{left=1.5cm,right=1.5cm,top=0cm,bottom=0cm}}
+        {}
+
+    \usepackage[poster,skins]{tcolorbox}
+
+    \tcbposterset{
+      fontsize = 32pt,
+      no coverage,
+    }
+
+    \tcbset{
+        skin=enhanced,
+        valign=center,
+        before upper = \evenRaggedRight,
+        fonttitle = \large,
+        top=.3\baselineskip,
+        bottom=.3\baselineskip,
+        toptitle=.1\baselineskip,
+        bottomtitle=.1\baselineskip,
+        left=.4\baselineskip,
+        right=.6\baselineskip,
+        colframe = imesoftblue,
+        colback = SandyPaper,
+    }
+
+    \setlist{
+        first={\evenRaggedRight},
+        parsep=0pt,
+        itemsep=0pt,
+        topsep=0pt,
+        partopsep=0pt,
+    }
+
+    \setlist[itemize,1]{
+      left = 0pt .. .8em,
+      label={\color{imeblue}\raisebox{.1em}{%
+             \@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}}
+    }
+
+    \setlist[itemize,2]{
+      before*={\footnotesize},
+      left = -5pt .. .8em,
+      label={\color{imeblue}\raisebox{-.1em}{%
+             \@IMEcharscale{.4}{\ensuremath{\bullet}}}}
+    }
+
+    \setlist[itemize,3]{
+      before*={\footnotesize\itshape},
+      left = -1pt .. .95em,
+      label={\color{imeblue}\raisebox{.05em}{%
+             \@IMEcharscale{.3}{\normalfont\textbf{\guillemotright}}}}
+    }
+
+    \tcbsubskin{title}{enhanced}{colback=imeblue, coltext=white,
+                                 borderline south={15pt}{-5pt}{imeyellow},
+                                 boxsep=10mm, grow sidewards by = 2.3cm}
+
+    \tcbsubskin{footer}{enhanced}{colback=imesoftblue, coltext=white,
+                                  borderline north={15pt}{-5pt}{imeyellow},
+                                  boxsep=4mm, left=30pt,
+                                  grow sidewards by = 2.3cm}
+}{} % \iftoggle{IMEposter}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%% CABEÇALHOS E RODAPÉS (REPORT/TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\iftoggle{IMEreport}{
 
   % Permite saber o número total de páginas; útil para colocar no
   % rodapé algo como "página 3 de 10" com "\thepage\ de \zpageref{LastPage}"
@@ -682,7 +1097,7 @@
 
   % Formato para capítulos não-numerados mas que devem
   % aparecer no sumário (tipicamente, a introdução):
-  \fancypagestyle{onlynames}{
+  \fancypagestyle{unnumberedchapter}{
     % Só o nome do capítulo/seção, sem numeração
     \renewcommand{\chaptermark}[1]{\markboth{##1}{##1}}
     \renewcommand{\sectionmark}[1]{\markright{##1}}
@@ -734,88 +1149,27 @@
     \formataNumPaginas{}
   }
 
-}{} % \iftoggle{IMEthesis}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% SUMÁRIO (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\iftoggle{IMEthesis}{
-  % Formatação personalizada do sumário, lista de tabelas/figuras etc.
-  % Não utilizado neste modelo.
-  %\RequirePackage{titletoc}
-
-  % biblatex pode ser configurado para inserir a bibliografia no sumário;
-  % bibtex não oferece essa possibilidade. Com esta package, resolvemos
-  % esse problema.
-  \RequirePackage[nottoc,notlot,notlof]{tocbibind}
-
-  % Só olha até o nível 2 (subseções) para gerar o sumário e os
-  % cabeçalhos, ou seja, não coloca nomes de subsubseções (nível 3)
-  % no sumário nem nos cabeçalhos.
-  \setcounter{tocdepth}{2}
-
-  % Só numera até o nível 2 (subseções, como 2.3.1), ou seja, não numera
-  % sub-subseções (como 2.3.1.1). Veja que isso afeta referências
-  % cruzadas: se você fizer \ref{uma-sub-subsecao} sem que ela seja
-  % numerada, a referência vai apontar para a seção um nível acima.
-  \setcounter{secnumdepth}{2}
-}{}
-
-\iftoggle{IMEreport}{
-
-  % Normalmente, o capítulo de introdução não deve ser numerado, mas
-  % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
-  % para isso, então criamos aqui os comandos \unnumberedchapter,
-  % \unnumberedsection e \unnumberedsubsection.
-  \newcommand{\unnumberedchapter}[2][]{
-    \ifblank{#1}
-      {
-        \chapter*{#2}
-        \phantomsection
-        \addcontentsline{toc}{chapter}{#2}
-        \chaptermark{#2}
-      }
-      {
-        \chapter*{#2}
-        \phantomsection
-        \addcontentsline{toc}{chapter}{#1}
-        \chaptermark{#1}
-      }
-  }
-
-  \newcommand{\unnumberedsection}[2][]{
-    \ifblank{#1}
-      {
-        \section*{#2}
-        \phantomsection
-        \addcontentsline{toc}{section}{#2}
-        \sectionmark{#2}
-      }
-      {
-        \section*{#2}
-        \phantomsection
-        \addcontentsline{toc}{section}{#1}
-        \sectionmark{#1}
-      }
-  }
-
-  \newcommand{\unnumberedsubsection}[2][]{
-    \ifblank{#1}
-      {
-        \subsection*{#2}
-        \phantomsection
-        \addcontentsline{toc}{subsection}{#2}
-      }
-      {
-        \subsection*{#2}
-        \phantomsection
-        \addcontentsline{toc}{subsection}{#1}
-      }
-  }
-
 }{} % \iftoggle{IMEreport}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -878,27 +1232,30 @@
 % A dedicatória vai em uma página separada, sem numeração,
 % com o texto alinhado à direita e margens esquerda e
 % superior muito grandes. Vamos fazer isso com uma minipage.
-\newenvironment{dedicatoria} {
-  \hypersetup{pageanchor=false} % Veja comentário em \maketitle
 
-  \if@openright\cleardoublepage\else\clearpage\fi
+\iftoggle{IMEthesis}{
+  \newenvironment{dedicatoria} {
+    \hypersetup{pageanchor=false} % Veja comentário em \maketitle
 
-  \thispagestyle{empty}
-  \vspace*{140mm plus 0mm minus 100mm}
-  \noindent
-  \begin{FlushRight}
-     \begin{minipage}[b][100mm][b]{100mm}
-       \begin{FlushRight}
-         \itshape
-} {
-       \end{FlushRight}
-     \end{minipage}\hspace*{3em}
-  \end{FlushRight}
-  \vspace*{50mm plus 0mm minus 10mm}
-  \if@openright\cleardoublepage\else\clearpage\fi
+    \if@openright\cleardoublepage\else\clearpage\fi
 
-  \hypersetup{pageanchor=true}
-}
+    \thispagestyle{empty}
+    \vspace*{140mm plus 0mm minus 100mm}
+    \noindent
+    \begin{FlushRight}
+       \begin{minipage}[b][100mm][b]{100mm}
+         \begin{FlushRight}
+           \itshape
+  } {
+         \end{FlushRight}
+       \end{minipage}\hspace*{3em}
+    \end{FlushRight}
+    \vspace*{50mm plus 0mm minus 10mm}
+    \if@openright\cleardoublepage\else\clearpage\fi
+
+    \hypersetup{pageanchor=true}
+  }
+}{} % \iftoggle{IMEthesis}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -906,105 +1263,105 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \iftoggle{IMEthesis}{
-    % A página de resumo deve existir em português e inglês; ambas as versões
-    % utilizam o mesmo environment.
+  % A página de resumo deve existir em português e inglês; ambas as versões
+  % utilizam o mesmo environment.
 
-    \NewDocumentCommand{\resumo}{+m}{%
-      \long\gdef\@resumo{#1}%
+  \NewDocumentCommand{\resumo}{+m}{%
+    \long\gdef\@resumo{#1}%
 
-      \bgroup
-      \@IMEremoveLinebreaksEtc{\@resumo}
-      \IfLanguagePatterns{brazilian}
-        {
-          \hypersetup{
-            pdfsubject={\@resumo},
-            pdfkeywords={\@commakeywordspt},
-          }
+    \bgroup
+    \@IMEremoveLinebreaksEtc{\@resumo}
+    \IfLanguagePatterns{brazilian}
+      {
+        \hypersetup{
+          pdfsubject={\@resumo},
+          pdfkeywords={\@commakeywordspt},
         }
-        {
-          \XMPLangAlt{pt}{pdfsubject={\@resumo}}
-          % o item "keywords" não pode ser traduzido
+      }
+      {
+        \XMPLangAlt{pt}{pdfsubject={\@resumo}}
+        % o item "keywords" não pode ser traduzido
 
-          % XMPLangAlt undefines "\do"; this may cause
-          % problems with biblatex, but we do not need
-          % to worry here because we are in a group.
-          % https://github.com/plk/biblatex/issues/1105
+        % XMPLangAlt undefines "\do"; this may cause
+        % problems with biblatex, but we do not need
+        % to worry here because we are in a group.
+        % https://github.com/plk/biblatex/issues/1105
+      }
+    \egroup
+
+    \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
+    \selectlanguage{brazilian}
+    \begin{IMEabstract}\@resumo\end{IMEabstract}
+    \egroup\egroup
+  }
+
+  \DeclareDocumentCommand{\abstract}{+m}{%
+    \long\gdef\@abstract{#1}%
+
+    \bgroup
+    \@IMEremoveLinebreaksEtc{\@abstract}
+    \IfLanguagePatterns{brazilian}
+      {
+        \XMPLangAlt{en}{pdfsubject={\@abstract}}
+        % o item "keywords" não pode ser traduzido
+
+        % XMPLangAlt undefines "\do"; this may cause
+        % problems with biblatex, but we do not need
+        % to worry here because we are in a group.
+        % https://github.com/plk/biblatex/issues/1105
+      }
+      {
+        \hypersetup{
+          pdfsubject={\@abstract},
+          pdfkeywords={\@commakeywordsen},
         }
-      \egroup
+      }
+    \egroup
 
-      \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
-      \selectlanguage{brazilian}
-      \begin{IMEabstract}\@resumo\end{IMEabstract}
-      \egroup\egroup
-    }
+    \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
+    \selectlanguage{english}
+    \begin{IMEabstract}\@abstract\end{IMEabstract}
+    \egroup\egroup
+  }
 
-    \DeclareDocumentCommand{\abstract}{+m}{%
-      \long\gdef\@abstract{#1}%
+  \NewDocumentEnvironment{IMEabstract}{} {
+    \if@openright\cleardoublepage\else\clearpage\fi
+    \thispagestyle{empty}
 
-      \bgroup
-      \@IMEremoveLinebreaksEtc{\@abstract}
-      \IfLanguagePatterns{brazilian}
-        {
-          \XMPLangAlt{en}{pdfsubject={\@abstract}}
-          % o item "keywords" não pode ser traduzido
+      \begin{center}\Large\bfseries\abstractname\end{center}
 
-          % XMPLangAlt undefines "\do"; this may cause
-          % problems with biblatex, but we do not need
-          % to worry here because we are in a group.
-          % https://github.com/plk/biblatex/issues/1105
-        }
-        {
-          \hypersetup{
-            pdfsubject={\@abstract},
-            pdfkeywords={\@commakeywordsen},
-          }
-        }
-      \egroup
+    \vspace*{2em plus 1em minus 1em}
 
-      \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
-      \selectlanguage{english}
-      \begin{IMEabstract}\@abstract\end{IMEabstract}
-      \egroup\egroup
-    }
+    \footnotesize
 
-\NewDocumentEnvironment{IMEabstract}{} {
-  \if@openright\cleardoublepage\else\clearpage\fi
-  \thispagestyle{empty}
+    % Esse é o jeito mais simples de mudar as margens de um parágrafo:
+    % faz de conta que é uma lista
+    \begin{list}{}{\rightmargin 4em \leftmargin 4em}
+      \item\@selfReference
+    \end{list}
 
-    \begin{center}\Large\bfseries\abstractname\end{center}
+    \vspace*{1em plus 1em minus 0em}
+  } {
+    % Impede uma quebra de página entre esta linha e a próxima, ou seja,
+    % entre a última linha do resumo/abstract e as palavras-chave.
+    \@afterheading
 
-  \vspace*{2em plus 1em minus 1em}
+    \vspace*{1em plus 1em minus .5em}
 
-  \footnotesize
+    \begingroup
 
-  % Esse é o jeito mais simples de mudar as margens de um parágrafo:
-  % faz de conta que é uma lista
-  \begin{list}{}{\rightmargin 4em \leftmargin 4em}
-    \item\@selfReference
-  \end{list}
+        \setlength{\leftmargini}{\widthof{\textbf{\keywordsname:}\quad}}
+        \setlength{\labelwidth}{\widthof{\textbf{\keywordsname:}}}
+        \setlength{\labelsep}{\widthof{\quad}}
 
-  \vspace*{1em plus 1em minus 0em}
-} {
-  % Impede uma quebra de página entre esta linha e a próxima, ou seja,
-  % entre a última linha do resumo/abstract e as palavras-chave.
-  \@afterheading
+        \begin{description}
+          \item[\keywordsname:]\IfLanguagePatterns{brazilian}
+                               {\@keywordspt}
+                               {\@keywordsen}%
+        \end{description}
 
-  \vspace*{1em plus 1em minus .5em}
-
-  \begingroup
-
-      \setlength{\leftmargini}{\widthof{\textbf{\keywordsname:}\quad}}
-      \setlength{\labelwidth}{\widthof{\textbf{\keywordsname:}}}
-      \setlength{\labelsep}{\widthof{\quad}}
-
-      \begin{description}
-        \item[\keywordsname:]\IfLanguagePatterns{brazilian}
-                             {\@keywordspt}
-                             {\@keywordsen}%
-      \end{description}
-
-  \endgroup
-}
+    \endgroup
+  }
 
 }{} % \iftoggle{IMEthesis}
 
@@ -1602,8 +1959,7 @@
 %%%%%%%%%%%%%%%%%%%%%% IMPRIME A CAPA E A FOLHA DE ROSTO %%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}
-  {
+\iftoggle{IMEthesis}{
     \RenewDocumentCommand\maketitle{}{
       % Embora as páginas iniciais *pareçam* não ter numeração, a numeração
       % existe, só não é impressa. Os comandos \frontmatter, \mainmatter,
@@ -1623,8 +1979,7 @@
       \if@openright\cleardoublepage\else\clearpage\fi
       \hypersetup{pageanchor=true}
     }
-  }
-  {}
+}{}
 
 % Layout da capa
 \NewDocumentCommand{\@IMEcover}{} {
@@ -2031,41 +2386,6 @@
 }
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% TODO: Com versões recentes de hyperxmp (final de 2020), não é
-%       recomendado definir pdflang; no futuro, isto deve ser mudado.
-\AtEndPreamble{
-\IfLanguagePatterns{brazilian}
-  {
-    \hypersetup{
-      pdflang={pt},
-      pdfmetalang={pt},
-    }
-  }
-  {
-    \hypersetup{
-      pdflang={en},
-      pdfmetalang={en},
-    }
-  }
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SEÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% titlesec permite definir formatação personalizada de títulos, seções etc.
-% Observe que titlesec é incompatível com os comandos refsection
-% e refsegment do pacote biblatex! Aqui, carregamos a package apenas para
-% fazer os títulos alinhados à esquerda.
-\iftoggle{IMEbeamer}
-  {}
-  {\RequirePackage[raggedright]{titlesec}}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2170,7 +2490,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ÍNDICE REMISSIVO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% filecontents não funciona dentro de iftoggle;
+% vamos usar newif para contornar isso.
+\newif\ifIMEthesisTest
+\IMEthesisTestfalse
+
 \iftoggle{IMEthesis}{
+  \IMEthesisTesttrue
+
   % A criação do índice remissivo depende de um programa auxiliar, que pode ser
   % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
   % línguas diferentes e caracteres acentuados, mas o programa não está mais
@@ -2199,7 +2526,7 @@
   ]
 }{} % \iftoggle{IMEthesis}
 
-% filecontents não funciona dentro de iftoggle...
+\ifIMEthesisTest
 
 % Índices criados com xindy não funcionam em conjunto com hyperref; os criados
 % com makeindex podem funcionar, mas apenas se hyperref for carregada após
@@ -2209,13 +2536,13 @@
 % makeindex foi copiada da documentação de hyperref).
 
 % Cria o arquivo de configuração para xindy lidar corretamente com hyperlinks.
-\begin{filecontents*}{hyperxindy.xdy}
-(define-attributes ("emph"))
-(markup-locref :open "\hyperpage{" :close "}" :attr "default")
-(markup-locref :open "\textbf{\hyperpage{" :close "}}" :attr "textbf")
-(markup-locref :open "\textit{\hyperpage{" :close "}}" :attr "textit")
-(markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
-\end{filecontents*}
+%\begin{filecontents*}{hyperxindy.xdy}
+%(define-attributes ("emph"))
+%(markup-locref :open "\hyperpage{" :close "}" :attr "default")
+%(markup-locref :open "\textbf{\hyperpage{" :close "}}" :attr "textbf")
+%(markup-locref :open "\textit{\hyperpage{" :close "}}" :attr "textit")
+%(markup-locref :open "\emph{\hyperpage{" :close "}}" :attr "emph")
+%\end{filecontents*}
 
 % Cria o arquivo de configuração para makeindex lidar corretamente com
 % hyperlinks e colocar um cabeçalho para cada letra do índice.
@@ -2233,3 +2560,5 @@ heading_prefix "{\\bfseries "
 heading_suffix "}\\nopagebreak\n"
 \end{filecontents*}
 
+\fi % \ifIMEthesisTest
+\IMEthesisTestfalse

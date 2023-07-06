@@ -1,136 +1,29 @@
-% Arquivo LaTeX de exemplo de artigo
+% Author: Nelson Lago
 %
-% Criação: Jesús P. Mena-Chalco
-% Revisão: Fabio Kon e Paulo Feofiloff
-% Adaptação para UTF8, biblatex e outras melhorias: Nelson Lago
-%
-% Except where otherwise indicated, these files are distributed under
-% the MIT Licence. The example text, which includes the tutorial and
-% examples as well as the explanatory comments in the source, are
-% available under the Creative Commons Attribution International
+% This file is distributed under the MIT Licence. The textual content
+% is available under the Creative Commons Attribution International
 % Licence, v4.0 (CC-BY 4.0) - https://creativecommons.org/licenses/by/4.0/
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PREÂMBULO LaTeX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% A opção twoside (frente-e-verso) significa que a aparência das páginas pares
-% e ímpares pode ser diferente. Por exemplo, as margens podem ser diferentes ou
-% os números de página podem aparecer à direita ou à esquerda alternadamente.
-% Mas nada impede que você crie um documento "só frente" e, ao imprimir, faça
-% a impressão frente-e-verso.
-%
-% Aqui também definimos a língua padrão do documento
-% (a última da lista) e línguas adicionais.
-%\documentclass[12pt,twoside,brazilian,english]{article}
 \documentclass[10pt,twoside,english,brazilian]{article}
 
-% Ao invés de definir o tamanho das margens, vamos definir os tamanhos do
-% texto, do cabeçalho e do rodapé, e deixamos a package geometry calcular
-% o tamanho das margens em função do tamanho do papel. Assim, obtemos o
-% mesmo resultado impresso, mas com margens diferentes, se o tamanho do
-% papel for diferente.
-\usepackage[a4paper,landscape]{geometry}
+\usepackage{imegoodies}
+\usepackage{imelooks}
 
 \geometry{
+  a4paper,
+  landscape,
   textheight=192mm,
   textwidth=277mm,
   vmarginratio=1:1,
   hmarginratio=1:1,
-  headsep=11mm, % distância entre a base do cabeçalho e o texto
-  headheight=21mm, % qualquer medida grande o suficiente, p.ex., top - headsep
-  footskip=10mm,
-  marginpar=20mm,
-  marginparsep=5mm,
 }
 
-% Vários pacotes e opções de configuração genéricos; para personalizar o
-% resultado, modifique estes arquivos.
-\usepackage{imegoodies}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%% ESPAÇAMENTO E ALINHAMENTO %%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% LaTeX por default segue o estilo americano e não faz a indentação da
-% primeira linha do primeiro parágrafo de uma seção; este pacote ativa essa
-% indentação, como é o estilo brasileiro
-\usepackage{indentfirst}
-
-% A primeira linha de cada parágrafo costuma ter um pequeno recuo para
-% tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
-% possível colocar um espaço em branco entre um parágrafo e outro. Esta
-% package coloca o espaço em branco e desabilita o recuo; como queremos
-% o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
-% redefini-lo depois de carregar a package.
-% TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
-%       as linhas "oldparindent" e carregar a package com a opção "indent".
-\newlength\oldparindent
-\setlength\oldparindent\parindent
-\usepackage[parfill]{parskip}
-\setlength\parindent\oldparindent
-
-\usepackage[scale=.85]{sourcecodepro}
-
-\usepackage[mono=false]{libertinus}
-% Com LuaLaTeX/XeLaTeX, Libertinus configura também
-% a fonte matemática; aqui só precisamos corrigir \mathit
-\ifLuaTeX
-  \setmathfontface\mathit{Libertinus Serif Italic}
-\fi
-\makeatletter
-\ifXeTeX
-  % O nome de arquivo da fonte mudou na versão 2019-04-04
-  \@ifpackagelater{libertinus-otf}{2019/04/03}
-      {\setmathfontface\mathit{LibertinusSerif-Italic.otf}}
-      {\setmathfontface\mathit{libertinusserif-italic.otf}}
-\fi
-\makeatother
-
-\ifPDFTeX
-  % A família libertine por padrão não define uma fonte matemática
-  % específica para pdfLaTeX; uma opção que funciona bem com ela:
-  %\usepackage[libertine]{newtxmath}
-  % Outra, provavelmente melhor:
-  \usepackage{libertinust1math}
-\fi
-
-%\nocolorlinks % para impressão em P&B
-\input{extras/source-code}
-
-% Diretórios onde estão as figuras; com isso, não é preciso colocar o caminho
-% completo em \includegraphics (e nem a extensão).
-\graphicspath{{figuras/},{logos/}}
-
-% Comandos rápidos para mudar de língua:
-% \en -> muda para o inglês
-% \br -> muda para o português
-% \texten{blah} -> o texto "blah" é em inglês
-% \textbr{blah} -> o texto "blah" é em português
-\babeltags{br = brazilian, en = english}
-
-% Bibliografia
-\usepackage[
-  style=extras/plainnat-ime, % variante de autor-data, similar a plainnat
-  %style=alphabetic, % similar a alpha
-  %style=numeric, % comum em artigos
-  %style=authoryear-comp, % autor-data "padrão" do biblatex
-  %style=apa, % variante de autor-data, muito usado
-  %style=abnt,
-]{biblatex}
-
-%%%%%%%%%%% Personalização para este arquivo especificamente %%%%%%%%%%%
-
-% Espaçamento simples
 \singlespacing
-
-\setlist[description]{itemsep=0pt,parsep=1pt,leftmargin=0pt}
-
+\pagestyle{empty}
 \setlength{\parskip}{0pt}
 \setlength{\parindent}{0pt}
 
-\usepackage{titlesec}
+\setlist[description]{itemsep=0pt,parsep=1pt,leftmargin=0pt}
 
 \titleformat{\section}[hang]
   {\scshape\bfseries}
@@ -143,23 +36,6 @@
   {1.5\baselineskip plus 1.5\baselineskip minus 1\baselineskip}
   {.5\baselineskip plus .5\baselineskip minus .2\baselineskip}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% INÍCIO DO CONTEÚDO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% O arquivo com os dados bibliográficos para biblatex; você pode usar
-% este comando mais de uma vez para acrescentar múltiplos arquivos
-\addbibresource{bibliografia.bib}
-
-% Este comando permite acrescentar itens à lista de referências sem incluir
-% uma referência de fato no texto (pode ser usado em qualquer lugar do texto)
-%\nocite{bronevetsky02,schmidt03:MSc, FSF:GNU-GPL, CORBA:spec, MenaChalco08}
-% Com este comando, todos os itens do arquivo .bib são incluídos na lista
-% de referências
-%\nocite{*}
-
-\pagestyle{empty}
 
 \begin{document}
 
@@ -251,8 +127,10 @@
 
 \vspace{\baselineskip}
 
-\textbackslash{}begin\{table\}\quad \mbox{(veja \url{tablesgenerator.com}
-                                     e \textsf{texdoc booktabs})}
+\textbackslash{}begin\{table\}\quad \mbox{(veja
+                                          \href{http://tablesgenerator.com}
+                                               {tablesgenerator.com}
+                                          e \textsf{texdoc booktabs})}
 
 \quad\textbackslash{}centering
 
@@ -314,7 +192,8 @@
 
 
 \begin{description}
-    \item[\textsc{url}s:] \textbackslash{}url\{endereço\}
+    \item[\textsc{url}s:] \textbackslash{}url\{endereço\},
+        \textbackslash{}href\{endereço\}\{nome curto\}
 \end{description}
 
 \section*{Refs cruzadas/citações}
@@ -361,7 +240,7 @@
 
 \begin{description}
   \item[elipse:] \textbackslash{}dots\{\}
-  \item[espaço não-separável:] \textasciitilde{} (não quebra a linha)
+  \item[espaço não-separável \textmd{(não quebra a linha)}:] \textasciitilde{}
   \item[espaço aumentado:] \textbackslash{}enspace\{\} ou \textbackslash{}quad\{\}
   % \strut -> https://github.com/schlcht/microtype/issues/10
   \item[aspas tipográficas:] \strut\`\space\,\`\space\;\!texto\;\!\textquotesingle\:\textquotesingle,
@@ -383,18 +262,19 @@
     \quad\textbackslash\%
     \quad\textbackslash\&
     \quad\textbackslash\_
-    \quad\textbackslash{}textbackslash\{\}:\enspace\textbackslash
-    \vspace{3pt}\newline
-    \textbackslash\{
+    \quad\textbackslash\{
     \quad\textbackslash\}
+    \vspace{3pt}\newline
+    \textbackslash{}textbackslash\{\}:\enspace\textbackslash
     \quad\textbackslash{}textquotesingle\{\}:\enspace\textquotesingle
     \quad\textbackslash{}textquotedbl\{\}:\enspace\textquotedbl
     \vspace{3pt}\newline
-    \textbackslash{}textasciitilde\{\}:\enspace\textasciitilde
-    \quad\textbackslash{}textasciicircum\{\}:\enspace\textasciicircum
-    \quad\raisebox{-.1\baselineskip}{\`\space}%
-        \hspace{.12em}\textbackslash{}space\{\}:
-        \enspace\raisebox{-.1\baselineskip}{\`\space}
+    \textbackslash{}textasciicircum\{\}:\enspace\textasciicircum
+    \quad\textbackslash{}textasciigrave\{\}:\enspace\textasciigrave
+    \quad\textbackslash{}textasciiacute\{\}:\enspace\textasciiacute
+    \vspace{3pt}\newline
+    \textbackslash{}textasciitilde\{\} \textbf{ou}
+    \textbackslash{}texttildelow\{\} (depende da fonte):\enspace\textasciitilde
 \end{description}
 
 
@@ -403,7 +283,8 @@
 
 \begin{description}
   \item[lista de símbolos:] \textsf{texdoc symbols-a4}
-  \item[busca símbolos:] \url{detexify.kirelabs.org/classify.html}
+  \item[busca símbolos:] \href{http://detexify.kirelabs.org/classify.html}
+                              {detexify.kirelabs.org/classify.html}
 \end{description}
 
 \section*{Formatação manual}
@@ -445,10 +326,5 @@
 \textbackslash{}end\{center|flushleft|flushright\}
 
 \end{multicols}
-
-\printbibliography[
-  title=\refname\label{bibliografia}, % "Referências", recomendado pela ABNT
-  %title=\bibname\label{bibliografia}, % "Bibliografia"
-]
 
 \end{document}

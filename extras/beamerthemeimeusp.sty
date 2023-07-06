@@ -29,155 +29,12 @@
     \togglefalse{IMEbluey}
 }
 
-\newif\ifIMEposter
-\DeclareOption{poster}{\IMEpostertrue}
 
 \ExecuteOptions{bluey}
 
 \ProcessOptions\relax
 
-
-% Os triângulos ficam de tamanhos diferentes com pdflatex e lualatex;
-% para contornar isso, vamos (1) redimensionar para o tamanho do
-% \strut e (2) redimensionar para o tamanho desejado.
-\newcommand\@IMEcharscale[2]{%
-    \bgroup
-    \scalebox{#1}{\resizebox*{!}{\totalheightof{\strut}}{#2}}%
-    \egroup
-}
-
 \setbeamertemplate{caption}[numbered]
-
-\ifIMEposter
-
-% The poster style code:
-% Authors: David Vilar (2007 initial version), Rob J Hyndman (2010), and
-% Lian Tze Lim (2011).
-% Licence: LPPL / GPLv2
-%
-% The original file was downloaded from
-% http://latex-my.blogspot.com/2011/03/creating-academic-posters-and-printing.html
-% As the author points out, it is derived from
-% https://robjhyndman.com/hyndsight/beamer-poster/
-% which in turn is derived from the I6dv theme included in the
-% beamerposter package (https://github.com/deselaers/latex-beamerposter ),
-% which is LPPL / GPL, as stated here:
-% https://ctan.org/pkg/beamerposter
-%
-% Customizations by Nelson Lago
-
-
-\setbeamerfont{structure}{family=\sffamily,size=\Large}
-
-\usefonttheme[onlymath]{serif}
-
-% These values are defined in beamerposter and, in combination with the
-% scaling factor, are used to calculate labelsep, labelwidth, leftmargini
-% etc.; We define values different from the default here.
-\edef\labelWidthValue{.35}
-\edef\labelSepValue{.35}
-\edef\indentionLevelValuei{.77}
-\edef\indentionLevelValueii{.65}
-\edef\indentionLevelValueiii{.52}
-
-% Now we recalculate the actual values based on the new constants above
-\FPupn{\labelWidthValue}{labelWidthValue myfontscale * 2 round}
-\FPupn{\labelSepValue}{labelSepValue myfontscale * 2 round}
-\FPupn{\indentionLevelValuei}{indentionLevelValuei myfontscale * 2 round}
-\FPupn{\indentionLevelValueii}{indentionLevelValueii myfontscale * 2 round}
-\FPupn{\indentionLevelValueiii}{indentionLevelValueiii myfontscale * 2 round}
-
-\setlength{\leftmargini}{\indentionLevelValuei em}
-\setlength{\leftmarginii}{\indentionLevelValueii em}
-\setlength{\leftmarginiii}{\indentionLevelValueiii em}
-\setlength{\labelwidth}{\labelWidthValue em}
-\setlength{\labelsep}{\labelSepValue em}
-
-\setbeamertemplate{itemize item}
-  {\raisebox{.05em}{\@IMEcharscale{.2}{\ensuremath{\blacktriangleright}}}}
-
-\setbeamertemplate{itemize subitem}
-  {\raisebox{-.04em}{\@IMEcharscale{.23}{\ensuremath{\bullet}}}}
-
-\setbeamertemplate{itemize subsubitem}
-  {\raisebox{.01em}{\@IMEcharscale{.16}{\textbf{\guillemotright}}}}
-
-% Different font size, so we need to recalculate labelwidth/labelsep
-% for this indentation level.
-\setbeamertemplate{itemize/enumerate subsubbody begin}
-  {%
-    \setlength{\labelwidth}{\labelWidthValue em}%
-    \setlength{\labelsep}{\labelSepValue em}%
-  }
-
-
-\setbeamertemplate{navigation symbols}{}
-
-\setbeamertemplate{bibliography item}
-  {%
-    \hspace{.2em}\raisebox{.4\totalheight}
-      {\@IMEcharscale{.25}{\ensuremath{\blacktriangleright}}}%
-  }
-
-
-\setbeamertemplate{headline}{
-  \begin{beamercolorbox}[wd=\textwidth]{headline}
-     \vskip2em\centering
-     \parbox{\linewidth}{%
-       \normalbaselines\centering
-       \usebeamercolor{title in headline}%
-       \color{fg}{\bfseries\rmfamily\huge\inserttitle\par}%
-     }%
-     \vskip2em
-  \end{beamercolorbox}
-
-  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
-    \rule{0pt}{1em}
-  \end{beamercolorbox}
-}
-
-
-\RequirePackage{tikz}
-
-\newcommand{\footimage}[1]{\def\footim@ge{#1}}
-
-\setbeamerfont{footline}{size=\small,family=\rmfamily}
-
-\setbeamertemplate{footline}{%
-  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
-    \rule{0pt}{.5em}
-  \end{beamercolorbox}
-  \begin{beamercolorbox}[wd=\paperwidth]{footline}
-     \vskip1.5ex
-     \hspace{1em}\usebeamercolor{author in footline}{\bfseries\large\insertauthor}\par\vskip1ex
-     \hspace{1em}{\small\ttfamily\bfseries\insertshortauthor}\par\vskip.8ex
-     \hspace{1em}\usebeamercolor{institute in footline}{\color{fg}\small\bfseries\insertinstitute}\vskip1ex
-  \end{beamercolorbox}%
-%
-  \ifdefined\footim@ge
-    \tikz[overlay,remember picture]
-    \node[anchor=south east,inner sep=12pt] at (current page.south east)
-    {\footim@ge};
-  \fi
-}
-
-
-\setbeamertemplate{block begin}{
-  \vskip.75ex
-  \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex]{block title}%
-    \usebeamerfont{block title}\insertblocktitle
-  \end{beamercolorbox}%
-  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
-  \usebeamerfont{block body}%
-  \begin{beamercolorbox}[colsep*=.75ex,sep=.2ex,vmode]{block body}%
-    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
-  }
-\setbeamertemplate{block end}{
-  \end{beamercolorbox}\vskip1ex
-}
-
-
-\else % \ifIMEposter
 
 \usetheme[sectionpage=progressbar,
           subsectionpage=none,
@@ -230,8 +87,6 @@
 \addtolength{\leftmarginii}{-1.3em}
 \addtolength{\leftmarginiii}{-1em}
 \addtolength{\labelsep}{-.3em}
-
-\fi % \ifIMEposter
 
 
 % Inspirado no comando \narrowragged da package varwidth.
@@ -492,26 +347,6 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CORES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Generic colors
-\definecolor{DarkRed}{HTML}{872718}
-\definecolor{Blackish}{HTML}{232830}
-\definecolor{SandyPaper}{HTML}{FFFCE2}
-
-% Greeny colors (based on the InterSCity project main color)
-\definecolor{InterSCity}{HTML}{00998C}
-\definecolor{DarkInterSCity}{HTML}{0D6D65}
-\definecolor{PastelGreen}{HTML}{73937E}
-%\definecolor{GreenishBrown}{HTML}{363020} % not used
-
-% Sandy colors
-\definecolor{BrownishGreen}{HTML}{5F603A}
-
-% Colors defined in the IME-USP visual identity manual
-\definecolor{imeblue}{RGB}{20,45,105}
-\definecolor{imeyellow}{RGB}{230,175,60}
-\definecolor{imered}{RGB}{130,20,60}
-\definecolor{imesoftblue}{RGB}{0,100,160}
 
 % Some reasonable defaults:
 \setbeamercolor{normal text}{fg=Blackish}
