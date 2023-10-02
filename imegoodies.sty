@@ -92,6 +92,10 @@
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
 
+% melhorias e recursos adicionais para o modo matemático; leia a documentação.
+% Melhor se carregada antes de unicode-math.
+\RequirePackage{mathtools}
+
 % TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
 % 1.07 de luatex. Essa combinação faz aparecer um bug:
 % https://tex.stackexchange.com/a/476742
@@ -1079,9 +1083,6 @@
 % criar tabelas simples com algumas vantagens em relação a "tabular",
 % ou por esta package, que permite criar tabulações.
 %\RequirePackage{tabto}
-
-% melhorias e recursos adicionais para o modo matemático; leia a documentação
-\RequirePackage{mathtools}
 
 % Permite mostrar itens "cancelados" em fórmulas matemáticas, como:
 % 2a = 2(b+1)
