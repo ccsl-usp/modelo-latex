@@ -38,6 +38,12 @@
 \RaggedRightParfillskip 0pt plus .4\textwidth minus 0pt\relax
 \hyphenpenalty=200
 
+% Beamer assumes math fonts are "bad" and performs some substitutions
+% (which seems to be a bad idea IMHO). Unfortunately, that causes
+% problems with LibertinusT1Math. This "theme" makes beamer not mess
+% with the math font.
+\usefonttheme{professionalfonts}
+
 \RequirePackage{tikz}
 
 \newcommand{\footimage}[1]{\def\footim@ge{#1}}

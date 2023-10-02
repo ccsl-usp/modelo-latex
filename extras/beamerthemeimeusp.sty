@@ -32,6 +32,12 @@
           numbering=fraction,
           progressbar=frametitle]{metropolis}
 
+% Beamer assumes math fonts are "bad" and performs some substitutions
+% (which seems to be a bad idea IMHO). Unfortunately, that causes
+% problems with LibertinusT1Math. This "theme" makes beamer not mess
+% with the math font.
+\usefonttheme{professionalfonts}
+
 % As margens default são muito grandes
 \setbeamersize{
   text margin left=.03\paperwidth,
