@@ -51,25 +51,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% Existem várias packages para criar pôsteres com LaTeX (a0poster,
-% baposter, tikzposter, sciposter...). As mais comuns atualmente são
-% beamerposter (ela simplesmente utiliza beamer com alguns ajustes
-% no tamanho das fontes e do papel) e tcolorbox com sua biblioteca
-% "poster". Ambas funcionam muito bem (e beamerposter tem a vantagem
-% de usar os mesmos comandos que beamer, usado em apresentações), mas
-% com tcolorbox o alinhamento vertical dos elementos é mais simples,
-% e esta é a solução adotada aqui. Vale muito a pena ler a documentação
-% com "texdoc tcolorbox" e "texdoc tcolorbox-tutorial-poster".
+% Existem várias packages para criar pôsteres com LaTeX (a0poster, baposter,
+% tikzposter, sciposter...). As mais comuns atualmente são beamerposter
+% e tcolorbox (com sua biblioteca "poster"). Ambas funcionam muito bem;
+% beamerposter é mais familiar (ela simplesmente utiliza beamer com alguns
+% ajustes no tamanho das fontes e do papel), mas com tcolorbox o alinhamento
+% vertical dos elementos é MUITO mais simples, e esta é a solução adotada
+% aqui. Vale muito a pena ler a documentação com "texdoc tcolorbox" e
+% "texdoc tcolorbox-tutorial-poster".
 
-% Pôsteres com tcolorbox são compostos por blocos (posterboxes) coloridos
-% e com um título opcional que podem conter textos ou imagens. Eles usam
-% uma grade (com dimensões definidas em \begin{tcposter} com "rows=" e
-% "columns=") para fazer o alinhamento: em cada posterbox, podemos dizer
-% "row=X, column=Y" para definir sua posição. Além disso, podemos dizer
-% "span=A, rowspan=B" para fixar seu tamanho. Sem "span" e "rowspan", uma
-% posterbox tem pelo menos o tamanho de uma célula da grade, mas se seu
-% tamanho natural for maior ela extrapola esse tamanho. "span" e "rowspan"
-% podem ser números não-inteiros (como 0.8 ou 1.4).
+% Um pôster com tcolorbox é composto por blocos (posterboxes) coloridos
+% de tamanho variável; cada bloco pode conter textos ou imagens e um
+% título opcional. O pôster utiliza uma grade de dimensões definidas em
+% \begin{tcposter} com "rows=" e "columns=" para fazer o alinhamento:
+% para cada posterbox, podemos dizer "row=X, column=Y" para definir sua
+% posição. Além disso, podemos dizer "span=A, rowspan=B" para fixar
+% seu tamanho. Sem "span" e "rowspan", uma posterbox tem pelo menos o
+% tamanho de uma célula da grade, mas se seu tamanho natural for maior
+% ela extrapola esse tamanho. "span" e "rowspan" podem ser números
+% não-inteiros (como 0.8 ou 1.4).
 %
 % "\begin{posterbox}" recebe um conjunto de parâmetros opcional e um
 % conjunto de parâmetros obrigatório:
