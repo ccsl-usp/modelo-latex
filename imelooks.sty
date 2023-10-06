@@ -824,52 +824,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% TODO: Com versões recentes de hyperxmp (final de 2020), não é
-%       recomendado definir pdflang; no futuro, isto deve ser mudado.
+% TODO: Com versões recentes de hyperxmp (final de 2020), não é necessário
+%       definir pdflang (hyperxmp usa babel para identificar a língua), mas
+%       isso não causa problemas. Vamos remover isto quando ubuntu 20.04
+%       (focal) for descontinuada (abril/2025) e arxiv usar TeXLive >= 2021.
 \AtEndPreamble{
-\IfLanguagePatterns{brazilian}
-  {
-    \hypersetup{
-      pdflang={pt},
-      pdfmetalang={pt},
-    }
-  }
-  {
-    \hypersetup{
-      pdflang={en},
-      pdfmetalang={en},
-    }
-  }
+  \IfLanguagePatterns{brazilian}
+    {\hypersetup{pdflang={pt}, pdfmetalang={pt}}}
+    {}
+  \IfLanguagePatterns{english}
+    {\hypersetup{pdflang={en}, pdfmetalang={en}}}
+    {}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1294,21 +1260,12 @@
     \bgroup
     \@IMEremoveLinebreaksEtc{\@resumo}
     \IfLanguagePatterns{brazilian}
-      {
-        \hypersetup{
-          pdfsubject={\@resumo},
-          pdfkeywords={\@commakeywordspt},
-        }
-      }
-      {
-        \XMPLangAlt{pt}{pdfsubject={\@resumo}}
-        % o item "keywords" não pode ser traduzido
-
-        % XMPLangAlt undefines "\do"; this may cause
-        % problems with biblatex, but we do not need
-        % to worry here because we are in a group.
-        % https://github.com/plk/biblatex/issues/1105
-      }
+      {\hypersetup{pdfsubject={\@resumo}}}
+      {\XMPLangAlt{pt}{pdfsubject={\@resumo}}}
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, but we do not need
+      % to worry here because we are in a group.
+      % https://github.com/plk/biblatex/issues/1105
     \egroup
 
     \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
@@ -1322,22 +1279,13 @@
 
     \bgroup
     \@IMEremoveLinebreaksEtc{\@abstract}
-    \IfLanguagePatterns{brazilian}
-      {
-        \XMPLangAlt{en}{pdfsubject={\@abstract}}
-        % o item "keywords" não pode ser traduzido
-
-        % XMPLangAlt undefines "\do"; this may cause
-        % problems with biblatex, but we do not need
-        % to worry here because we are in a group.
-        % https://github.com/plk/biblatex/issues/1105
-      }
-      {
-        \hypersetup{
-          pdfsubject={\@abstract},
-          pdfkeywords={\@commakeywordsen},
-        }
-      }
+    \IfLanguagePatterns{english}
+      {\hypersetup{pdfsubject={\@abstract}}}
+      {\XMPLangAlt{en}{pdfsubject={\@abstract}}}
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, but we do not need
+      % to worry here because we are in a group.
+      % https://github.com/plk/biblatex/issues/1105
     \egroup
 
     \bgroup\bgroup % Dois grupos aninhados, veja a documentação da package babel
@@ -1777,8 +1725,21 @@
 
   \seq_gclear_new:N \@seqkeywordspt
   \seq_gclear_new:N \@seqkeywordsen
-  \newcommand*{\palavrachave}[1]{\seq_gput_right:Nn \@seqkeywordspt {#1}}
-  \newcommand*{\keyword}[1]{\seq_gput_right:Nn \@seqkeywordsen {#1}}
+  \newcommand*{\palavrachave}[1]{
+      \seq_gput_right:Nn \@seqkeywordspt {#1}
+
+      \IfLanguagePatterns{brazilian}
+        {\hypersetup{pdfkeywords={\@commakeywordspt}}}
+        {} % o item "keywords" não pode ser traduzido
+  }
+
+  \newcommand*{\keyword}[1]{
+      \seq_gput_right:Nn \@seqkeywordsen {#1}
+
+      \IfLanguagePatterns{english}
+        {\hypersetup{pdfkeywords={\@commakeywordsen}}}
+        {} % o item "keywords" não pode ser traduzido
+  }
 
   % Na impressão, as palavras-chave são separadas por pontos
   \newcommand*{\@keywordspt}{\seq_use:Nn \@seqkeywordspt {.\space}.}
@@ -1893,88 +1854,89 @@
     \renewcommand\author[2][masc]{
       \gdef\@author{#2}
       \gdef\@authorGender{#1}
+
+      \bgroup
+      \@IMEremoveLinebreaksEtc{\@author}
       \hypersetup{pdfauthor={\@author}}
+      \egroup
     }
 
     \RenewDocumentCommand\title{m}{
       \keys_set:nn {IME/title}{#1}
 
-      \bgroup
       % O título deve existir nas duas línguas; o subtítulo é opcional,
       % mas se houver também deve existir nas duas línguas.
       \IfLanguagePatterns{brazilian}
         {
+          % TODO: titlept must exist
           \global\let\@title\@titlept
           \ifdefvoid{\@subtitlept}
             {}
             {\global\let\@subtitle\@subtitlept}
-
-          \let\@mainlangtitle\@titlept
-          \let\@mainlangsubtitle\@subtitlept
-          \let\@otherlangtitle\@titleen
-          \let\@otherlangsubtitle\@subtitleen
-          \def\@otherlangname{en}
         }
         {
+          % TODO: titleen must exist
           \global\let\@title\@titleen
           \ifdefvoid{\@subtitleen}
             {}
             {\global\let\@subtitle\@subtitleen}
-
-          \let\@mainlangtitle\@titleen
-          \let\@mainlangsubtitle\@subtitleen
-          \let\@otherlangtitle\@titlept
-          \let\@otherlangsubtitle\@subtitlept
-          \def\@otherlangname{pt}
         }
 
-      % Insere os metadados XMP no arquivo PDF final.
-      % \@IMEremoveLinebreaksEtc está definida em imegoodies.sty
-
-      \@IMEremoveLinebreaksEtc{\@mainlangtitle}
-      \@IMEremoveLinebreaksEtc{\@mainlangsubtitle}
-      \@IMEremoveLinebreaksEtc{\@otherlangtitle}
-      \@IMEremoveLinebreaksEtc{\@otherlangsubtitle}
-
-      \hypersetup{
-        pdftitle={\@mainlangtitle
-                  \ifdefvoid{\@mainlangsubtitle}{}{:~\@mainlangsubtitle}%
-                 },
-      }
-
-      \XMPLangAlt{\@otherlangname}{
-          pdftitle={\@otherlangtitle
-                    \ifdefvoid{\@otherlangsubtitle}{}{:~\@otherlangsubtitle}%
-                   },
-      }
-
-      % XMPLangAlt undefines "\do"; this may cause
-      % problems with biblatex, but we do not need
-      % to worry here because we are in a group.
-      % https://github.com/plk/biblatex/issues/1105
+      \bgroup
+      \@IMEremoveLinebreaksEtc{\@title}
+      \let\@thetitle\@title
+      \ifdefvoid{\@subtitle}
+        {}
+        {
+          \@IMEremoveLinebreaksEtc{\@subtitle}
+          \def\@thetitle{\@title\c_colon_str\space\@subtitle}
+        }
+        \hypersetup{pdftitle={\@thetitle}}
       \egroup
+
+      \ifdefvoid{\@titlept}
+        {}
+        {
+          \IfLanguagePatterns{brazilian}
+            {}
+            {
+              \bgroup
+              \@IMEremoveLinebreaksEtc{\@titlept}
+              \let\@thetitle\@titlept
+              \ifdefvoid{\@subtitlept}
+                {}
+                {
+                  \@IMEremoveLinebreaksEtc{\@subtitlept}
+                  \def\@thetitle{\@titlept\c_colon_str\space\@subtitlept}
+                }
+              \XMPLangAlt{pt}{pdftitle={\@thetitle}}
+              \egroup
+            }
+        }
+
+      \ifdefvoid{\@titleen}
+        {}
+        {
+          \IfLanguagePatterns{english}
+            {}
+            {
+              \bgroup
+              \@IMEremoveLinebreaksEtc{\@titleen}
+              \let\@thetitle\@titleen
+              \ifdefvoid{\@subtitleen}
+                {}
+                {
+                  \@IMEremoveLinebreaksEtc{\@subtitleen}
+                  \def\@thetitle{\@titleen\c_colon_str\space\@subtitleen}
+                }
+              \XMPLangAlt{en}{pdftitle={\@thetitle}}
+              \egroup
+            }
+        }
     }
   }
   {}
 \ExplSyntaxOff
-
-\iftoggle{IMEthesis}
-  {
-    % Defaults quando o usuário não define alguma dessas variáveis.
-    \providecommand\@author{Autor não definido!}
-    \orientador{Orientador não definido!}
-    \DTMsavedate{@defensedate}{1970-01-01}
-    \providecommand\@program{Programa não definido!}
-    \providecommand\@financing{}
-    \providecommand\@defenselocation{Local não definido!}
-    \providecommand\@license{Direitos não definidos!}
-    \providecommand\@title{Título não definido!}
-    \providecommand\@titlept{Título em português não definido!}
-    \providecommand\@titleen{Título em inglês não definido!}
-    \providecommand\@resumo{Resumo não definido!}
-    \providecommand\@abstract{Abstract não definido!}
-  }
-  {}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
