@@ -362,52 +362,70 @@
 
   % Normalmente, o capítulo de introdução não deve ser numerado, mas
   % deve aparecer no sumário. Por padrão, LaTeX não oferece uma solução
-  % para isso, então criamos aqui os comandos \unnumberedchapter,
-  % \unnumberedsection e \unnumberedsubsection.
-  \newcommand{\unnumberedchapter}[2][]{
+  % para isso, então modificamos aqui os comandos \chapter, \section,
+  % \subsection e \subsubsection (embora este último provavelmente nunca
+  % será útil) para que, ao serem chamados com dois asteriscos, eles
+  % implementem esse comportamento.
+
+  \let\IMEorigchapter\chapter
+  \let\IMEorigsection\section
+  \let\IMEorigsubsection\subsection
+  \let\IMEorigsubsubsection\subsubsection
+
+  \renewcommand\chapter{%
+    \@ifstar
+      {\@ifstar{\unnumberedchapter}{\IMEorigchapter*}}
+      {\IMEorigchapter}%
+  }
+
+  \renewcommand\section{%
+    \@ifstar
+      {\@ifstar{\unnumberedsection}{\IMEorigsection*}}
+      {\IMEorigsection}%
+  }
+
+  \renewcommand\subsection{%
+    \@ifstar
+      {\@ifstar{\unnumberedsubsection}{\IMEorigsubsection*}}
+      {\IMEorigsubsection}%
+  }
+
+  \renewcommand\subsubsection{%
+    \@ifstar
+      {\@ifstar{\unnumberedsubsubsection}{\IMEorigsubsubsection*}}
+      {\IMEorigsubsubsection}%
+  }
+
+  \newcommand\unnumberedchapter[2][]{
+    \IMEorigchapter*{#2}
+    \phantomsection
     \ifblank{#1}
-      {
-        \chapter*{#2}
-        \phantomsection
-        \addcontentsline{toc}{chapter}{#2}
-        \chaptermark{#2}
-      }
-      {
-        \chapter*{#2}
-        \phantomsection
-        \addcontentsline{toc}{chapter}{#1}
-        \chaptermark{#1}
-      }
+      {\addcontentsline{toc}{chapter}{#2}\chaptermark{#2}}
+      {\addcontentsline{toc}{chapter}{#1}\chaptermark{#1}}
   }
 
   \newcommand{\unnumberedsection}[2][]{
+    \IMEorigsection*{#2}
+    \phantomsection
     \ifblank{#1}
-      {
-        \section*{#2}
-        \phantomsection
-        \addcontentsline{toc}{section}{#2}
-        \sectionmark{#2}
-      }
-      {
-        \section*{#2}
-        \phantomsection
-        \addcontentsline{toc}{section}{#1}
-        \sectionmark{#1}
-      }
+      {\addcontentsline{toc}{section}{#2}\sectionmark{#2}}
+      {\addcontentsline{toc}{section}{#1}\sectionmark{#1}}
   }
 
   \newcommand{\unnumberedsubsection}[2][]{
+    \IMEorigsubsection*{#2}
+    \phantomsection
     \ifblank{#1}
-      {
-        \subsection*{#2}
-        \phantomsection
-        \addcontentsline{toc}{subsection}{#2}
-      }
-      {
-        \subsection*{#2}
-        \phantomsection
-        \addcontentsline{toc}{subsection}{#1}
-      }
+      {\addcontentsline{toc}{subsection}{#2}}
+      {\addcontentsline{toc}{subsection}{#1}}
+  }
+
+  \newcommand{\unnumberedsubsubsection}[2][]{
+    \IMEorigsubsubsection*{#2}
+    \phantomsection
+    \ifblank{#1}
+      {\addcontentsline{toc}{subsubsection}{#2}}
+      {\addcontentsline{toc}{subsubsection}{#1}}
   }
 
 }{} % \iftoggle{IMEreport}

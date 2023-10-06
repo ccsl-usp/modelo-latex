@@ -7,8 +7,8 @@
 % "\chapter" cria um capítulo com número e o coloca no sumário; "\chapter*"
 % cria um capítulo sem número e não o coloca no sumário. A introdução não
 % deve ser numerada, mas deve aparecer no sumário. Por conta disso, este
-% modelo define o comando "\unnumberedchapter".
-\unnumberedchapter{Introdução}
+% modelo define o comando "\chapter**".
+\chapter**{Introdução}
 \label{cap:introducao}
 
 \enlargethispage{.5\baselineskip}
@@ -51,8 +51,7 @@ da Lei de Pareto para tentar definir/escolher problemas para as diferentes
 fases da vida acadêmica. A direção dos novos passos para a continuidade da
 vida acadêmica deveria ser discutida com seu orientador.
 
-%% ------------------------------------------------------------------------- %%
-\unnumberedsection{Considerações de estilo}
+\section**{Considerações de estilo}
 \label{sec:consideracoes_preliminares}
 
 Normalmente, as citações não devem fazer parte da estrutura sintática da
@@ -67,6 +66,7 @@ natbib \citep{natbib}\index{natbib} (esses comandos são compatíveis com biblat
 usando a opção \textsf{natbib=true}, ativada por padrão neste modelo). Em geral,
 portanto, as citações devem seguir estes exemplos:
 
+\bgroup
 \footnotesize
 \begin{verbatim}
 Modos de citação:
@@ -76,7 +76,7 @@ certo: Andrew e Foster introduziram o algoritmo ótimo [AF83].
 certo: Andrew e Foster introduziram o algoritmo ótimo (Andrew e Foster, 1983).
 certo (\citet ou \citeyear): Andrew e Foster (1983) introduziram o algoritmo ótimo.
 \end{verbatim}
-\normalsize
+\egroup
 
 \enlargethispage{.5\baselineskip}
 
@@ -90,7 +90,7 @@ legendas\index{Legendas} das figuras e tabelas em forma auto-contida: as
 legendas devem ser razoavelmente completas, de modo que o leitor possa entender
 a figura sem ler o texto em que a figura ou tabela é citada.\index{Floats}
 
-\unnumberedsection{Ferramentas bibliográficas}
+\section**{Ferramentas bibliográficas}
 
 Embora seja possível pesquisar por material acadêmico na Internet usando
 sistemas de busca ``comuns'', existem ferramentas dedicadas, como o
