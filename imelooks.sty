@@ -1479,7 +1479,8 @@
       \renewcommand\@finalFrontmatterText{%
         Esta versão da \MakeTextLowercase{\workname} contém as correções e alterações
         sugeridas pela Comissão Julgadora durante a defesa da versão
-        original do trabalho, realizada em \DTMusedate{@defensedate}.\\[1\baselineskip]
+        original do trabalho\DTMifsaveddate{@defensedate}
+        {, realizada em \DTMusedate{@defensedate}}{}.\\[1\baselineskip]
         Uma cópia da versão original está disponível no Instituto de
         Matemática e Estatística da Universidade de São Paulo.%
       }%
@@ -1599,8 +1600,9 @@
       \renewcommand\@finalFrontmatterText{%
         This version of the \MakeTextLowercase{\workname} includes the corrections
         and modifications suggested by the Examining Committee during
-        the defense of the original version of the work, which took
-        place on \DTMusedate{@defensedate}.\\[1\baselineskip]
+        the defense of the original version of the work\DTMifsaveddate
+        {@defensedate}{, which took place on \DTMusedate{@defensedate}}
+        {}.\\[1\baselineskip]
         A copy of the original version is available at the Institute of
         Mathematics and Statistics of the University of São Paulo.%
       }%
@@ -2114,8 +2116,16 @@
 \newcounter{@IMEtmpcnt}
 \newcommand*{\@coverPeople} {%
   \begin{tabular}{rl}
-    \iftoggle{@tcc}{}{\programname : & \@program \tabularnewline}
-    \advisorname : & \@advisor \tabularnewline
+    \iftoggle{@tcc}
+      {}
+      {
+        \ifdefvoid{\@program}
+          {}
+          {\programname : & \@program \tabularnewline}
+      }
+    \ifdefvoid{\@advisor}
+      {}
+      {\advisorname : & \@advisor \tabularnewline}
     \setcounter{@IMEtmpcnt}{0}%
     \int_while_do:nNnn {\value{@IMEtmpcnt}} < {\value{numberOfCoadvisors}} {%
       \stepcounter{@IMEtmpcnt}%
@@ -2143,7 +2153,7 @@
   \textbf{\@currlangtitle\ifdefvoid{\@currlangsubtitle}{}{: \textit{\@currlangsubtitle}}}.
   \workname{} (\degreename).
   \@institution,
-  São Paulo, \DTMfetchyear{@defensedate}.%
+  São Paulo\DTMifsaveddate{@defensedate}{, \DTMfetchyear{@defensedate}}{}.%
   \egroup
 }
 
@@ -2292,16 +2302,20 @@
 
         \bgroup
         \singlespacing
-        \@financing\par
+        \strut\ifdefvoid{\@financing}{}{\@financing}\par
         \egroup
 
         \vspace*{1cm plus 1cm minus 0.3cm}
 
-        \@defenselocation
+        \strut\ifdefvoid{\@defenselocation}{}{\@defenselocation}
 
-        \iftoggle{@tcc}
-          {\DTMfetchyear{@defensedate}}
-          {\DTMsetdatestyle{month-year}\DTMusedate{@defensedate}}
+        \DTMifsaveddate{@defensedate}
+          {
+            \iftoggle{@tcc}
+              {\DTMfetchyear{@defensedate}}
+              {\DTMsetdatestyle{month-year}\DTMusedate{@defensedate}}
+          }
+          {}
 
       \end{center}
     \end{minipage}%
@@ -2314,23 +2328,27 @@
 % da página de rosto
 \ExplSyntaxOn
 \NewDocumentCommand{\@committeeBlock}{} {
-    \bgroup
-    \onehalfspacing
-    \begin{minipage}[t][][t]{\textwidth}
-      \begin{quote}
-        \normalsize\noindent\committeename :\par
-        \begin{list}{}
-        {
-          \setlength{\leftmargin}{0pt}
-          \setlength{\itemsep}{.1\baselineskip}
-          \setlength{\topsep}{\baselineskip}
-        }
-          \item[] \seq_use:Nn \@committeeMembers {\item[]}
-        \end{list}
-      \end{quote}
-    \end{minipage}
-    \par
-    \egroup
+    \seq_if_empty:NTF{\@committeeMembers}
+      {}
+      {
+        \bgroup
+        \onehalfspacing
+        \begin{minipage}[t][][t]{\textwidth}
+          \begin{quote}
+            \normalsize\noindent\committeename :\par
+            \begin{list}{}
+            {
+              \setlength{\leftmargin}{0pt}
+              \setlength{\itemsep}{.1\baselineskip}
+              \setlength{\topsep}{\baselineskip}
+            }
+              \item[] \seq_use:Nn \@committeeMembers {\item[]}
+            \end{list}
+          \end{quote}
+        \end{minipage}
+        \par
+        \egroup
+      }
 }
 \ExplSyntaxOff
 
