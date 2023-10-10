@@ -161,6 +161,18 @@
     }{}
   }
 
+% TODO: Com versões recentes de hyperxmp (final de 2020), não é necessário
+%       definir pdflang (hyperxmp usa babel para identificar a língua), mas
+%       isso não causa problemas. Vamos remover isto quando ubuntu 20.04
+%       (focal) for descontinuada (abril/2025) e arxiv usar TeXLive >= 2021.
+\AtEndPreamble{
+  \IfLanguagePatterns{brazilian}
+    {\hypersetup{pdflang={pt}, pdfmetalang={pt}}}
+    {}
+  \IfLanguagePatterns{english}
+    {\hypersetup{pdflang={en}, pdfmetalang={en}}}
+    {}
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -805,39 +817,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% METADADOS XMP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% TODO: Com versões recentes de hyperxmp (final de 2020), não é necessário
-%       definir pdflang (hyperxmp usa babel para identificar a língua), mas
-%       isso não causa problemas. Vamos remover isto quando ubuntu 20.04
-%       (focal) for descontinuada (abril/2025) e arxiv usar TeXLive >= 2021.
-\AtEndPreamble{
-  \IfLanguagePatterns{brazilian}
-    {\hypersetup{pdflang={pt}, pdfmetalang={pt}}}
-    {}
-  \IfLanguagePatterns{english}
-    {\hypersetup{pdflang={en}, pdfmetalang={en}}}
-    {}
-}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% PÔSTERES E APRESENTAÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1138,26 +1117,6 @@
   }
 
 }{} % \iftoggle{IMEreport}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2359,7 +2318,6 @@
 }
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2534,4 +2492,3 @@ heading_suffix "}\\nopagebreak\n"
 \end{filecontents*}
 
 \fi % \ifIMEthesisTest
-\IMEthesisTestfalse
