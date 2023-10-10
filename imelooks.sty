@@ -1775,20 +1775,6 @@
     \toggletrue{@tcc}
   }
 
-  % Opções usando LaTeX3 (veja texdoc l3keys).
-  \keys_define:nn { IME / title }
-  {
-    % Chaves à esquerda definem as variáveis à direita
-    titlept .tl_gset:N = \@titlept,
-    titlept .value_required:n = true,
-    titleen .tl_gset:N = \@titleen,
-    titleen .value_required:n = true,
-    subtitlept .tl_gset:N = \@subtitlept,
-    subtitlept .value_required:n = true,
-    subtitleen .tl_gset:N = \@subtitleen,
-    subtitleen .value_required:n = true,
-  }
-
 }{} % \iftoggle{IMEthesis}
 
 \ExplSyntaxOff
@@ -1864,77 +1850,61 @@
       \egroup
     }
 
-    \RenewDocumentCommand\title{m}{
-      \keys_set:nn {IME/title}{#1}
+    \RenewDocumentCommand\title{mO{}}{
+      \gdef\@title{#1}
+      \gdef\@subtitle{#2}
 
-      % O título deve existir nas duas línguas; o subtítulo é opcional,
-      % mas se houver também deve existir nas duas línguas.
+      \ifdefvoid{\@subtitle}
+        {\global\let\@fulltitle\@title}
+        {\gdef\@fulltitle{\@title\c_colon_str\space\@subtitle}}
+
+      \@IMEremoveLinebreaksEtc{\@fulltitle}
+
+      \hypersetup{pdftitle={\@fulltitle}}
+
       \IfLanguagePatterns{brazilian}
         {
-          % TODO: titlept must exist
-          \global\let\@title\@titlept
-          \ifdefvoid{\@subtitlept}
-            {}
-            {\global\let\@subtitle\@subtitlept}
+          \global\let\@titlept\@title
+          \global\let\@subtitlept\@subtitle
+          \global\let\@fulltitlept\@fulltitle
         }
+        {}
+      \IfLanguagePatterns{english}
         {
-          % TODO: titleen must exist
-          \global\let\@title\@titleen
-          \ifdefvoid{\@subtitleen}
-            {}
-            {\global\let\@subtitle\@subtitleen}
+          \global\let\@titleen\@title
+          \global\let\@subtitleen\@subtitle
+          \global\let\@fulltitleen\@fulltitle
+        }
+        {}
+    }
+
+    \NewDocumentCommand\translatedtitle{mO{}}{
+      \gdef\@translatedtitle{#1}
+      \gdef\@translatedsubtitle{#2}
+
+      \ifdefvoid{\@translatedsubtitle}
+        {\global\let\@fulltranslatedtitle\@translatedtitle}
+        {\gdef\@fulltranslatedtitle
+            {\@translatedtitle\c_colon_str\space\@translatedsubtitle}%
         }
 
-      \bgroup
-      \@IMEremoveLinebreaksEtc{\@title}
-      \let\@thetitle\@title
-      \ifdefvoid{\@subtitle}
-        {}
-        {
-          \@IMEremoveLinebreaksEtc{\@subtitle}
-          \def\@thetitle{\@title\c_colon_str\space\@subtitle}
-        }
-        \hypersetup{pdftitle={\@thetitle}}
-      \egroup
+      \@IMEremoveLinebreaksEtc{\@fulltranslatedtitle}
 
-      \ifdefvoid{\@titlept}
+      \IfLanguagePatterns{brazilian}
         {}
         {
-          \IfLanguagePatterns{brazilian}
-            {}
-            {
-              \bgroup
-              \@IMEremoveLinebreaksEtc{\@titlept}
-              \let\@thetitle\@titlept
-              \ifdefvoid{\@subtitlept}
-                {}
-                {
-                  \@IMEremoveLinebreaksEtc{\@subtitlept}
-                  \def\@thetitle{\@titlept\c_colon_str\space\@subtitlept}
-                }
-              \XMPLangAlt{pt}{pdftitle={\@thetitle}}
-              \egroup
-            }
+          \XMPLangAlt{pt}{pdftitle={\@fulltranslatedtitle}}
+          \global\let\@titlept\@translatedtitle
+          \global\let\@subtitlept\@translatedsubtitle
+          \global\let\@fulltitlept\@fulltranslatedtitle
         }
-
-      \ifdefvoid{\@titleen}
+      \IfLanguagePatterns{english}
         {}
         {
-          \IfLanguagePatterns{english}
-            {}
-            {
-              \bgroup
-              \@IMEremoveLinebreaksEtc{\@titleen}
-              \let\@thetitle\@titleen
-              \ifdefvoid{\@subtitleen}
-                {}
-                {
-                  \@IMEremoveLinebreaksEtc{\@subtitleen}
-                  \def\@thetitle{\@titleen\c_colon_str\space\@subtitleen}
-                }
-              \XMPLangAlt{en}{pdftitle={\@thetitle}}
-              \egroup
-            }
+          \XMPLangAlt{en}{pdftitle={\@fulltranslatedtitle}}
+          \global\let\@titleen\@translatedtitle
+          \global\let\@subtitleen\@translatedsubtitle
+          \global\let\@fulltitleen\@fulltranslatedtitle
         }
     }
   }
