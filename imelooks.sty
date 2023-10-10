@@ -1635,8 +1635,6 @@
     \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}Gender} {#1}
   }
 
-  \seq_gclear_new:N \@committeeMembers
-
   \newtoggle{@mestrado}
   \newtoggle{@doutorado}
   \newtoggle{@tcc}
@@ -1676,8 +1674,6 @@
     direitos .value_required:n = true,
     fichacatalografica .tl_gset:N = \@catalogingData,
     fichacatalografica .value_required:n = true,
-    membrobanca .code:n = {\seq_gput_right:Nn \@committeeMembers {#1}},
-    membrobanca .value_required:n = true,
   }
 
   \NewDocumentCommand\defesa{+m}{%
@@ -1725,22 +1721,27 @@
     {}
   }
 
-  \seq_gclear_new:N \@seqkeywordspt
-  \seq_gclear_new:N \@seqkeywordsen
-  \newcommand*{\palavrachave}[1]{
-      \seq_gput_right:Nn \@seqkeywordspt {#1}
-
-      \IfLanguagePatterns{brazilian}
-        {\hypersetup{pdfkeywords={\@commakeywordspt}}}
-        {} % o item "keywords" não pode ser traduzido
+  \seq_gclear_new:N \@committeeMembers
+  \NewDocumentCommand\banca{m}{
+    \seq_gset_from_clist:Nn \@committeeMembers {#1}
   }
 
-  \newcommand*{\keyword}[1]{
-      \seq_gput_right:Nn \@seqkeywordsen {#1}
+  \seq_gclear_new:N \@seqkeywordspt
+  \NewDocumentCommand{\palavraschave}{m}{
+    \seq_gset_from_clist:Nn \@seqkeywordspt {#1}
 
-      \IfLanguagePatterns{english}
-        {\hypersetup{pdfkeywords={\@commakeywordsen}}}
-        {} % o item "keywords" não pode ser traduzido
+    \IfLanguagePatterns{brazilian}
+      {\hypersetup{pdfkeywords={\@commakeywordspt}}}
+      {} % o item "keywords" não pode ser traduzido
+  }
+
+  \seq_gclear_new:N \@seqkeywordsen
+  \DeclareDocumentCommand{\keywords}{m}{
+    \seq_gset_from_clist:Nn \@seqkeywordsen {#1}
+
+    \IfLanguagePatterns{english}
+      {\hypersetup{pdfkeywords={\@commakeywordsen}}}
+      {} % o item "keywords" não pode ser traduzido
   }
 
   % Na impressão, as palavras-chave são separadas por pontos
