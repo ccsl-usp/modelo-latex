@@ -846,6 +846,17 @@
 % Cria hiperlinks para capítulos, seções, \ref's, URLs etc.
 \RequirePackage{hyperref}
 
+% Add "http://" for URLs that do not include the scheme (http/https/ftp etc.)
+\ExplSyntaxOn
+\DeclareUrlCommand\httpurl{
+    \def\UrlLeft##1\UrlRight{
+    \regex_match:nnTF{^[[:alpha:]][[:alnum:].+\-]{2,12}://}{##1}
+    {\href{##1}{##1}}
+    {\href{http\c_colon_str//##1}{##1}}
+    }
+}
+\ExplSyntaxOff
+
 %\RequirePackage[nameinlink,noabbrev,capitalise]{cleveref}
 %% cleveref não tem tradução para o português
 %\crefname{figure}{Figura}{Figuras}
@@ -892,8 +903,7 @@
 % última atualização de TeXLive 2020 são afetadas. Ainda assim, aqui
 % contornamos o problema desabilitando o recurso relacionado (o cálculo
 % automático de "byteCount", ou seja, do tamanho aproximado do documento).
-% TODO: remover esse código após 2024. Ao mesmo tempo, também podemos
-%       desabilitar a package letltxmacro, que é usada apenas aqui.
+% TODO: remover esse código após 2024.
 \ifPDFTeX
   \LetLtxMacro\HACKoldpdffilesize\pdffilesize
   \renewcommand\pdffilesize[1]{}

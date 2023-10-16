@@ -85,6 +85,10 @@
 \DeclareOption{footnotes}{\toggletrue{IMEfootnotes}}
 \DeclareOption{nofootnotes}{\togglefalse{IMEfootnotes}}
 
+\newtoggle{IMEautohttp}
+\DeclareOption{autohttp}{\toggletrue{IMEautohttp}}
+\DeclareOption{noautohttp}{\togglefalse{IMEautohttp}}
+
 \newtoggle{IMEhidelinks}
 \newtoggle{IMEcolorlinks}
 \newtoggle{IMEborderlinks}
@@ -111,9 +115,10 @@
 % em que elas aparecem na lista de opções). Veja "texdoc clsguide".
 % Isso é importante aqui por causa de IMEbeamer: definimos seu valor
 % para os diversos tipos de documento, mas o usuário pode redefini-lo.
-\ExecuteOptions{fonts,biblatex,spacing,colorlinks,captions,footnotes}
+\ExecuteOptions{fonts,biblatex,spacing,colorlinks,captions,footnotes,autohttp}
 \ProcessOptions\relax
 
+\iftoggle{IMEautohttp}{\LetLtxMacro\url\httpurl}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS (BRAZILIAN) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
