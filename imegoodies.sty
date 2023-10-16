@@ -1120,22 +1120,6 @@
 \RequirePackage{soul}
 \RequirePackage{soulutf8}
 
-% Melhorias e personalização do sublinhado com soul (comando \ul)
-
-% Distância e largura do sublinhado
-\setul{1.4pt}{.5pt}
-
-% btul -> "Better Underline" (https://alexwlchan.net/2017/10/latex-underlines/ )
-% Sublinhado sem cruzar as linhas descendentes dos caracteres
-\RequirePackage[outline]{contour}
-\contourlength{1.1pt}
-\newcommand{\btul}[2][white]{%
-  \contourlength{1.1pt}%
-  \setul{1.4pt}{.5pt}%
-  \ul{{\phantom{#2}}}% Faz o sublinhado; precisa das chaves adicionais!
-  \llap{\contour{#1}{#2}}% Escreve o texto com fundo branco/colorido
-}
-
 % TODO: siunitx removed option "binary-units" in 2021;
 %       we can remove this option here after, say, 2025.
 % Vários recursos para apresentação de números e grandezas (unidades, notação

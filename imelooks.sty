@@ -319,6 +319,22 @@
   % por hyperref; ele faz URLs com fonte sem serifa ao invés de teletype
   \urlstyle{sf}
 
+  % Melhorias e personalização do sublinhado com soul (comando \ul)
+
+  \setul{1.4pt}{.5pt} % Distância e largura do sublinhado
+
+  % TODO: talvez usar "em" ao invés de pt?
+  % btul -> "Better Underline" (https://alexwlchan.net/2017/10/latex-underlines/ )
+  % Sublinhado sem cruzar as linhas descendentes dos caracteres
+  \RequirePackage[outline]{contour}
+  \contourlength{1.1pt}
+  \newcommand{\btul}[2][white]{%
+    \contourlength{1.1pt}%
+    \setul{1.4pt}{.5pt}%
+    \ul{{\phantom{#2}}}% Faz o sublinhado; precisa das chaves adicionais!
+    \llap{\contour{#1}{#2}}% Escreve o texto com fundo branco/colorido
+  }
+
 }{} % \iftoggle{IMEfonts}
 
 
