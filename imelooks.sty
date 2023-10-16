@@ -9,6 +9,7 @@
 \newtoggle{IMEreport}
 \newtoggle{IMEthesis}
 \newtoggle{IMEposter}
+\newtoggle{IMEresumoabstract}
 
 \DeclareOption{presentation}{
     \toggletrue{IMEslides}
@@ -16,6 +17,7 @@
     \togglefalse{IMEreport}
     \togglefalse{IMEthesis}
     \togglefalse{IMEposter}
+    \togglefalse{IMEresumoabstract}
 }
 \DeclareOption{slides}{
     \toggletrue{IMEslides}
@@ -23,6 +25,7 @@
     \togglefalse{IMEreport}
     \togglefalse{IMEthesis}
     \togglefalse{IMEposter}
+    \togglefalse{IMEresumoabstract}
 }
 \DeclareOption{poster}{
     \togglefalse{IMEslides}
@@ -30,12 +33,14 @@
     \togglefalse{IMEreport}
     \togglefalse{IMEthesis}
     \toggletrue{IMEposter}
+    \togglefalse{IMEresumoabstract}
 }
 \DeclareOption{report}{
     \togglefalse{IMEslides}
     \togglefalse{IMEbeamer}
     \toggletrue{IMEreport}
     \togglefalse{IMEposter}
+    \toggletrue{IMEresumoabstract}
 }
 \DeclareOption{thesis}{
     \togglefalse{IMEslides}
@@ -44,12 +49,17 @@
     \toggletrue{IMEthesis}
     \togglefalse{IMEposter}
     \toggletrue{IMEbrazilian}
+    \toggletrue{IMEresumoabstract}
 }
 
-% Isto deve vir *após* slides, report, thesis etc!
+% As chamadas a \DeclareOption referentes a beamer e resumoabstract
+% devem vir *após* as chamadas referentes a slides, report, thesis etc!
 % Veja o comentário junto a \ExecuteOptions
 \DeclareOption{beamer}{\toggletrue{IMEbeamer}}
 \DeclareOption{nobeamer}{\togglefalse{IMEbeamer}}
+
+\DeclareOption{resumoabstract}{\toggletrue{IMEresumoabstract}}
+\DeclareOption{noresumoabstract}{\togglefalse{IMEresumoabstract}}
 
 \newtoggle{IMEbrazilian}
 \DeclareOption{brazilian}{\toggletrue{IMEbrazilian}}
@@ -1225,7 +1235,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%% RESUMO (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}{
+\iftoggle{IMEresumoabstract}{
   % A página de resumo deve existir em português e inglês; ambas as versões
   % utilizam o mesmo environment.
 
@@ -1308,7 +1318,7 @@
     \endgroup
   }
 
-}{} % \iftoggle{IMEthesis}
+}{} % \iftoggle{IMEresumoabstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%% TEXTOS PADRÃO PARA A CAPA (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%
