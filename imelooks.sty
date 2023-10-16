@@ -581,6 +581,7 @@
     \PassOptionsToPackage{
       % variante de autor-data, similar a plainnat
       style=extras/plainnat-ime,
+      block=ragged, % raggedright + incentivo a quebras de linha entre blocos
       % Inclui, em cada item da bibliografia, links
       % para as páginas onde o item foi citado
       backref=true
@@ -638,6 +639,14 @@
   % (atenddvi pode ser carregada por hyperxmp):
   % https://github.com/ho-tex/atenddvi/issues/1
   \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
+
+  % Vamos fazer a bibliografia raggedright (veja também "block=ragged" mais
+  % acima) e permitir um pouco mais de "raggedness" para minimizar hífens.
+  \AtBeginBibliography{
+    \RaggedRight
+    \RaggedRightRightskip 0pt plus 3em
+    \hyphenpenalty=400 % Default 50
+  }
 
 }{} % \iftoggle{IMEbiblatex}
 
