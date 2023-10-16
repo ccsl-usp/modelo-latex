@@ -1139,7 +1139,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%% EPÍGRAFE (TESE/DISSERTAÇÃO) %%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}{
+\iftoggle{IMEreport}{
 
   % O formato padrão do pacote epigraph é bem feinho...
   % Outra opção para epígrafes é o pacote quotchap
@@ -1185,7 +1185,7 @@
     }
   }
 
-}{} % \iftoggle{IMEthesis}
+}{} % \iftoggle{IMEreport}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1196,7 +1196,7 @@
 % com o texto alinhado à direita e margens esquerda e
 % superior muito grandes. Vamos fazer isso com uma minipage.
 
-\iftoggle{IMEthesis}{
+\iftoggle{IMEreport}{
   \newenvironment{dedicatoria} {
     \hypersetup{pageanchor=false} % Veja comentário em \maketitle
 
@@ -1218,7 +1218,7 @@
 
     \hypersetup{pageanchor=true}
   }
-}{} % \iftoggle{IMEthesis}
+}{} % \iftoggle{IMEreport}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2338,7 +2338,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iftoggle{IMEthesis}{
+\iftoggle{IMEreport}{
   % A classe Book inclui o comando \appendix, que (obviamente) permite inserir
   % apêndices no documento. No entanto, não há suporte similar para anexos. Esta
   % package acrescenta alguns recursos adicionais para apêndices; vamos usá-la
@@ -2430,21 +2430,14 @@
       \@IMEorigAppendix
   }
 
-}{} % \iftoggle{IMEthesis}
+}{} % \iftoggle{IMEreport}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ÍNDICE REMISSIVO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% filecontents não funciona dentro de iftoggle;
-% vamos usar newif para contornar isso.
-\newif\ifIMEthesisTest
-\IMEthesisTestfalse
-
-\iftoggle{IMEthesis}{
-  \IMEthesisTesttrue
-
+\iftoggle{IMEreport}{
   % A criação do índice remissivo depende de um programa auxiliar, que pode ser
   % o "makeindex" (default) ou o xindy. xindy é mais poderoso e lida melhor com
   % línguas diferentes e caracteres acentuados, mas o programa não está mais
@@ -2454,9 +2447,7 @@
 
   % Por padrão, o cabeçalho das páginas do índice é feito em maiúsculas;
   % vamos mudar isso e deixar fancyhdr definir a formatação
-  \indexsetup{
-    othercode={\chaptermark{\indexname}},
-  }
+  \indexsetup{othercode={\chaptermark{\indexname}},}
 
   \makeindex[
     noautomatic,
@@ -2471,9 +2462,15 @@
     % Estas opções são usadas por makeindex
     options=-s mkidxhead.ist -l -c,
   ]
-}{} % \iftoggle{IMEthesis}
+}{} % \iftoggle{IMEreport}
 
-\ifIMEthesisTest
+% filecontents não funciona dentro de iftoggle;
+% vamos usar newif para contornar isso.
+\newif\ifIMEindex
+\IMEindexfalse
+\iftoggle{IMEreport}{\IMEindextrue}
+
+\ifIMEindex
 
 % Índices criados com xindy não funcionam em conjunto com hyperref; os criados
 % com makeindex podem funcionar, mas apenas se hyperref for carregada após
@@ -2507,4 +2504,4 @@ heading_prefix "{\\bfseries "
 heading_suffix "}\\nopagebreak\n"
 \end{filecontents*}
 
-\fi % \ifIMEthesisTest
+\fi % \ifIMEindex
