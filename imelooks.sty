@@ -4,6 +4,9 @@
 
 \RequirePackage{imegoodies}
 
+\RequirePackage{l3keys2e}
+\ExplSyntaxOn
+
 \newtoggle{IMEslides}
 \newtoggle{IMEbeamer} % Não carrega pacotes incompatíveis com beamer
 \newtoggle{IMEreport}
@@ -11,38 +14,54 @@
 \newtoggle{IMEposter}
 \newtoggle{IMEresumoabstract}
 
-\DeclareOption{presentation}{
+\newtoggle{IMEbrazilian}
+\newtoggle{IMEfonts}
+\newtoggle{IMEbiblatex}
+\newtoggle{IMEspacing}
+\newtoggle{IMEcaptions}
+\newtoggle{IMEfootnotes}
+\newtoggle{IMEautohttp}
+\newtoggle{IMEhidelinks}
+\newtoggle{IMEcolorlinks}
+\newtoggle{IMEborderlinks}
+
+\keys_define:nn {IME/looks}{
+  presentation .code:n = {
     \toggletrue{IMEslides}
     \toggletrue{IMEbeamer}
     \togglefalse{IMEreport}
     \togglefalse{IMEthesis}
     \togglefalse{IMEposter}
     \togglefalse{IMEresumoabstract}
-}
-\DeclareOption{slides}{
+  },
+  presentation .value_forbidden:n = true,
+  slides .code:n = {
     \toggletrue{IMEslides}
     \toggletrue{IMEbeamer}
     \togglefalse{IMEreport}
     \togglefalse{IMEthesis}
     \togglefalse{IMEposter}
     \togglefalse{IMEresumoabstract}
-}
-\DeclareOption{poster}{
+  },
+  slides .value_forbidden:n = true,
+  poster .code:n = {
     \togglefalse{IMEslides}
     \togglefalse{IMEbeamer}
     \togglefalse{IMEreport}
     \togglefalse{IMEthesis}
     \toggletrue{IMEposter}
     \togglefalse{IMEresumoabstract}
-}
-\DeclareOption{report}{
+  },
+  poster .value_forbidden:n = true,
+  report .code:n = {
     \togglefalse{IMEslides}
     \togglefalse{IMEbeamer}
     \toggletrue{IMEreport}
     \togglefalse{IMEposter}
     \toggletrue{IMEresumoabstract}
-}
-\DeclareOption{thesis}{
+  },
+  report .value_forbidden:n = true,
+  thesis .code:n = {
     \togglefalse{IMEslides}
     \togglefalse{IMEbeamer}
     \toggletrue{IMEreport}
@@ -50,73 +69,136 @@
     \togglefalse{IMEposter}
     \toggletrue{IMEbrazilian}
     \toggletrue{IMEresumoabstract}
-}
-
-% As chamadas a \DeclareOption referentes a beamer e resumoabstract
-% devem vir *após* as chamadas referentes a slides, report, thesis etc!
-% Veja o comentário junto a \ExecuteOptions
-\DeclareOption{beamer}{\toggletrue{IMEbeamer}}
-\DeclareOption{nobeamer}{\togglefalse{IMEbeamer}}
-
-\DeclareOption{resumoabstract}{\toggletrue{IMEresumoabstract}}
-\DeclareOption{noresumoabstract}{\togglefalse{IMEresumoabstract}}
-
-\newtoggle{IMEbrazilian}
-\DeclareOption{brazilian}{\toggletrue{IMEbrazilian}}
-\DeclareOption{nobrazilian}{\togglefalse{IMEbrazilian}}
-
-\newtoggle{IMEfonts}
-\DeclareOption{fonts}{\toggletrue{IMEfonts}}
-\DeclareOption{nofonts}{\togglefalse{IMEfonts}}
-
-\newtoggle{IMEbiblatex}
-\DeclareOption{biblatex}{\toggletrue{IMEbiblatex}}
-\DeclareOption{nobiblatex}{\togglefalse{IMEbiblatex}}
-
-\newtoggle{IMEspacing}
-\DeclareOption{spacing}{\toggletrue{IMEspacing}}
-\DeclareOption{nospacing}{\togglefalse{IMEspacing}}
-
-\newtoggle{IMEcaptions}
-\DeclareOption{captions}{\toggletrue{IMEcaptions}}
-\DeclareOption{nocaptions}{\togglefalse{IMEcaptions}}
-
-\newtoggle{IMEfootnotes}
-\DeclareOption{footnotes}{\toggletrue{IMEfootnotes}}
-\DeclareOption{nofootnotes}{\togglefalse{IMEfootnotes}}
-
-\newtoggle{IMEautohttp}
-\DeclareOption{autohttp}{\toggletrue{IMEautohttp}}
-\DeclareOption{noautohttp}{\togglefalse{IMEautohttp}}
-
-\newtoggle{IMEhidelinks}
-\newtoggle{IMEcolorlinks}
-\newtoggle{IMEborderlinks}
-
-\DeclareOption{colorlinks}{
+  },
+  thesis .value_forbidden:n = true,
+  % beamer e resumoabstract devem vir depois de slides, report, thesis etc
+  % porque as opções são processadas na ordem em que foram definidas aqui
+  % (e não na ordem em que as opções são passadas para a classe). As
+  % opções acima modificam os valores de IMEbeamer e IMEresumoabstract,
+  % então estas opções devem estar aqui para poderem se sobrepor a isso.
+  beamer .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEbeamer}}
+              {\togglefalse{IMEbeamer}}
+      },
+  beamer .default:n = {true},
+  nobeamer .code:n = {\togglefalse{IMEbeamer}},
+  nobeamer .value_forbidden:n = true,
+  resumoabstract .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEresumoabstract}}
+              {\togglefalse{IMEresumoabstract}}
+      },
+  resumoabstract .default:n = {true},
+  noresumoabstract .code:n = {\togglefalse{IMEresumoabstract}},
+  noresumoabstract .value_forbidden:n = true,
+  brazilian .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEbrazilian}}
+              {\togglefalse{IMEbrazilian}}
+      },
+  brazilian .default:n = {true},
+  nobrazilian .code:n = {\togglefalse{IMEbrazilian}},
+  nobrazilian .value_forbidden:n = true,
+  fonts .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEfonts}}
+              {\togglefalse{IMEfonts}}
+      },
+  fonts .default:n = {true},
+  nofonts .code:n = {\togglefalse{IMEfonts}},
+  nofonts .value_forbidden:n = true,
+  biblatex .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEbiblatex}}
+              {\togglefalse{IMEbiblatex}}
+      },
+  biblatex .default:n = {true},
+  nobiblatex .code:n = {\togglefalse{IMEbiblatex}},
+  nobiblatex .value_forbidden:n = true,
+  bibstyle .tl_gset:N = \@IMEbibStyle,
+  spacing .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEspacing}}
+              {\togglefalse{IMEspacing}}
+      },
+  spacing .default:n = {true},
+  nospacing .code:n = {\togglefalse{IMEspacing}},
+  nospacing .value_forbidden:n = true,
+  captions .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEcaptions}}
+              {\togglefalse{IMEcaptions}}
+      },
+  captions .default:n = {true},
+  nocaptions .code:n = {\togglefalse{IMEcaptions}},
+  nocaptions .value_forbidden:n = true,
+  footnotes .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEfootnotes}}
+              {\togglefalse{IMEfootnotes}}
+      },
+  footnotes .default:n = {true},
+  nofootnotes .code:n = {\togglefalse{IMEfootnotes}},
+  nofootnotes .value_forbidden:n = true,
+  autohttp .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEautohttp}}
+              {\togglefalse{IMEautohttp}}
+      },
+  autohttp .default:n = {true},
+  noautohttp .code:n = {\togglefalse{IMEautohttp}},
+  noautohttp .value_forbidden:n = true,
+  colorlinks .code:n = {
     \togglefalse{IMEhidelinks}
     \toggletrue{IMEcolorlinks}
     \togglefalse{IMEborderlinks}
-}
-\DeclareOption{borderlinks}{
+  },
+  colorlinks .value_forbidden:n = true,
+  borderlinks .code:n = {
     \togglefalse{IMEhidelinks}
     \togglefalse{IMEcolorlinks}
     \toggletrue{IMEborderlinks}
-}
-\DeclareOption{hidelinks}{
+  },
+  borderlinks .value_forbidden:n = true,
+  hidelinks .code:n = {
     \toggletrue{IMEhidelinks}
     \togglefalse{IMEcolorlinks}
     \togglefalse{IMEborderlinks}
+  },
+  hidelinks .value_forbidden:n = true,
 }
 
-% Note que, com \ProcessOptions, as opções são processadas na ordem em
-% que foram declaradas acima e *não* na ordem em que aparecem na lista
-% de opções (\ProcessOptions* faz o processamento acontecer na ordem
-% em que elas aparecem na lista de opções). Veja "texdoc clsguide".
-% Isso é importante aqui por causa de IMEbeamer: definimos seu valor
-% para os diversos tipos de documento, mas o usuário pode redefini-lo.
-\ExecuteOptions{fonts,biblatex,spacing,colorlinks,captions,footnotes,autohttp}
-\ProcessOptions\relax
+% Defaults
+\keys_set:nn{IME/looks}{
+    fonts,
+    biblatex,
+    spacing,
+    colorlinks,
+    captions,
+    footnotes,
+    autohttp
+}
+
+\ProcessKeysOptions{IME/looks}
 
 \iftoggle{IMEautohttp}{\LetLtxMacro\url\httpurl}
 
@@ -576,36 +658,68 @@
 % Com beamer, apenas estilos bibliográficos derivados de authortitle,
 % numeric, alphabetic ou authoryear (como beamer-ime) vão funcionar
 % corretamente! Outros estilos, como abnt ou apa, vão gerar problemas
-% de layout que você vai precisar fazer ajustes manualmente. Observe
-% que, num poster ou apresentação, provavelmente é uma boa ideia usar
+% de layout que você vai precisar ajustar manualmente. Observe que,
+% num poster ou apresentação, provavelmente é uma boa ideia usar
 % apenas \nocite e não \cite.
 
-\iftoggle{IMEbiblatex}{
-
-  \iftoggle{IMEreport}{
-    \PassOptionsToPackage{
-      % variante de autor-data, similar a plainnat
-      style=extras/plainnat-ime,
-      block=ragged, % raggedright + incentivo a quebras de linha entre blocos
-      % Inclui, em cada item da bibliografia, links
-      % para as páginas onde o item foi citado
-      backref=true
-    }{biblatex}
+\ifboolexpr
+  {
+    not test {\ifdefvoid{\@IMEbibStyle}}
+    and not togl {IMEbiblatex}
   }
   {
-    \ifboolexpr{togl {IMEslides} or togl {IMEposter}}
-      {\PassOptionsToPackage{style=extras/beamer-ime}{biblatex}}
-      {\PassOptionsToPackage{style=numeric}{biblatex}}
-      % TODO: allow the user to set the style
+    \ClassWarningNoLine{imelooks}
+      {%
+        ****************************************************\MessageBreak
+        bibstyle makes no sense with nousebiblatex; ignoring\MessageBreak
+        ****************************************************
+      }
   }
+  {}
+
+\iftoggle{IMEbiblatex}{
+  \ifdefvoid{\@IMEbibStyle}
+    {
+      \iftoggle{IMEreport}{
+        \gdef\@IMEbibStyle{extras/plainnat-ime}
+      }{
+        \ifboolexpr{togl {IMEslides} or togl {IMEposter}}
+          {\gdef\@IMEbibStyle{extras/beamer-ime}}
+          {\gdef\@IMEbibStyle{numeric}} % article
+      }
+    }
+    {}
+
+  % Inclui, em cada item da bibliografia, links
+  % para as páginas onde o item foi citado
+  \iftoggle{IMEreport}{\PassOptionsToPackage{backref=true}{biblatex}}{}
 
   \RequirePackage[
+    style=\@IMEbibStyle,
+    % raggedright + incentivo a quebras de linha entre blocos
+    block=ragged,
     natbib=true, % Reconhece a sintaxe de natbib (\citet, \citep)
     hyperref=true, % Ativa o suporte ao pacote hyperref
     % Se um item da bibliografia tem língua definida (com langid), permite
     % hifenizar com base na língua selecionada.
     autolang=hyphen,
   ]{biblatex}
+
+  % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
+  % Impede que um item da bibliografia seja dividido em duas páginas.
+  % À parte a estética, isso contorna este bug, que afeta links na
+  % úlima página do trabalho, ou seja, pode afetar a bibliografia
+  % (atenddvi pode ser carregada por hyperxmp):
+  % https://github.com/ho-tex/atenddvi/issues/1
+  \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
+
+  % Vamos fazer a bibliografia raggedright (veja também "block=ragged" mais
+  % acima) e permitir um pouco mais de "raggedness" para minimizar hífens.
+  \AtBeginBibliography{
+    \RaggedRight
+    \RaggedRightRightskip 0pt plus 3em
+    \hyphenpenalty=400 % Default 50
+  }
 
   % Numa apresentação/poster, a bibliografia pode usar fonte menor
   \iftoggle{IMEslides}
@@ -636,22 +750,6 @@
       {\endlist}
       {\item}
   }{}
-
-  % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
-  % Impede que um item da bibliografia seja dividido em duas páginas.
-  % À parte a estética, isso contorna este bug, que afeta links na
-  % úlima página do trabalho, ou seja, pode afetar a bibliografia
-  % (atenddvi pode ser carregada por hyperxmp):
-  % https://github.com/ho-tex/atenddvi/issues/1
-  \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
-
-  % Vamos fazer a bibliografia raggedright (veja também "block=ragged" mais
-  % acima) e permitir um pouco mais de "raggedness" para minimizar hífens.
-  \AtBeginBibliography{
-    \RaggedRight
-    \RaggedRightRightskip 0pt plus 3em
-    \hyphenpenalty=400 % Default 50
-  }
 
 }{} % \iftoggle{IMEbiblatex}
 
