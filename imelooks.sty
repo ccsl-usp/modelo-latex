@@ -1767,22 +1767,29 @@
   \newtoggle{@finalversion}
 
   % Opções usando LaTeX3 (veja texdoc l3keys).
-  \keys_define:nn { IME / defense }
+  \keys_define:nn { IME / tipotese }
   {
     % Chaves à esquerda definem as variáveis à direita
-    data .code:n= {\DTMsavedate{@defensedate}{#1}},
-    data .value_required:n = true,
-    nivel .choice:,
-    nivel / mestrado .code:n = {\@mestrado},
-    nivel / masters .code:n = {\@mestrado},
-    nivel / dissertacao .code:n = {\@mestrado},
-    nivel / doutorado .code:n = {\@doutorado},
-    nivel / phd .code:n = {\@doutorado},
-    nivel / tese .code:n = {\@doutorado},
-    nivel / graduacao .code:n = {\@tcc},
-    nivel / bachelor .code:n = {\@tcc},
-    nivel / tcc .code:n = {\@tcc},
-    nivel .value_required:n = true,
+    mestrado .code:n = {\@mestrado},
+    mestrado .value_forbidden:n = true,
+    masters .code:n = {\@mestrado},
+    masters .value_forbidden:n = true,
+    dissertacao .code:n = {\@mestrado},
+    dissertacao .value_forbidden:n = true,
+    doutorado .code:n = {\@doutorado},
+    doutorado .value_forbidden:n = true,
+    phd .code:n = {\@doutorado},
+    phd .value_forbidden:n = true,
+    doctorate .code:n = {\@doutorado},
+    doctorate .value_forbidden:n = true,
+    tese .code:n = {\@doutorado},
+    tese .value_forbidden:n = true,
+    graduacao .code:n = {\@tcc},
+    graduacao .value_forbidden:n = true,
+    bachelor .code:n = {\@tcc},
+    bachelor .value_forbidden:n = true,
+    tcc .code:n = {\@tcc},
+    tcc .value_forbidden:n = true,
     quali .code:n = {\ifstrequal{#1}{true}{\toggletrue{@qualificacao}}{\togglefalse{@qualificacao}}},
     quali .default:n = {true},
     definitiva .code:n = {\ifstrequal{#1}{true}{\toggletrue{@finalversion}}{\togglefalse{@finalversion}}},
@@ -1791,18 +1798,34 @@
     provisoria .default:n = {true},
     programa .tl_gset:N = \@program,
     program .value_required:n = true,
-    apoio .tl_gset:N = \@financing,
-    apoio .value_required:n = true,
-    local .tl_gset:N = \@defenselocation,
-    local .value_required:n = true,
-    direitos .tl_gset:N = \@license,
-    direitos .value_required:n = true,
-    fichacatalografica .tl_gset:N = \@catalogingData,
-    fichacatalografica .value_required:n = true,
   }
 
-  \NewDocumentCommand\defesa{+m}{%
-    \keys_set:nn {IME/defense}{#1}
+  \NewDocumentCommand\tipotese{+m}{
+    \keys_set:nn {IME/tipotese}{#1}
+  }
+
+  \keys_define:nn { IME / defesa }
+  {
+    data .code:n= {\DTMsavedate{@defensedate}{#1}},
+    data .value_required:n = true,
+    local .tl_gset:N = \@defenselocation,
+    local .value_required:n = true,
+  }
+
+  \NewDocumentCommand\defesa{m}{
+    \keys_set:nn {IME/defesa}{#1}
+  }
+
+  \NewDocumentCommand\fichacatalografica{+m}{
+    \tl_gset:Nn \@catalogingData {#1}
+  }
+
+  \NewDocumentCommand\apoio{+m}{
+    \tl_gset:Nn \@financing {#1}
+  }
+
+  \NewDocumentCommand\direitos{+m}{
+    \tl_gset:Nn \@license {#1}
 
     \exp_args:NV \str_case:nnF \@license
     {
