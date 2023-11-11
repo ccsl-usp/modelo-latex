@@ -17,6 +17,8 @@
 \newtoggle{IMEbrazilian}
 \newtoggle{IMEfonts}
 \newtoggle{IMEbiblatex}
+\newtoggle{IMEraggedbib}
+\newtoggle{IMEmanualRaggedbib}
 \newtoggle{IMEspacing}
 \newtoggle{IMEcaptions}
 \newtoggle{IMEfootnotes}
@@ -126,6 +128,20 @@
   biblatex .default:n = {true},
   nobiblatex .code:n = {\togglefalse{IMEbiblatex}},
   nobiblatex .value_forbidden:n = true,
+  raggedbib .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \toggletrue{IMEmanualRaggedbib}
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEraggedbib}}
+              {\togglefalse{IMEraggedbib}}
+      },
+  raggedbib .default:n = {true},
+  noraggedbib .code:n = {
+                            \toggletrue{IMEmanualRaggedbib}
+                            \togglefalse{IMEraggedbib}
+                        },
+  noraggedbib .value_forbidden:n = true,
   bibstyle .tl_gset:N = \@IMEbibStyle,
   spacing .choices:nn =
       {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
@@ -690,14 +706,23 @@
     }
     {}
 
+  \iftoggle{IMEmanualRaggedbib}
+    {}
+    {
+        \ifdefstring{\@IMEbibStyle}{extras/plainnat-ime}
+            {}
+            {\toggletrue{IMEraggedbib}}
+    }
+
   % Inclui, em cada item da bibliografia, links
   % para as páginas onde o item foi citado
   \iftoggle{IMEreport}{\PassOptionsToPackage{backref=true}{biblatex}}{}
 
+  % raggedright + incentivo a quebras de linha entre blocos
+  \iftoggle{IMEraggedbib}{\PassOptionsToPackage{block=ragged}{biblatex}}{}
+
   \RequirePackage[
     style=\@IMEbibStyle,
-    % raggedright + incentivo a quebras de linha entre blocos
-    block=ragged,
     natbib=true, % Reconhece a sintaxe de natbib (\citet, \citep)
     hyperref=true, % Ativa o suporte ao pacote hyperref
     % Se um item da bibliografia tem língua definida (com langid), permite
@@ -713,13 +738,16 @@
   % https://github.com/ho-tex/atenddvi/issues/1
   \AtBeginBibliography{\interlinepenalty=10000\raggedbottom}
 
-  % Vamos fazer a bibliografia raggedright (veja também "block=ragged" mais
-  % acima) e permitir um pouco mais de "raggedness" para minimizar hífens.
-  \AtBeginBibliography{
-    \RaggedRight
-    \RaggedRightRightskip 0pt plus 3em
-    \hyphenpenalty=400 % Default 50
+  \iftoggle{IMEraggedbib}{
+    % Vamos fazer a bibliografia raggedright (veja também "block=ragged" mais
+    % acima) e permitir um pouco mais de "raggedness" para minimizar hífens.
+    \AtBeginBibliography{
+      \RaggedRight
+      \RaggedRightRightskip 0pt plus 3em
+      \hyphenpenalty=400 % Default 50
+    }
   }
+  {}
 
   % Numa apresentação/poster, a bibliografia pode usar fonte menor
   \iftoggle{IMEslides}
