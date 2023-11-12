@@ -800,8 +800,7 @@
     % Vamos fazer a bibliografia raggedright (veja também "block=ragged" mais
     % acima) e permitir um pouco mais de "raggedness" para minimizar hífens.
     \AtBeginBibliography{
-      \RaggedRight
-      \RaggedRightRightskip 0pt plus 3em
+      \evenRaggedRight
       \hyphenpenalty=400 % Default 50
     }
   }
@@ -1451,8 +1450,8 @@
   % última fique curta demais. Além disso, fazemos LaTeX preferir não
   % hifenizar palavras se possível. Os valores dos parâmetros são chutes :)
   % mas devem funcionar razoavelmente.
-  \RaggedRightRightskip .05\textwidth plus .2\textwidth minus .05\textwidth\relax
-  \RaggedRightParfillskip 0pt plus .4\textwidth minus 0pt\relax
+  \RaggedRightRightskip 1em plus .3\textwidth minus 1em\relax
+  \RaggedRightParfillskip 0pt plus .2\textwidth minus 0pt\relax
   \hyphenpenalty=200
 
 
@@ -1889,6 +1888,9 @@
                                   borderline north={15pt}{-5pt}{IMEtitleBorder},
                                   boxsep=4mm, left=30pt,
                                   grow sidewards by = 2.3cm}
+
+    \evenRaggedRight
+    \hyphenpenalty=200
 }{} % \iftoggle{IMEposter}
 
 
