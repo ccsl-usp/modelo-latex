@@ -4,8 +4,31 @@
 
 \RequirePackage{imegoodies}
 
-\RequirePackage{l3keys2e}
-\ExplSyntaxOn
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% CORES (LINKS, PÔSTERES, APRESENTAÇÕES) %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Generic colors
+\definecolor{DarkRed}{HTML}{872718}
+\definecolor{Blackish}{HTML}{232830}
+\definecolor{SandyPaper}{HTML}{FFFCE2}
+\definecolor{BrownishGreen}{HTML}{5F603A}
+
+% Greeny colors (based on the InterSCity project main color)
+\definecolor{InterSCity}{HTML}{00998C}
+\definecolor{DarkInterSCity}{HTML}{0D6D65}
+\definecolor{PastelGreen}{HTML}{73937E}
+
+% Colors defined in the IME-USP visual identity manual
+\definecolor{imeblue}{RGB}{20,45,105}
+\definecolor{imeyellow}{RGB}{230,175,60}
+\definecolor{imered}{RGB}{130,20,60}
+\definecolor{imesoftblue}{RGB}{0,100,160}
+
+\newtoggle{IMEbluey}
+\newtoggle{IMEgreeny}
+\newtoggle{IMEsandy}
 
 \newtoggle{IMEslides}
 \newtoggle{IMEbeamer} % Não carrega pacotes incompatíveis com beamer
@@ -26,6 +49,10 @@
 \newtoggle{IMEhidelinks}
 \newtoggle{IMEcolorlinks}
 \newtoggle{IMEborderlinks}
+\newtoggle{IMElistings}
+
+\RequirePackage{l3keys2e}
+\ExplSyntaxOn
 
 \keys_define:nn {IME/looks}{
   presentation .code:n = {
@@ -201,6 +228,52 @@
     \togglefalse{IMEborderlinks}
   },
   hidelinks .value_forbidden:n = true,
+  greeny .code:n = {
+      \colorlet{IMEframe}{DarkInterSCity}
+      \colorlet{IMEbg}{SandyPaper}
+      \colorlet{IMElabel}{DarkInterSCity}
+      \colorlet{IMEtitleBorder}{imeyellow}
+      \colorlet{IMEtitlebg}{DarkInterSCity}
+      \colorlet{IMEfooterbg}{DarkInterSCity}
+      \toggletrue{IMEgreeny}
+      \togglefalse{IMEbluey}
+      \togglefalse{IMEsandy}
+  },
+  greeny .value_forbidden:n = true,
+  bluey .code:n = {
+      \colorlet{IMEframe}{imesoftblue}
+      \colorlet{IMEbg}{SandyPaper}
+      \colorlet{IMElabel}{imeblue}
+      \colorlet{IMEtitleBorder}{imeyellow}
+      \colorlet{IMEtitlebg}{imeblue}
+      \colorlet{IMEfooterbg}{imesoftblue}
+      \togglefalse{IMEgreeny}
+      \toggletrue{IMEbluey}
+      \togglefalse{IMEsandy}
+  },
+  bluey .value_forbidden:n = true,
+  sandy .code:n = {
+      \colorlet{IMEframe}{BrownishGreen!60!white}
+      \colorlet{IMEbg}{SandyPaper}
+      \colorlet{IMElabel}{BrownishGreen}
+      \colorlet{IMEtitleBorder}{imeyellow}
+      \colorlet{IMEtitlebg}{BrownishGreen}
+      \colorlet{IMEfooterbg}{BrownishGreen}
+      \togglefalse{IMEgreeny}
+      \togglefalse{IMEbluey}
+      \toggletrue{IMEsandy}
+  },
+  sandy .value_forbidden:n = true,
+  listings .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMElistings}}
+              {\togglefalse{IMElistings}}
+      },
+  listings .default:n = {true},
+  nolistings .code:n = {\togglefalse{IMElistings}},
+  nolistings .value_forbidden:n = true,
 }
 
 % Defaults
@@ -211,7 +284,9 @@
     colorlinks,
     captions,
     footnotes,
-    autohttp
+    autohttp,
+    bluey,
+    listings
 }
 
 \ProcessKeysOptions{IME/looks}
@@ -576,23 +651,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% CORES E APARÊNCIA DOS LINKS %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%% CORES
-% Greeny colors (based on the InterSCity project main color)
-\definecolor{InterSCity}{HTML}{00998C}
-\definecolor{DarkInterSCity}{HTML}{0D6D65}
-\definecolor{PastelGreen}{HTML}{73937E}
-
-% Colors defined in the IME-USP visual identity manual
-\definecolor{imeblue}{RGB}{20,45,105}
-\definecolor{imeyellow}{RGB}{230,175,60}
-\definecolor{imered}{RGB}{130,20,60}
-\definecolor{imesoftblue}{RGB}{0,100,160}
-
-% Generic colors
-\definecolor{DarkRed}{HTML}{872718}
-\definecolor{Blackish}{HTML}{232830}
-\definecolor{SandyPaper}{HTML}{FFFCE2}
-\definecolor{BrownishGreen}{HTML}{5F603A}
 
 %%%%%% LINKS
 \iftoggle{IMEhidelinks}
@@ -983,6 +1041,331 @@
 }
 
 
+\iftoggle{IMElistings}{
+
+  % Para formatar código-fonte (ex. em Java). listings funciona bem mas
+  % tem algumas limitações (https://tex.stackexchange.com/a/153915 ).
+  % Se isso for um problema, a package minted pode oferecer resultados
+  % (muito) melhores; a desvantagem é que ela depende de um programa
+  % externo, o pygments (escrito em python).
+  %
+  % listings também não tem suporte específico a pseudo-código, mas
+  % incluímos uma configuração para isso que deve ser suficiente.
+  % Caso contrário, há diversas packages específicas para a criação
+  % de pseudocódigo:
+  %
+  %  * a mais comum é algorithmicx ("\usepackage{algpseudocode}");
+  %
+  %  * algorithm2e é bastante flexível, mas um tanto complexa;
+  %
+  %  * clrscode3e foi usada no livro "Introduction to Algorithms",
+  %    de Cormen, Leiserson, Rivert e Stein;
+  %
+  %  * pseudocode foi usada no livro "Combinatorial Algorithms",
+  %    de Kreher e Stinson;
+  %
+  %  * algpseudocodex é uma package relativamente nova similar
+  %    a algorithmicx/algpseudocode mas com diversas melhorias;
+  %
+  %  * pseudo também é relativamente nova; ela funciona de forma
+  %    um pouco diferente das demais e é bastante customizável.
+  %
+  % A diferença entre essas packages e listings/minted é que estas
+  % últimas "entendem" o código e aplicam a formatação automaticamente,
+  % enquanto com as packages acima o usuário precisa usar comandos LaTeX
+  % para definir a formatação.
+  %
+  % algorithmicx/algpseudocode, algorithm2e, clrscode3e, pseudocode
+  % e algpseudocodex usam uma "linguagem" própria baseada em comandos
+  % LaTeX que pode ser facilmente modificada pelo usuário (ou seja,
+  % é fácil fazer pseudocódigo em português). Segue um exemplo com
+  % algpseudocodex, provavelmente a opção mais interessante dentre
+  % este grupo (note o comando "\While", que imprime automaticamente
+  % a palavra-chave "while" e ajusta a indentação):
+  %
+  % \begin{algorithmic}[1]
+  %   \Function{Euclid}{$a, b$} \Comment{The g.c.d. of a and b}
+  %     \State $r\gets a\bmod b$
+  %     \While{$r\not=0$} \Comment{We have the answer if r is 0}
+  %       \State $a\gets b$
+  %       \State $b\gets r$
+  %       \State $r\gets a\bmod b$
+  %     \EndWhile
+  %     \State \textbf{return} $b$ \Comment{The gcd is b}
+  %   \EndFunction
+  % \end{algorithmic}
+  %
+  % pseudo não usa uma "linguagem" própria desse tipo; ao invés disso,
+  % ela oferece comandos para a formatação direta de palavras-chave,
+  % variáveis, indentação etc. Um exemplo ("\\", "\\+" e "\\-" controlam
+  % as quebras de linha e a indentação):
+  %
+  % \begin{pseudo}
+  %    \kw{Function} \fn{Euclid}(a, b) \ct{The g.c.d. of a and b} \\+
+  %      $r\gets a\bmod b$ \\
+  %      \kw{while} $r\not=0$ \ct{We have the answer if r is 0} \\+
+  %        $a\gets b$ \\
+  %        $b\gets r$ \\
+  %        $r\gets a\bmod b$ \\-
+  %      \kw{end} \\
+  %      \kw{return} $b$ \ct{The gcd is b} \\-
+  %    \kw{end}
+  % \end{pseudo}
+
+  \usepackage{listings}
+  \usepackage{lstautogobble}
+  % Carrega a "linguagem" pseudocode para listings
+  \appto{\lstaspectfiles}{,lstpseudocode.sty}
+  \appto{\lstlanguagefiles}{,lstpseudocode.sty}
+  % Estes dois são carregados do diretório extras (veja basics.tex)
+  \lstloadaspects{simulatex,invisibledelims,pseudocode}
+  \lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}
+
+  % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
+  % usados em português é possível contornar o problema com a tabela abaixo.
+  % From https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings#Encoding_issue
+  \lstset{literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+    {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+    {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+    {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+    {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+    {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+    {Ã}{{\~A}}1 {ã}{{\~a}}1 {Õ}{{\~O}}1 {õ}{{\~o}}1
+    {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+    {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+    {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+  }
+
+  % Opções default para o pacote listings
+  % Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
+  \lstset{
+    columns=[l]fullflexible,            % do not try to align text with proportional fonts
+    basicstyle=\footnotesize\ttfamily,  % the font that is used for the code
+    numbers=left,                       % where to put the line-numbers
+    numberstyle=\footnotesize\ttfamily, % the font that is used for the line-numbers
+    stepnumber=1,                       % the step between two line-numbers. If it's 1 each line will be numbered
+    numbersep=20pt,                     % how far the line-numbers are from the code
+    autogobble,                         % ignore irrelevant indentation
+    commentstyle=\color{Brown}\upshape,
+    stringstyle=\color{black},
+    identifierstyle=\color{DarkBlue},
+    keywordstyle=\color{cyan},
+    showspaces=false,                   % show spaces adding particular underscores
+    showstringspaces=false,             % underline spaces within strings
+    showtabs=false,                     % show tabs within strings adding particular underscores
+    %frame=single,                       % adds a frame around the code
+    framerule=0.6pt,
+    tabsize=2,                          % sets default tabsize to 2 spaces
+    captionpos=b,                       % sets the caption-position to bottom
+    breaklines=true,                    % sets automatic line breaking
+    breakatwhitespace=false,            % sets if automatic breaks should only happen at whitespace
+    escapeinside={\%*}{*)},             % if you want to add a comment within your code
+    backgroundcolor=\color[rgb]{1.0,1.0,1.0}, % choose the background color.
+    rulecolor=\color{darkgray},
+    extendedchars=true,
+    inputencoding=utf8,
+    xleftmargin=30pt,
+    xrightmargin=10pt,
+    framexleftmargin=25pt,
+    framexrightmargin=5pt,
+    framesep=5pt,
+  }
+
+  % Um exemplo de estilo personalizado para listings (tabulações maiores)
+  \lstdefinestyle{wider} {
+    tabsize = 4,
+    numbersep=15pt,
+    xleftmargin=25pt,
+    framexleftmargin=20pt,
+  }
+
+  % Outro exemplo de estilo personalizado para listings (sem cores)
+  \lstdefinestyle{nocolor} {
+    commentstyle=\color{darkgray}\upshape,
+    stringstyle=\color{black},
+    identifierstyle=\color{black},
+    keywordstyle=\color{black}\bfseries,
+  }
+
+  % Um exemplo de definição de linguagem para listings (XML)
+  \lstdefinelanguage{XML}{
+    morecomment=[s]{<!--}{-->},
+    morecomment=[s]{<!-- }{ -->},
+    morecomment=[n]{<!--}{-->},
+    morecomment=[n]{<!-- }{ -->},
+    morestring=[b]",
+    morestring=[s]{>}{<},
+    morecomment=[s]{<?}{?>},
+    morekeywords={xmlns,version,type}% list your attributes here
+  }
+
+  % Estilo padrão para a "linguagem" pseudocode
+  \lstdefinestyle{pseudocode}{
+    basicstyle=\rmfamily\small,
+    commentstyle=\itshape,
+    keywordstyle=\bfseries,
+    identifierstyle=\itshape,
+    % as palavras "function" e "procedure"
+    procnamekeystyle=\bfseries\scshape,
+    % funções precedidas por function/procedure ou com \func{}
+    procnamestyle=\ttfamily,
+    specialidentifierstyle=\ttfamily\bfseries,
+  }
+  \lstset{defaultdialect=[english]{pseudocode}}
+
+  % A package listings tem seu próprio mecanismo para a criação de
+  % captions, lista de programas etc. Neste modelo não usamos esses
+  % recursos (veja mais abaixo), mas utilizamos estes nomes:
+  \addto\extrasbrazil{%
+    \gdef\lstlistlistingname{Lista de programas}%
+    \gdef\lstlistingname{Programa}%
+  }
+  \addto\extrasbrazilian{%
+    \gdef\lstlistlistingname{Lista de programas}%
+    \gdef\lstlistingname{Programa}%
+  }
+  \addto\extrasenglish{%
+    \gdef\lstlistlistingname{List of Programs}%
+    \gdef\lstlistingname{Program}%
+  }
+
+  % Novo tipo de float para programas, possível graças à package float
+  % ou floatrow.
+  % Observe que a lista de floats de cada tipo é criada automaticamente
+  % pela package float/floatrow, mas precisamos:
+  %  1. Definir o nome do comando ("\begin{program}")
+  %  2. Definir o nome do float em cada língua ("Figura X", "Programa X")
+  %  3. Definir a extensão do arquivo temporário a ser usada. Pode ser
+  %     qualquer coisa, desde que não haja repetições. Aqui, usamos "lop";
+  %     lembre-se que LaTeX já usa várias outras, como "lof", "lot" etc.,
+  %     então seja cuidadoso na escolha!
+  %  4. Acrescentar os comandos correspondentes em paginas-preliminares.tex
+
+  \@ifpackageloaded{floatrow}
+    {
+      \ifcsundef{chapter}
+          % O novo ambiente se chama "program" ("\begin{program}") e a extensão
+          % temporária é "lop"
+          {\DeclareNewFloatType{program}{placement=htbp,fileext=lop}}
+          {\DeclareNewFloatType{program}{placement=htbp,fileext=lop,within=chapter}}
+
+      % Ajusta ligeiramente o espaçamento do estilo "ruled".
+      \DeclareFloatVCode{customrule}{{\kern 0pt\hrule\kern 2.5pt\relax}}
+      \floatsetup[program]{style=ruled,precode=customrule}
+    }
+    {
+      % Não temos a package floatrow; vamos assumir que temos a package float.
+
+      % O estilo padrão do novo float a ser criado (veja mais sobre isso na
+      % documentação da package float). Para "program" usamos "ruled", mas
+      % para outros floats provavelmente é melhor usar o mesmo formato de
+      % Figuras e Tables (plain).
+      \floatstyle{ruled}
+
+      \ifcsundef{chapter}
+          % O novo ambiente se chama "program" ("\begin{program}") e a extensão
+          % temporária é "lop"
+          {\newfloat{program}{htbp}{lop}}
+          {\newfloat{program}{htbp}{lop}[chapter]}
+
+      % Retorna o estilo dos floats para o padrão
+      \floatstyle{plain}
+    }
+
+  \captionsetup*[program]{style=ruled,position=top}
+
+  % "Program X / Programa X" e "Lista de programas / List of Programs"
+  \floatname{program}{\lstlistingname}
+  \gdef\programlistname{\lstlistlistingname}
+
+  % Se um programa é maior que uma página, ele não pode ser inserido em
+  % um float. Nesse caso, vamos criar o ambiente "programruledcaption",
+  % que cria a mesma estrutura visual e os mesmos captions que os floats
+  % do tipo "program", mas sem ser um float. Para isso, vamos usar recursos
+  % da package framed (a package tcolorbox poderia ter sido usada também).
+  %
+  % Observe que "programruledcaption" funciona *apenas* para os floats do
+  % tipo "program". Se quiser criar algo similar para outro tipo de float,
+  % você vai precisar criar um novo comando ("myfloatruledcaption")
+  % copiando os comandos abaixo e modificando-os conforme necessário.
+  \newsavebox{\programCaptionTextBox}
+  \usepackage{framed}
+  \newenvironment{programruledcaption}[2][]{
+    % All spacing measurements were adjusted to visually reproduce
+    % the float captions
+    \setlength\fboxsep{0pt}
+
+    % topsep means space before AND after
+    \setlength\topsep{.28\baselineskip plus .3\baselineskip minus 0pt}
+
+    \vspace{.3\baselineskip} % Some extra top space
+
+    % For whatever reason, the framed package actually calls "\captionof"
+    % multiple times, messing up the counter. We need to prevent this,
+    % so we put the caption in a box once and reuse the box.
+
+    \savebox{\programCaptionTextBox}{%
+      \parbox[b]{\textwidth}{%
+        \ifstrempty{#1}
+          {\captionof{program}[#2]{#2}}%
+          {\captionof{program}[#1]{#2}}%
+      }
+    }
+
+    \def\fullcaption{
+      \vspace*{-.325\baselineskip}
+      \noindent\usebox{\programCaptionTextBox}%
+      \vspace*{-.56\baselineskip}%
+      \kern 2pt\hrule\kern 2pt\relax
+    }
+
+    \def\FrameCommand{
+      \hspace{-.007\textwidth}%
+      \CustomFBox
+        {\fullcaption}
+        {\vspace{.13\baselineskip}}
+        {.8pt}{.4pt}{0pt}{0pt}
+    }
+
+    \def\FirstFrameCommand{
+      \hspace{-.007\textwidth}%
+      \CustomFBox
+        {\fullcaption}
+        {\hfill\textit{cont}\enspace$\longrightarrow$}
+        {.8pt}{0pt}{0pt}{0pt}
+    }
+
+    \def\MidFrameCommand{
+      \hspace{-.007\textwidth}%
+      \CustomFBox
+        {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+        {\hfill\textit{cont}\enspace$\longrightarrow$}
+        {0pt}{0pt}{0pt}{0pt}
+    }
+
+    \def\LastFrameCommand{
+      \hspace{-.007\textwidth}%
+      \CustomFBox
+        {$\longrightarrow$\enspace\textit{cont}\par\vspace*{.3\baselineskip}}
+        {\vspace{.13\baselineskip}}
+        {0pt}{.4pt}{0pt}{0pt}
+    }
+
+    \MakeFramed{\FrameRestore}
+
+  }{
+    \endMakeFramed
+  }
+
+} % iftoggle{IMElistings}
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%% PÔSTERES E APRESENTAÇÕES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -998,7 +1381,405 @@
 }
 
 \iftoggle{IMEslides}{
-  \usetheme{imeusp} % baseado no tema metropolis
+
+  \setbeamertemplate{caption}[numbered]
+
+  \usetheme[sectionpage=progressbar,
+            subsectionpage=none,
+            numbering=fraction,
+            progressbar=frametitle]{metropolis}
+
+  % Beamer assumes math fonts are "bad" and performs some substitutions
+  % (which seems to be a bad idea IMHO). Unfortunately, that causes
+  % problems with LibertinusT1Math. This "theme" makes beamer not mess
+  % with the math font.
+  \usefonttheme{professionalfonts}
+
+  % As margens default são muito grandes
+  \setbeamersize{
+    text margin left=.03\paperwidth,
+    text margin right=.05\paperwidth
+  }
+
+  \usefonttheme{structurebold}
+  \useinnertheme{circles}
+
+  \setlength{\metropolis@progressinheadfoot@linewidth}{2.5pt}
+  \setlength{\metropolis@titleseparator@linewidth}{0pt}
+
+  % Customizando "itemize" (bold/itálico, formato dos bullets, margens)
+  \setbeamerfont{itemize/enumerate body}{series=\bfseries}
+  \setbeamerfont{itemize/enumerate subbody}{series=\mdseries}
+  \setbeamerfont{itemize/enumerate subsubbody}{shape=\itshape}
+
+  \setbeamertemplate{itemize item}
+    {\raisebox{-.05em}{\@IMEcharscale{.38}{\textbf{\textbullet}}}}
+
+  \setbeamertemplate{itemize subitem}
+    {%
+      \raisebox{.4\totalheight}
+        {\@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}%
+    }
+
+  \setbeamertemplate{itemize subsubitem}
+    {\raisebox{.02em}{\@IMEcharscale{.3}{\textbf{\guillemotright}}}}
+
+  \setbeamertemplate{bibliography item}
+    {%
+      \hspace{.1em}\raisebox{.4\totalheight}
+        {\@IMEcharscale{.25}{\ensuremath{\blacktriangleright}}}%
+    }
+
+  % A margem esquerda das listas de itens no beamer são um tanto exageradas
+  \addtolength{\leftmargini}{-.9em}
+  \addtolength{\leftmarginii}{-1.3em}
+  \addtolength{\leftmarginiii}{-1em}
+  \addtolength{\labelsep}{-.3em}
+
+
+  % Inspirado no comando \narrowragged da package varwidth.
+  %
+  % Num texto normal, os parágrafos costumam ser justificados. Em uma
+  % apresentação, os parágrafos são muito curtos (1-3 linhas), então
+  % justificar não é tão bom e, por isso, beamer usa parágrafos
+  % ragged right.
+  %
+  % De forma similar, em um texto normal, a última linha de um parágrafo
+  % pode ser bastante curta. Isso também é problemático em uma apresentação,
+  % mas beamer não trata isso de forma especial. Aqui, incentivamos LaTeX
+  % a fazer as linhas do parágrafo um pouco mais curtas para evitar que a
+  % última fique curta demais. Além disso, fazemos LaTeX preferir não
+  % hifenizar palavras se possível. Os valores dos parâmetros são chutes :)
+  % mas devem funcionar razoavelmente.
+  \RaggedRightRightskip .05\textwidth plus .2\textwidth minus .05\textwidth\relax
+  \RaggedRightParfillskip 0pt plus .4\textwidth minus 0pt\relax
+  \hyphenpenalty=200
+
+
+  % Normalmente, beamer não utiliza os "labels" normais na bibliografia;
+  % ao invés disso, ele coloca ícones indicando o tipo de item. Isso
+  % funciona corretamente na configuração padrão e usando bibtex, mas
+  % gera alguns problemas com biblatex ou quando utilizamos "labels"
+  % personalizados, como os triângulos que definimos abaixo.
+  %
+  % Versões mais novas de beamer + biblatex + latex usam hooks para
+  % ajustar o tamanho dos labels, resolvendo a incompatibilidade com
+  % biblatex. Ainda assim, há problemas com nosso label personalizado.
+  % Aqui, aplicamos duas correções:
+  %
+  % 1. Detectamos se estamos usando uma versão mais antiga de biblatex
+  %    (sem suporte a hooks) e, se sim, imitamos a configuração das
+  %    versões mais novas, veja
+  %    https://github.com/josephwright/beamer/commit/2a81ef0c0172a4ba7ee11676a177c7f6fd21cf3d
+  %
+  %    TODO: Remover isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04
+  %          (focal) for descontinuada (abril de 2025).
+  %
+  % 2. Ajustamos bibhang para que, independentemente do tamanho do label,
+  %    as linhas subsequentes estejam alinhadas à esquerda.
+
+  % O item 1 da explicação acima
+  \AtEndPreamble{
+    \@ifpackagelater{biblatex}{2020/08/23}
+      {}
+      {
+        \ifboolexpr
+          {
+               test {\ifcsdef{blx@file@numeric.bbx}}
+            or test {\ifcsdef{blx@file@alphabetic.bbx}}
+          }
+          {
+            \mode<presentation>{%
+              \setbeamertemplate{bibliography item}{\insertbiblabel}%
+            }
+          }{}
+
+        \ifboolexpr
+          {
+               test {\ifcsdef{blx@file@authoryear.bbx}}
+            or test {\ifcsdef{blx@file@authortitle.bbx}}
+          }
+          {
+            \mode<presentation>{%
+              \pretocmd{\bibsetup}{%
+                \newlength{\beamer@bibiconwidth}%
+                \settowidth\beamer@bibiconwidth{\usebeamertemplate*{bibliography item}}%
+                \setlength{\labelwidth}{-\beamer@bibiconwidth}%
+                \addtolength{\labelwidth}{2\labelsep}%
+                \addtolength{\bibhang}{\labelsep}% desnecessário, vamos redefinir abaixo
+              }{}{}%
+            }%
+          }{}
+      }
+  }
+
+  \AtEndPreamble{
+    \@ifpackageloaded{biblatex}
+      {
+        % labelsep por padrão é MUITO grande
+        \mode<presentation>{%
+          \pretocmd{\bibsetup}{\setlength{\labelsep}{.2em}}{}{}%
+        }
+
+        % O item 2 da explicação acima
+        \ifboolexpr
+          {
+               test {\ifcsdef{blx@file@authoryear.bbx}}
+            or test {\ifcsdef{blx@file@authortitle.bbx}}
+          }
+          {
+            \mode<presentation>{%
+              \apptocmd{\bibsetup}{%
+                \setlength{\bibhang}{\beamer@bibiconwidth}%
+              }{}{}%
+            }%
+          }{}
+      }{}
+  }
+
+
+  %%%%%%%%%%%%%%%%%%%%%%%%% COMANDOS AUXILIARES PARA %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %%%%%%%%%%%%%%%%%%%%%%%%% A "CAPA" DA APRESENTAÇÃO %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \RequirePackage{qrcode}
+
+  \newcommand\qrcodeurl[1]{\gdef\@IMEqrcodeURL{#1}}
+
+  \newcommand\showqrcode{
+    \ifcsvoid{@IMEqrcodeURL}
+      {}
+      {
+        \begin{frame}[plain]
+          \vfill
+          \bgroup
+          \centering
+          \qrcode[height=.8\paperheight,level=H]{\@IMEqrcodeURL}\par
+          \egroup
+          \vfill
+        \end{frame}
+      }
+  }
+
+  \newtoggle{@IMEqrcodeInTOC}
+  \toggletrue{@IMEqrcodeInTOC}
+
+  \newcommand\qrcodeintoc{\toggletrue{@IMEqrcodeInTOC}}
+  \newcommand\noqrcodeintoc{\togglefalse{@IMEqrcodeInTOC}}
+
+  \newcommand\@IMEqrcode{
+    \ifboolexpr
+      { togl {@IMEqrcodeInTOC} and not test {\ifcsvoid{@IMEqrcodeURL}} }
+      {
+        \vskip 2\baselineskip plus 1\baselineskip minus 2.5\baselineskip
+        \bgroup
+        \centering
+        \hfill\qrcode[height=.27\paperheight,level=H]{\@IMEqrcodeURL}\par
+        \egroup
+      }
+      {}
+  }
+
+  \newcommand\@IMEqrcodeSpace{
+    \ifboolexpr
+      { togl {@IMEqrcodeInTOC} and not test {\ifcsvoid{@IMEqrcodeURL}} }
+      {
+        \vskip 2\baselineskip plus 1\baselineskip minus 2.5\baselineskip
+        \rule{0pt}{.27\paperheight}\par
+      }
+      {}
+  }
+
+  \gdef\@IMEtocColumnSplit{0}
+  \newcommand\toccolumnsplit[1]{\gdef\@IMEtocColumnSplit{#1}}
+
+  \newcommand\overview{
+    \ifnumequal{\@IMEtocColumnSplit}{0}
+      {\tableofcontents\@IMEqrcode}
+      {
+        \begin{columns}[T]
+          \column{.45\textwidth}
+            \tableofcontents[sections={1-\@IMEtocColumnSplit}]
+          \column{.45\textwidth}
+            \tableofcontents[sections={\the\numexpr 1
+                                       + \@IMEtocColumnSplit\relax-}]
+
+            \@IMEqrcode
+        \end{columns}
+      }
+  }
+
+  \newcommand{\intermezzo}{
+    \ifnumequal{\@IMEtocColumnSplit}{0}
+      {\tableofcontents[currentsection]\@IMEqrcodeSpace}
+      {
+        \begin{columns}[T]
+          \column{.45\textwidth}
+            \tableofcontents[currentsection,sections={1-\@IMEtocColumnSplit}]
+          \column{.45\textwidth}
+            \tableofcontents[currentsection,
+                             sections={\the\numexpr 1
+                                       + \@IMEtocColumnSplit\relax-}]
+
+            \@IMEqrcodeSpace
+        \end{columns}
+      }
+  }
+
+  \newcommand\titlebgimage[1]{
+    \gdef\@IMEtitleBgImage{%
+        \noindent\begin{minipage}[b][\paperheight][b]{\paperwidth}
+          \vfill
+          \centering#1\par
+        \end{minipage}%
+    }
+  }
+
+  % .7\paperwidth porque o lado direito do pano de fundo é muito escuro
+  \newcommand\logos[1]{
+    \gdef\@IMElogos{%
+        \noindent\hspace{.05\paperwidth}%
+        \begin{minipage}[b][\paperheight][b]{.7\paperwidth}
+            \vfill
+            #1\par
+            \vspace{.3\baselineskip}
+        \end{minipage}%
+    }
+  }
+
+  \renewcommand\maketitle{
+    {
+      \thispagestyle{empty}
+      % Traz o título para cima
+      \addtobeamertemplate{title}{\vspace*{-3\baselineskip}}{}
+      \addtobeamertemplate{title separator}%
+                          {\vspace*{-.5\baselineskip}}%
+                          {\vspace*{-\baselineskip}}
+
+      \definecolor{bggray}{RGB}{238,238,236}
+      \setbeamercolor{background canvas}{bg=bggray}
+      \setbeamercolor{background}{bg=}
+      % Duas minipages sobrepostas, uma com a imagem de
+      % fundo e a outra com os logotipos das agências
+      % Precisa estar dentro das minipages porque fica
+      % mais fácil fazer o alinhamento vertical
+      \setbeamertemplate{background}{%
+        \ifcsvoid{@IMEtitleBgImage}{}{\@IMEtitleBgImage\hspace{-\paperwidth}}
+        \ifcsvoid{@IMElogos}{}{\@IMElogos}%
+      }
+
+      \begin{frame}\titlepage\end{frame}
+    }
+  }
+
+  % Há um bug em beamer, no arquivo beamerbasetoc.sty, na definição da
+  % macro \beamer@sectionintoc. Essa macro faz \hbox{\vbox{...}} para
+  % cada item do sumário. O problema é que, se alguma das entradas do
+  % sumário tem mais de uma linha, o espaçamento entre essa entrada e
+  % a entrada anterior fica errado (ligeiramente menor). Normalmente
+  % esse problema não chama muito a atenção, mas se há muitos itens
+  % (e, portanto, o espaço entre eles é pequeno) ou se colocamos o
+  % sumário em uma minipage ou um ambiente em colunas (que minimiza o
+  % espaçamento vertical), o resultado é ruim.
+  %
+  % \beamer@subsectionintoc e \beamer@subsubsectionintoc não fazem
+  % \hbox{\vbox{...}}; num teste preliminar, remover esses comandos
+  % de \beamer@sectionintoc parece funcionar. Outra solução seria
+  % acrescentar um \strut: \hbox{\vbox{\strut ...}}. Aqui, no entanto,
+  % contornamos o problema acrescentando o \strut em outro lugar, que
+  % é mais simples de fazer e (esperemos!) não vai causar problemas.
+  % Bug report: https://github.com/josephwright/beamer/issues/524
+  \pretocmd{\beamer@tocact}{\strut}{}{}
+
+  % Remove ícones de navegação
+  \beamertemplatenavigationsymbolsempty
+
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CORES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  % Some reasonable defaults:
+  \setbeamercolor{normal text}{fg=Blackish}
+  % 1. blocks
+  \setbeamercolor{block title}{use=structure,fg=structure.fg,bg=structure.fg!20!bg}
+  \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!50!bg}
+  % 2. example blocks
+  \setbeamercolor{block title example}{use=example text,fg=example text.fg,bg=example text.fg!20!bg}
+  \setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!50!bg}
+
+  \setbeamercolor{structure}{fg=DarkRed}
+  \setbeamercolor{alerted text}{fg=DarkRed}
+  \setbeamercolor{progress bar}{fg=DarkRed!40!red}
+  \setbeamercolor{separation line}{bg=DarkRed!40!red,fg=}
+
+  \setbeamercolor{palette primary}{fg=white,bg=DarkRed!80!black}
+  \setbeamercolor{palette secondary}{fg=DarkRed, bg=SandyPaper}
+  \setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper}
+
+  \iftoggle{IMEgreeny}{
+      \setbeamercolor{structure}{fg=InterSCity}
+      %\setbeamercolor{alerted text}{fg=PastelGreen!80!black}
+      %\setbeamercolor{alerted text}{fg=DarkRed} % same as default
+      \setbeamercolor{progress bar}{fg=InterSCity!75!green}
+      \setbeamercolor{separation line}{bg=PastelGreen,fg=}
+
+      \setbeamercolor{palette primary}{fg=white,bg=DarkInterSCity}
+      %\setbeamercolor{palette secondary}{fg=DarkRed, bg=SandyPaper} % same as default
+      %\setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper} % same as default
+  }{}
+
+  \iftoggle{IMEsandy}{
+      % Cores default para blocos
+      % block body preto é melhor para impressão
+      \setbeamercolor{block body}{fg=black,bg=SandyPaper}
+      %\setbeamercolor{block body}{fg=BrownishGreen!50!black,bg=SandyPaper}
+      \setbeamercolor{block title}{fg=BrownishGreen!50!black,bg=SandyPaper!90!black}
+  }{}
+
+  \iftoggle{IMEbluey}{
+      \setbeamercolor{block title}{use=structure,fg=white,bg=imesoftblue}
+      \setbeamercolor{block body}{fg=black,bg=SandyPaper}
+
+      \setbeamercolor{structure}{fg=imeblue}
+      \setbeamercolor{alerted text}{fg=imered}
+      \setbeamercolor{progress bar}{fg=imeyellow}
+      \setbeamercolor{separation line}{bg=imeyellow,fg=}
+
+      \setbeamercolor{palette primary}{fg=white,bg=imeblue}
+      \setbeamercolor{palette secondary}{fg=imered, bg=SandyPaper}
+      %\setbeamercolor{palette quarternary}{fg=Blackish, bg=SandyPaper} % same as default
+  }{}
+
+  % Proofs, theorems etc. don't change with the different themes
+  %
+  % Cores especiais para bloco proof.
+  % Não existe um template específico para definir as
+  % cores do bloco proof, então fazemos de outra maneira
+  \addtobeamertemplate{proof begin}{%
+      \setbeamercolor{block title}{fg=black,bg=orange!50!white}
+      \setbeamercolor{block body}{fg=orange!80!black,bg=orange!20!white}
+  }{}
+
+  % Não é boa ideia fazer "\addtobeamertemplate{theorem begin}" para definir
+  % cores para teoremas porque essa template vale para theorem, corollary,
+  % definition, fact e example e não tem como fazer override depois. Vamos
+  % usar isto no lugar
+  \AtBeginEnvironment{theorem}{
+      \setbeamercolor{block title}{use=example text,fg=white,bg=example text.fg!75!black}
+      \setbeamercolor{block body}{parent=normal text,use=block title example,bg=block title example.bg!50!bg}
+  }{}
+
+  % Cor especial para definition
+  \AtBeginEnvironment{definition}{%
+      \setbeamercolor{block title}{fg=black,bg=brown!80!red!70!white}
+      \setbeamercolor{block body}{fg=brown!70!black,bg=brown!80!red!30!white}
+  }{}
+
+  % Exemplo de novo tipo de teorema (proposition) com cor personalizada
+  \newtheorem{proposition}{Proposition}
+  \AtBeginEnvironment{proposition}{
+      \setbeamercolor{block title}{fg=black,bg=yellow!50!black!50!white}
+      \setbeamercolor{block body}{fg=yellow!50!black,bg=yellow!50!black!30!white}
+  }{}
+
   \usepackage{appendixnumberbeamer}
   % Desabilita a cor de rodapé
   \setbeamercolor{footline}{fg=,bg=}
@@ -1067,9 +1848,10 @@
         bottomtitle=.1\baselineskip,
         left=.4\baselineskip,
         right=.6\baselineskip,
-        colframe = imesoftblue,
-        colback = SandyPaper,
+        colframe = IMEframe,
+        colback = IMEbg
     }
+
 
     \setlist{
         first={\evenRaggedRight},
@@ -1081,30 +1863,30 @@
 
     \setlist[itemize,1]{
       left = 0pt .. .8em,
-      label={\color{imeblue}\raisebox{.1em}{%
+      label={\color{IMElabel}\raisebox{.1em}{%
              \@IMEcharscale{.26}{\ensuremath{\blacktriangleright}}}}
     }
 
     \setlist[itemize,2]{
       before*={\footnotesize},
       left = -5pt .. .8em,
-      label={\color{imeblue}\raisebox{-.1em}{%
+      label={\color{IMElabel}\raisebox{-.1em}{%
              \@IMEcharscale{.4}{\ensuremath{\bullet}}}}
     }
 
     \setlist[itemize,3]{
       before*={\footnotesize\itshape},
       left = -1pt .. .95em,
-      label={\color{imeblue}\raisebox{.05em}{%
+      label={\color{IMElabel}\raisebox{.05em}{%
              \@IMEcharscale{.3}{\normalfont\textbf{\guillemotright}}}}
     }
 
-    \tcbsubskin{title}{enhanced}{colback=imeblue, coltext=white,
-                                 borderline south={15pt}{-5pt}{imeyellow},
+    \tcbsubskin{title}{enhanced}{colback=IMEtitlebg, coltext=white,
+                                 borderline south={15pt}{-5pt}{IMEtitleBorder},
                                  boxsep=10mm, grow sidewards by = 2.3cm}
 
-    \tcbsubskin{footer}{enhanced}{colback=imesoftblue, coltext=white,
-                                  borderline north={15pt}{-5pt}{imeyellow},
+    \tcbsubskin{footer}{enhanced}{colback=IMEfooterbg, coltext=white,
+                                  borderline north={15pt}{-5pt}{IMEtitleBorder},
                                   boxsep=4mm, left=30pt,
                                   grow sidewards by = 2.3cm}
 }{} % \iftoggle{IMEposter}
