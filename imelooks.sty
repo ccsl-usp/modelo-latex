@@ -807,7 +807,19 @@
 
   % Numa apresentação/poster, a bibliografia pode usar fonte menor
   \iftoggle{IMEslides}
-    {\renewcommand*\bibfont{\footnotesize}}
+    {
+        \renewcommand*\bibfont{\footnotesize}
+        % O tema metropolis redefine o tamanho das fontes na bibliografia;
+        % antes de TeXLive 2023, o código de beamer tinha um bug que fazia
+        % isso não ter efeito, mas esse bug foi corrigido, então aqui
+        % desfazemos a alteração do tema metropolis.
+        \AtEndOfPackageFile*{beamerthememetropolis}{
+            \setbeamerfont*{bibliography entry author}{}
+            \setbeamerfont*{bibliography entry title}{}
+            \setbeamerfont*{bibliography entry location}{}
+            \setbeamerfont*{bibliography entry note}{}
+        }
+    }
     {}
 
   \iftoggle{IMEposter}
