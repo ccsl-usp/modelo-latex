@@ -15,17 +15,16 @@ compreehensive) LaTeX tutorial, and some examples of LaTeX commands.
 There is also a simple and short [cheat sheet](https://gitlab.com/ccsl-usp/modelo-latex/raw/main/pre-compilados/colinha.pdf?inline=false)
 (in Portuguese).
 
-Besides that, there are lots of comments in the "tese.tex"
-and other included .tex files about the packages used and things
-you might want to customize or learn more about. These comments are
-in Brazilian Portuguese. Even if you have some LaTeX experience, you
-may benefit from skimming the comments, tutorial, and examples, as
-they include some useful tips.
+Besides that, there are lots of comments in the .tex and .sty files
+about the packages used and things you might want to customize or
+learn more about. These comments are in Brazilian Portuguese. Even
+if you have some LaTeX experience, you may benefit from skimming the
+comments, tutorial, and examples, as they include some useful tips.
 
-You need a reasonably recent working LaTeX installation (TeXLive 2018
+You need a reasonably recent working LaTeX installation (TeXLive 2019
 works, but we recommend 2020 or newer), including biber and biblatex
-(among other packages). The document may be compiled with "make" or
-"latexmk" (preferred) and this repo includes a compiled version of it.
+(among other packages). The example documents may be compiled with
+`latexmk` and this repo includes compiled versions of them.
 
 ## FAQ
 
@@ -55,11 +54,11 @@ datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
 pgfplots, appendix, iftex, keyval, cancel, and hologo. Several others are
 loaded indirectly by these.
 
-The default fonts depend on these packages: lmodern, fix-cm,
-libertinus, libertinust1math, fourier-orns, and sourcecodepro.
+The default fonts depend on these packages: lmodern, fix-cm, libertinus,
+libertinust1math, fourier-orns, and sourcecodepro.
 
-The example presentation and poster use beamer, beamerposter,
-appendixnumberbeamer, qrcode, and beamertheme-metropolis.
+The example presentation uses beamer, appendixnumberbeamer, qrcode,
+and beamertheme-metropolis.
 
 As of 2021, in debian/ubuntu systems, you need to install (with
 their dependencies) at least: texlive-base, texlive-latex-base,
