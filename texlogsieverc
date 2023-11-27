@@ -7,6 +7,9 @@ add-info-message = ////^Ap.-ndice %S%.
 add-info-message = ////^Appendix %S%.
 add-info-message = ////^Anexo %S%.
 add-info-message = ////^Annex %S%.
+add-info-message = ////^luaotfload %| db %: Font names database not found, generating new one%.
+add-info-message = ////^luaotfload %| db %: This can take several minutes; please be patient%.
+add-info-message = ////^Lua module%: luaotfload.* / [a-zA-Z ]+
 
 # Warnings pouco relevantes
 set-to-level-info = tex again after calling `makeindex
@@ -16,6 +19,7 @@ set-to-level-info = LuaTeX and hyperref package used: Hyperreferences in rotated
 set-to-level-info = The length marginparwidth is less than 2cm and will most likely
 set-to-level-info = You need to compile with XeLaTeX or LuaLaTeX to use the Fira fonts
 set-to-level-info = Option "binary-units" has been removed
+set-to-level-info = no font with id
 
 # hyperref remove comandos especiais em \title e \author dos metadados PDF
 set-to-level-info = removing `\@thanks' on input line

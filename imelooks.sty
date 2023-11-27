@@ -754,10 +754,10 @@
   \ifdefvoid{\@IMEbibStyle}
     {
       \iftoggle{IMEreport}{
-        \gdef\@IMEbibStyle{extras/plainnat-ime}
+        \gdef\@IMEbibStyle{plainnat-ime}
       }{
         \ifboolexpr{togl {IMEslides} or togl {IMEposter}}
-          {\gdef\@IMEbibStyle{extras/beamer-ime}}
+          {\gdef\@IMEbibStyle{beamer-ime}}
           {\gdef\@IMEbibStyle{numeric}} % article
       }
     }
@@ -766,7 +766,7 @@
   \iftoggle{IMEmanualRaggedbib}
     {}
     {
-        \ifdefstring{\@IMEbibStyle}{extras/plainnat-ime}
+        \ifdefstring{\@IMEbibStyle}{plainnat-ime}
             {}
             {\toggletrue{IMEraggedbib}}
     }
@@ -1127,7 +1127,6 @@
   % Carrega a "linguagem" pseudocode para listings
   \appto{\lstaspectfiles}{,lstpseudocode.sty}
   \appto{\lstlanguagefiles}{,lstpseudocode.sty}
-  % Estes dois são carregados do diretório extras (veja basics.tex)
   \lstloadaspects{simulatex,invisibledelims,pseudocode}
   \lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}
 

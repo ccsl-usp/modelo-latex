@@ -1,0 +1,201 @@
+%%
+%% This is file `evenragged.sty',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% evenragged.dtx  (with options: `package')
+%% Copyright 2023 Nelson Lago <lago@ime.usp.br>
+%% 
+%% This work may be distributed and/or modified under the conditions of the
+%% LaTeX Project Public License, either version 1.3c of this license or (at
+%% your option) any later version. The latest version of this license can be
+%% found at http://www.latex-project.org/lppl.txt and version 1.3 or later
+%% is part of all distributions of LaTeX version 2005/12/01 or later.
+%% 
+%% This work has the LPPL maintenance status `maintained'.
+%% 
+%% The Current Maintainer of this work is Nelson Lago <lago@ime.usp.br>.
+%% 
+\NeedsTeXFormat{LaTeX2e}[2015/01/01]
+\ProvidesPackage{evenragged}[2023/11/12 0.1 "Square" paragraphs]
+
+\RequirePackage{etoolbox}
+
+\RequirePackage{xparse}
+
+\RequirePackage{ragged2e}
+
+\newtoggle{@EVRAGpermissive}
+\toggletrue{@EVRAGpermissive}
+
+
+
+\newcommand\evenRaggedRight{%
+    \RaggedRightRightskip 0pt plus .3\linewidth minus 0pt\relax
+    \advance\RaggedRightRightskip by 0pt plus 2em\relax
+    \iftoggle{@EVRAGpermissive}
+      {\RaggedRightParfillskip 0pt plus .2\linewidth minus 0pt\relax}
+      {\RaggedRightParfillskip 0pt plus 0pt minus 0pt\relax}%
+    \RaggedRight\relax
+}
+
+\newcommand\evenRaggedLeft{%
+    \RaggedLeftLeftskip 0pt plus .3\linewidth minus 0pt\relax
+    \advance\RaggedLeftLeftskip by 0pt plus 2em\relax
+    \RaggedLeftParfillskip 0pt plus 0pt minus 0pt\relax
+    \RaggedLeft\relax
+}
+
+\newcommand\evenCentering{%
+    \CenteringLeftskip 0pt plus .15\linewidth minus 0pt\relax
+    \CenteringRightskip 0pt plus .15\linewidth minus 0pt\relax
+    \advance\CenteringLeftskip by 0pt plus 1em\relax
+    \advance\CenteringRightskip by 0pt plus 1em\relax
+    \CenteringParfillskip 0pt plus 0pt minus 0pt\relax
+    \Centering\relax
+}
+
+\NewDocumentEnvironment{evenFlushLeft}{}
+    {\trivlist\sloppy\hbadness=\@M\evenRaggedRight\item\relax}
+    {\endtrivlist}
+
+\NewDocumentEnvironment{evenFlushLeft*}{}
+    {\trivlist\lefthyphenmin=62\righthyphenmin=62\sloppy
+     \hbadness=\@M\evenRaggedRight\item\relax}
+    {\endtrivlist}
+
+\NewDocumentEnvironment{evenFlushRight}{}
+    {\trivlist\sloppy\hbadness=\@M\evenRaggedLeft\item\relax}
+    {\endtrivlist}
+
+\NewDocumentEnvironment{evenFlushRight*}{}
+    {\trivlist\lefthyphenmin=62\righthyphenmin=62\sloppy
+     \hbadness=\@M\evenRaggedLeft\item\relax}
+    {\endtrivlist}
+
+\NewDocumentEnvironment{evenCenter}{}
+    {\trivlist\sloppy\hbadness=\@M\evenCentering\item\relax}
+    {\endtrivlist}
+
+\NewDocumentEnvironment{evenCenter*}{}
+    {\trivlist\lefthyphenmin=62\righthyphenmin=62\sloppy
+     \hbadness=\@M\evenCentering\item\relax}
+    {\endtrivlist}
+
+\ExplSyntaxOn
+
+\regex_const:Nn \@EVRAGbreakRegex
+  {
+    ( \c{break} ) % Matches "\break"
+    |
+    ( \c{newline} ) % Matches "\newline"
+    |
+      % This matches:
+      % 1. The control sequence "\linebreak" -> "\c{linebreak}"
+      % 2. Optionally followed by "[NUMBER]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
+    ( \c{linebreak} (\s*\x{5B}\s*\d\s*\x{5D})? )
+    |
+      % This matches:
+      % 1. The control sequence "\\" (forced line break) -> "\c{\\}"
+      % 2. Optionally followed by "[...]" -> "( \s*\x{5B}\s*...\s*\x{5D} )?"
+      % 3. Where "..." is any valid TeX dimension
+      %    (see regex example in texdoc interface3)
+    ( \c{\\}
+      ( \s*\x{5B}\s*
+          [\+\-]?(\d+|\d*\.\d+)\s*((?i)pt|in|[cem]m|ex|[bs]p|[dn]d|[pcn]c)
+        \s*\x{5D}
+      )?
+    )
+  }
+
+\newcommand{\evenJustified}[2][\parindent]{
+    \bgroup
+
+    % If the user defined manual linebreaks, do nothing (numLines = 1).
+    % Otherwise, set \@EVRAGnumLines (the total text width divided by the
+    % available width, rounded up).
+    \exp_args:NNo\regex_match:NnTF \@EVRAGbreakRegex {#2}
+      {\def\@EVRAGnumLines{1}}
+      {\@EVRAGcalculateNumLines{\linewidth}{#1}{#2}}
+
+    \ifboolexpr
+      {
+        test {\ifnumgreater{\@EVRAGnumLines}{1}}
+        and test {\ifdimless{\@EVRAGgoalTextWidth + 1.5em}{\linewidth}}
+      }
+      {%
+        \begin{list}
+          {}
+          {
+            \itemindent=#1
+            \itemsep=0pt
+            \labelsep=0pt
+            \labelwidth=0pt
+            \leftmargin=0pt
+            \listparindent=0pt
+            \partopsep=0pt
+            \topsep=0pt
+            \parsep=\parskip
+            \rightmargin=\@EVRAGsqueeze
+          }%
+            \parfillskip=2em plus 3em\relax
+            \JustifyingParfillskip=2em plus 3em\relax
+          \item\relax#2%
+        \end{list}%
+      }
+      {\bgroup\parindent=#1\relax#2\egroup}
+
+    \par
+    \egroup
+}
+
+\newcounter{@EVRAGtmpcount}
+\newcommand\@EVRAGmeasureTextWidth[1]{
+  \setcounter{@EVRAGtmpcount}{\value{footnote}} % Save the counter
+  \bgroup
+  % Only typeset the marker, not the actual footnote
+  \renewcommand\footnote[1]{\footnotemark}
+  \hbox_gset:Nn \l_tmpa_box {#1}
+  \egroup
+  \setcounter{footnote}{\value{@EVRAGtmpcount}} % Restore the counter
+  \dimgdef{\@EVRAGtextWidth}{\box_wd:N \l_tmpa_box}
+}
+
+\newcommand\@EVRAGcalculateNumLines[3]{
+  \@EVRAGmeasureTextWidth{#3} % register the text size in \@EVRAGtextWidth
+
+  % If the first line is indented, the length of the text we will
+  % divide among the lines should include that extra space. This
+  % also works if the indentation is negative, i.e., the first
+  % line is "outdented" - think about it :).
+  \dimdef{\@EVRAGtextWidth}{\@EVRAGtextWidth + #2}
+
+  % How many lines do we need to typeset the text in the space we have?
+  \edef\@tempa{
+      \int_div_truncate:nn
+          {\dim_to_decimal_in_sp:n{\@EVRAGtextWidth}}
+          {\dim_to_decimal_in_sp:n{#1}}
+  }
+  \xdef\@EVRAGnumLines{\int_eval:n{\@tempa + 1}}
+
+  % We want each line of text to have approximately this width
+  \dimdef{\@EVRAGgoalTextWidth}{\@EVRAGtextWidth / \@EVRAGnumLines}
+
+  % But, in fact, a little more, because TeX cannot just break the lines
+  % anywhere; if we do not give it some extra room, we might end up with
+  % one additional (very short) line. This extra room needs to be larger
+  % for shorter paragraphs.
+  \dimgdef{\@EVRAGgoalTextWidth}{\@EVRAGgoalTextWidth + .3em}
+  \dimgdef{\@EVRAGgoalTextWidth}{\@EVRAGgoalTextWidth + 1em / \@EVRAGnumLines}
+
+  % To get to the right width, we need to increase
+  % the margin by approximately this amount
+  \dimgdef{\@EVRAGsqueeze}{#1 - \@EVRAGgoalTextWidth}
+}
+
+\ExplSyntaxOff
+
+\endinput
+%%
+%% End of file `evenragged.sty'.
