@@ -9,8 +9,11 @@ mas seu uso é fortemente recomendado, pois ele facilita diversas etapas do
 trabalho e o resultado final é muito bom\footnote{O uso de um sistema de
 controle de versões, como mercurial (\url{mercurial-scm.org}) ou git
 (\url{git-scm.com}), também é altamente recomendado.}. Este modelo é
-distribuído com uma ``colinha'' dos principais comandos \LaTeX{} e inclui
-comentários explicativos para auxiliá-lo com ele, sendo composto dos arquivos:
+distribuído com uma ``colinha'' dos principais comandos \LaTeX{} e
+inclui comentários explicativos para auxiliá-lo com ele, sendo composto
+pelos~arquivos:\looseness=1
+
+\enlargethispage{-1\baselineskip}
 
 \begin{itemize}
   \item \texttt{tese.tex}, \texttt{artigo.tex}, \texttt{apresentacao.tex}
@@ -24,10 +27,20 @@ comentários explicativos para auxiliá-lo com ele, sendo composto dos arquivos:
         procure o comando \texttt{\textbackslash{}addbibresource} nos
         arquivos de exemplo mencionados acima para modificar o nome desse
         arquivo ou acrescentar outros);
-  \item Arquivos com as configurações e \textit{packages} usadas, no
-        diretório \texttt{extras} (você só precisa mexer neles se quiser
-        aprender mais sobre \LaTeX{} ou modificar/acrescentar algo ao
-        modelo).
+  \item \texttt{imegoodies.sty}, que carrega várias \emph{packages} comumente
+        usadas. Você normalmente não vai precisar mexer nesse arquivo, mas
+        pode fazê-lo se quiser, e também pode usá-lo em outros documentos
+        \LaTeX{};
+  \item \texttt{imelooks.sty}, que carrega mais \emph{packages} e define
+        diversas opções relacionadas à aparência do documento, inclusive
+        a capa da tese. Você normalmente também não vai precisar mexer
+        nesse arquivo, mas pode fazê-lo se quiser, além de também poder
+        usá-lo em outros documentos \LaTeX{};
+  \item \texttt{evenragged.sty}, \texttt{froufrou.sty}, \texttt{lstpseudocode.sty},
+        \texttt{texlogsieve} e \texttt{texlogsieverc} (classes e programas
+        auxiliares ao modelo);
+  \item \texttt{beamer-ime.[bbx|cbx]}, \texttt{plainnat-ime.[bbx|cbx]} e
+        \texttt{plainnat-ime[-en].bst} (definições de estilos bibliográficos).
 \end{itemize}
 
 Para compilar o documento, basta executar o comando
