@@ -1,4 +1,5 @@
 no-summary-detail
+color
 
 add-debug-message = ////^%*%*\RequirePackage%[1%.7%]%{bxpdfver%}%\input%{.-%.tex%}
 
@@ -20,9 +21,10 @@ set-to-level-info = You need to compile with XeLaTeX or LuaLaTeX to use the Fira
 set-to-level-info = Option "binary-units" has been removed
 set-to-level-info = no font with id
 
-# hyperref remove comandos especiais em \title e \author dos metadados PDF
-set-to-level-info = removing `\@thanks' on input line
-set-to-level-info = removing `\@ifnextchar' on input line
-set-to-level-info = removing `\<def>-command' on input line
-set-to-level-info = removing `\<let>-command' on input line
-set-to-level-info = removing `\afterassignment' on input line
+# Estas substituições são aceitáveis
+set-to-level-info = ////Font shape `[^']*/m/[^']*' in size %b<> not available.*Font shape `[^']*/regular/[^']*' tried instead
+set-to-level-info = ////Font shape `[^']*/b/[^']*' in size %b<> not available.*Font shape `[^']*/bold/[^']*' tried instead
+set-to-level-info = ////Font shape `[^']*/bx/[^']*' in size %b<> not available.*Font shape `[^']*/b/[^']*' tried instead
+set-to-level-info = ////Font shape `[^']*/[^']*/it' in size %b<> not available.*Font shape `[^']*/[^']*/sl' tried instead
+
+set-to-level-info = This package is obsolete, use the soul package directly.
