@@ -9,9 +9,6 @@ add-info-message = ////^Ap.-ndice %S%.
 add-info-message = ////^Appendix %S%.
 add-info-message = ////^Anexo %S%.
 add-info-message = ////^Annex %S%.
-add-info-message = ////^luaotfload %| db %: Font names database not found, generating new one%.
-add-info-message = ////^luaotfload %| db %: This can take several minutes; please be patient%.
-add-info-message = ////^Lua module%: luaotfload.* / [a-zA-Z ]+
 
 # Warnings pouco relevantes
 set-to-level-info = tex again after calling `makeindex
