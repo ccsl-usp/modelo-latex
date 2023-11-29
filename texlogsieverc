@@ -1,5 +1,7 @@
 no-summary-detail
 
+add-debug-message = ////^%*%*\RequirePackage%[1%.7%]%{bxpdfver%}%\input%{.-%.tex%}
+
 # A classe book "anuncia" mudanças de capítulo no arquivo de log
 add-info-message = ////^Cap.-tulo %S%.
 add-info-message = ////^Chapter %S%.

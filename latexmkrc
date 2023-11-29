@@ -1,6 +1,25 @@
 @default_files = ('tese');
 
-set_tex_cmds('-synctex=1 -halt-on-error %O %S');
+# TeXLive até no mínimo 2023 produz PDFs identificados como versão 1.5.
+# Ao incorporar arquivos PDF de imagem com versões mais novas, isso faz
+# LaTeX gerar um warning. Como na prática isso não causa problemas e não
+# há boas razões para manter a versão em 1.5, redefinimos aqui para 1.7.
+
+# Compilação "normal"
+#set_tex_cmds('-synctex=1 -halt-on-error %O %S');
+
+
+# Compilação forçando manualmente a versão do pdf para 1.7
+#set_tex_cmds('-synctex=1 -halt-on-error %O %P');
+#$pre_tex_code =   '\ifdefined\pdfminorversion\pdfminorversion=7\fi'
+#                . '\ifdefined\pdfvariable\pdfvariable minorversion 7\fi'
+#                . '\ifdefined\XeTeXrevision\special{pdf:minorversion 7}\fi';
+
+
+# Compilação forçando a versão do pdf para 1.7 com a package bxpdfver
+set_tex_cmds('-synctex=1 -halt-on-error -jobname=%A %O %P');
+$pre_tex_code = '\RequirePackage[1.7]{bxpdfver}';
+
 
 # Nao eh necessario neste modelo, mas pode ser util.
 # Veja a secao 5 de "textoc kpathsea" e
