@@ -42,16 +42,16 @@ AMS packages (amsthm, amsmath etc.), babel, geometry, hyperref, graphicx,
 array etc. It also includes many others; in no particular order, these
 are directly used in the template:
 etoolbox, expl3, xparse, letltxmacro, regexpatch, fontenc, inputenc,
-fontspec, mweights, fontaxes, unicode-math, calc, ragged2e, microtype,
+fontspec, fontaxes, unicode-math, calc, ragged2e, microtype, filehook,
 indentfirst, footmisc, emptypage, caption, biblatex, setspace, parskip,
-xcolor, textcase, fancyhdr, float, flafter, placeins, pdflscape, tikz,
-rotating, subcaption, pdfpages, tablefootnote, dcolumn, longtable,
+xcolor, textcase, fancyhdr, float, flafter, pdflscape, tikz, floatrow,
+rotating, subcaption, pdfpages, tablefootnote, longtable, l3keys2e,
 multirow, makecell, booktabs, tocbibind, imakeidx, verbatim, mathtools,
-csquotes, hypcap, hyperxmp, url, listings, textcomp, multicol, metalogo,
-epigraph, imakeidx, todonotes, soul, soulutf8, translator, pgfgantt,
-titletoc, titlesec, titleps, framed, adjustbox, threeparttable, colortbl,
+csquotes, hypcap, hyperxmp, listings, textcomp, multicol, stfloats,
+epigraph, todonotes, soul, soulutf8, translator, pgfgantt, tcolorbox,
+titlesec, framed, adjustbox, threeparttable, colortbl,
 datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
-pgfplots, appendix, iftex, keyval, cancel, and hologo. Several others are
+pgfplots, appendix, iftex, cancel, and hologo. Several others are
 loaded indirectly by these.
 
 The default fonts depend on these packages: lmodern, fix-cm, libertinus,
@@ -60,15 +60,14 @@ libertinust1math, fourier-orns, and sourcecodepro.
 The example presentation uses beamer, appendixnumberbeamer, qrcode,
 and beamertheme-metropolis.
 
-As of 2021, in debian/ubuntu systems, you need to install (with
-their dependencies) at least: texlive-base, texlive-latex-base,
-texlive-plain-generic, texlive-fonts-recommended,
-texlive-generic-recommended, texlive-latex-recommended,
-texlive-latex-extra, texlive-fonts-extra, texlive-bibtex-extra,
-texlive-pictures, texlive-science, texlive-lang-portuguese,
-texlive-lang-english, lmodern, biber, and latexmk. Just run
+As of 2023, in debian/ubuntu systems, you need to install (with
+their dependencies) at least: biber, latexmk, texlive-plain-generic,
+texlive-latex-base, texlive-luatex, lmodern, fonts-lmodern,
+texlive-latex-recommended, texlive-fonts-recommended, texlive-latex-extra,
+texlive-fonts-extra, texlive-bibtex-extra, texlive-science,
+texlive-lang-english, and texlive-lang-portuguese. Just run
 
-`sudo apt install texlive-base texlive-latex-base texlive-plain-generic texlive-fonts-recommended texlive-generic-recommended texlive-latex-recommended texlive-latex-extra texlive-fonts-extra texlive-bibtex-extra texlive-pictures texlive-science texlive-lang-portuguese texlive-lang-english lmodern biber latexmk`
+`sudo apt install biber latexmk texlive-plain-generic texlive-latex-base texlive-luatex lmodern fonts-lmodern texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra texlive-bibtex-extra texlive-science texlive-lang-english texlive-lang-portuguese`
 
 ## Acknowledgements
 
