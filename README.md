@@ -21,10 +21,10 @@ learn more about. These comments are in Brazilian Portuguese. Even
 if you have some LaTeX experience, you may benefit from skimming the
 comments, tutorial, and examples, as they include some useful tips.
 
-You need a reasonably recent working LaTeX installation (TeXLive 2019
-works, but we recommend 2020 or newer), including biber and biblatex
-(among other packages). The example documents may be compiled with
-`latexmk` and this repo includes compiled versions of them.
+You need a reasonably recent working LaTeX installation (TeXLive 2020
+works), including biber and biblatex (among other packages). The example
+documents may be compiled with `latexmk` and this repo includes compiled
+versions of them.
 
 ## FAQ
 
@@ -47,7 +47,7 @@ indentfirst, footmisc, emptypage, caption, biblatex, setspace, parskip,
 xcolor, textcase, fancyhdr, float, flafter, pdflscape, tikz, floatrow,
 rotating, subcaption, pdfpages, tablefootnote, longtable, l3keys2e,
 multirow, makecell, booktabs, tocbibind, imakeidx, verbatim, mathtools,
-csquotes, hypcap, hyperxmp, listings, textcomp, multicol, stfloats,
+csquotes, hypcap, hyperxmp, listings, textcomp, multicol, stfloats, fnpct,
 epigraph, todonotes, soul, soulutf8, translator, pgfgantt, tcolorbox,
 titlesec, framed, adjustbox, threeparttable, colortbl, fewerfloatpages,
 datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
