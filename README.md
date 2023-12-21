@@ -49,7 +49,7 @@ rotating, subcaption, pdfpages, tablefootnote, longtable, l3keys2e,
 multirow, makecell, booktabs, tocbibind, imakeidx, verbatim, mathtools,
 csquotes, hypcap, hyperxmp, listings, textcomp, multicol, stfloats,
 epigraph, todonotes, soul, soulutf8, translator, pgfgantt, tcolorbox,
-titlesec, framed, adjustbox, threeparttable, colortbl,
+titlesec, framed, adjustbox, threeparttable, colortbl, fewerfloatpages,
 datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
 pgfplots, appendix, iftex, cancel, and hologo. Several others are
 loaded indirectly by these.

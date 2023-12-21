@@ -21,6 +21,9 @@ set-to-level-info = You need to compile with XeLaTeX or LuaLaTeX to use the Fira
 set-to-level-info = Option "binary-units" has been removed
 set-to-level-info = no font with id
 
+set-to-level-info = Float too large for bottom area: b changed to p
+set-to-level-info = Float too large for top area: t changed to p
+
 # Estas substituições são aceitáveis
 set-to-level-info = ////Font shape `[^']*/m/[^']*' in size %b<> not available.*Font shape `[^']*/regular/[^']*' tried instead
 set-to-level-info = ////Font shape `[^']*/b/[^']*' in size %b<> not available.*Font shape `[^']*/bold/[^']*' tried instead
