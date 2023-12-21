@@ -96,20 +96,23 @@
 
 \author[fem]{Nome Completo}
 
+\def\profa{Prof\kern.02em.\kern-.07emª\kern.07em}
+\def\dra{Dr\kern-.04em.\kern-.11emª\kern.07em}
+
 % Para TCCs, este comando define o supervisor
-\orientador[fem]{Profª. Drª. Fulana de Tal}
+\orientador[fem]{\profa{} \dra{} Fulana de Tal}
 
 % Se não houver, remova; se houver mais de um, basta
 % repetir o comando quantas vezes forem necessárias
 \coorientador{Prof. Dr. Ciclano de Tal}
-\coorientador[fem]{Profª. Drª. Beltrana de Tal}
+\coorientador[fem]{\profa{} \dra{} Beltrana de Tal}
 
 \banca{
-  Profª. Drª. Fulana de Tal (orientadora) -- IME-USP [sem ponto final],
+  \profa{} \dra{} Fulana de Tal (orientadora) -- IME-USP [sem ponto final],
   % Em inglês, não há o "ª"
   %Prof. Dr. Fulana de Tal (advisor) -- IME-USP [sem ponto final],
   Prof. Dr. Ciclano de Tal -- IME-USP [sem ponto final],
-  Profª. Drª. Convidada de Tal -- IMPA [sem ponto final],
+  \profa{} \dra{} Convidada de Tal -- IMPA [sem ponto final],
 }
 
 % A página de rosto da versão para depósito (ou seja, a versão final
