@@ -2554,6 +2554,8 @@
     \tl_set:cn {@coadvisor\Roman{numberOfCoadvisors}Gender} {#1}
   }
 
+  \NewDocumentCommand\coorientadora{m}{\coorientador[fem]{#1}}
+
   \newtoggle{@mestrado}
   \newtoggle{@doutorado}
   \newtoggle{@tcc}
@@ -2698,6 +2700,8 @@
     \gdef\@advisor{#2}
     \gdef\@advisorGender{#1}
   }
+
+  \NewDocumentCommand{\orientadora}{m}{\orientador[fem]{#1}}
 
   \NewDocumentCommand{\@doutorado}{}{
     \toggletrue{@doutorado}
