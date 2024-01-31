@@ -1398,6 +1398,10 @@
             numbering=fraction,
             progressbar=frametitle]{metropolis}
 
+  % Default 2.2ex; since we change the font, this changes too,
+  % so let's set a value in pt.
+  \setlength{\metropolis@frametitle@padding}{11pt}
+
   % Beamer assumes math fonts are "bad" and performs some substitutions
   % (which seems to be a bad idea IMHO). Unfortunately, that causes
   % problems with LibertinusT1Math. This "theme" makes beamer not mess
