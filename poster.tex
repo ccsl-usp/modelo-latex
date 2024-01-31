@@ -123,18 +123,13 @@
 ]
 
 
-\posterbox[skin=title]{name=titlebox, below=top, column=1, span=12}{
-
-    \huge
-    \rmfamily\bfseries
-    \centering
+\posterbox[titlebox]{name=titlebox, below=top, column=1, span=12}{
     An example poster using \LaTeX{}\\
     by CCSL-IME/USP
 }
 
-\posterbox[skin=footer]{name=footerbox, above=bottom, column=1, span=12}{
-
-    \rmfamily\bfseries\large
+\posterbox[footerbox]{name=footerbox, above=bottom, column=1, span=12}{
+    \large
     ccsl.ime.usp.br\par
     \vspace{4pt}
     \small\ttfamily
@@ -144,7 +139,6 @@
     \textcolor{imesoftblue!30!white}
       {Department of Computer Science --- University of São Paulo}\relax
     \footimage{\includegraphics[width=13cm]{ccsl-logo}}
-    \vspace{-.4\baselineskip}
 }
 
 
