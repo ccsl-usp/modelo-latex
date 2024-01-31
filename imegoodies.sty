@@ -955,7 +955,8 @@
 % Mais recursos para trechos de texto "puro" (texto em que tabs, quebras de
 % linha etc. não são modificados), e também o ambiente "\begin{comment}".
 \RequirePackage{verbatim}
-%\RequirePackage{fvextra} % Ainda mais recursos adicionais para texto "puro"
+\RequirePackage{fvextra} % Ainda mais recursos adicionais para texto "puro";
+                         % precisa ser carregada antes de csquotes.
 
 % Às vezes um float pode ser adiado por muitas páginas; é possível forçar
 % LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
