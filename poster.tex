@@ -11,6 +11,7 @@
 % Vários pacotes e opções de configuração genéricos
 \usepackage{imegoodies}
 \usepackage[poster,hidelinks]{imelooks}
+% \tcbposterset{fontsize = 32pt} % default, mude se necessário
 
 % Diretórios onde estão as figuras; com isso, não é necessário (mas
 % é permitido) colocar o caminho completo em \includegraphics. Note
@@ -246,7 +247,8 @@
 
 %%%%%%% Colunas assimétricas (2/3 + 1/3) %%%%%%%%
 
-%%% Esquerda
+%%% Esquerda. Como usamos "between", a altura desta caixa
+%             é definida pela posição das outras duas.
 \posterbox[adjusted title = Bibliography (assimetrical
            columns -- two thirds width)]
           {name=bibbox, between=halflogo and footerbox, column=1, span=8}{
@@ -261,7 +263,7 @@
           {name=tablebox, below=halflogo, column=9, span=4}{
 
     \centering
-    \singlespacing\vspace{-\baselineskip}
+    \singlespacing\vspace{-\baselineskip} % \singlespacing adiciona uma linha
     \begin{tabular}{ccl}
       \toprule
       Code        & Abbreviation & Name       \\
@@ -274,7 +276,8 @@
     \end{tabular}
 }
 
-%%% Direita, abaixo
+%%% Direita, abaixo. Como usamos "between", a altura desta caixa
+%                    é definida pela posição das outras duas.
 \posterbox[adjusted title = Sponsors (one third width), colframe = imeyellow]
           {between=tablebox and footerbox, column=9, span=4}{
 
