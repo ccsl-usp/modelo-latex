@@ -108,6 +108,8 @@
 % Nada impede que você use estratégias de alinhamento diferentes para
 % cada posterbox.
 
+% Este modelo define a opção "smallmargins", que diminui a distância
+% entre o conteúdo de uma posterbox e suas bordas. Use com parcimônia!
 
 \begin{document}
 
@@ -143,9 +145,7 @@
 }
 
 
-\posterbox[adjusted title = {The CCSL logo (full width)},
-           left*=.8\baselineskip, right*=.8\baselineskip,
-           top=.8\baselineskip, bottom=.8\baselineskip]
+\posterbox[adjusted title = The CCSL logo (full width)]
           {name=widelogo, below=titlebox, column=1, span=12}{
 
     \centering
@@ -155,14 +155,16 @@
 
 %%%%%%%% Quatro colunas com "equal height group" %%%%%%%%
 
-\posterbox[adjusted title = One fourth width, equal height group = quartos]
+\posterbox[adjusted title = One fourth width,
+          smallmargins, equal height group = quartos]
           {name=quarterlogoLeft, below=widelogo, column=1, span=3}{
 
     \centering
     \includegraphics[width=.9\textwidth]{ccsl-logo}
 }
 
-\posterbox[adjusted title = One fourth width, equal height group = quartos]
+\posterbox[adjusted title = One fourth width,
+          smallmargins, equal height group = quartos]
           {below=widelogo, column=4, span=3}{
 
     \centering
@@ -170,14 +172,16 @@
 
 }
 
-\posterbox[adjusted title = One fourth width, equal height group = quartos]
+\posterbox[adjusted title = One fourth width,
+          smallmargins, equal height group = quartos]
           {below=widelogo, column=7, span=3}{
 
     \centering
     And so does this
 }
 
-\posterbox[adjusted title = One fourth width, equal height group = quartos]
+\posterbox[adjusted title = One fourth width,
+          smallmargins, equal height group = quartos]
           {below=widelogo, column=10, span=3}{
 
     \centering
@@ -241,7 +245,7 @@
            column=7, span=6, rowspan=2.1}{
 
     \centering
-    \includegraphics[width=.9\textwidth,trim=0 0 70 0,clip]{ime-logo}\par
+    \includegraphics[width=\textwidth,trim=0 0 70 0,clip]{ime-logo}\par
 }
 
 
@@ -250,7 +254,7 @@
 %%% Esquerda. Como usamos "between", a altura desta caixa
 %             é definida pela posição das outras duas.
 \posterbox[adjusted title = Bibliography (assimetrical
-           columns -- two thirds width)]
+           columns -- two thirds width), smallmargins]
           {name=bibbox, between=halflogo and footerbox, column=1, span=8}{
 
     \nocite{FSF:GNU-GPL, MenaChalco08, biblatex,
@@ -258,8 +262,9 @@
     \printbibliography
 }
 
-%%% Direita, acima
-\posterbox[adjusted title = A Table (one third width)]
+%%% Direita, acima; aqui, ajustamos as margens manualmente
+\posterbox[adjusted title = A Table (one third width),
+          top=.5\baselineskip, bottom=.5\baselineskip]
           {name=tablebox, below=halflogo, column=9, span=4}{
 
     \centering
@@ -278,7 +283,8 @@
 
 %%% Direita, abaixo. Como usamos "between", a altura desta caixa
 %                    é definida pela posição das outras duas.
-\posterbox[adjusted title = Sponsors (one third width), colframe = imeyellow]
+\posterbox[adjusted title = Sponsors (one third width),
+          colframe = imeyellow, smallmargins]
           {between=tablebox and footerbox, column=9, span=4}{
 
     \centering
