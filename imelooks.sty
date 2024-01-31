@@ -1829,8 +1829,8 @@
           {}
           {%
             \tikz[overlay,remember picture]
-            \node[anchor=south east,inner sep=12pt] at
-            (current page.south east) {#1};%
+            \node[anchor=south east] at
+            ([xshift=-1.5cm, yshift=3mm] current page.south east) {#1};%
           }%
     }
 
