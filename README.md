@@ -60,6 +60,8 @@ libertinust1math, fourier-orns, and sourcecodepro.
 The example presentation uses beamer, appendixnumberbeamer, qrcode,
 and beamertheme-metropolis.
 
+### Installing dependencies on Debian-based distributions
+
 As of 2023, in debian/ubuntu systems, you need to install (with
 their dependencies) at least: biber, latexmk, texlive-plain-generic,
 texlive-latex-base, texlive-luatex, lmodern, fonts-lmodern,
@@ -68,6 +70,17 @@ texlive-fonts-extra, texlive-bibtex-extra, texlive-science,
 texlive-lang-english, and texlive-lang-portuguese. Just run
 
 `sudo apt install biber latexmk texlive-plain-generic texlive-latex-base texlive-luatex lmodern fonts-lmodern texlive-latex-recommended texlive-fonts-recommended texlive-latex-extra texlive-fonts-extra texlive-bibtex-extra texlive-science texlive-lang-english texlive-lang-portuguese`
+
+### Installing dependencies on Arch-based distributions
+
+If you are using an Arch-based distribution (such as Manjaro, Endeavour or even
+Arch itself), you'll need these packages: biber, texlive-binextra,
+texlive-plaingeneric, texlive-latex, texlive-luatex, texlive-fontsrecommended,
+texlive-latexrecommended, texlive-fontsrecommended, texlive-latexextra,
+texlive-fontsextra, texlive-bibtexextra, texlive-science, texlive-langenglish,
+texlive-langportuguese. Just run
+
+`sudo pacman -S biber texlive-binextra texlive-plaingeneric texlive-latex texlive-luatex texlive-fontsrecommended texlive-latexrecommended texlive-fontsrecommended texlive-latexextra texlive-fontsextra texlive-bibtexextra texlive-science texlive-langenglish texlive-langportuguese`
 
 ## Acknowledgements
 
