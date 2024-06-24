@@ -31,3 +31,7 @@ set-to-level-info = ////Font shape `[^']*/bx/[^']*' in size %b<> not available.*
 set-to-level-info = ////Font shape `[^']*/[^']*/it' in size %b<> not available.*Font shape `[^']*/[^']*/sl' tried instead
 
 set-to-level-info = This package is obsolete, use the soul package directly.
+
+# https://github.com/FrankMittelbach/fmitex-parskip/issues/5
+# nos incluimos uma correcao temporaria para isso em imelooks.sty
+set-to-level-debug = Couldn't patch \deferred@thm@head!
