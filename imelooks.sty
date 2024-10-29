@@ -1146,8 +1146,24 @@
   \usepackage{listings}
   \usepackage{lstautogobble}
 
-  % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
-  % usados em português é possível contornar o problema com a tabela abaixo.
+  % O pacote listings não lida bem com acentos! Com extendedchars=true,
+  % é possível contornar isso de três formas:
+  %
+  % 1. Com LuaLaTeX/XeLaTeX, os caracteres em ISO8859-1 funcionam
+  %    corretamente (outros caracteres utf8 parecem funcionar, mas
+  %    podem "embaralhar" a ordem dos caracteres vizinhos)
+  % 2. Com pdflatex e a package listingsutf8, é possível fazer os
+  %    caracteres de um encoding específico funcionar (por exemplo,
+  %    ISO8859-1, mas outros também funcionam). A package *não*
+  %    funciona com LuaLaTeX/XeLaTeX!
+  % 3. Com uma tabela de substituições similar a esta, "tudo" que for
+  %    configurado funciona (a substituição precisa ser por um único
+  %    caracter). Não é necessário usar essa tabela com LuaLaTeX ou
+  %    XeLaTeX + ISO8859-1, mas usá-la não causa problemas. Creio que
+  %    esta solução, embora mais "manual", é mais versátil que usar a
+  %    package listingsutf8. A tabela abaixo resolve o problema para
+  %    o português.
+  %
   % From https://en.wikibooks.org/wiki/LaTeX/Source_Code_Listings#Encoding_issue
   \lstset{literate=
     {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
