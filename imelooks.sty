@@ -49,6 +49,7 @@
 \newtoggle{IMEcolorlinks}
 \newtoggle{IMEborderlinks}
 \newtoggle{IMElistings}
+\newtoggle{IMEpseudocode}
 
 \RequirePackage{l3keys2e}
 \ExplSyntaxOn
@@ -273,6 +274,16 @@
   listings .default:n = {true},
   nolistings .code:n = {\togglefalse{IMElistings}},
   nolistings .value_forbidden:n = true,
+  pseudocode .choices:nn =
+      {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
+      {
+          \int_compare:nNnTF{\l_keys_choice_int}<{9}
+              {\toggletrue{IMEpseudocode}}
+              {\togglefalse{IMEpseudocode}}
+      },
+  pseudocode .default:n = {true},
+  nopseudocode .value_forbidden:n = true,
+  nopseudocode .code:n = {\togglefalse{IMEpseudocode}},
 }
 
 % Defaults
@@ -286,6 +297,7 @@
     autohttp,
     bluey,
     listings,
+    pseudocode,
 }
 
 \ProcessKeysOptions{IME/looks}
@@ -1133,11 +1145,6 @@
 
   \usepackage{listings}
   \usepackage{lstautogobble}
-  % Carrega a "linguagem" pseudocode para listings
-  \appto{\lstaspectfiles}{,lstpseudocode.sty}
-  \appto{\lstlanguagefiles}{,lstpseudocode.sty}
-  \lstloadaspects{simulatex,invisibledelims,pseudocode}
-  \lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}
 
   % O pacote listings não lida bem com acentos! No caso dos caracteres acentuados
   % usados em português é possível contornar o problema com a tabela abaixo.
@@ -1221,20 +1228,6 @@
     morecomment=[s]{<?}{?>},
     morekeywords={xmlns,version,type}% list your attributes here
   }
-
-  % Estilo padrão para a "linguagem" pseudocode
-  \lstdefinestyle{pseudocode}{
-    basicstyle=\rmfamily\small,
-    commentstyle=\itshape,
-    keywordstyle=\bfseries,
-    identifierstyle=\itshape,
-    % as palavras "function" e "procedure"
-    procnamekeystyle=\bfseries\scshape,
-    % funções precedidas por function/procedure ou com \func{}
-    procnamestyle=\ttfamily,
-    specialidentifierstyle=\ttfamily\bfseries,
-  }
-  \lstset{defaultdialect=[english]{pseudocode}}
 
   % A package listings tem seu próprio mecanismo para a criação de
   % captions, lista de programas etc. Neste modelo não usamos esses
@@ -1379,9 +1372,41 @@
   }{
     \endMakeFramed
   }
+}{} % iftoggle{IMElistings}
 
-} % iftoggle{IMElistings}
+\iftoggle{IMEpseudocode}{
+  \iftoggle{IMElistings}
+  {}
+  {
+    \ClassWarningNoLine{imelooks}
+      {%
+        *************************************************************\MessageBreak
+        Requested pseudocode support but not the listings package;\MessageBreak
+        Unless you load listings elsewhere, this will cause problems!\MessageBreak
+        *************************************************************
+      }
+  }
 
+  % Carrega a "linguagem" pseudocode para listings
+  \appto{\lstaspectfiles}{,lstpseudocode.sty}
+  \appto{\lstlanguagefiles}{,lstpseudocode.sty}
+  \lstloadaspects{simulatex,invisibledelims,pseudocode}
+  \lstloadlanguages{[base]pseudocode,[english]pseudocode,[brazilian]pseudocode}
+
+  % Estilo padrão para a "linguagem" pseudocode
+  \lstdefinestyle{pseudocode}{
+    basicstyle=\rmfamily\small,
+    commentstyle=\itshape,
+    keywordstyle=\bfseries,
+    identifierstyle=\itshape,
+    % as palavras "function" e "procedure"
+    procnamekeystyle=\bfseries\scshape,
+    % funções precedidas por function/procedure ou com \func{}
+    procnamestyle=\ttfamily,
+    specialidentifierstyle=\ttfamily\bfseries,
+  }
+  \lstset{defaultdialect=[english]{pseudocode}}
+}{} % iftoggle{IMEpseudocode}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
