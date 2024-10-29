@@ -1071,7 +1071,6 @@
     milestone right shift=.2,
 }
 
-
 \iftoggle{IMElistings}{
 
   % Para formatar código-fonte (ex. em Java). listings funciona bem mas
@@ -1186,6 +1185,8 @@
   % Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
   \lstset{
     columns=[l]fullflexible,            % do not try to align text with proportional fonts
+    %keepspaces=true,
+    %flexiblecolumns=false,
     basicstyle=\footnotesize\ttfamily,  % the font that is used for the code
     numbers=left,                       % where to put the line-numbers
     numberstyle=\footnotesize\ttfamily, % the font that is used for the line-numbers
