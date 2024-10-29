@@ -1531,6 +1531,8 @@ function adjustSeverity(msg)
             .. "Font shape `[^']*/regular/[^']*' tried instead",
     "Font shape `[^']*/b/[^']*' in size %b<> not available.*"
             .. "Font shape `[^']*/bold/[^']*' tried instead",
+    -- versions of xcolor after 2022
+    "Package option `hyperref' is obsolete and ignored",
   }
 
   DEFAULT_FORCED_WARNING = {}
