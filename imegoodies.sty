@@ -1,13 +1,12 @@
 % 2017/01/01 -> fontenc TU and mandatory e-TeX support
+% 2018/12/01 -> kernel uses utf8 by default
 %
-% TODO: After ubuntu 18.04 EOL (April/2023), we should switch to
-%       2018/12/01 (kernel uses utf8 by default) and remove inputenc
-%       and the "@combinedblfloats" bugfix below. After ubuntu 20.04
-%       EOL (April/2025), check whether arxiv uses at least version
-%       2021 of TeXLive; if so, change this to version 2020/10/01,
-%       which includes file hooks, and make the corresponding
-%       adjustments (in particular, the AtEndDvi fix further below).
-\NeedsTeXFormat{LaTeX2e}[2017/01/01]
+% TODO: After ubuntu 20.04 EOL (April/2025), check whether arxiv uses at
+%       least version 2021 of TeXLive (it does; as of 2024, the version
+%       in use is TeXLive 2023); if so, change this to version 2020/10/01,
+%       which includes file hooks, and make the corresponding adjustments
+%       (in particular, the AtEndDvi fix further below).
+\NeedsTeXFormat{LaTeX2e}[2018/12/01]
 \ProvidesPackage{imegoodies}[2022/11/13 1.0 Load several common
                                             and useful packages]
 
@@ -47,8 +46,7 @@
 % ambientes. Talvez fosse possível contornar esse problema com a
 % package latexrelease, mas isso afetaria muitos outros recursos.
 % Ao invés disso, vamos restaurar manualmente a compatibilidade.
-% TODO: remover isto após debian bullseye se tornar obsoleta,
-%       provavelmente no final de 2024.
+% TODO: remover isto após debian bullseye se tornar obsoleta.
 \ExplSyntaxOn
 \@ifpackagelater{regexpatch}{2021/03/21}
   {} % Se regexpatch é "nova", expl3 deve ser também; nada a fazer
@@ -73,13 +71,6 @@
     {\expandafter\xdef\csname ver@xpatch.sty\endcsname{2020/03/25}}
     {\expandafter\xdef\csname ver@xpatch.sty\endcsname{2012/10/02}}
 
-% Acrescenta a correção deste bug (contida na release 2018-11-28):
-% https://github.com/latex3/latex2e/issues/94 . Se a correção não
-% puder ser aplicada, temos uma versão de LaTeX que já a incorpora.
-% Esse bug afeta apenas textos em duas colunas.
-% TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
-\patchcmd\@combinedblfloats{\box\@outputbox}{\unvbox\@outputbox}{}{}
-
 % Expressões aritméticas em \set{length,counter} & \addto{length,counter};
 % comandos \widthof, \heightof, \depthof, \totalheightof, \settototalheight
 \RequirePackage{calc}
@@ -98,15 +89,6 @@
 % melhorias e recursos adicionais para o modo matemático; leia a documentação.
 % Melhor se carregada antes de unicode-math.
 \RequirePackage{mathtools}
-
-% TeXLive 2018 inclui a versão 2.7a da package microtype e a versão
-% 1.07 de luatex. Essa combinação faz aparecer um bug:
-% https://tex.stackexchange.com/a/476742
-% Aqui, aplicamos a solução sugerida, que não tem "contra-indicações".
-% TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023)
-\ifLuaTeX
-  \RequirePackage{luatexbase}
-\fi
 
 % microajustes no tamanho das letras, espaçamento etc. para melhorar
 % a qualidade visual do resultado.
@@ -511,11 +493,6 @@
 \ifPDFTeX
   \RequirePackage[T1]{fontenc} % fontenc padrão recomendado para texto latino
 
-  % O texto está escrito em utf8.
-  % TODO: remover após ubuntu 18.04 se tornar obsoleta (abril/2023),
-  %       veja o comentário em \NeedsTexFormat
-  \RequirePackage[utf8]{inputenc}
-
   % Várias packages que definem as fontes do documento carregam fontaxes
   % porque ela oferece diversos recursos para a criação da package, mas
   % carregamos aqui porque, mesmo com fontes que não a usam diretamente,
@@ -552,11 +529,6 @@
   \input glyphtounicode.tex
   \pdfgentounicode=1
 \else
-  % Não é preciso carregar inputenc com LuaTeX e XeTeX, pois
-  % com eles utf8 é obrigatório.
-  % TODO: remover este comentário ao remover inputenc acima
-  % TODO: acrescentar menção a isso no trecho do texto de
-  %       exemplo que fala sobre documentação obsoleta
 
   % Com XeLaTeX e luaLaTeX, não é preciso usar a package fontenc; a package
   % fontspec carrega o fontenc TU (mencionado acima) automaticamente.
@@ -914,7 +886,8 @@
 % última atualização de TeXLive 2020 são afetadas. Ainda assim, aqui
 % contornamos o problema desabilitando o recurso relacionado (o cálculo
 % automático de "byteCount", ou seja, do tamanho aproximado do documento).
-% TODO: remover esse código após 2024.
+% TODO: Remover isto quando ubuntu 20.04 (focal) for descontinuada
+%       (abril de 2025).
 \ifPDFTeX
   \LetLtxMacro\HACKoldpdffilesize\pdffilesize
   \renewcommand\pdffilesize[1]{}

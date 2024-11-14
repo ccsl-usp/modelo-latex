@@ -799,7 +799,7 @@
     autolang=hyphen,
   ]{biblatex}
 
-  % TODO: remover menção ao bug de atendvi/hyperxmp em 2024
+  % TODO: remover menção ao bug de atendvi/hyperxmp em abril/2025
   % Impede que um item da bibliografia seja dividido em duas páginas.
   % À parte a estética, isso contorna este bug, que afeta links na
   % úlima página do trabalho, ou seja, pode afetar a bibliografia
@@ -965,20 +965,12 @@
   \frenchspacing
 
   % A primeira linha de cada parágrafo costuma ter um pequeno recuo para
-  % tornar mais fácil visualizar onde cada parágrafo começa. Além disso, é
-  % possível colocar um espaço em branco entre um parágrafo e outro. Esta
-  % package coloca o espaço em branco e desabilita o recuo; como queremos
-  % o espaço *e* o recuo, é preciso guardar o valor padrão do recuo e
-  % redefini-lo depois de carregar a package.
-  % TODO: depois que ubuntu 18.04 se tornar obsoleta (abril/2023), remover
-  %       as linhas "oldparindent" e carregar a package com a opção "indent".
+  % tornar mais fácil visualizar onde cada parágrafo começa. Esta package
+  % coloca também um espaço em branco entre os parágrafos.
   \ifboolexpr{togl {IMEslides} or togl {IMEposter}}
     {}
     {
-      \newlength\oldparindent
-      \setlength\oldparindent\parindent
-      \RequirePackage[parfill]{parskip}
-      \setlength\parindent\oldparindent
+      \RequirePackage[indent,parfill]{parskip}
 
       % Workaround for https://github.com/FrankMittelbach/fmitex-parskip/issues/5
       \AtBeginDocument{
