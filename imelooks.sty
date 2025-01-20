@@ -373,6 +373,9 @@
     {}
 }
 
+\newif\ifIMEPTlang
+\IfLanguagePatterns{brazilian}{\IMEPTlangtrue}{\IMEPTlangfalse}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% FONTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -3500,8 +3503,8 @@
 % filecontents não funciona dentro de iftoggle;
 % vamos usar newif para contornar isso.
 \newif\ifIMEindex
-\IMEindexfalse
-\iftoggle{IMEreport}{\IMEindextrue}
+\iftoggle{IMEreport}{\IMEindextrue}{\IMEindexfalse}
+\IfLanguagePatterns{brazilian}{\IMEPTlangtrue}{\IMEPTlangfalse}
 
 \ifIMEindex
 
@@ -3523,6 +3526,25 @@
 
 % Cria o arquivo de configuração para makeindex lidar corretamente com
 % hyperlinks e colocar um cabeçalho para cada letra do índice.
+\ifIMEPTlang
+\begin{filecontents*}{mkidxhead.ist}
+delim_0 ", \\hyperpage{"
+delim_1 ", \\hyperpage{"
+delim_2 ", \\hyperpage{"
+delim_n "}, \\hyperpage{"
+delim_t "}"
+encap_prefix "}\\"
+encap_infix "{\\hyperpage{"
+encap_suffix "}"
+headings_flag 1
+heading_prefix "{\\bfseries "
+heading_suffix "}\\nopagebreak\n"
+symhead_positive "Símbolos"
+symhead_negative "símbolos"
+numhead_positive "Números"
+numhead_negative "números"
+\end{filecontents*}
+\else
 \begin{filecontents*}{mkidxhead.ist}
 delim_0 ", \\hyperpage{"
 delim_1 ", \\hyperpage{"
@@ -3536,6 +3558,7 @@ headings_flag 1
 heading_prefix "{\\bfseries "
 heading_suffix "}\\nopagebreak\n"
 \end{filecontents*}
+\fi % \ifIMEPTlang
 
 \fi % \ifIMEindex
 
