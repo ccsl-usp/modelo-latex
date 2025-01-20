@@ -3354,11 +3354,9 @@
       \begin{minipage}[t][50mm][s]{80mm}
         \begin{FlushRight}
           \normalsize
-          \iftoggle{@finalversion}{%
-            \@finalFrontmatterText%
-          } {%
-            \@provisionalFrontmatterText%
-          }%
+          \iftoggle{@finalversion}
+            {\@finalFrontmatterText}
+            {\@provisionalFrontmatterText}%
         \end{FlushRight}
         \vspace*{0pt plus 50mm}
       \end{minipage}
