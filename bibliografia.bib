@@ -25,13 +25,16 @@
 %
 % Por exemplo, esta entrada está comentada, ou seja, não tem efeito: se
 % houvesse uma referência a ela no texto, a referência ficaria inválida.
-% Observe que, para isso, o caractere arroba foi apagado!
+% Observe que, para isso, o caractere arroba antes de "book" foi apagado!
 %
-%Book{JW82,
+%book{JW07,
 % author    = {Richard A. Johnson and Dean W. Wichern},
 % title     = {Applied Multivariate Statistical Analysis},
-% publisher = {Prentice-Hall},
-% year      = {1983}
+% publisher = {Pearson Prentice Hall},
+% edition   = 6,
+% year      = {2007},
+% isbn      = {978-0131877153},
+% location  = {Upper Saddle River NJ},
 %}
 
 
@@ -47,256 +50,259 @@
 % letras minúsculas e sem chaves, ou seja:
 %
 % ...
+% title  = {Some title},
 % author = {Somebody},
-% year = {2011},
-% month = oct,
-% title = {Some title},
+% year   = {2011},
+% month  = oct,
 % ...
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Esta entrada não está em uso em tese.tex, apenas em
-% apresentacao.tex, mas isso não é um problema: você pode
-% ter um banco de dados com todos os papers que são de seu
-% interesse e, em um dado texto, citar apenas alguns deles.
-@Manual{CORBA:spec,
- title       = {{CORBA} v3.0 Specification},
- author      = {{Object Management Group}},
- shortauthor = {OMG},
- month       = jul,
- year        = {2002},
- note        = {OMG Document 02-06-33}
+% Algumas entradas não são usadas em poster.tex ou apresentacao.tex, mas
+% isso não é um problema: você pode ter um banco de dados com todos os
+% papers de seu interesse e, em um dado texto, citar apenas alguns deles.
+
+
+@book{eco:09,
+ author     = {Umberto Eco},
+ title      = {Como se Faz uma Tese},
+ edition    = 22,
+ publisher  = {Perspectiva},
+ translator = {Gilson César Cardoso de Souza},
+ year       = {2009},
+ location   = {São Paulo},
+ isbn       = {978-85-273-0079-7},
 }
 
-@Book{eco:09,
- author   = {Umberto Eco},
- title    = {Como se Faz uma Tese},
- edition  = 22,
- publisher= {Perspectiva},
- note     = {Tradução Gilson Cesar Cardoso de Souza},
- year     = {2009},
+@book{zobel:14,
+ author    = {Justin Zobel},
+ title     = {Writing for Computer Science},
+ publisher = {Springer London},
+ edition   = 3,
+ year      = {2014},
+ isbn      = {978-1-4471-6638-2},
+ doi       = {10.1007/978-1-4471-6639-9},
 }
 
-@Book{zobel:04,
- author   = {Justin Zobel},
- title    = {Writing for Computer Science: The Art of Effective Communication},
- publisher= {Springer},
- edition  = 2,
- year     = {2004},
+@book{waz:20,
+ author    = {Raul S. Wazlawick},
+ title     = {Metodologia de Pesquisa para Ciência da Computação},
+ publisher = {GEN LTC},
+ edition   = 3,
+ year      = {2020},
+ isbn      = {978-8595151093},
 }
 
-@Book{waz:09,
- author   = {Raul S. Wazlawick},
- title    = {Metodologia de Pesquisa em Ciência da Computação},
- publisher= {Campus},
- edition  = 1,
- year     = {2009},
+@book{higham:19,
+ author    = {Nicholas J. Higham},
+ title     = {Handbook of Writing for the Mathematical Sciences},
+ edition   = 3,
+ publisher = {{SIAM: Society for Industrial and Applied Mathematics}},
+ month     = dec,
+ year      = {2019},
+ isbn      = {978-1611976090},
 }
 
-@Book{Higham:98,
- author   = {Nicholas J. Higham},
- title    = {Handbook of Writing for the Mathematical Sciences},
- edition  = 2,
- publisher= {SIAM: Society for Industrial and Applied Mathematics},
- month    = aug,
- year     = {1998},
+@book{knuth:96,
+ author    = {Donald E. Knuth and Tracy Larrabee and Paul M. Roberts},
+ title     = {Mathematical Writing},
+ publisher = {The Mathematical Association of America},
+ month     = sep,
+ year      = {1996},
+ isbn      = {978-0883850633},
 }
 
-@book{Knuth:96,
- author   = {Donald E. Knuth and Tracy Larrabee and Paul M. Roberts},
- title    = {Mathematical Writing},
- publisher= {The Mathematical Association of America},
- month    = sep,
- year     = {1996}
-}
-
-@InProceedings{alves03:simi,
- author   = {Carlos E. R. Alves and Edson N. Cáceres and Frank Dehne and Siang W. Song},
- title    = {A Parallel Wavefront Algorithm for Efficient Biological Sequence Comparison},
- booktitle= {ICCSA'03: The 2003 International Conference on Computational Science and its Applications},
- year     = {2003},
- pages    = {249-258},
- month    = may,
- publisher= {Springer-Verlag}
-}
-
-@Article{MenaChalco08,
- author   = {Jesús P. Mena-Chalco and Helaine Carrer and Yossi Zana and Roberto M. Cesar-Jr.},
- title    = {Identification of Protein Coding Regions Using the Modified {G}abor-Wavelet Transform},
- journal  = {IEEE/ACM Transactions on Computational Biology and Bioinformatics},
- volume   = {5},
- pages    = {198-207},
- year     = {2008},
-}
-
-@Article{floats2014,
- author    = {Frank Mittelbach},
- title     = {How to influence the position of float environments like figure and table in {\LaTeX}?},
- journal   = {{TUGboat}},
+@article{floats2014,
+ author          = {Frank Mittelbach},
+ title           = {How to influence the position of float environments
+                   like figure and table in \LaTeX?},
+ journal         = {TUGboat},
  journalsubtitle = {Communications of the \TeX\ Users Group},
- volume    = {35},
- number    = {3},
- year      = 2014,
- url       = {tug.org/TUGboat/tb35-3/tb111mitt-float.pdf},
- urldate   = {2020-01-09},
- publisher = {\TeX\ {Users} {Group}},
- address   = {Portland ({OR}), {USA}},
+ volume          = {35},
+ number          = {3},
+ year            = 2014,
+ url             = {tug.org/TUGboat/tb35-3/tb111mitt-float.pdf},
+ urldate         = {2020-01-09},
+ publisher       = {\TeX\ {Users} {Group}},
+ address         = {Portland (OR), USA},
 }
 
-@Techreport{alvisi99:analysisCIC,
- author      = {Lorenzo Alvisi and Elmootazbellah Elnozahy and Sriram S. Rao and Syed A. Husain and Asanka Del Mel},
- title       = {An Analysis of Comunication-Induced Checkpointing},
- institution = {Department of Computer Science, University of Texas at Austin},
- year        = {1999},
- number      = {TR-99-01},
- address     = {Austin, USA}
+% O campo "year" é usado por bibtex; biblatex pode usar "year" ou "date"
+@manual{natbib,
+ title   = {Reference sheet for \texttt{natbib} usage},
+ author  = {Patrick W. Daly},
+ year    = {2010},
+ date    = {2010-09-13},
+ urldate = {2018-12-20},
+ url     = {mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf},
 }
 
-@Misc{gridftp,
- author   = {William Allcock},
- title    = {{GridFTP} Protocol Specification. {Global Grid Forum} Recommendation ({GFD}.20)},
- year     = {2003}
-}
-
-% A entrada "year" eh usada por bibtex;
-% biblatex pode usar "year" ou "date"
-@Manual{natbib,
- title       = "Reference sheet for \texttt{natbib} usage",
- author      = "Patrick W. Daly",
- year        = {2010},
- date        = {2010-09-13},
- urldate     = {2018-12-20},
- url         = {mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf},
-}
-
-@Manual{biblatex,
- title       = "The \texttt{biblatex} Package",
- author      = "Philipp Lehman and Philip Kime and Moritz Wemheuer and Audrey Boruvka and Joseph Wright",
- year        = 2018,
- date        = {2018-10-30},
- urldate     = {2018-12-20},
- url         = {mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf},
-}
-
-@PhdThesis{garcia01:PhD,
- author   = {Islene C. Garcia},
- title    = {Visões Progressivas de Computações Distribuídas},
- school   = {Instituto de Computação, Universidade de Campinas},
- address  = {Campinas, Brasil},
- year     = {2001},
- month    = dec
-}
-
-@Conference{bronevetsky02,
- author     = {Greg Bronevetsky and Daniel Marques and Keshav Pingali and Paul Stodghill},
- title      = {Automated Application-Level Checkpointing of {MPI} Programs},
- booktitle  = {PPoPP'03: Proceedings of the 9th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming},
- year       = {2003},
- pages      = {84-89},
- eventdate  = {2003-06-11/2003-06-13},
- venue      = {San Diego, California}
-}
-
-@InCollection{bobaoglu93:concepts,
- author   = {Ozalp Babaoglu and Keith Marzullo},
- title    = {Consistent Global States of Distributed Systems: Fundamental Concepts and Mechanisms},
- editor   = {Sape Mullender},
- booktitle= {Distributed Systems},
- edition  = 2,
- year     = {1993},
- pages    = {55-96}
-}
-
-@MastersThesis{schmidt03:MSc,
- author   = {Rodrigo M. Schmidt},
- title    = {Coleta de Lixo para Protocolos de \emph{Checkpointing}},
- school   = {Instituto de Computação, Universidade de Campinas},
- address  = {Campinas, Brasil},
- year     = {2003},
- month    = oct
-}
-
-@online{fowler04:designDead,
- author   = {Martin Fowler},
- title    = {Is Design Dead?},
- year     = {2004},
- month    = may,
- urldate  = {2010-01-30},
- url      = {martinfowler.com/articles/designDead.html},
-}
-
-@online{FSF:GNU-GPL,
- author      = {{Free Software Foundation}},
- shortauthor = {FSF},
- title       = {{GNU} General Public License},
- year        = 2007,
- urldate     = {2010-01-30},
- url         = {www.gnu.org/copyleft/gpl.html},
+@manual{biblatex,
+ title   = {The \texttt{biblatex} Package},
+ author  = {Philip Kime and Moritz Wemheuer and Philipp Lehman},
+ year    = 2024,
+ date    = {2024-03-21},
+ urldate = {2025-01-29},
+ url     = {mirrors.ctan.org/macros/latex/contrib/biblatex/doc/biblatex.pdf},
 }
 
 @article{alon09:how,
- author   = {Uri Alon},
- title    = {How To Choose a Good Scientific Problem},
- journal  = {Molecular Cell},
- year     = {2009},
- volume   = {35},
- number   = {6},
- pages    = {726--728},
- publisher= {Cell Press},
- month    = sep,
- doi      = {10.1016/j.molcel.2009.09.013},
+ author    = {Uri Alon},
+ title     = {How To Choose a Good Scientific Problem},
+ journal   = {Molecular Cell},
+ year      = {2009},
+ volume    = {35},
+ number    = {6},
+ pages     = {726--728},
+ publisher = {Cell Press},
+ month     = sep,
+ doi       = {10.1016/j.molcel.2009.09.013},
+ pages     = {726--728},
+ issn      = {1097-2765},
 }
 
 @book{tufte01:visualDisplay,
- author   = {Edward Tufte},
- title    = {The Visual Display of Quantitative Information},
- year     = {2001},
- edition  = 2,
- publisher= {Graphics Press},
- month    = may,
+ author    = {Edward Tufte},
+ title     = {The Visual Display of Quantitative Information},
+ year      = {2001},
+ edition   = 2,
+ publisher = {Graphics Press},
+ month     = may,
+ isbn      = {978-1930824133},
+ location  = {Cheshire CT},
 }
 
-@Manual{usp:guidelines,
- author      = {{Universidade de São Paulo --- Sistema Integrado de Bibliotecas}},
+@manual{usp:guidelines,
+ author      = {{Universidade de São Paulo -- Sistema Integrado
+                de Bibliotecas}},
  shortauthor = {SIBiUSP},
  title       = {Diretrizes para Apresentação de
-	        Dissertações e Teses da {USP}:
-	        Documento Eletrônico e Impresso},
- year        = 2009,
+                Dissertações e Teses da {USP}:
+                Documento Eletrônico e Impresso},
+ year        = 2016,
  url         = {www.teses.usp.br/index.php?option=com_content&view=article&id=52&Itemid=67},
- urldate     = {2017-11-10},
+ urldate     = {2025-01-29},
 }
 
-@online{carlis:09,
+@unpublished{carlis:09,
  author  = {John V. Carlis},
- title   = {Design: The Key to Writing
-            (and Advising) a One-Draft {Ph.D} Dissertation},
+ title   = {Design: The Key to Writing (and Advising)
+            a One-Draft {Ph.D} Dissertation},
  year    = 2009,
+ month   = oct,
  url     = {www-users.cs.umn.edu/~carlis/one-draft.pdf},
  urldate = {2017-11-10},
 }
 
 @book{craftresearch,
- author    = {Wayne C. Booth and Gregory G. Colomb and Joseph M. Williams},
+ author    = {Wayne C. Booth and Gregory G. Colomb and Joseph M. Williams
+              and Joseph Bizup and William T. FitzGerald},
  title     = {The Craft of Research},
  publisher = {The University of Chicago Press},
- year      = 2008,
+ year      = 2024,
+ edition   = 5,
+ isbn      = {978-0226826677},
 }
 
 @book{dissertjourney,
- author    = {Carol M. Roberts},
+ author    = {Laura Hyatt and Carol M. Roberts},
  title     = {The Dissertation Journey},
- publisher = {Corwin},
- year      = 2010,
- edition   = 2,
+ publisher = {Corwin Press},
+ year      = 2023,
+ edition   = 4,
  location  = {Thousand Oaks, CA},
+ isbn      = {978-1071891285},
+}
+
+@online{gnu83,
+ title   = {new {Unix} implementation},
+ author  = {Richard Stallman},
+ year    = 1983,
+ month   = sep,
+ url     = {www.gnu.org/gnu/initial-announcement.en.html},
+ urldate = {2025-01-29},
+}
+
+@online{FSF,
+ shortauthor = {FSF},
+ title       = {{Free Software Foundation} website},
+ year        = 2007,
+ urldate     = {2010-01-30},
+ url         = {www.gnu.org},
 }
 
 @manual{sbctemplate,
- author  = {Luciana P. Nedel and Rafael H. Bordini and Flávio Rech Wagner and Jomi F. H\"{u}bner},
- title   = {Instructions for Authors of {SBC} Conferences Papers and Abstracts},
+ author  = {Luciana P. Nedel and Rafael H. Bordini
+            and Flávio Rech Wagner and Jomi F. Hübner},
+ title   = {Instructions for Authors of {SBC} Conferences
+            Papers and Abstracts},
  year    = 2017,
  url     = {www.sbc.org.br/documentos-da-sbc/category/169-templates-para-artigos-e-capitulos-de-livros},
  urldate = {2018-12-13},
 }
+
+@techReport{yoon23,
+ author      = {Ana Y. F. de Lima and Fabio Kon},
+ title       = {Impacts of the {COVID-19} pandemic on
+                the bicycle sharing system in {São Paulo}},
+ institution = {Department of Computer Science, Institute of Mathematics
+                and Statistics, University of São Paulo},
+ year        = {2023},
+ month       = dec,
+ number      = {RT-MAC-2023-01},
+ url         = {interscity.org/assets/Technical_Report_Tembici_COVID.pdf},
+}
+
+@mastersThesis{shannon,
+ author  = {Claude Elwood Shannon},
+ title   = {A symbolic analysis of relay and switching circuits},
+ school  = {Massachusetts Institute of Technology
+            -- Dept. of Electrical Engineering},
+ address = {Cambridge MA},
+ year    = 1940,
+ url     = {hdl.handle.net/1721.1/11173},
+}
+
+@phdThesis{curie,
+ author  = {Marie Curie},
+ title   = {Recherches sur les substances radioactives},
+ school  = {Faculté des Sciences de Paris},
+ year    = 1903,
+ month   = jun,
+ url     = {catalogue.bnf.fr/ark:/12148/cb302919009},
+ urldate = {2025-01-29},
+}
+
+@inCollection{gridpat,
+ author    = {Raphael Yokoingawa de Camargo and Andrei Goldchleger
+              and Márcio Rodrigo de Freitas Carneiro and Fabio Kon},
+ title     = {The {Grid} architectural pattern},
+ subtitle  = {Leveraging Distributed Processing Capabilities},
+ booktitle = {Pattern Languages of Program Design},
+ series    = {Software patterns},
+ number    = 5,
+ editor    = {Dragos Manolescu and Markus Voelter and James Noble},
+ year      = 2006,
+ month     = apr,
+ isbn      = {978-0321321947},
+ publisher = {Addison-Wesley Professional},
+}
+
+@inProceedings{dbevolution,
+ author    = {Nepomuceno, Pedro Ivo Siqueira and Braghetto, Kelly Rosa},
+ title     = {Managing Semantic Evolutions in Semi-Structured Data},
+ booktitle = {Database and Expert Systems Applications:
+              {DEXA} 2023 proceedings, part {I}},
+ year      = {2023},
+ month     = aug,
+ series    = {Lecture Notes in Computer Science},
+ volume    = {14146},
+ isbn      = {978-3-031-39847-6},
+ publisher = {Springer, Cham},
+ location  = {Berlin, Heidelberg},
+ doi       = {10.1007/978-3-031-39847-6_12},
+ pages     = {179--185},
+ venue     = {Penang, Malaysia},
+ eventdate = {2023-08-28/2023-08-30},
+}
+

@@ -15,6 +15,8 @@ Seção~\ref{sec:docs} apresentam os conceitos básicos.
 \section{Bibliografia e referências}
 \label{sec:exemplos-biblatex}
 
+\enlargethispage{\baselineskip}
+
 A documentação do pacote biblatex\index{biblatex}~\citep{biblatex} é
 bastante extensa e explica (nas Seções~2.1.1 e 2.2.2) os diversos
 tipos de documento suportados, bem como o significado de cada campo.
@@ -25,28 +27,30 @@ arquivo \texttt{bibliografia.bib} para ver como foi criado o banco de dados e a
 bibliografia na página \pageref{sec:bib} para ver o resultado impresso):
 
 \begin{multicols}{2}
+  \LaTeXraggedright
   \begin{itemize}
-    \item @Book: \cite{Knuth:96}.
+    \item @book: \cite{knuth:96}
 
-    \item @Article (em periódico): \cite{floats2014}.
+    \item @article (em periódico): \cite{floats2014}
 
-    \item @InProceedings (ou @Conference): \cite{alves03:simi}.
+    \item @inProceedings (ou @conference): \cite{dbevolution}
 
-    \item @InCollection (capítulo de livro ou coletânea): \cite{bobaoglu93:concepts}.
+    \item @inCollection (capítulo de livro ou coletânea):
+          \cite{gridpat}
 
-    \item @PhdThesis: \cite{garcia01:PhD}.
+    \item @phdThesis: \cite{curie}
 
-    \item @MastersThesis: \cite{schmidt03:MSc}.
+    \item @mastersThesis: \cite{shannon}
 
-    \item @Techreport: \cite{alvisi99:analysisCIC}.
+    \item @techreport: \cite{yoon23}
 
-    \item @Manual: \cite{biblatex}.
+    \item @manual: \cite{biblatex}
 
-    \item @Misc: \cite{gridftp}.
+    \item @online (textos \emph{online} com autoria, como postagens ou
+          comentários em blogs, mensagens de email etc.): \cite{gnu83}
 
-    \item @Online (para referência a artigo \emph{online}): \cite{fowler04:designDead}.
-
-    \item @Online (para referência a página web): \cite{FSF:GNU-GPL}.
+    \item @online (para referência não a textos específicos,
+          mas a sítios web como um todo): \cite{FSF}
   \end{itemize}
 \end{multicols}
 
@@ -82,7 +86,9 @@ Para citar material \emph{online}, há três casos:
   científico, independentemente de a revista existir ou não no formato
   impresso), use o tipo correspondente (\textsf{@article}, \textsf{@book},
   \textsf{@inproceedings} etc.) e acrescente o campo \textsf{url} no
-  arquivo .bib, aceito por todos os tipos de documento do bibtex/biblatex.
+  arquivo .bib, aceito por todos os tipos de documento do bibtex/biblatex,
+  ou o \textsf{doi}, que direciona para o endereço correto.
+  \looseness=-1
 
   \item Para citar materiais essencialmente \emph{online} que possuem
   título e autor definidos (como uma postagem ou comentário em blog
@@ -139,8 +145,6 @@ equação tem zero, uma ou duas raízes reais~distintas''.
     \Delta\enspace(\mathit{delta}) = b^2-4ac
 \end{gather}
 
-\enlargethispage{\baselineskip}
-
 Para inserir um espaço explicitamente no modo matemático, use
 \ltxcmd{quad} ou \ltxcmd{enspace}. Para inserir texto ``normal'' em
 uma fórmula matemática, use \ltxcmd{text\{texto\}} (para texto de fato)
@@ -180,6 +184,8 @@ você vai precisar no seu documento. Aqui criamos três: ``Pegadinha'',
 {.5em} % espaço após o título
 {\thmname{#1}\space(?)\thmnumber{ #2}\thmnote{ (#3)}} % formato do título
 % vazio significa {\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}}
+
+\enlargethispage{\baselineskip}
 
 \theoremstyle{smile} % As próximas definições usam este estilo
 \newtheorem{absurd}{Pegadinha}
@@ -449,7 +455,7 @@ se sim, mudar o lugar em que eles são definidos no documento (veja algumas
 dicas em \cite{floats2014}) pode fazer \LaTeX{} gerar um resultado melhor
 (mas lembre-se que isso só faz sentido depois que o documento estiver
 pronto, pois qualquer mudança no texto pode mudar totalmente a posição
-final dos \emph{floats}).
+final~dos~\emph{floats}).
 
 \section{Tabelas}\index{Floats}
 
