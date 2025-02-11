@@ -330,7 +330,7 @@ a \emph{package} \textsf{adjustbox} (incluída neste modelo):
 
 \begin{verbatim}
   \begin{figure}
-  \adjustbox{center}{\includegraphics[width=1.2\textwidth]{img.pdf}}
+  \adjustbox{center}{\includegraphics[width=1.2\textwidth]{img}}
   \caption{...}
   \end{figure}
 \end{verbatim}
@@ -732,8 +732,10 @@ Resumindo:
   \item Se uma tabela cabe em uma página, defina-a como um \textit{float}
         (\verb|\begin{table}|);
   \item Se cabe em uma página mas é muito larga e precisa ser impressa em
-        modo paisagem, use \textsf{sidewaystable} (que também é um \textit{float});
-  \item Se não cabe em uma página por ser muito longa, use \textsf{longtable};
+        modo paisagem, use \textsf{sidewaystable}\footnote{Existe também
+        \textsf{sidewaysfigure}.} (que também é um \textit{float});
+  \item Se não cabe em uma página por ser muito longa, use \textsf{longtable}
+        (que \emph{não} é um float);
   \item Se não cabe em uma página por ser muito longa e precisa ser impressa
         em modo paisagem por ser muito larga, use \textsf{longtable} em
         conjunto com \textsf{landscape}. Nesse caso, vai haver uma quebra
