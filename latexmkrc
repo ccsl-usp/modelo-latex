@@ -1,9 +1,11 @@
 @default_files = ('tese');
 
-# TeXLive até no mínimo 2023 produz PDFs identificados como versão 1.5.
-# Ao incorporar arquivos PDF de imagem com versões mais novas, isso faz
-# LaTeX gerar um warning. Como na prática isso não causa problemas e não
-# há boas razões para manter a versão em 1.5, redefinimos aqui para 1.7.
+# TeXLive até 2024 produz PDFs identificados como versão 1.5. Ao incorporar
+# arquivos PDF de imagem com versões mais novas, isso faz LaTeX gerar um
+# warning. Como na prática isso não causa problemas e não há boas razões
+# para manter a versão em 1.5, redefinimos aqui para 1.7.
+# TODO: quando a versão mais antiga a que dermos suporte for TeXLive 2025,
+#       isto pode ser eliminado, pois essa versão já gera pdfs versão 1.7.
 
 # Compilação "normal"
 #set_tex_cmds('-synctex=1 -halt-on-error %O %S');
