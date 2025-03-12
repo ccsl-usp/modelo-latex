@@ -1176,9 +1176,8 @@
   % Opções default para o pacote listings
   % Ref: http://en.wikibooks.org/wiki/LaTeX/Packages/Listings
   \lstset{
-    columns=[l]fullflexible,            % do not try to align text with proportional fonts
-    %keepspaces=true,
-    %flexiblecolumns=false,
+    keepspaces=true,
+    flexiblecolumns=false,
     basicstyle=\footnotesize\ttfamily,  % the font that is used for the code
     numbers=left,                       % where to put the line-numbers
     numberstyle=\footnotesize\ttfamily, % the font that is used for the line-numbers
@@ -1199,7 +1198,6 @@
     breaklines=true,                    % sets automatic line breaking
     breakatwhitespace=false,            % sets if automatic breaks should only happen at whitespace
     escapeinside={\%*}{*)},             % if you want to add a comment within your code
-    backgroundcolor=\color[rgb]{1.0,1.0,1.0}, % choose the background color.
     rulecolor=\color{darkgray},
     extendedchars=true,
     inputencoding=utf8,
@@ -1413,6 +1411,9 @@
     % funções precedidas por function/procedure ou com \func{}
     procnamestyle=\ttfamily,
     specialidentifierstyle=\ttfamily\bfseries,
+    columns=[l]fullflexible,
+    keepspaces=false,
+    flexiblecolumns=true,
   }
   \lstset{defaultdialect=[english]{pseudocode}}
 }{} % iftoggle{IMEpseudocode}
