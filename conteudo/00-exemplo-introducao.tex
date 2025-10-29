@@ -5,13 +5,12 @@
 %% ------------------------------------------------------------------------- %%
 
 % "\chapter" cria um capítulo com número e o coloca no sumário; "\chapter*"
-% cria um capítulo sem número e não o coloca no sumário. A introdução não
-% deve ser numerada, mas deve aparecer no sumário. Por conta disso, este
-% modelo define o comando "\chapter**".
-\chapter**{Introdução}
+% cria um capítulo sem número e não o coloca no sumário. Alguns autores
+% preferem que a introdução não seja numerada, mas ainda assim apareça
+% no sumário. Para isso, você pode usar "\chapter**{Introdução}". Esse
+% comando não é padrão do LaTeX; ele foi definido neste modelo.
+\chapter{Introdução}
 \label{cap:introducao}
-
-\enlargethispage{.5\baselineskip}
 
 Escrever bem é uma arte que exige muita técnica e dedicação e,
 consequentemente, há vários bons livros sobre como escrever uma boa
@@ -24,6 +23,7 @@ Sobre a escrita acadêmica em geral, John Carlis disponibilizou um texto curto
 e interessante~\citep{carlis:09} em que advoga a preparação de um único
 rascunho da tese antes da versão final. Mais importante que isso, no
 entanto, são os vários \textit{insights} dele sobre a escrita acadêmica.
+
 Dois outros bons livros sobre o tema são \emph{The Craft of Research}~\citep{craftresearch}
 e \emph{The Dissertation Journey}~\citep{dissertjourney}. Além disso,
 a USP tem uma compilação de normas relativas à produção de documentos
@@ -78,8 +78,6 @@ certo (\citet ou \citeyear): Andrew e Foster (1983) introduziram o algoritmo ót
 \end{verbatim}
 \egroup
 
-\enlargethispage{.5\baselineskip}
-
 O uso desnecessário de termos em língua estrangeira deve ser evitado. No entanto,
 quando isso for necessário, os termos devem aparecer \textit{em itálico}.
 \index{Língua estrangeira}
@@ -112,7 +110,7 @@ das informações nessas plataformas. Portanto, é fortemente sugerido validar
 todas as informações de tal forma que as entradas bib estejam corretas.
 De qualquer modo, tome muito cuidado na padronização das referências
 bibliográficas: ou considere TODOS os nomes dos autores por extenso, ou TODOS
-os nomes dos autores abreviados. Evite misturas inapropriadas.\looseness=-1
+os nomes dos autores abreviados. Evite misturas inapropriadas.\looseness=1
 
 Apenas uma parte dos artigos acadêmicos de interesse está disponível livremente
 na Internet; os demais são restritos a assinantes. A CAPES assina um grande
