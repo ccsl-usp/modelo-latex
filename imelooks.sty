@@ -468,15 +468,15 @@
 
 \iftoggle{IMEfonts}{
 
-  % Uma boa fonte teletype
-  \RequirePackage[scale=.85]{sourcecodepro}
-
   % Uma ótima opção de família para o corpo do texto é a libertinus,
   % similar (mas não igual) à Times, mas com suporte a Small Caps e
   % outras qualidades. A fonte teletype da família é serifada, então
   % é melhor definir outra; a opção "mono=false" faz o pacote não
   % carregá-la, mantendo a escolha anterior.
   \RequirePackage[mono=false]{libertinus}
+
+  % Uma boa fonte teletype
+  \RequirePackage[scale=.85]{sourcecodepro}
 
   \ifPDFTeX
     % A família libertinus por padrão não define uma fonte matemática
