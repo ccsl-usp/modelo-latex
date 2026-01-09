@@ -3403,6 +3403,10 @@
     \begingroup
       \let\origwrite\write
       \def\write{\immediate\origwrite}%
+      % baseado na pkg nowtoaux
+      \let\protect\@unexpandable@protect
+      \let\thepage\relax \let\label\@gobble
+      \let\index\@gobble \let\glossary\@gobble
       \addtocontents{toc}{{\large\vspace{0pt plus 2\baselineskip minus 0pt}}}%
       \addtocontents{toc}{\protect\pagebreak[2]}%
       \addtocontents{toc}{\vspace{.8\baselineskip}}%
