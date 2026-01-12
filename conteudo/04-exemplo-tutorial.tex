@@ -617,7 +617,7 @@ Se você pretende usar outros alfabetos, gostaria de escolher
 fontes diferentes ou precisa de recursos tipográficos específicos
 (\cmd{texdoc fontspec}, \cmd{texdoc unicode-math}), use Lua\LaTeX{}.
 
-\section{Limitações do \LaTeX{}}
+\section{Limitações do \LaTeX{} e alternativas}
 \label{sec:limitations}
 
 Como qualquer ferramenta, \LaTeX{} tem limitações e características
@@ -625,14 +625,19 @@ indesejáveis:
 
 \begin{itemize}
     % \linebreak[0]{} -> sugestão (não-obrigatória) de quebra de linha
-    \item A linguagem é muito prolixa: é tedioso escrever
-    coisas como ``\ltxcmd{begin\linebreak[0]{}\{itemize\}}'' etc.
-    Linguagens como asciidoc (\url{asciidoctor.org}), markdown
-    (\url{commonmark.org}), bookdown (\url{bookdown.org}) e reStructuredText
-    (\url{sphinx-doc.org}) operam de maneira similar a \LaTeX{}, mas sua
-    sintaxe é bem mais enxuta. Elas funcionam muito bem para a geração de
-    páginas web, mas \LaTeX{} oferece mais recursos e geralmente produz
-    resultados impressos melhores.
+    \item A linguagem é muito prolixa: é tedioso escrever coisas como
+    ``\ltxcmd{begin\linebreak[0]{}\{itemize\}}'' etc. Linguagens como
+    asciidoc (\url{asciidoctor.org}), markdown (\url{commonmark.org}),
+    bookdown (\url{bookdown.org}) e reStructuredText (\url{sphinx-doc.org})
+    operam de maneira similar a \LaTeX{}, mas sua sintaxe é bem mais
+    enxuta. Elas funcionam muito bem para a geração de páginas web,
+    mas \LaTeX{} oferece mais recursos e geralmente produz resultados
+    impressos melhores, além de possuir modelos pré-prontos para um
+    grande número de publicações científicas, especialmente nas áreas
+    de matemática, ciência da computação, física e afins. typst
+    (\url{typst.app}) busca ser um ``\LaTeX{} melhorado`` e, embora
+    ainda seja relativamente jovem e pouco conhecido, já é bastante
+    funcional.
 
     \item \LaTeX{} gera muitas mensagens pouco importantes durante
     o processamento do documento, o que dificulta a identificação
@@ -663,7 +668,7 @@ indesejáveis:
     \item A colocação automática dos \emph{floats} e o algoritmo
     que encontra as quebras de página em geral funcionam bem, mas às
     vezes é possível obter resultados melhores manualmente (veja as
-    Seções~\ref{sec:exemplos-graficos} e \ref{sec:quebras}).
+    Seções~\ref{sec:quebras} e \ref{sec:exemplos-graficos}).
 
     % LaTeX atualmente usa utf-8 por padrão; esta informação já
     % era pouco útil antes, agora é quase totalmente irrelevante
@@ -700,9 +705,10 @@ indesejáveis:
     possibilidades de customização. A classe \pkg{memoir} tem o mesmo objetivo,
     mas procura dar suporte a livros e artigos com uma única classe. Ambas
     abordagens são muito boas, mas a maioria dos modelos usados por revistas e
-    outras publicações é baseada nas classes padrão. A versão 3 de \LaTeX{}
-    está em desenvolvimento com vistas a resolver boa parte dos problemas
-    atuais do sistema, mas ainda deve demorar muitos anos para ficar pronta.
-    Con\TeX{}t é um ``irmão mais novo'' de \LaTeX{} com diversas
-    vantagens, mas com sintaxe diferente e que ainda não é tão popular.
+    outras publicações é baseada nas classes padrão. Os desenvolvedores atuais
+    do \LaTeX{} vêm trabalhando para minimizar essas restrições, mas o processo
+    é lento e limitado pela necessidade de manter a compatibilidade com versões
+    mais antigas da linguagem. Con\TeX{}t é um ``irmão mais novo'' de \LaTeX{}
+    com diversas vantagens, mas com sintaxe diferente e que ainda não é tão
+    popular.
 \end{itemize}
