@@ -18,12 +18,25 @@
 % estilos mais comuns não usam isso, então vamos removê-lo.
 \xpatchbibdriver{article}{\usebibmacro{in:}}{}{}{}
 
+% Adaptado de biblatex-software/english-software.lbx
+\NewBibliographyString{software,edited,swmodule,swpartof,swversion,swexcerpt,swexc,refart,manual}
+
 \DefineBibliographyStrings{brazilian}{
   % portuguese.lbx traduz estes elementos para "em";
   % no entanto, o usual é manter em latim ("in").
   involumes    = {in},
   inseries     = {in},
-  in           = {in}
+  in           = {in},
+  % Adaptado de biblatex-software/english-software.lbx
+  software  = {\textsc [Software]},
+  swmodule  = {\textsc [Módulo de Software]},
+  swpartof  = {parte de},
+  swversion = {\textsc [Versão de software]},
+  swexcerpt = {\textsc [Excerto de Software]},
+  swexc     = {de},
+  edited    = {Coordenado por},
+  refart    = {Descrito em},
+  manual    = {Manual\addcolon}
 }
 
 % Add "http://" for URLs that do not include http/https/ftp prefix
@@ -34,3 +47,6 @@
     {\mkbibacro{URL}\addcolon\space\href{http\c_colon_str//#1}{#1}}%
 }
 \ExplSyntaxOff
+
+% Extensão para URLs do projeto software heritage
+\blx@inputonce{software.bbx}{biblatex style for software}{}{}{}{}

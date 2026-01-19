@@ -862,6 +862,34 @@
       {\item}
   }{}
 
+  % A extensão do biblatex para URLs do projeto software heritage carrega
+  % a package xurl. Isso me parece incorreto: biblatex cuida da formatação
+  % de URLs por si só e, em relação à bibliografia, xurl apenas modifica a
+  % configuração de biblatex. Assim, para evitar que xurl afete o documento
+  % inteiro, vamos usar \useOriginalUrlSetting (o que não deve afetar a
+  % bibliografia). Além disso, vamos configurar biblatex para ser um pouco
+  % menos permissivo que o definido por xurl. Se quiser usar a configuração
+  % de xurl no documento, basta usar \useXUrlSetting, definido abaixo.
+
+  \AtEndPreamble{
+      \@ifpackageloaded{xurl}{\useOriginalUrlSetting}{}
+      \setcounter{biburllcpenalty}{1000}%
+      \setcounter{biburlucpenalty}{2000}%
+      \global\setcounter{biburlnumpenalty}{1000}%
+  }
+
+  % Isto é uma cópia do código em xurl
+  \def\useXUrlSetting{%
+    \def\UrlBreaks{%
+      \do\.\do\@\do\\\do\/\do\!\do\_\do\|\do\;\do\>\do\]%
+      \do\)\do\,\do\?\do\&\do\'\do+\do\=\do\#\do:%
+      \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j\do\k\do\l%
+      \do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t\do\u\do\v\do\w\do\x\do\y\do\z%
+      \do\A\do\B\do\C\do\D\do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L%
+      \do\M\do\N\do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X\do\Y\do\Z%
+      \do0\do1\do2\do3\do4\do5\do6\do7\do8\do9}%
+  }
+
 }{} % \iftoggle{IMEbiblatex}
 
 

@@ -15,8 +15,6 @@ Seção~\ref{sec:docs} apresentam os conceitos básicos.
 \section{Bibliografia e referências}
 \label{sec:exemplos-biblatex}
 
-\enlargethispage{\baselineskip}
-
 A documentação do pacote biblatex\index{biblatex}~\citep{biblatex} é
 bastante extensa e explica (nas Seções~2.1.1 e 2.2.2) os diversos
 tipos de documento suportados, bem como o significado de cada campo.
@@ -78,7 +76,7 @@ abreviado com três letras minúsculas e sem chaves, ou seja:
     ...
 \end{verbatim}
 
-Para citar material \emph{online}, há três casos:
+Para citar material \emph{online}, há quatro casos:
 
 \begin{itemize}
   \item Para citar publicações \emph{online} que se enquadram em
@@ -100,15 +98,22 @@ Para citar material \emph{online}, há três casos:
 
   \item Se o que você quer citar não é propriamente uma ideia (que
   normalmente possui um autor e faz parte de um texto com título etc.)
-  mas sim um sítio (como uma empresa, produto ou repositório de
-  software), pode ser mais adequado colocar a referência apenas como
-  nota de rodapé e não na lista de referências. Outra opção é criar
-  uma segunda lista de referências especificamente para recursos
-  \emph{online} desse tipo (biblatex\index{biblatex} permite criar
-  múltiplas bibliografias).
+  mas sim um sítio (como uma empresa ou produto), pode ser mais adequado
+  colocar a referência apenas como nota de rodapé e não na lista de
+  referências. Outra opção é criar uma segunda lista de referências
+  especificamente para recursos \emph{online} desse tipo
+  (biblatex\index{biblatex} permite criar múltiplas bibliografias).
+
+  \item Embora seja possível tratar artefatos de software da mesma
+  maneira, é melhor seguir as recomendações do projeto \emph{Software
+  Heritage}~\citep{soft-with-style}, que têm suporte com biblatex
+  neste modelo (por exemplo, podemos citar uma versão específica de
+  um software com~\cite{mlh-archiver}).
 \end{itemize}
 
 \section{Identificando problemas}
+
+\enlargethispage{\baselineskip}
 
 Como mencionado na Seção~\ref{sec:limitations}, \LaTeX{} gera um grande
 volume de mensagens informativas durante o processamento, o que torna mais
@@ -117,7 +122,6 @@ modelo utiliza o programa \cmd{texlogsieve} para filtrar essas mensagens,
 apresentando apenas as mais importantes para o usuário; considere usá-lo
 em outros trabalhos com \LaTeX{} também.
 
-\enlargethispage{\baselineskip}
 
 \section{Modo matemático}\index{Modo matemático}
 
@@ -128,7 +132,7 @@ por Einstein'', ou ainda ``equações de segundo grau (Equação \ref{eq:2grau})
 são estudadas no ensino médio. As raízes de uma equação de segundo grau podem
 ser encontradas por~\eqref{eq:bhaskara} --- a fórmula de Bháskara.
 O valor do discriminante $\Delta$ (Equação \ref{eq:delta}) determina se a
-equação tem zero, uma ou duas raízes reais~distintas''.
+equação tem zero, uma ou duas raízes reais~distintas''.\looseness=-1
 
 % Equação simples, com numeração à direita
 \begin{equation}
@@ -297,7 +301,7 @@ as subfiguras~\ref{fig:subfigures:a} e~\ref{fig:subfigures:b}.
 
   \begin{subfigure}{0.4\textwidth}
     \centering
-    \includegraphics[width=.8\textwidth]{exemplo-grafo}
+    \includegraphics[width=.55\textwidth]{exemplo-grafo}
     \caption{Uma figura simples.\label{fig:subfigures:a}}
   \end{subfigure}
   % ATENÇÃO: Se você deixar uma linha em branco entre as subfiguras,
@@ -307,7 +311,7 @@ as subfiguras~\ref{fig:subfigures:a} e~\ref{fig:subfigures:b}.
   \begin{subfigure}{0.4\textwidth}
     \centering
     \begin{turn}{90} % package rotating
-      \includegraphics[width=.8\textwidth]{exemplo-grafo}
+      \includegraphics[width=.55\textwidth]{exemplo-grafo}
     \end{turn}
     \caption{O mesmo exemplo, girado.\label{fig:subfigures:b}}
   \end{subfigure}

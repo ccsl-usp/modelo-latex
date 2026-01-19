@@ -1,0 +1,3 @@
+\ProvidesFile{beamer-ime.dbx}[2020/04/02 biblatex-software data model, Roberto Di Cosmo]
+\blx@inputonce{software.dbx}{biblatex data model extension for software}{}{}{}{}
+\endinput
