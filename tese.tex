@@ -90,7 +90,11 @@
 
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa, também são
-% armazenados nos metadados do PDF. O subtítulo é opcional.
+% armazenados nos metadados do PDF. O subtítulo é opcional. O título é dado
+% na língua principal do documento. Por exemplo, se seu trabalho está escrito
+% em português, essa é a língua do título e "translatedtitle" se refere ao
+% título em inglês; se seu trabalho está escrito em inglês, essa é a língua
+% do título e "translatedtitle" se refere ao título em português.
 \title{Título do trabalho}[um subtítulo]
 \translatedtitle{Title of the document}[a subtitle]
 
@@ -179,10 +183,15 @@
 %
 \direitos{CC-BY}
 
-% Para gerar a ficha catalográfica, acesse https://fc.ime.usp.br/,
-% preencha o formulário e escolha a opção "Gerar Código LaTeX".
-% Basta copiar e colar o resultado aqui.
-\fichacatalografica{}
+\fichacatalografica{
+
+\noindent Para gerar a ficha catalográfica, acesse \url{https://fc.ime.usp.br},
+          preencha o formulário e escolha a opção ``Gerar Código \LaTeX''.
+          Basta copiar e colar o resultado dentro do comando \Verb
+          |\fichacatalografica| (substituindo este texto explicativo).
+          \vspace{5\baselineskip}
+
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
