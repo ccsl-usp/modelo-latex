@@ -1,0 +1,14 @@
+name: build-pdf
+on: [push]
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    container: lucasoshiro/modelo-latex-ccsl
+    steps:
+      - uses: actions/checkout@v4
+      - run: make tese.pdf
+      - name: Upload do tese.pdf
+        uses: actions/upload-artifact@v4
+        with:
+          name: tese.pdf
+          path: tese.pdf
