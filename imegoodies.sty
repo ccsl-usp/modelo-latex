@@ -1,13 +1,8 @@
 % 2017/01/01 -> fontenc TU and mandatory e-TeX support
 % 2018/12/01 -> kernel uses utf8 by default
-%
-% TODO: After ubuntu 20.04 EOL (April/2025), check whether arxiv uses at
-%       least version 2021 of TeXLive (it does; as of 2024, the version
-%       in use is TeXLive 2023); if so, change this to version 2020/10/01,
-%       which includes file hooks, and make the corresponding adjustments
-%       (in particular, the AtEndDvi fix further below).
-\NeedsTeXFormat{LaTeX2e}[2018/12/01]
-\ProvidesPackage{imegoodies}[2022/11/13 1.0 Load several common
+% 2020/10/01 -> kernel includes file hooks
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{imegoodies}[2026/05/25 1.1 Load several common
                                             and useful packages]
 
 
@@ -34,34 +29,6 @@
 %\RequirePackage{xfp} % Floating-point calculations
 
 \RequirePackage{regexpatch}
-
-% O projeto LaTeX3 renomeou algumas macros em 2019-03-05 e removeu
-% a compatibilidade com os nomes antigos em 2020-07-17 a partir de
-% 2021-01-01 (veja o arquivo l3deprecation.dtx e o changelog em
-% https://github.com/latex3/latex3/blob/main/l3kernel/CHANGELOG.md).
-% Isso afetou a package regexpatch: versões antigas da package não
-% funcionam com versões novas de LaTeX e vice-versa. Infelizmente,
-% ubuntu 21.04 (hirsute) e debian 11 (bullseye) incluem essas versões
-% incompatíveis e, portanto, a package regexpatch não funciona nesses
-% ambientes. Talvez fosse possível contornar esse problema com a
-% package latexrelease, mas isso afetaria muitos outros recursos.
-% Ao invés disso, vamos restaurar manualmente a compatibilidade.
-% TODO: remover isto após debian bullseye se tornar obsoleta.
-\ExplSyntaxOn
-\@ifpackagelater{regexpatch}{2021/03/21}
-  {} % Se regexpatch é "nova", expl3 deve ser também; nada a fazer
-  {
-    % Talvez o correto seja 2021/01/01, mas na prática o resultado é o mesmo
-    \@ifpackagelater{expl3}{2020/07/17}
-      {
-        % As versões são incompatíveis; vamos recuperar as macros preteridas
-        \cs_gset:Npn \token_get_prefix_spec:N { \cs_prefix_spec:N }
-        \cs_gset:Npn \token_get_arg_spec:N { \cs_argument_spec:N }
-        \cs_gset:Npn \token_get_replacement_spec:N { \cs_replacement_spec:N }
-      }
-      {} % As duas packages são antigas e, portanto, compatíveis entre si
-  }
-\ExplSyntaxOff
 
 % Algumas packages dependem de xpatch e tentam carregá-la, causando conflitos
 % com regexpatch. Como regexpatch oferece todos os recursos de xpatch (ela
@@ -266,7 +233,7 @@
 }{hyperref}
 
 % Carrega nomes de cores disponíveis (podem ser usados com hyperref e listings)
-% TODO: quando deixarmos de dar suporte a TeXLive < 2024, remover a opção
+% TODO: quando deixarmos de dar suporte a TeXLive 2023 (em 2027), remover a opção
 %       "hyperref", que foi preterida.
 \RequirePackage[hyperref,svgnames,x11names,table]{xcolor}
 
@@ -276,11 +243,10 @@
 % (https://tug.org/TUGboat/tb41-1/tb127wright-case.pdf ). Esta package
 % define os comandos \MakeTextUppercase e \MakeTextLowercase que resolvem
 % isso.
-% TODO: quando TeXLive 2023 for a versão mais antiga de LaTeX a que
-%       estivermos dando suporte, podemos eliminar a package textcase
-%       e usar \MakeUppercase e \MakeLowercase diretamente. A partir
-%       dessa versão, essas macros usam \text_[upper|lower]case:n de
-%       expl3.
+% TODO: quando deixarmos de dar suporte a ubuntu jammy (em 2027),
+%       podemos eliminar a package textcase e usar \MakeUppercase
+%       e \MakeLowercase diretamente. A partir dessa versão, essas
+%       macros usam \text_[upper|lower]case:n de expl3.
 \RequirePackage{textcase}
 
 \RequirePackage{geometry} % Permite definir o tamanho do papel, margens etc.
@@ -493,22 +459,6 @@
 \ifPDFTeX
   \RequirePackage[T1]{fontenc} % fontenc padrão recomendado para texto latino
 
-  % Várias packages que definem as fontes do documento carregam fontaxes
-  % porque ela oferece diversos recursos para a criação da package, mas
-  % carregamos aqui porque, mesmo com fontes que não a usam diretamente,
-  % ela permite utilizar small caps + itálico. Algumas raras packages de
-  % fontes podem causar conflitos com fontaxes, em geral por utilizarem
-  % a package "concorrente" nfssext-cfr.
-  %
-  % TODO A funcionalidade pela qual faz sentido carregar fontaxes aqui
-  %      (small caps + itálico) foi incorporada ao kernel do LaTeX na
-  %      versão 2020-02-02, então está em TeXLive 2021. Remover isto
-  %      quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
-  %      descontinuada (abril de 2025). As packages que precisam de
-  %      fontaxes por outras razões podem continuar a carregá-la sem
-  %      problemas, mas não precisamos fazer isso aqui.
-  \RequirePackage{fontaxes}
-
   % LaTeX substitui algumas sequências de caracteres, como "fi", "fl" e
   % outras, por caracteres especiais ("ligaduras"). Para que seja possível
   % fazer copiar/colar ou buscas por textos contendo essas ligaduras, o
@@ -523,9 +473,8 @@
   % estes comandos.
   %
   % TODO Isto foi incluído no kernel do LaTeX versão 2021-06-01,
-  %      então está em TeXLive 2022. Remover isto quando arxiv
-  %      usar TeXLive >= 2022 e ubuntu 22.04 (jammy) for
-  %      descontinuada (abril de 2027).
+  %      então está em TeXLive 2022. Remover isto quando ubuntu 22.04
+  %      (jammy) for descontinuada (junho de 2027).
   \input glyphtounicode.tex
   \pdfgentounicode=1
 \else
@@ -545,22 +494,6 @@
   % oferece algumas melhorias em relação ao sistema "tradicional" de LaTeX.
   %\RequirePackage{unicode-math}
 \fi
-
-% Acesso a símbolos adicionais, como \textrightarrow, \texteuro etc.,
-% disponíveis na maioria das fontes através do fontenc TS1 ou mudando
-% momentaneamente para computer modern/latin modern. Raramente útil
-% com lualatex/xelatex, mas não causa problemas. Várias packages de
-% fontes carregam textcomp, às vezes com opções específicas; assim,
-% para evitar problemas, vamos carregá-la no final do preâmbulo para
-% o caso de ela não ter sido carregada antes.
-%
-% TODO A funcionalidade oferecida por textcomp foi incorporada ao kernel
-%      do LaTeX na versão 2020-02-02, então está em TeXLive 2021. Remover
-%      isto quando arxiv usar TeXLive >= 2021 e ubuntu 20.04 (focal) for
-%      descontinuada (abril de 2025). As packages que precisam de textcomp
-%      podem continuar a carregá-la sem problemas, mas não precisamos fazer
-%      isso aqui.
-\AtBeginDocument{\usepackage{textcomp}}
 
 % LaTeX usa por default a família de fontes "Computer Modern". Essas fontes
 % precisaram ser re-criadas diversas vezes em formatos diferentes, então há
@@ -621,52 +554,14 @@
     %\DeclareRobustCommand\textlmodern[1]{%
     %  {\lmodern #1}%
     %}
-\else
+\fi
     % Com LuaLaTex e XeLaTeX, Latin Modern é a fonte padrão. Existem
     % diversas packages e "truques" para melhorar alguns aspectos de
     % Latin Modern, mas eles foram feitos para pdflatex (veja mais
     % acima). Assim, se você pretende usar Latin Modern como a fonte
     % padrão do documento, é melhor usar pdfLaTeX. Deve ser possível
     % implementar essas melhorias com fontspec também, mas este modelo
-    % não faz isso, apenas ativamos Small Caps aqui.
-    %
-    % TODO: isso funciona automaticamente em versões recentes do LaTeX;
-    %       Remover essa correção para LuaLaTeX e XeLaTeX quando arxiv
-    %       usar TeXLive >= 2021 e ubuntu 20.04 (focal) for descontinuada
-    %       (abril de 2025).
-
-    \ifLuaTeX
-      % Com LuaTeX, basta indicar o nome de cada fonte; para descobrir
-      % o nome "certo", use o comando "otfinfo -i" e veja os itens
-      % "preferred family" e "full name"
-      \setmainfont{Latin Modern Roman}[
-        SmallCapsFont = {LMRomanCaps10-Regular},
-        ItalicFeatures = {
-          SmallCapsFont = {LMRomanCaps10-Oblique},
-        },
-        SlantedFont = {LMRomanSlant10-Regular},
-        SlantedFeatures = {
-          SmallCapsFont = {LMRomanCaps10-Oblique},
-          BoldFont = {LMRomanSlant10-Bold}
-        },
-      ]
-    \fi
-
-    \ifXeTeX
-      % Com XeTeX, é preciso informar o nome do arquivo de cada fonte.
-      \setmainfont{lmroman10-regular.otf}[
-        SmallCapsFont = {lmromancaps10-regular.otf},
-        ItalicFeatures = {
-          SmallCapsFont = {lmromancaps10-oblique.otf},
-        },
-        SlantedFont = {lmromanslant10-regular.otf},
-        SlantedFeatures = {
-          SmallCapsFont = {lmromancaps10-oblique.otf},
-          BoldFont = {lmromanslant10-bold.otf}
-        },
-      ]
-    \fi
-\fi
+    % não faz isso.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -879,46 +774,7 @@
 % depois de hyperref mas antes de as opções relacionadas a metadados
 % de hyperref serem definidas.
 
-% HACK ALERT! As versões 5.5 e 5.6 de hyperxmp podem "confundir" latexmk,
-% fazendo a compilação do documento entrar em um laço infinito. Essas
-% versões, assim como a 5.7 que corrige o problema, foram incluídas no
-% TeXLive durante o ano de 2020, ou seja, nem a primeira versão nem a
-% última atualização de TeXLive 2020 são afetadas. Ainda assim, aqui
-% contornamos o problema desabilitando o recurso relacionado (o cálculo
-% automático de "byteCount", ou seja, do tamanho aproximado do documento).
-% TODO: Remover isto quando ubuntu 20.04 (focal) for descontinuada
-%       (abril de 2025).
-\ifPDFTeX
-  \LetLtxMacro\HACKoldpdffilesize\pdffilesize
-  \renewcommand\pdffilesize[1]{}
-\fi
 \RequirePackage{hyperxmp}
-\ifPDFTeX
-  \LetLtxMacro\pdffilesize\HACKoldpdffilesize
-\fi
-
-% HACK ALERT! hyperxmp usa atenddvi, que tem este bug:
-% https://github.com/ho-tex/atenddvi/issues/1 . Aparentemente, ele não
-% afeta xelatex (cf https://github.com/latex3/latex2e/issues/94 ), então
-% só precisamos nos preocupar com pdflatex e lualatex. Com pdflatex,
-% hyperxmp não deveria utilizar atenddvi, mas às vezes usa. Com lualatex,
-% atenddvi parece também não ser necessária, pois hyperxmp não usa
-% \special ou \write com lualatex. Então, vamos deixar hyperxmp carregar
-% atenddvi mas (1) vamos impedi-la de funcionar e (2) vamos garantir que
-% hyperxmp sempre use AtEndDocument com pdflatex e lualatex. Há ainda um
-% outro truque para contornar esse problema na configuração da bibliografia,
-% mas não podemos ter certeza de que apenas a bibliografia pode ser afetada
-% por este bug.
-
-% TODO: esse bug foi resolvido com o lançamento do LaTeX 2020-10-01, que
-%       deve ser incluído no TeXlive 2021. Assim, provavelmente podemos
-%       remover isto em abril/2025 (veja o comentário em \NeedsTeXFormat)
-\ifXeTeX
-\else
-  \let\AtEndDvi@AtBeginShipout\relax
-  \let\AtEndDvi@CheckImpl\relax
-  \let\hyxmp@at@end\AtEndDocument
-\fi
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1115,11 +971,9 @@
 \RequirePackage{soul}
 
 % TODO: esta package ficou obsoleta a partir de TeXLive 2023; removê-la
-%       quando deixarmos de dar suporte a versões anteriores.
+%       quando deixarmos de dar suporte a ubuntu jammy (junho/2027)
 \RequirePackage{soulutf8}
 
-% TODO: siunitx removed option "binary-units" in 2021;
-%       we can remove this option here after, say, 2025.
 % Vários recursos para apresentação de números e grandezas (unidades, notação
 % científica, melhor apresentação de números longos etc.), além de permitir
 % alinhar números em tabelas pelo ponto decimal (como a package dcolumn)
@@ -1127,7 +981,7 @@
 % \si{\milli\litre} (apenas as unidades) ou \SI{10}{\hertz} (a grandeza e a
 % unidade), ou \num[round-mode=places,round-precision=4]{3.1415926} -> 3,1416.
 
-\RequirePackage[binary-units]{siunitx}
+\RequirePackage{siunitx}
 \sisetup{
   mode=text,
   round-mode=places,
