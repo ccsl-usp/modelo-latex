@@ -21,7 +21,7 @@ learn more about. These comments are in Brazilian Portuguese. Even
 if you have some LaTeX experience, you may benefit from skimming the
 comments, tutorial, and examples, as they include some useful tips.
 
-You need a reasonably recent working LaTeX installation (TeXLive 2020
+You need a reasonably recent working LaTeX installation (TeXLive 2023
 works), including biber and biblatex (among other packages). The example
 documents may be compiled with `latexmk` and this repo includes compiled
 versions of them.
@@ -51,8 +51,8 @@ csquotes, hypcap, hyperxmp, listings, textcomp, multicol, stfloats, fnpct,
 epigraph, todonotes, soul, soulutf8, translator, pgfgantt, tcolorbox,
 titlesec, framed, adjustbox, threeparttable, colortbl, fewerfloatpages,
 datetime2, iflang, lstautogobble, froufrou, enumitem, contour, siunitx,
-pgfplots, appendix, iftex, cancel, and hologo. Several others are
-loaded indirectly by these.
+pgfplots, appendix, iftex, cancel, froufrou, and hologo. Several others
+are loaded indirectly by these.
 
 The default fonts depend on these packages: lmodern, fix-cm, libertinus,
 libertinust1math, fourier-orns, and sourcecodepro.
