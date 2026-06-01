@@ -53,8 +53,9 @@
 \newtoggle{IMElistings}
 \newtoggle{IMEpseudocode}
 
-\RequirePackage{l3keys2e}
 \ExplSyntaxOn
+
+\RequirePackage{l3keys2e}
 
 \keys_define:nn {IME/looks}{
   presentation .code:n = {
@@ -310,7 +311,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS (BRAZILIAN) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ExplSyntaxOn
+% \ExplSyntaxOn % already on
+
 \newtoggle{IMEfound}
 \NewDocumentCommand\IMEcheckLangLoaded{m m m}{
   \togglefalse{IMEfound}
@@ -338,6 +340,7 @@
 
   \iftoggle{IMEfound}{#2}{#3}
 }
+
 \ExplSyntaxOff
 
 \IMEcheckLangLoaded{brazilian}
@@ -2760,66 +2763,34 @@
 
 }{} % \iftoggle{IMEthesis}
 
-\ExplSyntaxOff
-
 % Às vezes é necessário forçar quebras de linha no título para a capa, mas
 % essas quebras não devem aparecer em outros lugares (especialmente nos
 % metadados XMP). hyperref e hyperxmp removem essas quebras automaticamente,
 % mas isso pode fazer duas palavras ficarem grudadas. Estas macros "apagam"
 % esses comandos de maneira mais cuidadosa.
 
-\ExplSyntaxOn
-
-% Primeiro definimos a regex que vamos usar. O que estamos fazendo aqui é
-% "(regex1)|(regex2)|(regex3)|(regex4)"
-\regex_const:Nn \@IMEbreakRegex
-  {
-    ( \c{break} ) % Encontra "\break"
-    |
-    ( \c{newline} ) % Encontra "\newline"
-    |
-      % Isto encontra:
-      % 1. A control sequence "\linebreak" -> "\c{linebreak}"
-      % 2. Opcionalmente seguida de "[NÚMERO]" -> "( \s*\x{5B}\s*\d\s*\x{5D} )?"
-    ( \c{linebreak} (\s*\x{5B}\s*\d\s*\x{5D})? )
-    |
-      % Isto encontra:
-      % 1. A control sequence "\\" (quebra de linha) -> "\c{\\}"
-      % 2. Optionalmente seguida de "[...]" -> "( \s*\x{5B}\s*...\s*\x{5D} )?"
-      % 3. Onde "..." é qualquer dimensão TeX válida
-      %    (veja o exemplo de regex em texdoc interface3)
-    ( \c{\\}
-      ( \s*\x{5B}\s*
-          [\+\-]?(\d+|\d*\.\d+)\s*((?i)pt|in|[cem]m|ex|[bs]p|[dn]d|[pcn]c)
-        \s*\x{5D}
-      )?
-    )
-  }
-
 \newcommand{\@IMEremoveLinebreaksEtc}[1]{
-    % Primeiro, substitui todas as quebras de linha por espaços
-    \regex_replace_all:NnN \@IMEbreakRegex {\ } #1
+    \bgroup
+    % Elimina notas de rodapé e transforma URLs em texto simples
+    \let\footnote\@gobble \let\thanks\@gobble
+    \let\url\@firstofone \let\href\@secondoftwo
 
-    % Depois elimina eventuais notas de rodapé
-    \regex_replace_all:nnN {\s*\c{footnote}} {\c{@gobble}} #1
-    \regex_replace_all:nnN {\s*\c{thanks}} {\c{@gobble}} #1
+    % Elimina comandos não-expansíveis, substitui quebras de linha por
+    % espaços e \par (ou linhas em branco) pelo caractere de nova linha
+    \text_declare_purify_equivalent:Nn \\ {\space}
+    \text_declare_purify_equivalent:Nn \break {\space}
+    \text_declare_purify_equivalent:Nn \linebreak {\space}
+    \text_declare_purify_equivalent:Nn \newline {\space}
+    \text_declare_purify_equivalent:Nn \par {<@IME@PARAGRAPH>}
+    \xdef\@tempa{\text_purify:n #1}
+    \egroup
+    \let#1\@tempa
 
-    % Depois transforma URLs em texto simples
-    \regex_replace_all:nnN {\c{url}} {\c{@firstofone}} #1
-    \regex_replace_all:nnN {\c{href}} {\c{@secondoftwo}} #1
-
-    % Substitui \par (ou uma linha em branco) por um caractere de nova linha
-    \regex_replace_all:nnN {\c{par}} {\n} #1
-
-    % Depois elimina espaços repetidos
-    \regex_replace_all:nnN {\h+} {\ } #1
-    \regex_replace_all:nnN {\ \n} {\n} #1
-    \regex_replace_all:nnN {\n+} {\n} #1
+    % Elimina espaços repetidos (podem ter sido inseridos acima)
+    \regex_replace_all:nnN {\space+} {\space} #1
+    \regex_replace_all:nnN {\space?<@IME@PARAGRAPH>\space?} {<@IME@PARAGRAPH>} #1
+    \regex_replace_all:nnN {(<@IME@PARAGRAPH>)+} {\n} #1
 }
-
-\ExplSyntaxOff
-
-\ExplSyntaxOn
 
 \iftoggle{IMEthesis}
   {
@@ -2836,26 +2807,34 @@
     \RenewDocumentCommand\title{mO{}}{
       \gdef\@title{#1}
       \gdef\@subtitle{#2}
+      \global\let\@cleanTitle\@title
+      \global\let\@cleanSubtitle\@subtitle
+      \@IMEremoveLinebreaksEtc{\@cleanTitle}
 
       \ifdefvoid{\@subtitle}
-        {\global\let\@fulltitle\@title}
-        {\gdef\@fulltitle{\@title\c_colon_str\space\@subtitle}}
-
-      \@IMEremoveLinebreaksEtc{\@fulltitle}
+        {\global\let\@fulltitle\@cleanTitle}
+        {
+            \@IMEremoveLinebreaksEtc{\@cleanSubtitle}
+            \gdef\@fulltitle{\@cleanTitle\c_colon_str\space\@cleanSubtitle}
+        }
 
       \hypersetup{pdftitle={\@fulltitle}}
 
       \IfLanguagePatterns{brazilian}
         {
           \global\let\@titlept\@title
+          \global\let\@cleanTitlept\@cleanTitle
           \global\let\@subtitlept\@subtitle
+          \global\let\@cleanSubtitlept\@cleanSubtitle
           \global\let\@fulltitlept\@fulltitle
         }
         {}
       \IfLanguagePatterns{english}
         {
           \global\let\@titleen\@title
+          \global\let\@cleanTitleen\@cleanTitle
           \global\let\@subtitleen\@subtitle
+          \global\let\@cleanSubtitleen\@cleanSubtitle
           \global\let\@fulltitleen\@fulltitle
         }
         {}
@@ -2864,21 +2843,28 @@
     \NewDocumentCommand\translatedtitle{mO{}}{
       \gdef\@translatedtitle{#1}
       \gdef\@translatedsubtitle{#2}
+      \global\let\@cleanTranslatedtitle\@translatedtitle
+      \global\let\@cleanTranslatedsubtitle\@translatedsubtitle
+
+      \@IMEremoveLinebreaksEtc{\@cleanTranslatedtitle}
 
       \ifdefvoid{\@translatedsubtitle}
-        {\global\let\@fulltranslatedtitle\@translatedtitle}
-        {\gdef\@fulltranslatedtitle
-            {\@translatedtitle\c_colon_str\space\@translatedsubtitle}%
+        {\global\let\@fulltranslatedtitle\@cleanTranslatedtitle}
+        {
+            \@IMEremoveLinebreaksEtc{\@cleanTranslatedsubtitle}
+            \gdef\@fulltranslatedtitle
+            {\@cleanTranslatedtitle\c_colon_str\space\@cleanTranslatedsubtitle}%
         }
 
-      \@IMEremoveLinebreaksEtc{\@fulltranslatedtitle}
-
+      \bgroup
       \IfLanguagePatterns{brazilian}
         {}
         {
           \XMPLangAlt{pt}{pdftitle={\@fulltranslatedtitle}}
           \global\let\@titlept\@translatedtitle
+          \global\let\@cleanTitlept\@cleanTranslatedtitle
           \global\let\@subtitlept\@translatedsubtitle
+          \global\let\@cleanSubtitlept\@cleanTranslatedsubtitle
           \global\let\@fulltitlept\@fulltranslatedtitle
         }
       \IfLanguagePatterns{english}
@@ -2886,12 +2872,19 @@
         {
           \XMPLangAlt{en}{pdftitle={\@fulltranslatedtitle}}
           \global\let\@titleen\@translatedtitle
-          \global\let\@subtitleen\@translatedsubtitle
+          \global\let\@cleanTitleen\@cleanTranslatedtitle
+          \global\let\@cleanSubtitleen\@cleanTranslatedsubtitle
           \global\let\@fulltitleen\@fulltranslatedtitle
         }
+      % XMPLangAlt undefines "\do"; this may cause
+      % problems with biblatex, but we do not need
+      % to worry here because we are in a group.
+      % https://github.com/plk/biblatex/issues/1105
+      \egroup
     }
   }
   {}
+
 \ExplSyntaxOff
 
 
@@ -3094,15 +3087,13 @@
   \bgroup
   \IfLanguagePatterns{brazilian}
     {%
-      \let\@currlangtitle\@titlept
-      \let\@currlangsubtitle\@subtitlept
+      \let\@currlangtitle\@cleanTitlept
+      \let\@currlangsubtitle\@cleanSubtitlept
     }
     {%
-      \let\@currlangtitle\@titleen
-      \let\@currlangsubtitle\@subtitleen
+      \let\@currlangtitle\@cleanTitleen
+      \let\@currlangsubtitle\@cleanSubtitleen
     }%
-  \@IMEremoveLinebreaksEtc{\@currlangtitle}%
-  \@IMEremoveLinebreaksEtc{\@currlangsubtitle}%
   \@author.
   \textbf{\@currlangtitle\ifdefvoid{\@currlangsubtitle}{}{: \textit{\@currlangsubtitle}}}.
   \workname{} (\degreename).
