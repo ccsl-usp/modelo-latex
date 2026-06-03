@@ -9,6 +9,9 @@
 \item \textbf{Não consigo decorar tantos comandos!}\\
 Use a colinha que é distribuída juntamente com este modelo (\url{gitlab.com/ccsl-usp/modelo-latex/raw/main/pre-compilados/colinha.pdf?inline=false}).
 
+\item \textbf{Seria melhor usar menos \textit{packages} para processar mais rápido!}\\
+\LaTeX{} carrega todas as \textit{packages} do modelo em cerca de \qty{1.5}{s}, ou seja, o que efetivamente toma tempo significativo é o processamento do documento em si. Substituindo o pacote \pkg{biblatex} por \pkg{bibtex} e \pkg{natbib}, o tempo das várias execuções necessárias para finalizar o documento é reduzido em cerca de \qty{5}{s}.
+
 \item \textbf{Estou tendo problemas com caracteres acentuados.}\\
 Versões modernas de \LaTeX{} usam UTF-8, mas arquivos antigos podem usar outras codificações (como ISO-8859-1, também conhecido como latin1 ou Windows-1252). Nesses casos, use \textsf{\textbackslash{}usepackage[latin1]\{inputenc\}} no preâmbulo do documento. Você também pode representar os caracteres acentuados usando comandos \LaTeX{}: \textsf{\textbackslash\textquotesingle{}a} para á, \textsf{\textbackslash{}c\{c\}} para cedilha etc., independentemente da codificação usada no texto\footnote{Você pode consultar os comandos desse tipo mais comuns em \url{en.wikibooks.org/wiki/LaTeX/Special_Characters}. Observe que a dica sobre o pingo do i \emph{não} é mais válida atualmente; basta usar \textsf{\textbackslash\textquotesingle{}i}.}.
 
