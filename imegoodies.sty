@@ -790,6 +790,30 @@
 \RequirePackage{fvextra} % Ainda mais recursos adicionais para texto "puro";
                          % precisa ser carregada antes de csquotes.
 
+% fvextra carrega a package lineno, que tem um bug:
+% https://github.com/latex-lineno/lineno/issues/32
+% Isto é um truque para contorná-lo.
+% TODO: Rever quando o bug for consertado em lineno
+\IfPackageAtLeastTF{lineno}{2026/03/08}{
+
+  \RemoveFromHook{build/column/after}[lineno]
+
+  \AddToHook{build/column/after}[lineno]{%
+      \setbox\@outputbox \vbox to\ht\@outputbox{%
+        \boxmaxdepth \@maxdepth
+        \protected@write\@auxout{}{%
+          \string\def\string\@LN@column{\if@firstcolumn1\else2\fi}%
+        }%
+        \if@twocolumn
+          \@expl@@@mark@update@dblcol@structures@@
+        \else
+          \@expl@@@mark@update@singlecol@structures@@
+        \fi
+        \unvbox\@outputbox
+      }%
+  }
+} {}
+
 % Às vezes um float pode ser adiado por muitas páginas; é possível forçar
 % LaTeX a imprimir todos os floats pendentes com o comando \clearpage mas,
 % para isso, o usuário deve identificar os casos problemáticos e inserir
