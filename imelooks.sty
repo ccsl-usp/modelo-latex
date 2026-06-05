@@ -52,6 +52,7 @@
 \newtoggle{IMEborderlinks}
 \newtoggle{IMElistings}
 \newtoggle{IMEpseudocode}
+\newtoggle{IMEmanualPseudocode}
 
 \ExplSyntaxOn
 
@@ -280,13 +281,17 @@
   pseudocode .choices:nn =
       {true, True, yes, Yes, y, Y, t, T, false, False, no, No, n, N, f, F}
       {
+          \toggletrue{IMEmanualPseudocode}
           \int_compare:nNnTF{\l_keys_choice_int}<{9}
               {\toggletrue{IMEpseudocode}}
               {\togglefalse{IMEpseudocode}}
       },
   pseudocode .default:n = {true},
   nopseudocode .value_forbidden:n = true,
-  nopseudocode .code:n = {\togglefalse{IMEpseudocode}},
+  nopseudocode .code:n = {
+                             \toggletrue{IMEmanualPseudocode}
+                             \togglefalse{IMEpseudocode}
+                         },
 }
 
 % Defaults
@@ -300,12 +305,15 @@
     autohttp,
     bluey,
     listings,
-    pseudocode,
 }
 
 \ProcessKeysOptions{IME/looks}
 
 \iftoggle{IMEautohttp}{\LetLtxMacro\url\httpurl}{}
+
+\ifboolexpr{togl {IMElistings} and not togl {IMEmanualPseudocode}}
+  {\toggletrue{IMEpseudocode}}
+  {}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% LÍNGUAS (BRAZILIAN) %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
